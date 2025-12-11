@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 
 class ColourStyles {
-  static const splashBackgroundColor = Color(0xFF15293D);
-  static const logoBorderColor = Colors.white;
-  static const logoQuoteColor = Colors.white;
-  static const onboardingBackgroundColor = Colors.white;
-  static const logoNameStrokeColor = Colors.black;
-  static const logoNameStockColor = Colors.white;
-  static const logoNamePilotColor = Color(0xFF5EBECB);
-  static const onboardingHeadingColor = Colors.black;
-  static const onboardingMessageColor = Color(0xFF615E5E);
+  static const scaffoldBackgroundColor = Color(0xFF15293D);
+  static const scaffoldBackgroundColor_2 = Colors.white;
+  static const quoteColor = Colors.white;
+  static const strokeColor = Colors.black;
+  static const stockTextColor = Colors.white;
+  static const pilotTextColor = Color(0xFF5EBECB);
+  static const headingColor = Colors.black;
+  static const captionColor = Color(0xFF5D5858);
+  static const labelColor = Colors.black;
   static const nextButtonColor = Colors.black;
   static const nextButtonTextColor = Colors.white;
   static const backButtonColor = Colors.white;
   static const backButtonTextColor = Colors.black;
   static const backButtonborderColor = Colors.black;
+  static const formborderColor = Colors.black;
 }

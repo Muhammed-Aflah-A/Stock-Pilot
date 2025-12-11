@@ -14,7 +14,7 @@ class _OnboardingScreen2State extends State<OnboardingScreen2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColourStyles.onboardingBackgroundColor,
+      backgroundColor: ColourStyles.scaffoldBackgroundColor_2,
       body: SafeArea(
         child: Center(
           child: Column(
@@ -28,12 +28,12 @@ class _OnboardingScreen2State extends State<OnboardingScreen2> {
                       children: [
                         TextSpan(
                           text: "Stoke",
-                          style: TextStyles.logoNameStroke,
+                          style: TextStyles.stroke,
                         ),
                         WidgetSpan(child: SizedBox(width: 10)),
                         TextSpan(
                           text: "Pilot",
-                          style: TextStyles.logoNameStroke,
+                          style: TextStyles.stroke,
                         ),
                       ],
                     ),
@@ -43,12 +43,12 @@ class _OnboardingScreen2State extends State<OnboardingScreen2> {
                       children: [
                         TextSpan(
                           text: "Stoke",
-                          style: TextStyles.logoNameStock,
+                          style: TextStyles.stockText,
                         ),
                         WidgetSpan(child: SizedBox(width: 10)),
                         TextSpan(
                           text: "Pilot",
-                          style: TextStyles.logoNamePilot,
+                          style: TextStyles.pilotText,
                         ),
                       ],
                     ),
@@ -69,23 +69,23 @@ class _OnboardingScreen2State extends State<OnboardingScreen2> {
                 ),
               ),
               SizedBox(height: 30),
-              Text("Never Run Out Again", style: TextStyles.onboardingHeading),
+              Text("Never Run Out Again", style: TextStyles.heading_2),
               SizedBox(height: 10),
               Text(
                 "Get alerts for low-stock items and",
-                style: TextStyles.onboardingMessage,
+                style: TextStyles.caption,
               ),
               Text(
                 "restock at the right time",
-                style: TextStyles.onboardingMessage,
+                style: TextStyles.caption,
               ),
               SizedBox(height: 60),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, "/onboarding_screen_3");
                 },
-                style: ButtonStyles.nextButton,
-                child: Text("Next", style: TextStyles.nextButtonText),
+                style: ButtonStyles.primaryButton,
+                child: Text("Next", style: TextStyles.primaryButtonText),
               ),
               SizedBox(height: 20),
               ElevatedButton(

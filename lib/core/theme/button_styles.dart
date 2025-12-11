@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 
 class ButtonStyles {
-  static final nextButton = ElevatedButton.styleFrom(
+  static final primaryButton = ElevatedButton.styleFrom(
     backgroundColor: ColourStyles.nextButtonColor,
     foregroundColor: ColourStyles.nextButtonTextColor,
     minimumSize: Size(280, 70),

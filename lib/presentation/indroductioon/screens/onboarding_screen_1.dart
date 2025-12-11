@@ -14,7 +14,7 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColourStyles.onboardingBackgroundColor,
+      backgroundColor: ColourStyles.scaffoldBackgroundColor_2,
       body: SafeArea(
         child: Center(
           child: Column(
@@ -28,12 +28,12 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
                       children: [
                         TextSpan(
                           text: "Stoke",
-                          style: TextStyles.logoNameStroke,
+                          style: TextStyles.stroke,
                         ),
                         WidgetSpan(child: SizedBox(width: 10)),
                         TextSpan(
                           text: "Pilot",
-                          style: TextStyles.logoNameStroke,
+                          style: TextStyles.stroke,
                         ),
                       ],
                     ),
@@ -43,12 +43,12 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
                       children: [
                         TextSpan(
                           text: "Stoke",
-                          style: TextStyles.logoNameStock,
+                          style: TextStyles.stockText,
                         ),
                         WidgetSpan(child: SizedBox(width: 10)),
                         TextSpan(
                           text: "Pilot",
-                          style: TextStyles.logoNamePilot,
+                          style: TextStyles.pilotText,
                         ),
                       ],
                     ),
@@ -71,24 +71,24 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
               SizedBox(height: 50),
               Text(
                 "Track Your Stock Effortlessly",
-                style: TextStyles.onboardingHeading,
+                style: TextStyles.heading_2,
               ),
               SizedBox(height: 10),
               Text(
                 "Stay updated with real-time",
-                style: TextStyles.onboardingMessage,
+                style: TextStyles.caption,
               ),
               Text(
                 "item counts and accurate stock levels",
-                style: TextStyles.onboardingMessage,
+                style: TextStyles.caption,
               ),
               SizedBox(height: 100),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, "/onboarding_screen_2");
                 },
-                style: ButtonStyles.nextButton,
-                child: Text("Next", style: TextStyles.nextButtonText),
+                style: ButtonStyles.primaryButton,
+                child: Text("Next", style: TextStyles.primaryButtonText),
               ),
             ],
           ),

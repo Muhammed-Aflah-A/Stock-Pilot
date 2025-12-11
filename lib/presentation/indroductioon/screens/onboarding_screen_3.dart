@@ -14,7 +14,7 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColourStyles.onboardingBackgroundColor,
+      backgroundColor: ColourStyles.scaffoldBackgroundColor_2,
       body: SafeArea(
         child: Center(
           child: Column(
@@ -26,30 +26,18 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
                   RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(
-                          text: "Stoke",
-                          style: TextStyles.logoNameStroke,
-                        ),
+                        TextSpan(text: "Stoke", style: TextStyles.stroke),
                         WidgetSpan(child: SizedBox(width: 10)),
-                        TextSpan(
-                          text: "Pilot",
-                          style: TextStyles.logoNameStroke,
-                        ),
+                        TextSpan(text: "Pilot", style: TextStyles.stroke),
                       ],
                     ),
                   ),
                   RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(
-                          text: "Stoke",
-                          style: TextStyles.logoNameStock,
-                        ),
+                        TextSpan(text: "Stoke", style: TextStyles.stockText),
                         WidgetSpan(child: SizedBox(width: 10)),
-                        TextSpan(
-                          text: "Pilot",
-                          style: TextStyles.logoNamePilot,
-                        ),
+                        TextSpan(text: "Pilot", style: TextStyles.pilotText),
                       ],
                     ),
                   ),
@@ -69,24 +57,24 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
                 ),
               ),
               SizedBox(height: 30),
-              Text(
-                "Smart Reports & Analytics",
-                style: TextStyles.onboardingHeading,
-              ),
+              Text("Smart Reports & Analytics", style: TextStyles.heading_2),
               SizedBox(height: 10),
-              Text(
-                "Stay updated with real-time",
-                style: TextStyles.onboardingMessage,
-              ),
+              Text("Stay updated with real-time", style: TextStyles.caption),
               Text(
                 "item counts and accurate stock levels",
-                style: TextStyles.onboardingMessage,
+                style: TextStyles.caption,
               ),
               SizedBox(height: 60),
               ElevatedButton(
-                onPressed: () {},
-                style: ButtonStyles.nextButton,
-                child: Text("Get Started", style: TextStyles.nextButtonText),
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    '/profile_creation',
+                    (route) => false,
+                  );
+                },
+                style: ButtonStyles.primaryButton,
+                child: Text("Get Started", style: TextStyles.primaryButtonText),
               ),
               SizedBox(height: 20),
               ElevatedButton(

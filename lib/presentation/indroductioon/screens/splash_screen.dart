@@ -20,13 +20,17 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _navigateToOnboarding() async {
     await Future.delayed(_splashDuration);
-    Navigator.pushReplacementNamed(context, '/onboarding_screen_1');
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/onboarding_screen_1',
+      (route) => false,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColourStyles.splashBackgroundColor,
+      backgroundColor: ColourStyles.scaffoldBackgroundColor,
       body: SafeArea(
         child: Center(
           child: Stack(
@@ -45,17 +49,17 @@ class _SplashScreenState extends State<SplashScreen> {
                   animatedTexts: [
                     TypewriterAnimatedText(
                       'Smart Stock, Smooth Business',
-                      textStyle: TextStyles.logoQuote,
+                      textStyle: TextStyles.quote,
                       speed: Duration(milliseconds: 100),
                     ),
                     // TypewriterAnimatedText(
                     //   'Track Smarter, Sell Faster',
-                    //   textStyle: TextStyles.logoQuote,
+                    //   textStyle: TextStyles.splashScreenQuote,
                     //   speed: Duration(milliseconds: 50),
                     // ),
                     // TypewriterAnimatedText(
                     //   'Inventory Clear. Decisions Easy',
-                    //   textStyle: TextStyles.logoQuote,
+                    //   textStyle: TextStyles.splashScreenQuote,
                     //   speed: Duration(milliseconds: 50),
                     // ),
                   ],
