@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stock_pilot/core/assets/app_images.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/presentation/Dashboard/viewmodel/dashboard_provider.dart';
@@ -156,7 +155,7 @@ class _DashboardState extends State<Dashboard> {
                   ),
                 ],
               ),
-              SizedBox(height: h * 0.015),
+              SizedBox(height: h * 0.008),
               Row(
                 children: [
                   Expanded(
@@ -214,7 +213,7 @@ class _DashboardState extends State<Dashboard> {
                   ),
                 ],
               ),
-              SizedBox(height: h * 0.015),
+              SizedBox(height: h * 0.008),
               Row(
                 children: [
                   Expanded(
@@ -272,7 +271,7 @@ class _DashboardState extends State<Dashboard> {
                   ),
                 ],
               ),
-              SizedBox(height: h * 0.015),
+              SizedBox(height: h * 0.008),
               Row(
                 children: [
                   Expanded(
@@ -361,7 +360,7 @@ class _DashboardState extends State<Dashboard> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(8),
                                     child: Image.asset(
-                                      AppImages.productImage1,
+                                      activity.image!,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -373,18 +372,18 @@ class _DashboardState extends State<Dashboard> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        activity['title'] as String,
+                                        activity.title!,
                                         style: TextStyles.primaryText_2,
                                       ),
                                       Text(
-                                        activity['product'] as String,
+                                        activity.product!,
                                         style: TextStyle(
                                           fontSize: 14,
                                           color: Colors.grey[600],
                                         ),
                                       ),
                                       Text(
-                                        activity['category'] as String,
+                                        activity.category!,
                                         style: TextStyle(
                                           fontSize: 14,
                                           color: Colors.grey[600],
@@ -397,17 +396,17 @@ class _DashboardState extends State<Dashboard> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      '${activity['units']}',
+                                      '${activity.unit}',
                                       style: TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold,
-                                        color: activity['isPositive'] as bool
+                                        color: activity.isPositive!
                                             ? Colors.green
                                             : Colors.red,
                                       ),
                                     ),
                                     Text(
-                                      activity['label'] as String,
+                                      activity.label!,
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: Colors.grey[600],
