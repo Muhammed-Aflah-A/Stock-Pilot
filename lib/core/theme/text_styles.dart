@@ -29,6 +29,27 @@ class TextStyles {
     color: ColourStyles.pilotTextColor,
   );
 
+  static const TextStyle turnOver = TextStyle(
+    fontSize: 30,
+    fontWeight: FontWeight.w700,
+    fontFamily: "ManRope",
+    color: ColourStyles.primaryTextGreen,
+  );
+
+  static const TextStyle lowStock = TextStyle(
+    fontSize: 30,
+    fontWeight: FontWeight.w700,
+    fontFamily: "ManRope",
+    color: ColourStyles.primaryTextYellow,
+  );
+
+  static const TextStyle outOfStock = TextStyle(
+    fontSize: 30,
+    fontWeight: FontWeight.w700,
+    fontFamily: "ManRope",
+    color: ColourStyles.primaryTextRed,
+  );
+
   static const TextStyle heading = TextStyle(
     fontSize: 40,
     fontFamily: "ManRope",
@@ -60,6 +81,34 @@ class TextStyles {
     fontSize: 16,
     fontFamily: "Adamina",
     color: ColourStyles.captionColor,
+  );
+
+  static const TextStyle primaryText = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.w600,
+    fontFamily: "ManRope",
+    color: ColourStyles.primaryTextColor,
+  );
+
+  static const TextStyle primaryText_2 = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.w500,
+    fontFamily: "ManRope",
+    color: ColourStyles.primaryTextColor,
+  );
+
+  static const TextStyle primaryText_3 = TextStyle(
+    fontSize: 30,
+    fontWeight: FontWeight.w700,
+    fontFamily: "ManRope",
+    color: ColourStyles.primaryTextColor,
+  );
+
+  static const TextStyle primaryText_4 = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w700,
+    fontFamily: "ManRope",
+    color: ColourStyles.primaryTextBlue,
   );
 
   static const TextStyle primaryButtonText = TextStyle(

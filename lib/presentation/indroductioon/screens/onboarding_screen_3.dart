@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stock_pilot/core/assets/app_images.dart';
 import 'package:stock_pilot/core/theme/button_styles.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
@@ -13,13 +14,13 @@ class OnboardingScreen3 extends StatefulWidget {
 class _OnboardingScreen3State extends State<OnboardingScreen3> {
   @override
   Widget build(BuildContext context) {
+    final h = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: ColourStyles.scaffoldBackgroundColor_2,
       body: SafeArea(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Stack(
                 children: [
@@ -27,7 +28,7 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
                     text: TextSpan(
                       children: [
                         TextSpan(text: "Stoke", style: TextStyles.stroke),
-                        WidgetSpan(child: SizedBox(width: 10)),
+                        WidgetSpan(child: SizedBox(width: h * 0.01)),
                         TextSpan(text: "Pilot", style: TextStyles.stroke),
                       ],
                     ),
@@ -36,35 +37,34 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
                     text: TextSpan(
                       children: [
                         TextSpan(text: "Stoke", style: TextStyles.stockText),
-                        WidgetSpan(child: SizedBox(width: 10)),
+                        WidgetSpan(child: SizedBox(width: h * 0.01)),
                         TextSpan(text: "Pilot", style: TextStyles.pilotText),
                       ],
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 30),
+              SizedBox(height: h * 0.05),
               ClipRect(
                 child: Align(
                   alignment: Alignment.center,
                   widthFactor: 1,
-                  heightFactor: 0.6,
+                  heightFactor: 0.7,
                   child: Image.asset(
-                    "lib/assets/images/onboarding3.png",
-                    width: 500,
-                    height: 500,
+                    AppImages.onboardingScreen3,
+                    fit: BoxFit.contain,
                   ),
                 ),
               ),
-              SizedBox(height: 30),
+              SizedBox(height: h * 0.05),
               Text("Smart Reports & Analytics", style: TextStyles.heading_2),
-              SizedBox(height: 10),
+              SizedBox(height: h * 0.02),
               Text("Stay updated with real-time", style: TextStyles.caption),
               Text(
                 "item counts and accurate stock levels",
                 style: TextStyles.caption,
               ),
-              SizedBox(height: 60),
+              SizedBox(height: h * 0.08),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamedAndRemoveUntil(
@@ -76,7 +76,7 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
                 style: ButtonStyles.primaryButton,
                 child: Text("Get Started", style: TextStyles.primaryButtonText),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: h * 0.02),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);

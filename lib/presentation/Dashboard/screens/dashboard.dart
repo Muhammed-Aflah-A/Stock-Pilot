@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:stock_pilot/core/assets/app_images.dart';
+import 'package:stock_pilot/core/theme/colours_styles.dart';
+import 'package:stock_pilot/core/theme/text_styles.dart';
+import 'package:stock_pilot/presentation/Dashboard/viewmodel/dashboard_provider.dart';
+import 'package:stock_pilot/presentation/Dashboard/viewmodel/drawer_provider.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -10,6 +16,418 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    final h = MediaQuery.of(context).size.height;
+    final w = MediaQuery.of(context).size.width;
+    return Scaffold(
+      backgroundColor: ColourStyles.scaffoldBackgroundColor_2,
+      appBar: AppBar(
+        backgroundColor: ColourStyles.primaryColor,
+        toolbarHeight: 100,
+        title: Text("Dashboard", style: TextStyles.heading_2),
+        actions: [
+          Padding(
+            padding: EdgeInsets.all(20),
+            child: CircleAvatar(
+              backgroundImage: AssetImage("lib/assets/images/profile.webp"),
+              radius: 20,
+            ),
+          ),
+        ],
+      ),
+      drawer: Drawer(
+        backgroundColor: ColourStyles.primaryColor,
+        child: Column(
+          children: [
+            UserAccountsDrawerHeader(
+              decoration: BoxDecoration(color: ColourStyles.primaryColor),
+              accountName: Consumer<DrawerProvider>(
+                builder: (context, provider, child) {
+                  return Text(
+                    "${provider.user?.fullName}",
+                    style: TextStyles.primaryText,
+                  );
+                },
+              ),
+              accountEmail: Consumer<DrawerProvider>(
+                builder: (context, provider, child) {
+                  return Text(
+                    "${provider.user?.gmail}",
+                    style: TextStyles.primaryText,
+                  );
+                },
+              ),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: AssetImage("lib/assets/images/profile.webp"),
+              ),
+            ),
+            Expanded(
+              child: Consumer<DrawerProvider>(
+                builder: (context, provider, _) {
+                  return ListView.separated(
+                    separatorBuilder: (context, index) =>
+                        SizedBox(height: h * 0.01),
+                    itemCount: provider.drawerItems.length,
+                    itemBuilder: (context, index) {
+                      final item = provider.drawerItems[index];
+                      return ListTile(
+                        selected: provider.selectedIndex == index,
+                        selectedTileColor: ColourStyles.selectionColor,
+                        tileColor: ColourStyles.primaryColor,
+                        leading: Image.asset(item.icon!, height: 35, width: 35),
+                        title: Text(
+                          item.title!,
+                          style: TextStyles.primaryText_2,
+                        ),
+                        onTap: () {
+                          provider.selectedDrawerItem(index);
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, "${item.navigation}");
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(h * 0.010),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: ColourStyles.cardborderColor,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      color: ColourStyles.primaryColor_3,
+                      child: Padding(
+                        padding: EdgeInsets.all(h * 0.016),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Total Items",
+                              style: TextStyles.primaryText_2,
+                            ),
+                            SizedBox(height: h * 0.01),
+                            Text("1250", style: TextStyles.primaryText_3),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: w * 0.015),
+                  Expanded(
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: ColourStyles.cardborderColor,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      color: ColourStyles.primaryColor_3,
+                      child: Padding(
+                        padding: EdgeInsets.all(h * 0.016),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Total Value",
+                              style: TextStyles.primaryText_2,
+                            ),
+                            SizedBox(height: h * 0.01),
+                            Text("\$150k", style: TextStyles.primaryText_3),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: h * 0.015),
+              Row(
+                children: [
+                  Expanded(
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: ColourStyles.cardborderColor,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      color: ColourStyles.primaryColor_3,
+                      child: Padding(
+                        padding: EdgeInsets.all(h * 0.016),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Total Category",
+                              style: TextStyles.primaryText_2,
+                            ),
+                            SizedBox(height: h * 0.01),
+                            Text("4", style: TextStyles.primaryText_3),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: w * 0.015),
+                  Expanded(
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: ColourStyles.cardborderColor,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      color: ColourStyles.primaryColor_3,
+                      child: Padding(
+                        padding: EdgeInsets.all(h * 0.016),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Total Brand",
+                              style: TextStyles.primaryText_2,
+                            ),
+                            SizedBox(height: h * 0.01),
+                            Text("4", style: TextStyles.primaryText_3),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: h * 0.015),
+              Row(
+                children: [
+                  Expanded(
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: ColourStyles.cardborderColor,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      color: ColourStyles.primaryColor_3,
+                      child: Padding(
+                        padding: EdgeInsets.all(h * 0.016),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Purchase Cost",
+                              style: TextStyles.primaryText_2,
+                            ),
+                            SizedBox(height: h * 0.01),
+                            Text("\$100k", style: TextStyles.primaryText_3),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: w * 0.015),
+                  Expanded(
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: ColourStyles.cardborderColor,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      color: ColourStyles.primaryColor_3,
+                      child: Padding(
+                        padding: EdgeInsets.all(h * 0.016),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Monthly Turnover",
+                              style: TextStyles.primaryText_2,
+                            ),
+                            SizedBox(height: h * 0.01),
+                            Text("\$50k", style: TextStyles.turnOver),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: h * 0.015),
+              Row(
+                children: [
+                  Expanded(
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: ColourStyles.cardborderColor,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      color: ColourStyles.primaryColor_3,
+                      child: Padding(
+                        padding: EdgeInsets.all(h * 0.016),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Low Stock", style: TextStyles.primaryText_2),
+                            SizedBox(height: h * 0.01),
+                            Text("5", style: TextStyles.lowStock),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: w * 0.015),
+                  Expanded(
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: ColourStyles.cardborderColor,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      color: ColourStyles.primaryColor_3,
+                      child: Padding(
+                        padding: EdgeInsets.all(h * 0.016),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Out of Stock",
+                              style: TextStyles.primaryText_2,
+                            ),
+                            SizedBox(height: h * 0.01),
+                            Text("1", style: TextStyles.outOfStock),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: h * 0.02),
+              Text("Recent Activity", style: TextStyles.primaryText_4),
+              SizedBox(height: h * 0.02),
+              Expanded(
+                child: Consumer<DashboardProvider>(
+                  builder: (context, provider, _) {
+                    return ListView.separated(
+                      separatorBuilder: (context, index) =>
+                          SizedBox(height: h * 0.01),
+                      itemCount: provider.activities.length,
+                      itemBuilder: (context, index) {
+                        final activity = provider.activities[index];
+                        return Card(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: ColourStyles.cardborderColor,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          color: ColourStyles.primaryColor_3,
+                          child: Padding(
+                            padding: EdgeInsets.all(h * 0.016),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image.asset(
+                                      AppImages.productImage1,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: w * 0.03),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        activity['title'] as String,
+                                        style: TextStyles.primaryText_2,
+                                      ),
+                                      Text(
+                                        activity['product'] as String,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[600],
+                                        ),
+                                      ),
+                                      Text(
+                                        activity['category'] as String,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[600],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      '${activity['units']}',
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: activity['isPositive'] as bool
+                                            ? Colors.green
+                                            : Colors.red,
+                                      ),
+                                    ),
+                                    Text(
+                                      activity['label'] as String,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.grey[600],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

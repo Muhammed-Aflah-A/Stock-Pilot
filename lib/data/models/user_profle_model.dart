@@ -3,20 +3,17 @@ part 'user_profle_model.g.dart';
 @HiveType(typeId: 0)
 class UserProfile {
   @HiveField(0)
-  String? firstName;
+  String? fullName;
   @HiveField(1)
-  String? lastName;
-  @HiveField(2)
   String? shopName;
-  @HiveField(3)
+  @HiveField(2)
   String? shopAdress;
-  @HiveField(4)
+  @HiveField(3)
   String? gmail;
-  @HiveField(5)
+  @HiveField(4)
   String? phoneNumber;
   UserProfile({
-    required this.firstName,
-    required this.lastName,
+    required this.fullName,
     required this.shopName,
     required this.shopAdress,
     required this.gmail,

@@ -4,9 +4,7 @@ import 'package:stock_pilot/data/services/hive_service_layer.dart';
 
 class ProfileCreationProvider with ChangeNotifier {
   final formKey = GlobalKey<FormState>();
-  String? firstName;
-  final lastNameFocus = FocusNode();
-  String? lastName;
+  String? fullName;
   final shopNameFocus = FocusNode();
   String? shopName;
   final shopAdressFocus = FocusNode();

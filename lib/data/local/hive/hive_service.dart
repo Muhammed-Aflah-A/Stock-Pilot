@@ -11,6 +11,12 @@ class HiveService implements HiveServiceLayer {
   @override
   Future<void> addUser(UserProfile user) async {
     final box = Hive.box<UserProfile>(HiveBoxes.userProfile);
-    box.add(user);
+    box.put("user",user);
+  }
+
+  @override
+  Future<UserProfile?> getUser() async {
+    final box = Hive.box<UserProfile>(HiveBoxes.userProfile);
+    return box.get('user');
   }
 }
