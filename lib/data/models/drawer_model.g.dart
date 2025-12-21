@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'drawer_items_model.dart';
+part of 'drawer_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
@@ -17,8 +17,8 @@ class DrawerItemsAdapter extends TypeAdapter<DrawerItems> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return DrawerItems(
-      title: fields[0] as String?,
-      icon: fields[1] as String?,
+      title: fields[1] as String?,
+      icon: fields[0] as String?,
       navigation: fields[2] as String?,
     );
   }
@@ -28,9 +28,9 @@ class DrawerItemsAdapter extends TypeAdapter<DrawerItems> {
     writer
       ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.title)
-      ..writeByte(1)
       ..write(obj.icon)
+      ..writeByte(1)
+      ..write(obj.title)
       ..writeByte(2)
       ..write(obj.navigation);
   }

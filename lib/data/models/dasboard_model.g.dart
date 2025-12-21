@@ -6,17 +6,60 @@ part of 'dasboard_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class DasboardModelAdapter extends TypeAdapter<DasboardModel> {
+class DashboardCardsAdapter extends TypeAdapter<DashboardCards> {
   @override
   final int typeId = 2;
 
   @override
-  DasboardModel read(BinaryReader reader) {
+  DashboardCards read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return DasboardModel(
+    return DashboardCards(
+      title: fields[0] as String?,
+      value: fields[1] as String?,
+      titleStyle: fields[2] as TextStyle?,
+      valueStyle: fields[3] as TextStyle?,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, DashboardCards obj) {
+    writer
+      ..writeByte(4)
+      ..writeByte(0)
+      ..write(obj.title)
+      ..writeByte(1)
+      ..write(obj.value)
+      ..writeByte(2)
+      ..write(obj.titleStyle)
+      ..writeByte(3)
+      ..write(obj.valueStyle);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DashboardCardsAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class DasboardActivityAdapter extends TypeAdapter<DasboardActivity> {
+  @override
+  final int typeId = 3;
+
+  @override
+  DasboardActivity read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return DasboardActivity(
       image: fields[0] as String?,
       title: fields[1] as String?,
       product: fields[2] as String?,
@@ -28,7 +71,7 @@ class DasboardModelAdapter extends TypeAdapter<DasboardModel> {
   }
 
   @override
-  void write(BinaryWriter writer, DasboardModel obj) {
+  void write(BinaryWriter writer, DasboardActivity obj) {
     writer
       ..writeByte(7)
       ..writeByte(0)
@@ -53,7 +96,7 @@ class DasboardModelAdapter extends TypeAdapter<DasboardModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DasboardModelAdapter &&
+      other is DasboardActivityAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

@@ -1,4 +1,5 @@
 class AppImages {
+  static const profilePicture = "lib/assets/images/user-profile.avif";
   static const appLogo = "lib/assets/images/logo.png";
   static const onboardingScreen1 = "lib/assets/images/onboarding1.png";
   static const onboardingScreen2 = "lib/assets/images/onboarding2.png";

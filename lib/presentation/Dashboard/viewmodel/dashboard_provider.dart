@@ -1,10 +1,62 @@
 import 'package:flutter/widgets.dart';
 import 'package:stock_pilot/core/assets/app_images.dart';
+import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
 
 class DashboardProvider with ChangeNotifier {
-  List<DasboardModel> activities = [
-    DasboardModel(
+  List<DashboardCards> dashboardCards = [
+    DashboardCards(
+      title: "Total Items",
+      value: "1250",
+      titleStyle: TextStyles.primaryText_2,
+      valueStyle: TextStyles.primaryText_3,
+    ),
+    DashboardCards(
+      title: "Total Value",
+      value: "\$150k",
+      titleStyle: TextStyles.primaryText_2,
+      valueStyle: TextStyles.primaryText_3,
+    ),
+    DashboardCards(
+      title: "Total Category",
+      value: "4",
+      titleStyle: TextStyles.primaryText_2,
+      valueStyle: TextStyles.primaryText_3,
+    ),
+    DashboardCards(
+      title: "Total Brand",
+      value: "4",
+      titleStyle: TextStyles.primaryText_2,
+      valueStyle: TextStyles.primaryText_3,
+    ),
+    DashboardCards(
+      title: "Purchase Cost",
+      value: "\$100k",
+      titleStyle: TextStyles.primaryText_2,
+      valueStyle: TextStyles.primaryText_3,
+    ),
+    DashboardCards(
+      title: "Monthly Turnover",
+      value: "\$50k",
+      titleStyle: TextStyles.primaryText_2,
+      valueStyle: TextStyles.turnOver,
+    ),
+    DashboardCards(
+      title: "Low Stock",
+      value: "5",
+      titleStyle: TextStyles.primaryText_2,
+      valueStyle: TextStyles.lowStock,
+    ),
+    DashboardCards(
+      title: "Out of Stock",
+      value: "1",
+      titleStyle: TextStyles.primaryText_2,
+      valueStyle: TextStyles.outOfStock,
+    ),
+  ];
+
+  List<DasboardActivity> dashboardActivity = [
+    DasboardActivity(
       image: AppImages.productImage1,
       title: 'Stock Added',
       product: 'AudioSound Pro',
@@ -13,7 +65,7 @@ class DashboardProvider with ChangeNotifier {
       label: 'units added',
       isPositive: true,
     ),
-    DasboardModel(
+    DasboardActivity(
       image: AppImages.productImage1,
       title: 'Stock Sold',
       product: 'AudioSound Pro',
@@ -22,7 +74,7 @@ class DashboardProvider with ChangeNotifier {
       label: 'units sold',
       isPositive: false,
     ),
-    DasboardModel(
+    DasboardActivity(
       image: AppImages.productImage1,
       title: 'Stock Added',
       product: 'AudioSound Pro',
@@ -31,7 +83,7 @@ class DashboardProvider with ChangeNotifier {
       label: 'units added',
       isPositive: true,
     ),
-    DasboardModel(
+    DasboardActivity(
       image: AppImages.productImage1,
       title: 'Stock Sold',
       product: 'AudioSound Pro',
@@ -40,7 +92,7 @@ class DashboardProvider with ChangeNotifier {
       label: 'units sold',
       isPositive: false,
     ),
-    DasboardModel(
+    DasboardActivity(
       image: AppImages.productImage1,
       title: 'Stock Added',
       product: 'AudioSound Pro',
@@ -51,10 +103,10 @@ class DashboardProvider with ChangeNotifier {
     ),
   ];
 
-  void addNewActivity(DasboardModel activity) {
-    activities.insert(0, activity);
-    if (activities.length > 5) {
-      activities.removeLast();
+  void addNewActivity(DasboardActivity activity) {
+    dashboardActivity.insert(0, activity);
+    if (dashboardActivity.length > 5) {
+      dashboardActivity.removeLast();
     }
     notifyListeners();
   }

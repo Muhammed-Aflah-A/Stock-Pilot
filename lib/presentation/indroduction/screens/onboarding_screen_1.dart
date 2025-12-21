@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/assets/app_images.dart';
+import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/button_styles.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 
-class OnboardingScreen2 extends StatefulWidget {
-  const OnboardingScreen2({super.key});
+// First onboarding screen: shows branding, illustration, short copy,
+// and a button to proceed to the next onboarding step.
+// Keep UI simple and responsive using MediaQuery-based spacing.
 
-  @override
-  State<OnboardingScreen2> createState() => _OnboardingScreen2State();
-}
+class OnboardingScreen1 extends StatelessWidget {
+  const OnboardingScreen1({super.key});
 
-class _OnboardingScreen2State extends State<OnboardingScreen2> {
   @override
   Widget build(BuildContext context) {
+    //Calculating screens heigth
     final h = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: ColourStyles.scaffoldBackgroundColor_2,
+      backgroundColor: ColourStyles.primaryColor,
       body: SafeArea(
         child: Center(
           child: Column(
@@ -24,10 +25,13 @@ class _OnboardingScreen2State extends State<OnboardingScreen2> {
             children: [
               Stack(
                 children: [
+                  // Layered RichText: first layer provides an outlined/stroked
+                  // style, second layer provides the filled text to create
+                  // a combined visual effect for the app title.
                   RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(text: "Stoke", style: TextStyles.stroke),
+                        TextSpan(text: "Stock", style: TextStyles.stroke),
                         WidgetSpan(child: SizedBox(width: h * 0.01)),
                         TextSpan(text: "Pilot", style: TextStyles.stroke),
                       ],
@@ -36,7 +40,7 @@ class _OnboardingScreen2State extends State<OnboardingScreen2> {
                   RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(text: "Stoke", style: TextStyles.stockText),
+                        TextSpan(text: "Stock", style: TextStyles.stockText),
                         WidgetSpan(child: SizedBox(width: h * 0.01)),
                         TextSpan(text: "Pilot", style: TextStyles.pilotText),
                       ],
@@ -49,36 +53,32 @@ class _OnboardingScreen2State extends State<OnboardingScreen2> {
                 child: Align(
                   alignment: Alignment.center,
                   widthFactor: 1,
-                  heightFactor: 0.6,
+                  heightFactor: 0.5,
+                  // Illustration for the onboarding screen. Clipping and
+                  // alignment control the visible portion and aspect.
                   child: Image.asset(
-                    AppImages.onboardingScreen2,
+                    AppImages.onboardingScreen1,
                     fit: BoxFit.contain,
                   ),
                 ),
               ),
-              SizedBox(height: h * 0.05),
-              Text("Never Run Out Again", style: TextStyles.heading_2),
+              SizedBox(height: h * 0.1),
+              Text("Track Your Stock Effortlessly", style: TextStyles.tagLine),
               SizedBox(height: h * 0.02),
+              // Short explanatory caption split across two lines for layout
+              Text("Stay updated with real-time", style: TextStyles.caption),
               Text(
-                "Get alerts for low-stock items and",
+                "item counts and accurate stock levels",
                 style: TextStyles.caption,
               ),
-              Text("restock at the right time", style: TextStyles.caption),
-              SizedBox(height: h * 0.08),
+              SizedBox(height: h * 0.1),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, "/onboarding_screen_3");
+                  // Navigate to the next onboarding screen using named route
+                  Navigator.pushNamed(context, AppRoutes.onBoardingScreen_2);
                 },
-                style: ButtonStyles.primaryButton,
-                child: Text("Next", style: TextStyles.primaryButtonText),
-              ),
-              SizedBox(height: h * 0.02),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                style: ButtonStyles.backButton,
-                child: Text("Back", style: TextStyles.backButtonText),
+                style: ButtonStyles.nextButton,
+                child: Text("Next", style: TextStyles.buttonText),
               ),
             ],
           ),

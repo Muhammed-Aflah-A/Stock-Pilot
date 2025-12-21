@@ -1,7 +1,27 @@
+import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 part 'dasboard_model.g.dart';
+
 @HiveType(typeId: 2)
-class DasboardModel {
+class DashboardCards {
+  @HiveField(0)
+  String? title;
+  @HiveField(1)
+  String? value;
+  @HiveField(2)
+  TextStyle? titleStyle;
+  @HiveField(3)
+  TextStyle? valueStyle;
+  DashboardCards({
+    required this.title,
+    required this.value,
+    required this.titleStyle,
+    required this.valueStyle,
+  });
+}
+
+@HiveType(typeId: 3)
+class DasboardActivity {
   @HiveField(0)
   String? image;
   @HiveField(1)
@@ -16,7 +36,7 @@ class DasboardModel {
   String? label;
   @HiveField(6)
   bool? isPositive;
-  DasboardModel({
+  DasboardActivity({
     required this.image,
     required this.title,
     required this.product,

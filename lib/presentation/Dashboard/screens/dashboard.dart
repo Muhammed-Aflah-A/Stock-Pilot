@@ -1,9 +1,12 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stock_pilot/core/assets/app_images.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
-import 'package:stock_pilot/presentation/Dashboard/viewmodel/dashboard_provider.dart';
-import 'package:stock_pilot/presentation/Dashboard/viewmodel/drawer_provider.dart';
+import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
+import 'package:stock_pilot/presentation/dashboard/viewmodel/drawer_provider.dart';
+import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -17,8 +20,9 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
+    final dashboardProvider = context.watch<DashboardProvider>();
     return Scaffold(
-      backgroundColor: ColourStyles.scaffoldBackgroundColor_2,
+      backgroundColor: ColourStyles.primaryColor,
       appBar: AppBar(
         backgroundColor: ColourStyles.primaryColor,
         toolbarHeight: 100,
@@ -26,9 +30,18 @@ class _DashboardState extends State<Dashboard> {
         actions: [
           Padding(
             padding: EdgeInsets.all(20),
-            child: CircleAvatar(
-              backgroundImage: AssetImage("lib/assets/images/profile.webp"),
-              radius: 20,
+            child: Consumer<ProfilePageProvider>(
+              builder: (context, provider, child) {
+                return CircleAvatar(
+                  radius: 20,
+                  backgroundColor: ColourStyles.primaryColor_2,
+                  backgroundImage:
+                      (provider.user?.profileImage != null &&
+                          File(provider.user!.profileImage!).existsSync())
+                      ? FileImage(File(provider.user!.profileImage!))
+                      : AssetImage(AppImages.profilePicture),
+                );
+              },
             ),
           ),
         ],
@@ -39,7 +52,7 @@ class _DashboardState extends State<Dashboard> {
           children: [
             UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: ColourStyles.primaryColor),
-              accountName: Consumer<DrawerProvider>(
+              accountName: Consumer<ProfilePageProvider>(
                 builder: (context, provider, child) {
                   return Text(
                     "${provider.user?.fullName}",
@@ -47,7 +60,7 @@ class _DashboardState extends State<Dashboard> {
                   );
                 },
               ),
-              accountEmail: Consumer<DrawerProvider>(
+              accountEmail: Consumer<ProfilePageProvider>(
                 builder: (context, provider, child) {
                   return Text(
                     "${provider.user?.gmail}",
@@ -55,13 +68,23 @@ class _DashboardState extends State<Dashboard> {
                   );
                 },
               ),
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: AssetImage("lib/assets/images/profile.webp"),
+              currentAccountPicture: Consumer<ProfilePageProvider>(
+                builder: (context, provider, child) {
+                  return CircleAvatar(
+                    radius: 20,
+                    backgroundColor: ColourStyles.primaryColor_2,
+                    backgroundImage:
+                        (provider.user?.profileImage != null &&
+                            File(provider.user!.profileImage!).existsSync())
+                        ? FileImage(File(provider.user!.profileImage!))
+                        : AssetImage(AppImages.profilePicture),
+                  );
+                },
               ),
             ),
             Expanded(
               child: Consumer<DrawerProvider>(
-                builder: (context, provider, _) {
+                builder: (context, provider, child) {
                   return ListView.separated(
                     separatorBuilder: (context, index) =>
                         SizedBox(height: h * 0.01),
@@ -70,7 +93,7 @@ class _DashboardState extends State<Dashboard> {
                       final item = provider.drawerItems[index];
                       return ListTile(
                         selected: provider.selectedIndex == index,
-                        selectedTileColor: ColourStyles.selectionColor,
+                        selectedTileColor: ColourStyles.baseBackgroundColor,
                         tileColor: ColourStyles.primaryColor,
                         leading: Image.asset(item.icon!, height: 35, width: 35),
                         title: Text(
@@ -95,236 +118,43 @@ class _DashboardState extends State<Dashboard> {
         child: Padding(
           padding: EdgeInsets.all(h * 0.010),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: ColourStyles.cardborderColor,
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 5,
+                  childAspectRatio: 1.7,
+                ),
+                itemCount: dashboardProvider.dashboardCards.length,
+                itemBuilder: (context, index) {
+                  final item = dashboardProvider.dashboardCards[index];
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        color: ColourStyles.cardborderColor,
+                        width: 1,
                       ),
-                      color: ColourStyles.primaryColor_3,
-                      child: Padding(
-                        padding: EdgeInsets.all(h * 0.016),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Total Items",
-                              style: TextStyles.primaryText_2,
-                            ),
-                            SizedBox(height: h * 0.01),
-                            Text("1250", style: TextStyles.primaryText_3),
-                          ],
-                        ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    color: ColourStyles.primaryColor_3,
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(item.title!, style: TextStyles.primaryText_2),
+                          SizedBox(height: h*0.008),
+                          Text(item.value!, style: item.valueStyle),
+                        ],
                       ),
                     ),
-                  ),
-                  SizedBox(width: w * 0.015),
-                  Expanded(
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: ColourStyles.cardborderColor,
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      color: ColourStyles.primaryColor_3,
-                      child: Padding(
-                        padding: EdgeInsets.all(h * 0.016),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Total Value",
-                              style: TextStyles.primaryText_2,
-                            ),
-                            SizedBox(height: h * 0.01),
-                            Text("\$150k", style: TextStyles.primaryText_3),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: h * 0.008),
-              Row(
-                children: [
-                  Expanded(
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: ColourStyles.cardborderColor,
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      color: ColourStyles.primaryColor_3,
-                      child: Padding(
-                        padding: EdgeInsets.all(h * 0.016),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Total Category",
-                              style: TextStyles.primaryText_2,
-                            ),
-                            SizedBox(height: h * 0.01),
-                            Text("4", style: TextStyles.primaryText_3),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: w * 0.015),
-                  Expanded(
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: ColourStyles.cardborderColor,
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      color: ColourStyles.primaryColor_3,
-                      child: Padding(
-                        padding: EdgeInsets.all(h * 0.016),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Total Brand",
-                              style: TextStyles.primaryText_2,
-                            ),
-                            SizedBox(height: h * 0.01),
-                            Text("4", style: TextStyles.primaryText_3),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: h * 0.008),
-              Row(
-                children: [
-                  Expanded(
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: ColourStyles.cardborderColor,
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      color: ColourStyles.primaryColor_3,
-                      child: Padding(
-                        padding: EdgeInsets.all(h * 0.016),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Purchase Cost",
-                              style: TextStyles.primaryText_2,
-                            ),
-                            SizedBox(height: h * 0.01),
-                            Text("\$100k", style: TextStyles.primaryText_3),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: w * 0.015),
-                  Expanded(
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: ColourStyles.cardborderColor,
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      color: ColourStyles.primaryColor_3,
-                      child: Padding(
-                        padding: EdgeInsets.all(h * 0.016),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Monthly Turnover",
-                              style: TextStyles.primaryText_2,
-                            ),
-                            SizedBox(height: h * 0.01),
-                            Text("\$50k", style: TextStyles.turnOver),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: h * 0.008),
-              Row(
-                children: [
-                  Expanded(
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: ColourStyles.cardborderColor,
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      color: ColourStyles.primaryColor_3,
-                      child: Padding(
-                        padding: EdgeInsets.all(h * 0.016),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Low Stock", style: TextStyles.primaryText_2),
-                            SizedBox(height: h * 0.01),
-                            Text("5", style: TextStyles.lowStock),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: w * 0.015),
-                  Expanded(
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: ColourStyles.cardborderColor,
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      color: ColourStyles.primaryColor_3,
-                      child: Padding(
-                        padding: EdgeInsets.all(h * 0.016),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Out of Stock",
-                              style: TextStyles.primaryText_2,
-                            ),
-                            SizedBox(height: h * 0.01),
-                            Text("1", style: TextStyles.outOfStock),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                  );
+                },
               ),
               SizedBox(height: h * 0.02),
               Text("Recent Activity", style: TextStyles.primaryText_4),
@@ -335,9 +165,9 @@ class _DashboardState extends State<Dashboard> {
                     return ListView.separated(
                       separatorBuilder: (context, index) =>
                           SizedBox(height: h * 0.01),
-                      itemCount: provider.activities.length,
+                      itemCount: provider.dashboardActivity.length,
                       itemBuilder: (context, index) {
-                        final activity = provider.activities[index];
+                        final activity = provider.dashboardActivity[index];
                         return Card(
                           shape: RoundedRectangleBorder(
                             side: BorderSide(

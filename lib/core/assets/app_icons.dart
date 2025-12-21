@@ -1,5 +1,4 @@
 class AppIcons {
-  static const profilePicture = "lib/assets/images/profile.webp";
   static const userAvatar = "lib/assets/images/user-avatar.png";
   static const dashboard = "lib/assets/images/dashboard.png";
   static const product = "lib/assets/images/product.png";
