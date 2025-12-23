@@ -22,7 +22,7 @@ class HiveService implements HiveServiceLayer {
 
   @override
   Future<void> updateUser(UserProfile user) async {
-    final box = await Hive.openBox<UserProfile>('userBox');
+    final box = await Hive.openBox<UserProfile>(HiveBoxes.userProfile);
     await box.put('user', user);
   }
 }

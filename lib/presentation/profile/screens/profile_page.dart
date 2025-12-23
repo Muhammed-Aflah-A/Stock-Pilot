@@ -20,31 +20,13 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
-    // final w = MediaQuery.of(context).size.width;
+    final w = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
       appBar: AppBar(
         backgroundColor: ColourStyles.primaryColor,
         toolbarHeight: 100,
         title: Text("Profile", style: TextStyles.heading_2),
-        actions: [
-          Padding(
-            padding: EdgeInsets.all(20),
-            child: Consumer<ProfilePageProvider>(
-              builder: (context, provider, child) {
-                return CircleAvatar(
-                  radius: 20,
-                  backgroundColor: ColourStyles.primaryColor_2,
-                  backgroundImage:
-                      (provider.user?.profileImage != null &&
-                          File(provider.user!.profileImage!).existsSync())
-                      ? FileImage(File(provider.user!.profileImage!))
-                      : AssetImage(AppImages.profilePicture),
-                );
-              },
-            ),
-          ),
-        ],
       ),
       drawer: Drawer(
         backgroundColor: ColourStyles.primaryColor,
@@ -116,7 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -287,7 +269,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                           }
                                           //If camera permission denied
                                           else {
-                                            Navigator.pop(context);
                                             ScaffoldMessenger.of(
                                               context,
                                             ).showSnackBar(
@@ -413,7 +394,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                           }
                                           //If permission got denied
                                           else {
-                                            Navigator.pop(context);
                                             ScaffoldMessenger.of(
                                               context,
                                             ).showSnackBar(
@@ -461,6 +441,259 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Text("Personal Information", style: TextStyles.heading_3),
                   SizedBox(height: h * 0.01),
+                  Consumer<ProfilePageProvider>(
+                    builder: (context, provider, child) {
+                      return ListView.separated(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: provider.personalInfo.length,
+                        separatorBuilder: (context, index) =>
+                            SizedBox(height: h * 0.01),
+                        itemBuilder: (context, index) {
+                          final item = provider.personalInfo[index];
+                          return ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            leading: Container(
+                              width: 48,
+                              height: 48,
+                              decoration: BoxDecoration(
+                                color: ColourStyles.baseBackgroundColor,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: item.leadingIcon,
+                            ),
+                            title: Text(item.title!),
+                            subtitle: Text(item.subtitle!),
+                            trailing: IconButton(
+                              onPressed: () {
+                                final formkey = GlobalKey<FormState>();
+                                final controller = TextEditingController(
+                                  text: item.subtitle,
+                                );
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      backgroundColor:
+                                          ColourStyles.primaryColor,
+                                      title: Center(
+                                        child: Text(
+                                          "Edit ${item.title}",
+                                          style: TextStyles.heading_2,
+                                        ),
+                                      ),
+                                      content: Form(
+                                        key: formkey,
+                                        child: TextFormField(
+                                          controller: controller,
+                                          keyboardType: provider
+                                              .getKeyboardType(item.feildtype!),
+                                          decoration: InputDecoration(
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    ColourStyles.primaryColor_2,
+                                                width: 2,
+                                              ),
+                                            ),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    ColourStyles.primaryColor_2,
+                                                width: 2,
+                                              ),
+                                            ),
+                                          ),
+                                          validator: (value) => provider
+                                              .validate(value, item.feildtype!),
+                                          onSaved: (newValue) {
+                                            switch (item.feildtype) {
+                                              case 'name':
+                                                provider.user!.fullName =
+                                                    newValue!.trim();
+                                                break;
+                                              case 'personalNumber':
+                                                provider.user!.personalNumber =
+                                                    newValue!.trim();
+                                                break;
+                                              case 'email':
+                                                provider.user!.gmail = newValue!
+                                                    .trim();
+                                                break;
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                      actions: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            ElevatedButton(
+                                              style: ButtonStyles
+                                                  .dialogBackButton_2,
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text("cancel"),
+                                            ),
+                                            SizedBox(width: w * 0.02),
+                                            ElevatedButton(
+                                              style: ButtonStyles
+                                                  .dialogNextButton_2,
+                                              onPressed: () async {
+                                                if (formkey.currentState!
+                                                    .validate()) {
+                                                  formkey.currentState!.save();
+                                                  await provider.updateUser();
+                                                  formkey.currentState!.reset();
+                                                  Navigator.pop(context);
+                                                }
+                                              },
+                                              child: Text("save"),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              icon: item.trailingIcon!,
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  SizedBox(height: h * 0.01),
+                  Text("Shop Information", style: TextStyles.heading_3),
+                  SizedBox(height: h * 0.01),
+                  Consumer<ProfilePageProvider>(
+                    builder: (context, provider, child) {
+                      return ListView.separated(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: provider.shopInfo.length,
+                        separatorBuilder: (context, index) =>
+                            SizedBox(height: h * 0.01),
+                        itemBuilder: (context, index) {
+                          final item = provider.shopInfo[index];
+                          return ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            leading: Container(
+                              width: 48,
+                              height: 48,
+                              decoration: BoxDecoration(
+                                color: ColourStyles.baseBackgroundColor,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: item.leadingIcon,
+                            ),
+                            title: Text(item.title!),
+                            subtitle: Text(item.subtitle!),
+                            trailing: IconButton(
+                              onPressed: () {
+                                final formkey = GlobalKey<FormState>();
+                                final controller = TextEditingController(
+                                  text: item.subtitle,
+                                );
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      backgroundColor:
+                                          ColourStyles.primaryColor,
+                                      title: Center(
+                                        child: Text(
+                                          "Edit ${item.title}",
+                                          style: TextStyles.heading_2,
+                                        ),
+                                      ),
+                                      content: Form(
+                                        key: formkey,
+                                        child: TextFormField(
+                                          controller: controller,
+                                          keyboardType: provider
+                                              .getKeyboardType(item.feildtype!),
+                                          decoration: InputDecoration(
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    ColourStyles.primaryColor_2,
+                                                width: 2,
+                                              ),
+                                            ),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    ColourStyles.primaryColor_2,
+                                                width: 2,
+                                              ),
+                                            ),
+                                          ),
+                                          validator: (value) => provider
+                                              .validate(value, item.feildtype!),
+                                          onSaved: (newValue) {
+                                            switch (item.feildtype) {
+                                              case 'shop name':
+                                                provider.user!.shopName =
+                                                    newValue!.trim();
+                                                break;
+                                              case 'address':
+                                                provider.user!.shopAdress =
+                                                    newValue!.trim();
+                                                break;
+                                              case 'shopNumber':
+                                                provider.user!.shopNumber =
+                                                    newValue!.trim();
+                                                break;
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                      actions: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            ElevatedButton(
+                                              style: ButtonStyles
+                                                  .dialogBackButton_2,
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text("cancel"),
+                                            ),
+                                            SizedBox(width: w * 0.02),
+                                            ElevatedButton(
+                                              style: ButtonStyles
+                                                  .dialogNextButton_2,
+                                              onPressed: () async {
+                                                if (formkey.currentState!
+                                                    .validate()) {
+                                                  formkey.currentState!.save();
+                                                  await provider.updateUser();
+                                                  formkey.currentState!.reset();
+                                                  Navigator.pop(context);
+                                                }
+                                              },
+                                              child: Text("save"),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              icon: item.trailingIcon!,
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ],
               ),
             ],

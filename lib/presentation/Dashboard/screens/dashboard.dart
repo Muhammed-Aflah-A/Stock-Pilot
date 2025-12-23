@@ -231,8 +231,8 @@ class _DashboardState extends State<Dashboard> {
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold,
                                         color: activity.isPositive!
-                                            ? Colors.green
-                                            : Colors.red,
+                                            ? ColourStyles.colorGreen
+                                            : ColourStyles.colorRed,
                                       ),
                                     ),
                                     Text(

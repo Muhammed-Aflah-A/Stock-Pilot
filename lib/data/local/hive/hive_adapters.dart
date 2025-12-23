@@ -9,5 +9,7 @@ class HiveAdapters {
     Hive.registerAdapter(DrawerItemsAdapter());
     Hive.registerAdapter(DashboardCardsAdapter());
     Hive.registerAdapter(DasboardActivityAdapter());
+    Hive.registerAdapter(PersonalInfoAdapter());
+    Hive.registerAdapter(ShopInfoAdapter());
   }
 }

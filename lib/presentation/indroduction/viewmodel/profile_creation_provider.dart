@@ -22,13 +22,20 @@ class ProfileCreationProvider with ChangeNotifier {
   String? shopName;
   final shopAdressFocus = FocusNode();
   String? shopAdress;
-  final phoneNumberFocus = FocusNode();
-  String? phoneNumber;
+  final shopNumberFocus = FocusNode();
+  String? shopNumber;
+  final personalNumberFocus = FocusNode();
+  String? personalNumber;
   final emailFocus = FocusNode();
   String? gmail;
 
   final HiveServiceLayer hiveService;
   ProfileCreationProvider({required this.hiveService});
+
+  Future<void> addUser(UserProfile user) async {
+    // Persist the user profile using Hive service
+    await hiveService.addUser(user);
+  }
 
   Future<PermissionStatus> cameraPermission() async {
     // Request camera permission and return the resulting status.
@@ -71,10 +78,5 @@ class ProfileCreationProvider with ChangeNotifier {
       profileImage = image.path;
       notifyListeners();
     }
-  }
-
-  Future<void> addUser(UserProfile user) async {
-    // Persist the user profile using Hive service
-    await hiveService.addUser(user);
   }
 }

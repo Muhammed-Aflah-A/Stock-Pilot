@@ -24,6 +24,13 @@ class ButtonStyles {
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
   );
 
+  static final dialogNextButton_2 = ElevatedButton.styleFrom(
+    backgroundColor: ColourStyles.primaryColor_2,
+    foregroundColor: ColourStyles.primaryColor,
+    minimumSize: Size(120, 50),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+  );
+
   static final dialogBackButton = ElevatedButton.styleFrom(
     backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
     foregroundColor: ColourStyles.primaryColor_2,
@@ -32,4 +39,11 @@ class ButtonStyles {
     side: BorderSide(color: ColourStyles.primaryColor_2, width: 2),
   );
 
+  static final dialogBackButton_2 = ElevatedButton.styleFrom(
+    backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+    foregroundColor: ColourStyles.primaryColor_2,
+    minimumSize: Size(120, 50),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+    side: BorderSide(color: ColourStyles.primaryColor_2, width: 2),
+  );
 }

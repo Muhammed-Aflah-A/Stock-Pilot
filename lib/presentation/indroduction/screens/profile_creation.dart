@@ -40,11 +40,11 @@ class _ProfileCreationState extends State<ProfileCreation> {
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: h * 0.03),
+              SizedBox(height: h * 0.05),
               Text("Get Started!", style: TextStyles.heading),
               Text(
                 "Create a profile to manage inventory",
@@ -217,7 +217,6 @@ class _ProfileCreationState extends State<ProfileCreation> {
                                           }
                                           //If camera permission denied
                                           else {
-                                            Navigator.pop(context);
                                             ScaffoldMessenger.of(
                                               context,
                                             ).showSnackBar(
@@ -343,7 +342,6 @@ class _ProfileCreationState extends State<ProfileCreation> {
                                           }
                                           //If permission got denied
                                           else {
-                                            Navigator.pop(context);
                                             ScaffoldMessenger.of(
                                               context,
                                             ).showSnackBar(
@@ -385,7 +383,7 @@ class _ProfileCreationState extends State<ProfileCreation> {
                   ],
                 ),
               ),
-              SizedBox(height: h * 0.01),
+              SizedBox(height: h * 0.005),
               // Form collecting name, shop details, phone and email
               Form(
                 key: profileForm.formKey,
@@ -393,6 +391,7 @@ class _ProfileCreationState extends State<ProfileCreation> {
                   children: [
                     // Full name field with validation
                     TextFormField(
+                      keyboardType: TextInputType.name,
                       decoration: InputDecoration(
                         labelText: "Full Name",
                         labelStyle: TextStyles.formLabel,
@@ -414,9 +413,6 @@ class _ProfileCreationState extends State<ProfileCreation> {
                         if (value == null || value.isEmpty) {
                           return "Please enter your full name";
                         }
-                        if (value.length < 3) {
-                          return "Name must be at least 3 characters";
-                        }
                         if (RegExp(r'\d').hasMatch(value)) {
                           return "Name cannot contain numbers";
                         }
@@ -426,108 +422,25 @@ class _ProfileCreationState extends State<ProfileCreation> {
                         if (RegExp(r'\s{2,}').hasMatch(value)) {
                           return "Name cannot contain multiple spaces together";
                         }
-                        value = value.replaceAll("  ", " ");
+                        if (value.length < 3) {
+                          return "Name must be at least 3 characters";
+                        }
                         return null;
                       },
                       onSaved: (newValue) {
-                        profileForm.fullName = newValue;
+                        profileForm.fullName = newValue!.trim();
                       },
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (value) {
                         FocusScope.of(
                           context,
-                        ).requestFocus(profileForm.shopNameFocus);
-                      },
-                    ),
-                    SizedBox(height: h * 0.02),
-                    // Shop name field
-                    TextFormField(
-                      focusNode: profileForm.shopNameFocus,
-                      decoration: InputDecoration(
-                        labelText: "Shop Name",
-                        labelStyle: TextStyles.formLabel,
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: ColourStyles.primaryColor_2,
-                            width: 2,
-                          ),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: ColourStyles.primaryColor_2,
-                            width: 2,
-                          ),
-                        ),
-                      ),
-                      validator: (value) {
-                        value = value?.trim();
-                        if (value == null || value.isEmpty) {
-                          return "Please enter you shop name";
-                        }
-                        if (RegExp(r'\s{2,}').hasMatch(value)) {
-                          return "Shop name cannot contain multiple spaces together";
-                        }
-                        value = value.replaceAll("  ", " ");
-                        return null;
-                      },
-                      onSaved: (newValue) {
-                        profileForm.shopName = newValue;
-                      },
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (value) {
-                        FocusScope.of(
-                          context,
-                        ).requestFocus(profileForm.shopAdressFocus);
-                      },
-                    ),
-                    SizedBox(height: h * 0.02),
-                    // Shop address field
-                    TextFormField(
-                      focusNode: profileForm.shopAdressFocus,
-                      decoration: InputDecoration(
-                        labelText: "Shop Address",
-                        labelStyle: TextStyles.formLabel,
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: ColourStyles.primaryColor_2,
-                            width: 2,
-                          ),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: ColourStyles.primaryColor_2,
-                            width: 2,
-                          ),
-                        ),
-                      ),
-                      validator: (value) {
-                        value = value?.trim();
-                        if (value == null || value.isEmpty) {
-                          return "Please enter your shop address";
-                        }
-                        if (value.length < 10) {
-                          return "Shop address must be at least 10 characters";
-                        }
-                        if (RegExp(r'\s{2,}').hasMatch(value)) {
-                          return "Shop address cannot contain multiple spaces together";
-                        }
-                        value = value.replaceAll("  ", " ");
-                        return null;
-                      },
-                      onSaved: (newValue) {
-                        profileForm.shopAdress = newValue;
-                      },
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (value) {
-                        FocusScope.of(
-                          context,
-                        ).requestFocus(profileForm.phoneNumberFocus);
+                        ).requestFocus(profileForm.personalNumberFocus);
                       },
                     ),
                     SizedBox(height: h * 0.02),
                     // Phone number field (expects international format starting with +)
                     TextFormField(
-                      focusNode: profileForm.phoneNumberFocus,
+                      focusNode: profileForm.personalNumberFocus,
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
                         labelText: "Phone Number",
@@ -566,7 +479,145 @@ class _ProfileCreationState extends State<ProfileCreation> {
                         return null;
                       },
                       onSaved: (newValue) {
-                        profileForm.phoneNumber = newValue;
+                        profileForm.personalNumber = newValue!.trim();
+                      },
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (value) {
+                        FocusScope.of(
+                          context,
+                        ).requestFocus(profileForm.shopNameFocus);
+                      },
+                    ),
+                    SizedBox(height: h * 0.02),
+                    // Shop name field
+                    TextFormField(
+                      focusNode: profileForm.shopNameFocus,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        labelText: "Shop Name",
+                        labelStyle: TextStyles.formLabel,
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: ColourStyles.primaryColor_2,
+                            width: 2,
+                          ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: ColourStyles.primaryColor_2,
+                            width: 2,
+                          ),
+                        ),
+                      ),
+                      validator: (value) {
+                        value = value?.trim();
+                        if (value == null || value.isEmpty) {
+                          return "Please enter you shop name";
+                        }
+                        if (RegExp(r'\s{2,}').hasMatch(value)) {
+                          return "Shop name cannot contain multiple spaces together";
+                        }
+                        value = value.replaceAll("  ", " ");
+                        return null;
+                      },
+                      onSaved: (newValue) {
+                        profileForm.shopName = newValue!.trim();
+                      },
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (value) {
+                        FocusScope.of(
+                          context,
+                        ).requestFocus(profileForm.shopAdressFocus);
+                      },
+                    ),
+                    SizedBox(height: h * 0.02),
+                    // Shop address field
+                    TextFormField(
+                      focusNode: profileForm.shopAdressFocus,
+                      keyboardType: TextInputType.multiline,
+                      decoration: InputDecoration(
+                        labelText: "Shop Address",
+                        labelStyle: TextStyles.formLabel,
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: ColourStyles.primaryColor_2,
+                            width: 2,
+                          ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: ColourStyles.primaryColor_2,
+                            width: 2,
+                          ),
+                        ),
+                      ),
+                      validator: (value) {
+                        value = value?.trim();
+                        if (value == null || value.isEmpty) {
+                          return "Please enter your shop address";
+                        }
+                        if (value.length < 10) {
+                          return "Shop address must be at least 10 characters";
+                        }
+                        if (RegExp(r'\s{2,}').hasMatch(value)) {
+                          return "Shop address cannot contain multiple spaces together";
+                        }
+                        value = value.replaceAll("  ", " ");
+                        return null;
+                      },
+                      onSaved: (newValue) {
+                        profileForm.shopAdress = newValue!.trim();
+                      },
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (value) {
+                        FocusScope.of(
+                          context,
+                        ).requestFocus(profileForm.shopNumberFocus);
+                      },
+                    ),
+                    SizedBox(height: h * 0.02),
+                    // Phone number field (expects international format starting with +)
+                    TextFormField(
+                      focusNode: profileForm.shopNumberFocus,
+                      keyboardType: TextInputType.phone,
+                      decoration: InputDecoration(
+                        labelText: "Shop's phone Number",
+                        labelStyle: TextStyles.formLabel,
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: ColourStyles.primaryColor_2,
+                            width: 2,
+                          ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: ColourStyles.primaryColor_2,
+                            width: 2,
+                          ),
+                        ),
+                      ),
+                      validator: (value) {
+                        value = value?.trim();
+                        if (value == null || value.isEmpty) {
+                          return "Please enter a phone number";
+                        }
+                        if (!value.startsWith('+')) {
+                          return "Phone number must start with +";
+                        }
+                        if (RegExp(r'\s').hasMatch(value)) {
+                          return "Phone number must not contain spaces";
+                        }
+                        if (!RegExp(r'^\+\d+$').hasMatch(value)) {
+                          return "Only numbers are allowed after +";
+                        }
+                        if (!RegExp(r'^\+\d{7,15}$').hasMatch(value)) {
+                          return "Enter a valid international phone number";
+                        }
+                        value = value.replaceAll(" ", "");
+                        return null;
+                      },
+                      onSaved: (newValue) {
+                        profileForm.shopNumber = newValue!.trim();
                       },
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (value) {
@@ -597,19 +648,20 @@ class _ProfileCreationState extends State<ProfileCreation> {
                         ),
                       ),
                       validator: (value) {
-                        value = value?.replaceAll(" ", "");
-                        if (value == null || value.trim().isEmpty) {
+                        value = value?.trim();
+                        if (value == null || value.isEmpty) {
                           return "Please enter a email";
                         }
                         if (!RegExp(
-                          r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                          r'^[a-z0-9._%+-]+@gmail\.com$',
                         ).hasMatch(value)) {
                           return "Please enter a valid email";
                         }
+                        value = value.replaceAll(" ", "");
                         return null;
                       },
                       onSaved: (newValue) {
-                        profileForm.gmail = newValue;
+                        profileForm.gmail = newValue!.trim();
                       },
                       textInputAction: TextInputAction.done,
                       onFieldSubmitted: (value) {
@@ -632,10 +684,11 @@ class _ProfileCreationState extends State<ProfileCreation> {
                           final user = UserProfile(
                             profileImage: profileForm.profileImage,
                             fullName: profileForm.fullName,
+                            personalNumber: profileForm.personalNumber,
                             shopName: profileForm.shopName,
                             shopAdress: profileForm.shopAdress,
+                            shopNumber: profileForm.shopNumber,
                             gmail: profileForm.gmail,
-                            phoneNumber: profileForm.phoneNumber,
                           );
                           //Passing data to the provider
                           await profileForm.addUser(user);
