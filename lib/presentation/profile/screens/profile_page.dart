@@ -1,11 +1,20 @@
+// Profile page screen
+// Displays user profile details, profile image editing,
+// personal information, shop information, and navigation drawer.
+
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+
+// App assets and theme
 import 'package:stock_pilot/core/assets/app_images.dart';
 import 'package:stock_pilot/core/theme/button_styles.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
+
+// Providers
 import 'package:stock_pilot/presentation/dashboard/viewmodel/drawer_provider.dart';
 import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
 
@@ -19,21 +28,31 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
+    // Screen height and width for responsive sizing
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
+
     return Scaffold(
+      // Screen background color
       backgroundColor: ColourStyles.primaryColor,
+
+      // ================= APP BAR =================
       appBar: AppBar(
         backgroundColor: ColourStyles.primaryColor,
         toolbarHeight: 100,
         title: Text("Profile", style: TextStyles.heading_2),
       ),
+
+      // ================= DRAWER =================
       drawer: Drawer(
         backgroundColor: ColourStyles.primaryColor,
         child: Column(
           children: [
+            // Drawer header showing user info
             UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: ColourStyles.primaryColor),
+
+              // User full name
               accountName: Consumer<ProfilePageProvider>(
                 builder: (context, provider, child) {
                   return Text(
@@ -42,6 +61,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   );
                 },
               ),
+
+              // User email
               accountEmail: Consumer<ProfilePageProvider>(
                 builder: (context, provider, child) {
                   return Text(
@@ -50,6 +71,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   );
                 },
               ),
+
+              // User profile picture
               currentAccountPicture: Consumer<ProfilePageProvider>(
                 builder: (context, provider, child) {
                   return CircleAvatar(
@@ -64,6 +87,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
               ),
             ),
+
+            // Drawer menu items
             Expanded(
               child: Consumer<DrawerProvider>(
                 builder: (context, provider, child) {
@@ -73,6 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     itemCount: provider.drawerItems.length,
                     itemBuilder: (context, index) {
                       final item = provider.drawerItems[index];
+
                       return ListTile(
                         selected: provider.selectedIndex == index,
                         selectedTileColor: ColourStyles.baseBackgroundColor,
@@ -83,8 +109,13 @@ class _ProfilePageState extends State<ProfilePage> {
                           style: TextStyles.primaryText_2,
                         ),
                         onTap: () {
+                          // Update selected drawer item
                           provider.selectedDrawerItem(index);
+
+                          // Close drawer
                           Navigator.pop(context);
+
+                          // Navigate to selected screen
                           Navigator.pushNamed(context, "${item.navigation}");
                         },
                       );
@@ -96,15 +127,19 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
       ),
+
+      // ================= BODY =================
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // ================= PROFILE IMAGE =================
               Center(
                 child: Stack(
                   children: [
+                    // Profile image display
                     Consumer<ProfilePageProvider>(
                       builder: (context, provider, child) {
                         return CircleAvatar(
@@ -120,7 +155,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         );
                       },
                     ),
-                    // Edit button positioned over the avatar
+
+                    // Edit button on profile image
                     Positioned(
                       bottom: 0,
                       right: 0,
@@ -143,7 +179,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: ColourStyles.primaryColor,
                           ),
                           onPressed: () {
-                            // Show dialog to choose image source (camera or gallery)
+                            // Dialog to choose Camera or Gallery
                             showDialog(
                               context: context,
                               builder: (context) {
@@ -158,7 +194,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   content: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      // Camera option
+                                      // ================= CAMERA OPTION =================
                                       ListTile(
                                         leading: Icon(Icons.camera_alt),
                                         title: Text(
@@ -166,22 +202,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                           style: TextStyles.primaryText,
                                         ),
                                         onTap: () async {
-                                          //Calling function for asking permission
+                                          // Request camera permission
                                           final status = await context
                                               .read<ProfilePageProvider>()
                                               .cameraPermission();
+
                                           if (status.isGranted) {
-                                            //Calling function for opening camera
+                                            // Open camera
                                             context
                                                 .read<ProfilePageProvider>()
                                                 .openCamera();
                                           }
-                                          //If permenantly permission denied
+                                          // Permanently denied → show settings dialog
                                           else if (status.isPermanentlyDenied) {
                                             await showDialog(
                                               context: context,
                                               builder: (context) {
-                                                //Dialog box for opening settings
                                                 return AlertDialog(
                                                   backgroundColor:
                                                       ColourStyles.primaryColor,
@@ -215,7 +251,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     Center(
                                                       child: Column(
                                                         children: [
-                                                          //Cancel button of dialog box
+                                                          // Cancel button
                                                           ElevatedButton(
                                                             onPressed: () {
                                                               Navigator.pop(
@@ -245,7 +281,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           SizedBox(
                                                             height: h * 0.01,
                                                           ),
-                                                          //Button for opening app settings
+                                                          // Open settings button
                                                           ElevatedButton(
                                                             onPressed: () async {
                                                               Navigator.pop(
@@ -267,7 +303,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               },
                                             );
                                           }
-                                          //If camera permission denied
+                                          // Permission denied normally
                                           else {
                                             ScaffoldMessenger.of(
                                               context,
@@ -286,27 +322,28 @@ class _ProfilePageState extends State<ProfilePage> {
                                           Navigator.pop(context);
                                         },
                                       ),
-                                      // Gallery/library option
+
+                                      // ================= GALLERY OPTION =================
                                       ListTile(
                                         leading: Icon(Icons.photo_library),
                                         title: Text("Library"),
                                         onTap: () async {
-                                          //Calling function for asking permission
+                                          // Request gallery permission
                                           final status = await context
                                               .read<ProfilePageProvider>()
                                               .libraryPermission();
+
                                           if (status.isGranted) {
-                                            //Calling function for opening library
+                                            // Open gallery
                                             context
                                                 .read<ProfilePageProvider>()
                                                 .openLibrary();
                                           }
-                                          //If permission permenently denied
+                                          // Permanently denied → show settings dialog
                                           else if (status.isPermanentlyDenied) {
                                             await showDialog(
                                               context: context,
                                               builder: (context) {
-                                                //Dialog box for opening settings
                                                 return AlertDialog(
                                                   backgroundColor:
                                                       ColourStyles.primaryColor,
@@ -340,7 +377,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     Center(
                                                       child: Column(
                                                         children: [
-                                                          //Cancel utton for dilog box
+                                                          // Cancel button
                                                           ElevatedButton(
                                                             onPressed: () {
                                                               Navigator.pop(
@@ -370,7 +407,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           SizedBox(
                                                             height: h * 0.01,
                                                           ),
-                                                          //Button for opening app settings
+                                                          // Open settings button
                                                           ElevatedButton(
                                                             onPressed: () {
                                                               openAppSettings();
@@ -392,7 +429,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               },
                                             );
                                           }
-                                          //If permission got denied
+                                          // Permission denied normally
                                           else {
                                             ScaffoldMessenger.of(
                                               context,
@@ -411,7 +448,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                           Navigator.pop(context);
                                         },
                                       ),
+
                                       SizedBox(height: h * 0.01),
+
                                       // Close dialog button
                                       ElevatedButton(
                                         onPressed: () {
@@ -435,12 +474,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
+
               SizedBox(height: h * 0.05),
+
+              // ================= PERSONAL INFORMATION =================
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Personal Information", style: TextStyles.heading_3),
                   SizedBox(height: h * 0.01),
+
+                  // List of personal information items
                   Consumer<ProfilePageProvider>(
                     builder: (context, provider, child) {
                       return ListView.separated(
@@ -451,6 +495,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             SizedBox(height: h * 0.01),
                         itemBuilder: (context, index) {
                           final item = provider.personalInfo[index];
+
                           return ListTile(
                             contentPadding: EdgeInsets.zero,
                             leading: Container(
@@ -464,12 +509,17 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             title: Text(item.title!),
                             subtitle: Text(item.subtitle!),
+
+                            // Edit button for personal info
                             trailing: IconButton(
                               onPressed: () {
+                                // Create form key and controller for dialog
                                 final formkey = GlobalKey<FormState>();
                                 final controller = TextEditingController(
                                   text: item.subtitle,
                                 );
+
+                                // Show edit dialog
                                 showDialog(
                                   context: context,
                                   builder: (context) {
@@ -507,6 +557,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           validator: (value) => provider
                                               .validate(value, item.feildtype!),
                                           onSaved: (newValue) {
+                                            // Update correct field based on type
                                             switch (item.feildtype) {
                                               case 'name':
                                                 provider.user!.fullName =
@@ -566,9 +617,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       );
                     },
                   ),
+
                   SizedBox(height: h * 0.01),
+
+                  // ================= SHOP INFORMATION =================
                   Text("Shop Information", style: TextStyles.heading_3),
                   SizedBox(height: h * 0.01),
+
+                  // List of shop information items
                   Consumer<ProfilePageProvider>(
                     builder: (context, provider, child) {
                       return ListView.separated(
@@ -579,6 +635,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             SizedBox(height: h * 0.01),
                         itemBuilder: (context, index) {
                           final item = provider.shopInfo[index];
+
                           return ListTile(
                             contentPadding: EdgeInsets.zero,
                             leading: Container(
@@ -592,12 +649,16 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             title: Text(item.title!),
                             subtitle: Text(item.subtitle!),
+
+                            // Edit button for shop info
                             trailing: IconButton(
                               onPressed: () {
                                 final formkey = GlobalKey<FormState>();
                                 final controller = TextEditingController(
                                   text: item.subtitle,
                                 );
+
+                                // Show edit dialog
                                 showDialog(
                                   context: context,
                                   builder: (context) {
@@ -635,6 +696,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           validator: (value) => provider
                                               .validate(value, item.feildtype!),
                                           onSaved: (newValue) {
+                                            // Update correct shop field
                                             switch (item.feildtype) {
                                               case 'shop name':
                                                 provider.user!.shopName =

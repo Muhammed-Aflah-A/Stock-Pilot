@@ -1,16 +1,35 @@
+// Package used to show animated text (typewriter effect)
 import 'package:animated_text_kit/animated_text_kit.dart';
+
+// Core Flutter UI package
 import 'package:flutter/material.dart';
+
+// Provider package for state management
 import 'package:provider/provider.dart';
+
+// App image constants (logo, icons, etc.)
 import 'package:stock_pilot/core/assets/app_images.dart';
+
+// Centralized route names
 import 'package:stock_pilot/core/navigation/app_routes.dart';
+
+// App color definitions
 import 'package:stock_pilot/core/theme/colours_styles.dart';
+
+// App text styles
 import 'package:stock_pilot/core/theme/text_styles.dart';
+
+// Shared preference helper to check app starting state
 import 'package:stock_pilot/data/local/shared_preference/app_starting_state.dart';
+
+// Provider used to control drawer state
 import 'package:stock_pilot/presentation/dashboard/viewmodel/drawer_provider.dart';
 
-// Splash screen shown at app start. Displays the app logo and a short
-// animated tagline, then navigates to the onboarding flow after a delay.
-
+/// SplashScreen
+/// This screen is shown when the app starts.
+/// It displays the app logo and an animated tagline.
+/// After a delay, it decides which screen to navigate to
+/// based on onboarding and profile completion status.
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -19,33 +38,47 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  // Duration to wait on the splash screen before navigating onward
+  // How long the splash screen should stay visible
   static const _splashDuration = Duration(seconds: 4);
+
   @override
   void initState() {
     super.initState();
+    // Start checking which screen to open next
     _checkFlow();
   }
 
+  /// Checks whether onboarding and profile creation
+  /// are already completed, then navigates accordingly
   Future<void> _checkFlow() async {
+    // Check if onboarding screens were completed
     final onboardingDone = await AppStartingState.isOnboardingDone();
+
+    // Check if profile creation is completed
     final profileDone = await AppStartingState.isProfileDone();
-    // Wait for the splash duration then navigate to the onboarding
+
+    // Wait for splash screen duration
     await Future.delayed(_splashDuration);
-    // guard against widget being disposed
+
+    // Safety check: make sure widget is still in the widget tree
     if (!mounted) return;
-    //Checking the Screens once gone through or not
+
+    // Decide which screen to open next
     if (!onboardingDone) {
+      // User has not completed onboarding
       navigate(AppRoutes.onBoardingScreen_1);
     } else if (!profileDone) {
+      // User completed onboarding but not profile creation
       navigate(AppRoutes.profileCreation);
     } else {
+      // User completed everything → go to dashboard
       context.read<DrawerProvider>().selectedDrawerItem(1);
       navigate(AppRoutes.dashboard);
     }
   }
 
-  // Replace the current route stack with the onboarding route
+  /// Navigates to a new page and removes all previous routes
+  /// (prevents user from going back to splash screen)
   void navigate(String page) {
     Navigator.pushNamedAndRemoveUntil(context, page, (route) => false);
   }
@@ -53,13 +86,17 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Background color for splash screen
       backgroundColor: ColourStyles.splashBackgroundColor,
+
       body: SafeArea(
         child: Center(
           child: Column(
+            // Center content vertically
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // App logo centered and clipped to control visible area
+              // App logo
+              // ClipRect + Align are used to control visible height
               ClipRect(
                 child: Align(
                   alignment: Alignment.center,
@@ -68,7 +105,8 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: Image.asset(AppImages.appLogo, fit: BoxFit.contain),
                 ),
               ),
-              // Animated tagline using the app's quote text style
+
+              // Animated tagline below the logo
               AnimatedTextKit(
                 animatedTexts: [
                   TypewriterAnimatedText(
@@ -77,13 +115,17 @@ class _SplashScreenState extends State<SplashScreen> {
                     speed: Duration(milliseconds: 100),
                   ),
                 ],
-                //Total repetation of animated app's quote
+
+                // Animation plays only once
                 totalRepeatCount: 1,
-                //Pause duration between app's quote
+
+                // Pause after animation finishes
                 pause: Duration(seconds: 1),
-                //Show the full text when the user taps on animated app's quote.
+
+                // Show full text if user taps
                 displayFullTextOnTap: true,
-                //Stop animated app's quote on tap
+
+                // Stop animation when user taps
                 stopPauseOnTap: true,
               ),
             ],

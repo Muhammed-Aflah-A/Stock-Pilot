@@ -1,9 +1,24 @@
+// Flutter widgets package
+// Used here for ChangeNotifier
 import 'package:flutter/widgets.dart';
+
+// App image assets
 import 'package:stock_pilot/core/assets/app_images.dart';
+
+// App text styles
 import 'package:stock_pilot/core/theme/text_styles.dart';
+
+// Dashboard data models
 import 'package:stock_pilot/data/models/dasboard_model.dart';
 
+/// DashboardProvider
+/// This provider manages all data shown on the dashboard:
+/// - Summary cards (top grid)
+/// - Recent activity list
+/// - Notifies UI when data changes
 class DashboardProvider with ChangeNotifier {
+  // ================= DASHBOARD SUMMARY CARDS =================
+  // List of cards displayed at the top of the dashboard
   List<DashboardCards> dashboardCards = [
     DashboardCards(
       title: "Total Items",
@@ -55,6 +70,8 @@ class DashboardProvider with ChangeNotifier {
     ),
   ];
 
+  // ================= RECENT ACTIVITY LIST =================
+  // List of recent stock activities shown on the dashboard
   List<DasboardActivity> dashboardActivity = [
     DasboardActivity(
       image: AppImages.productImage1,
@@ -103,11 +120,19 @@ class DashboardProvider with ChangeNotifier {
     ),
   ];
 
+  /// Adds a new activity to the top of the list
+  /// Keeps only the latest 5 activities
+  /// Notifies listeners so UI updates automatically
   void addNewActivity(DasboardActivity activity) {
+    // Insert new activity at the beginning
     dashboardActivity.insert(0, activity);
+
+    // Remove last item if list exceeds 5 items
     if (dashboardActivity.length > 5) {
       dashboardActivity.removeLast();
     }
+
+    // Notify UI to rebuild
     notifyListeners();
   }
 }
