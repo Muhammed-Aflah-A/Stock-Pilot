@@ -1,17 +1,9 @@
-// Dashboard screen
-// Displays overview cards, recent activity, and a navigation drawer.
-// Uses providers to fetch user profile data, drawer state, and dashboard data.
-
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-// App assets and theme
 import 'package:stock_pilot/core/assets/app_images.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
-
-// Providers
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/drawer_provider.dart';
 import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
@@ -26,26 +18,15 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
-    // Screen height and width for responsive sizing
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
-
-    // Dashboard provider for cards and activity data
     final dashboardProvider = context.watch<DashboardProvider>();
-
     return Scaffold(
-      // Background color of the dashboard
       backgroundColor: ColourStyles.primaryColor,
-
-      // ================= APP BAR =================
       appBar: AppBar(
         backgroundColor: ColourStyles.primaryColor,
         toolbarHeight: 100,
-
-        // App bar title
         title: Text("Dashboard", style: TextStyles.heading_2),
-
-        // Profile image shown on the right side
         actions: [
           Padding(
             padding: EdgeInsets.all(20),
@@ -54,8 +35,6 @@ class _DashboardState extends State<Dashboard> {
                 return CircleAvatar(
                   radius: 20,
                   backgroundColor: ColourStyles.primaryColor_2,
-
-                  // Show user profile image if exists, else default image
                   backgroundImage:
                       (provider.user?.profileImage != null &&
                           File(provider.user!.profileImage!).existsSync())
@@ -67,17 +46,12 @@ class _DashboardState extends State<Dashboard> {
           ),
         ],
       ),
-
-      // ================= DRAWER =================
       drawer: Drawer(
         backgroundColor: ColourStyles.primaryColor,
         child: Column(
           children: [
-            // Drawer header showing user info
             UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: ColourStyles.primaryColor),
-
-              // User full name
               accountName: Consumer<ProfilePageProvider>(
                 builder: (context, provider, child) {
                   return Text(
@@ -86,8 +60,6 @@ class _DashboardState extends State<Dashboard> {
                   );
                 },
               ),
-
-              // User email
               accountEmail: Consumer<ProfilePageProvider>(
                 builder: (context, provider, child) {
                   return Text(
@@ -96,8 +68,6 @@ class _DashboardState extends State<Dashboard> {
                   );
                 },
               ),
-
-              // User profile image
               currentAccountPicture: Consumer<ProfilePageProvider>(
                 builder: (context, provider, child) {
                   return CircleAvatar(
@@ -112,37 +82,24 @@ class _DashboardState extends State<Dashboard> {
                 },
               ),
             ),
-
-            // Drawer menu items
             Expanded(
               child: Consumer<DrawerProvider>(
                 builder: (context, provider, child) {
                   return ListView.separated(
-                    // Space between drawer items
                     separatorBuilder: (context, index) =>
                         SizedBox(height: h * 0.01),
-
                     itemCount: provider.drawerItems.length,
-
                     itemBuilder: (context, index) {
                       final item = provider.drawerItems[index];
-
                       return ListTile(
-                        // Highlight selected drawer item
                         selected: provider.selectedIndex == index,
                         selectedTileColor: ColourStyles.baseBackgroundColor,
                         tileColor: ColourStyles.primaryColor,
-
-                        // Drawer icon
                         leading: Image.asset(item.icon!, height: 35, width: 35),
-
-                        // Drawer title
                         title: Text(
                           item.title!,
                           style: TextStyles.primaryText_2,
                         ),
-
-                        // Handle drawer item tap
                         onTap: () {
                           provider.selectedDrawerItem(index);
                           Navigator.pop(context);
@@ -157,32 +114,24 @@ class _DashboardState extends State<Dashboard> {
           ],
         ),
       ),
-
-      // ================= BODY =================
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(h * 0.010),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ================= DASHBOARD CARDS =================
               GridView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-
-                // Grid layout configuration
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 5,
                   mainAxisSpacing: 5,
                   childAspectRatio: 1.7,
                 ),
-
                 itemCount: dashboardProvider.dashboardCards.length,
-
                 itemBuilder: (context, index) {
                   final item = dashboardProvider.dashboardCards[index];
-
                   return Card(
                     shape: RoundedRectangleBorder(
                       side: BorderSide(
@@ -198,12 +147,8 @@ class _DashboardState extends State<Dashboard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // Card title
                           Text(item.title!, style: TextStyles.primaryText_2),
-
                           SizedBox(height: h * 0.008),
-
-                          // Card value
                           Text(item.value!, style: item.valueStyle),
                         ],
                       ),
@@ -211,27 +156,18 @@ class _DashboardState extends State<Dashboard> {
                   );
                 },
               ),
-
               SizedBox(height: h * 0.02),
-
-              // ================= RECENT ACTIVITY =================
               Text("Recent Activity", style: TextStyles.primaryText_4),
-
               SizedBox(height: h * 0.02),
-
-              // List of recent activities
               Expanded(
                 child: Consumer<DashboardProvider>(
                   builder: (context, provider, _) {
                     return ListView.separated(
                       separatorBuilder: (context, index) =>
                           SizedBox(height: h * 0.01),
-
                       itemCount: provider.dashboardActivity.length,
-
                       itemBuilder: (context, index) {
                         final activity = provider.dashboardActivity[index];
-
                         return Card(
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
@@ -245,7 +181,6 @@ class _DashboardState extends State<Dashboard> {
                             padding: EdgeInsets.all(h * 0.016),
                             child: Row(
                               children: [
-                                // Product image
                                 Container(
                                   width: 50,
                                   height: 50,
@@ -260,10 +195,7 @@ class _DashboardState extends State<Dashboard> {
                                     ),
                                   ),
                                 ),
-
                                 SizedBox(width: w * 0.03),
-
-                                // Activity details
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment:
@@ -290,8 +222,6 @@ class _DashboardState extends State<Dashboard> {
                                     ],
                                   ),
                                 ),
-
-                                // Quantity / status
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
