@@ -13,4 +13,6 @@ class AppRoutes {
       'package:stock_pilot/presentation/dashboard/screens/dashboard.dart';
   static const profilePage =
       'package:stock_pilot/presentation/profile/screens/profile_page.dart';
+  static const productListPage =
+      'package:stock_pilot/presentation/product/screens/product_list_page.dart';
 }

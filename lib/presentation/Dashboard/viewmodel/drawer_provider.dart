@@ -32,7 +32,7 @@ class DrawerProvider with ChangeNotifier {
     DrawerItems(
       icon: AppIcons.product,
       title: 'Products',
-      navigation: AppRoutes.dashboard,
+      navigation: AppRoutes.productListPage,
     ),
     DrawerItems(
       icon: AppIcons.category,

@@ -26,11 +26,14 @@ import 'package:stock_pilot/presentation/indroduction/screens/splash_screen.dart
 import 'package:stock_pilot/presentation/indroduction/screens/onboarding_screen_2.dart';
 import 'package:stock_pilot/presentation/indroduction/screens/onboarding_screen_3.dart';
 import 'package:stock_pilot/presentation/indroduction/screens/profile_creation.dart';
+import 'package:stock_pilot/presentation/indroduction/viewmodel/profile_creation_provider.dart';
 
 // Providers for profile creation and profile page
-import 'package:stock_pilot/presentation/indroduction/viewmodel/profile_creation_provider.dart';
 import 'package:stock_pilot/presentation/profile/screens/profile_page.dart';
 import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
+
+//provider for products and product pages
+import 'package:stock_pilot/presentation/product/screens/product_list_page.dart';
 
 /// Entry point of the application
 void main() async {
@@ -124,6 +127,11 @@ class StockPilot extends StatelessWidget {
           case AppRoutes.profilePage:
             return TransitionAnimations.fadeRoute(
               const ProfilePage(),
+            );
+          // product list page
+          case AppRoutes.productListPage:
+            return TransitionAnimations.fadeRoute(
+              const ProductListPage(),
             );
 
           // Second onboarding screen (slide animation)
