@@ -1,11 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:stock_pilot/presentation/Indroductioon/Screens/onboarding_screen_1.dart';
-import 'package:stock_pilot/presentation/Indroductioon/Screens/splash_screen.dart';
-import 'package:stock_pilot/presentation/indroductioon/screens/onboarding_screen_2.dart';
-import 'package:stock_pilot/presentation/indroductioon/screens/onboarding_screen_3.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:provider/provider.dart';
+import 'package:stock_pilot/core/navigation/app_routes.dart';
+import 'package:stock_pilot/core/navigation/transition_animation.dart';
+import 'package:stock_pilot/data/local/hive/hive_adapters.dart';
+import 'package:stock_pilot/data/local/hive/hive_service.dart';
+import 'package:stock_pilot/presentation/dashboard/screens/dashboard.dart';
+import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
+import 'package:stock_pilot/presentation/dashboard/viewmodel/drawer_provider.dart';
+import 'package:stock_pilot/presentation/indroduction/screens/onboarding_screen_1.dart';
+import 'package:stock_pilot/presentation/indroduction/screens/splash_screen.dart';
+import 'package:stock_pilot/presentation/indroduction/screens/onboarding_screen_2.dart';
+import 'package:stock_pilot/presentation/indroduction/screens/onboarding_screen_3.dart';
+import 'package:stock_pilot/presentation/indroduction/screens/profile_creation.dart';
+import 'package:stock_pilot/presentation/indroduction/viewmodel/profile_creation_provider.dart';
+import 'package:stock_pilot/presentation/profile/screens/profile_page.dart';
+import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
+import 'package:stock_pilot/presentation/product/screens/product_list_page.dart';
 
-void main() {
-  runApp(StockPilot());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  HiveAdapters.register();
+  await HiveService.init();
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ProfileCreationProvider(hiveService: HiveService()),
+        ),
+
+        ChangeNotifierProvider(create: (_) => DrawerProvider()),
+
+        ChangeNotifierProvider(create: (_) => DashboardProvider()),
+
+        ChangeNotifierProvider(
+          create: (_) => ProfilePageProvider(hiveService: HiveService()),
+        ),
+      ],
+
+      child: StockPilot(),
+    ),
+  );
 }
 
 class StockPilot extends StatelessWidget {
@@ -16,51 +52,35 @@ class StockPilot extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "StockPilot",
-      initialRoute: "/",
+      initialRoute: AppRoutes.splashScreen,
       onGenerateRoute: (settings) {
         switch (settings.name) {
-          // -------------------- (FADE) ---------------------
-          case "/":
-            return _fadeRoute(const SplashScreen());
+          case AppRoutes.splashScreen:
+            return TransitionAnimations.fadeRoute(const SplashScreen());
 
-          case "/onboarding_screen_1":
-            return _fadeRoute(const OnboardingScreen1());
+          case AppRoutes.onBoardingScreen_1:
+            return TransitionAnimations.fadeRoute(const OnboardingScreen1());
 
-          // -------------------- (SLIDE) --------------------
-          case "/onboarding_screen_2":
-            return _slideRoute(const OnboardingScreen2());
+          case AppRoutes.profileCreation:
+            return TransitionAnimations.fadeRoute(const ProfileCreation());
 
-          case "/onboarding_screen_3":
-            return _slideRoute(const OnboardingScreen3());
+          case AppRoutes.dashboard:
+            return TransitionAnimations.fadeRoute(const Dashboard());
+
+          case AppRoutes.profilePage:
+            return TransitionAnimations.fadeRoute(const ProfilePage());
+
+          case AppRoutes.productListPage:
+            return TransitionAnimations.fadeRoute(const ProductListPage());
+
+          case AppRoutes.onBoardingScreen_2:
+            return TransitionAnimations.slideRoute(const OnboardingScreen2());
+
+          case AppRoutes.onBoardingScreen_3:
+            return TransitionAnimations.slideRoute(const OnboardingScreen3());
         }
-
         return null;
       },
     );
   }
-}
-//------------------------------ (FADE Animation Code)------------------------
-PageRouteBuilder _fadeRoute(Widget page) {
-  return PageRouteBuilder(
-    transitionDuration: const Duration(milliseconds: 800),
-    pageBuilder: (_, __, ___) => page,
-    transitionsBuilder: (_, animation, __, child) {
-      return FadeTransition(opacity: animation, child: child);
-    },
-  );
-}
-//------------------------------ (SLIDE Animation Code)------------------------
-PageRouteBuilder _slideRoute(Widget page) {
-  return PageRouteBuilder(
-    transitionDuration: const Duration(milliseconds: 500),
-    pageBuilder: (_, __, ___) => page,
-    transitionsBuilder: (_, animation, __, child) {
-      final slide = Tween<Offset>(
-        begin: const Offset(1, 0), // from right
-        end: Offset.zero,
-      ).animate(animation);
-
-      return SlideTransition(position: slide, child: child);
-    },
-  );
 }
