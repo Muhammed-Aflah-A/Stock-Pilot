@@ -86,6 +86,11 @@ class TextStyles {
     fontFamily: "ManRope",
     color: ColourStyles.primaryColor_2,
   );
+  static const TextStyle formHint = TextStyle(
+    fontSize: 20,
+    fontFamily: "ManRope",
+    color: ColourStyles.captionColor,
+  );
 
   static const TextStyle primaryText = TextStyle(
     fontSize: 15,
