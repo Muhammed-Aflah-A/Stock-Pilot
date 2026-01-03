@@ -1,4 +1,3 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/assets/app_images.dart';
@@ -7,6 +6,8 @@ import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/data/local/shared_preference/app_starting_state.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/drawer_provider.dart';
+import 'package:stock_pilot/presentation/widgets/animatedtext_widget.dart';
+import 'package:stock_pilot/presentation/widgets/heroimage_widget.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -53,26 +54,11 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ClipRect(
-                child: Align(
-                  alignment: Alignment.center,
-                  widthFactor: 1,
-                  heightFactor: 0.65,
-                  child: Image.asset(AppImages.appLogo, fit: BoxFit.contain),
-                ),
-              ),
-              AnimatedTextKit(
-                animatedTexts: [
-                  TypewriterAnimatedText(
-                    'Smart Stock, Smooth Business',
-                    textStyle: TextStyles.splashQuote,
-                    speed: Duration(milliseconds: 100),
-                  ),
-                ],
-                totalRepeatCount: 1,
-                pause: Duration(seconds: 1),
-                displayFullTextOnTap: true,
-                stopPauseOnTap: true,
+              HeroimageWidget(heightFactor: 0.65, imagePath: AppImages.appLogo),
+              AnimatedtextWidget(
+                text: 'Smart Stock, Smooth Business',
+                textStyle: TextStyles.splashQuote,
+                speed: Duration(milliseconds: 100),
               ),
             ],
           ),

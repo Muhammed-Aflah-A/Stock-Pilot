@@ -1,12 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stock_pilot/core/assets/app_images.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/drawer_provider.dart';
 import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
+import 'package:stock_pilot/presentation/widgets/user_avatar_widget.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -36,19 +34,7 @@ class AppDrawer extends StatelessWidget {
                 );
               },
             ),
-            currentAccountPicture: Consumer<ProfilePageProvider>(
-              builder: (context, provider, child) {
-                return CircleAvatar(
-                  radius: 20,
-                  backgroundColor: ColourStyles.primaryColor_2,
-                  backgroundImage:
-                      (provider.user?.profileImage != null &&
-                          File(provider.user!.profileImage!).existsSync())
-                      ? FileImage(File(provider.user!.profileImage!))
-                      : AssetImage(AppImages.profilePicture),
-                );
-              },
-            ),
+            currentAccountPicture: UserAvatarWidget(),
           ),
           Expanded(
             child: Consumer<DrawerProvider>(

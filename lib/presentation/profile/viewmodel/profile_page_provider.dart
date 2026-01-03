@@ -1,17 +1,20 @@
-import 'dart:io';
-
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'package:stock_pilot/core/service/image_permission.dart';
+import 'package:stock_pilot/core/service/image_selector.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/data/models/user_profle_model.dart';
 import 'package:stock_pilot/data/services/hive_service_layer.dart';
 
 class ProfilePageProvider with ChangeNotifier {
   final HiveServiceLayer hiveService;
-  ProfilePageProvider({required this.hiveService}) {
+  final ImagePermission imagePermission;
+  final ImageSelector imageSelector;
+  ProfilePageProvider({
+    required this.hiveService,
+    required this.imagePermission,
+    required this.imageSelector,
+  }) {
     loadUser();
   }
   UserProfile? user;
@@ -26,39 +29,26 @@ class ProfilePageProvider with ChangeNotifier {
   }
 
   Future<PermissionStatus> cameraPermission() async {
-    final status = await Permission.camera.request();
-    return status;
+    return imagePermission.cameraPermission();
   }
 
   Future<PermissionStatus> libraryPermission() async {
-    PermissionStatus status;
-    if (Platform.isAndroid) {
-      final androidInfo = await DeviceInfoPlugin().androidInfo;
-      if (androidInfo.version.sdkInt >= 33) {
-        status = await Permission.photos.request();
-      } else {
-        status = await Permission.storage.request();
-      }
-    } else {
-      status = PermissionStatus.denied;
-    }
-    return status;
+    return imagePermission.libraryPermission();
   }
 
-  final ImagePicker _picker = ImagePicker();
   Future<void> openCamera() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.camera);
-    if (image != null) {
-      user?.profileImage = image.path;
+    final path = await imageSelector.openCamera();
+    if (path != null) {
+      user?.profileImage = path;
       await hiveService.updateUser(user!);
       notifyListeners();
     }
   }
 
   Future<void> openLibrary() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      user?.profileImage = image.path;
+    final path = await imageSelector.openLibrary();
+    if (path != null) {
+      user?.profileImage = path;
       await hiveService.updateUser(user!);
       notifyListeners();
     }

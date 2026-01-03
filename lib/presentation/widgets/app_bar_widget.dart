@@ -1,17 +1,18 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:stock_pilot/core/assets/app_images.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
-import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
+import 'package:stock_pilot/presentation/widgets/user_avatar_widget.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
+  final bool showleading;
   final String title;
+  final bool centeredTitle;
   final bool showAvatar;
   const AppBarWidget({
     super.key,
+    required this.showleading,
     required this.title,
+    required this.centeredTitle,
     required this.showAvatar,
   });
   @override
@@ -21,26 +22,18 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: ColourStyles.primaryColor,
       toolbarHeight: 100,
+      leading: showleading
+          ? IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back_ios),
+            )
+          : null,
       title: Text(title, style: TextStyles.heading_2),
+      centerTitle: centeredTitle,
       actions: showAvatar
-          ? [
-              Padding(
-                padding: EdgeInsets.all(20),
-                child: Consumer<ProfilePageProvider>(
-                  builder: (context, provider, child) {
-                    return CircleAvatar(
-                      radius: 20,
-                      backgroundColor: ColourStyles.primaryColor_2,
-                      backgroundImage:
-                          (provider.user?.profileImage != null &&
-                              File(provider.user!.profileImage!).existsSync())
-                          ? FileImage(File(provider.user!.profileImage!))
-                          : AssetImage(AppImages.profilePicture),
-                    );
-                  },
-                ),
-              ),
-            ]
+          ? [Padding(padding: EdgeInsets.all(20), child: UserAvatarWidget())]
           : null,
     );
   }

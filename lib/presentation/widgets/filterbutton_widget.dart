@@ -15,7 +15,11 @@ class FilterbuttonWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: ColourStyles.primaryColor_2, width: 2),
         ),
-        child: Icon(Icons.filter_alt_outlined, color: ColourStyles.primaryColor_2),
+        child: Icon(
+          Icons.filter_alt_outlined,
+          size: 20,
+          color: ColourStyles.primaryColor_2,
+        ),
       ),
     );
   }

@@ -81,13 +81,20 @@ class TextStyles {
     color: ColourStyles.primaryColor_2,
   );
 
+  static const TextStyle heading_3 = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w700,
+    fontFamily: "ManRope",
+    color: ColourStyles.captionColor,
+  );
+
   static const TextStyle formLabel = TextStyle(
     fontSize: 20,
     fontFamily: "ManRope",
     color: ColourStyles.primaryColor_2,
   );
   static const TextStyle formHint = TextStyle(
-    fontSize: 20,
+    fontSize: 16,
     fontFamily: "ManRope",
     color: ColourStyles.captionColor,
   );
@@ -97,6 +104,27 @@ class TextStyles {
     fontWeight: FontWeight.w600,
     fontFamily: "ManRope",
     color: ColourStyles.primaryColor_2,
+  );
+
+  static const TextStyle primaryText_2 = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.w500,
+    fontFamily: "ManRope",
+    color: ColourStyles.primaryColor_2,
+  );
+
+  static const TextStyle primaryText_3 = TextStyle(
+    fontSize: 30,
+    fontWeight: FontWeight.w700,
+    fontFamily: "ManRope",
+    color: ColourStyles.primaryColor_2,
+  );
+
+  static const TextStyle primaryText_4 = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w700,
+    fontFamily: "ManRope",
+    color: ColourStyles.primaryTextBlue,
   );
 
   static const TextStyle primaryTextRed = TextStyle(
@@ -125,34 +153,6 @@ class TextStyles {
     fontWeight: FontWeight.w700,
     fontFamily: "ManRope",
     color: ColourStyles.colorRed,
-  );
-
-  static const TextStyle heading_3 = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w700,
-    fontFamily: "ManRope",
-    color: ColourStyles.captionColor,
-  );
-
-  static const TextStyle primaryText_2 = TextStyle(
-    fontSize: 15,
-    fontWeight: FontWeight.w500,
-    fontFamily: "ManRope",
-    color: ColourStyles.primaryColor_2,
-  );
-
-  static const TextStyle primaryText_3 = TextStyle(
-    fontSize: 30,
-    fontWeight: FontWeight.w700,
-    fontFamily: "ManRope",
-    color: ColourStyles.primaryColor_2,
-  );
-
-  static const TextStyle primaryText_4 = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w700,
-    fontFamily: "ManRope",
-    color: ColourStyles.primaryTextBlue,
   );
 
   static const TextStyle label = TextStyle(

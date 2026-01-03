@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/assets/app_images.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
-import 'package:stock_pilot/core/theme/button_styles.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/data/local/shared_preference/app_starting_state.dart';
+import 'package:stock_pilot/presentation/widgets/appname_widget.dart';
+import 'package:stock_pilot/presentation/widgets/backbutton_widget.dart';
+import 'package:stock_pilot/presentation/widgets/heroimage_widget.dart';
+import 'package:stock_pilot/presentation/widgets/nextbutton_widget.dart';
 
 class OnboardingScreen3 extends StatelessWidget {
   const OnboardingScreen3({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
@@ -19,39 +22,11 @@ class OnboardingScreen3 extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Stack(
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(text: "Stock", style: TextStyles.stroke),
-                        WidgetSpan(child: SizedBox(width: h * 0.01)),
-                        TextSpan(text: "Pilot", style: TextStyles.stroke),
-                      ],
-                    ),
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(text: "Stock", style: TextStyles.stockText),
-                        WidgetSpan(child: SizedBox(width: h * 0.01)),
-                        TextSpan(text: "Pilot", style: TextStyles.pilotText),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              AppnameWidget(),
               SizedBox(height: h * 0.05),
-              ClipRect(
-                child: Align(
-                  alignment: Alignment.center,
-                  widthFactor: 1,
-                  heightFactor: 0.6,
-                  child: Image.asset(
-                    AppImages.onboardingScreen3,
-                    fit: BoxFit.contain,
-                  ),
-                ),
+              HeroimageWidget(
+                heightFactor: 0.6,
+                imagePath: AppImages.onboardingScreen3,
               ),
               SizedBox(height: h * 0.05),
               Text("Smart Reports & Analytics", style: TextStyles.tagLine),
@@ -62,15 +37,9 @@ class OnboardingScreen3 extends StatelessWidget {
                 style: TextStyles.caption,
               ),
               SizedBox(height: h * 0.08),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                style: ButtonStyles.backButton,
-                child: Text("Back", style: TextStyles.buttonText_2),
-              ),
+              BackbuttonWidget(),
               SizedBox(height: h * 0.03),
-              ElevatedButton(
+              NextbuttonWidget(
                 onPressed: () async {
                   await AppStartingState.setOnboardingDone();
                   Navigator.pushNamedAndRemoveUntil(
@@ -79,8 +48,7 @@ class OnboardingScreen3 extends StatelessWidget {
                     (route) => false,
                   );
                 },
-                style: ButtonStyles.nextButton,
-                child: Text("Get Started", style: TextStyles.buttonText),
+                text: "Get Started",
               ),
             ],
           ),
