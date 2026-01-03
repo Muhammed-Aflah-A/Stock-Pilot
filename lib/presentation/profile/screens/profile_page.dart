@@ -5,7 +5,7 @@ import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
 import 'package:stock_pilot/presentation/widgets/app_drawer_widget.dart';
-import 'package:stock_pilot/presentation/widgets/edit_widget.dart';
+import 'package:stock_pilot/presentation/widgets/details_widget.dart';
 import 'package:stock_pilot/presentation/widgets/user_avatar_edit_widget.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -42,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Text("Personal Information", style: TextStyles.heading_3),
                   SizedBox(height: h * 0.01),
-                  EditWidget(
+                  DetailsWidget(
                     items: provider.personalInfo,
                     onSave: (provider, feildType, value) {
                       switch (feildType) {
@@ -61,7 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   SizedBox(height: h * 0.01),
                   Text("Shop Information", style: TextStyles.heading_3),
                   SizedBox(height: h * 0.01),
-                  EditWidget(
+                  DetailsWidget(
                     items: provider.shopInfo,
                     onSave: (provider, feildType, value) {
                       switch (feildType) {

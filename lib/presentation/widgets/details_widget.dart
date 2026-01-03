@@ -5,7 +5,7 @@ import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
 
-class EditWidget extends StatelessWidget {
+class DetailsWidget extends StatelessWidget {
   final List<dynamic> items;
   final void Function(
     ProfilePageProvider provider,
@@ -13,7 +13,7 @@ class EditWidget extends StatelessWidget {
     String value,
   )
   onSave;
-  const EditWidget({super.key, required this.items, required this.onSave});
+  const DetailsWidget({super.key, required this.items, required this.onSave});
 
   @override
   Widget build(BuildContext context) {
