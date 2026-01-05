@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/button_styles.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
-import 'package:stock_pilot/presentation/indroduction/viewmodel/profile_creation_provider.dart';
 
 class PermissionDialog extends StatelessWidget {
-  const PermissionDialog({super.key});
+  final dynamic provider;
+  final int? index;
+  const PermissionDialog({super.key, required this.provider, this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +22,14 @@ class PermissionDialog extends StatelessWidget {
             leading: Icon(Icons.camera_alt),
             title: Text("Camera", style: TextStyles.primaryText),
             onTap: () async {
-              final status = await context
-                  .read<ProfileCreationProvider>()
-                  .cameraPermission();
-              if (status.isGranted) {
-                context.read<ProfileCreationProvider>().openCamera();
-              } else if (status.isPermanentlyDenied) {
+              final status = await provider.cameraPermission();
+              if (status == PermissionStatus.granted) {
+                if (index != null) {
+                  await provider.openCamera(index!);
+                } else {
+                  await provider.openCamera();
+                }
+              } else if (status == PermissionStatus.permanentlyDenied) {
                 await showDialog(
                   context: context,
                   builder: (context) {
@@ -105,12 +107,14 @@ class PermissionDialog extends StatelessWidget {
             leading: Icon(Icons.photo_library),
             title: Text("Library"),
             onTap: () async {
-              final status = await context
-                  .read<ProfileCreationProvider>()
-                  .libraryPermission();
-              if (status.isGranted) {
-                context.read<ProfileCreationProvider>().openLibrary();
-              } else if (status.isPermanentlyDenied) {
+              final status = await provider.libraryPermission();
+              if (status == PermissionStatus.granted) {
+                if (index != null) {
+                  await provider.openLibrary(index!);
+                } else {
+                  await provider.openLibrary();
+                }
+              } else if (status == PermissionStatus.permanentlyDenied) {
                 await showDialog(
                   context: context,
                   builder: (context) {

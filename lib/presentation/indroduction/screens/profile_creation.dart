@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
+import 'package:stock_pilot/presentation/indroduction/viewmodel/profile_creation_provider.dart';
 import 'package:stock_pilot/presentation/widgets/createprofile_button_widget.dart';
+import 'package:stock_pilot/presentation/widgets/permission_dialog.dart';
 import 'package:stock_pilot/presentation/widgets/profile_creation_form_widget.dart';
 import 'package:stock_pilot/presentation/widgets/user_avatar_edit_widget.dart';
 
@@ -32,7 +35,25 @@ class _ProfileCreationState extends State<ProfileCreation> {
                 style: TextStyles.caption_2,
               ),
               SizedBox(height: h * 0.02),
-              Center(child: UserAvatarEditWidget()),
+              Center(
+                child: Consumer<ProfileCreationProvider>(
+                  builder: (context, provider, child) {
+                    return UserAvatarEditWidget(
+                      imagePath: provider.profileImage,
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return PermissionDialog(
+                              provider: context.read<ProfileCreationProvider>(),
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
               SizedBox(height: h * 0.005),
               ProfileCreationFormWidget(),
               SizedBox(height: h * 0.05),

@@ -6,6 +6,7 @@ import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
 import 'package:stock_pilot/presentation/widgets/app_drawer_widget.dart';
 import 'package:stock_pilot/presentation/widgets/details_widget.dart';
+import 'package:stock_pilot/presentation/widgets/permission_dialog.dart';
 import 'package:stock_pilot/presentation/widgets/user_avatar_edit_widget.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -35,7 +36,25 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(child: UserAvatarEditWidget()),
+              Center(
+                child: Consumer<ProfilePageProvider>(
+                  builder: (context, provider, child) {
+                    return UserAvatarEditWidget(
+                      imagePath: provider.user?.profileImage,
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return PermissionDialog(
+                              provider: context.read<ProfilePageProvider>(),
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
               SizedBox(height: h * 0.05),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

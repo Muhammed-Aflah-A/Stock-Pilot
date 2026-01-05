@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
+import 'package:stock_pilot/presentation/widgets/permission_dialog.dart';
 
 class ImageAddingWidget extends StatelessWidget {
   const ImageAddingWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<ProductProvider>();
     return GridView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
@@ -18,9 +21,19 @@ class ImageAddingWidget extends StatelessWidget {
         childAspectRatio: 1.5,
       ),
       itemBuilder: (context, index) {
-        final image = ProductProvider().productImages[index];
+        final image = provider.productImages[index];
         return GestureDetector(
-          onTap: () {},
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return PermissionDialog(
+                  provider: context.read<ProductProvider>(),
+                  index: index,
+                );
+              },
+            );
+          },
           child: Container(
             decoration: BoxDecoration(
               color: ColourStyles.primaryColor,
@@ -51,7 +64,9 @@ class ImageAddingWidget extends StatelessWidget {
                         top: 6,
                         right: 6,
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            context.read<ProductProvider>().removeImage(index);
+                          },
                           child: Container(
                             padding: EdgeInsets.all(4),
                             decoration: BoxDecoration(

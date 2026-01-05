@@ -46,7 +46,12 @@ void main() async {
             imageSelector: ImageSelector(),
           ),
         ),
-        ChangeNotifierProvider(create: (_) => ProductProvider()),
+        ChangeNotifierProvider(
+          create: (_) => ProductProvider(
+            imagePermission: ImagePermission(),
+            imageSelector: ImageSelector(),
+          ),
+        ),
       ],
       child: StockPilot(),
     ),
