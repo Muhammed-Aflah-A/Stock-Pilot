@@ -8,9 +8,19 @@ class ProductProvider with ChangeNotifier {
   final ImagePermission imagePermission;
   final ImageSelector imageSelector;
   ProductProvider({required this.imagePermission, required this.imageSelector});
-
+  final firstFormKey = GlobalKey<FormState>();
+  final secondFormKey = GlobalKey<FormState>();
   List<File?> productImages = List.generate(4, (_) => null);
-
+  String? productName;
+  final productDescriptionFocus = FocusNode();
+  String? productDescription;
+  final List<String> brandsList = [
+    'AudioTech Inc',
+    'SoundPro',
+    'MusicMaster',
+    'BeatBox',
+  ];
+  String? brand;
   Future<PermissionStatus> cameraPermission() async {
     return imagePermission.cameraPermission();
   }
@@ -43,4 +53,6 @@ class ProductProvider with ChangeNotifier {
     productImages[index] = null;
     notifyListeners();
   }
+
+  bool get hasImage => productImages.any((img) => img != null);
 }

@@ -54,9 +54,9 @@ class _ProfileCreationState extends State<ProfileCreation> {
                   },
                 ),
               ),
-              SizedBox(height: h * 0.005),
+              SizedBox(height: h * 0.02),
               ProfileCreationFormWidget(),
-              SizedBox(height: h * 0.05),
+              SizedBox(height: h * 0.02),
               Center(
                 child: Column(
                   children: [

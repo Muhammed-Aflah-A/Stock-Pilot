@@ -5,9 +5,9 @@ class ProductModel {
   @HiveField(0)
   List<String> images;
   @HiveField(1)
-  String name;
+  String productName;
   @HiveField(2)
-  String description;
+  String productDescription;
   @HiveField(3)
   String brand;
   @HiveField(4)
@@ -22,8 +22,8 @@ class ProductModel {
   int lowStockCount;
   ProductModel({
     required this.images,
-    required this.name,
-    required this.description,
+    required this.productName,
+    required this.productDescription,
     required this.brand,
     required this.category,
     required this.purchaseRate,

@@ -16,7 +16,7 @@ class ImageAddingWidget extends StatelessWidget {
       itemCount: 4,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        crossAxisSpacing: 12,
+        crossAxisSpacing: 17,
         mainAxisSpacing: 12,
         childAspectRatio: 1.5,
       ),
@@ -37,8 +37,8 @@ class ImageAddingWidget extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               color: ColourStyles.primaryColor,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: ColourStyles.primaryColor_2),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: ColourStyles.primaryColor_2,width: 2),
             ),
             child: image == null
                 ? Column(
@@ -52,7 +52,7 @@ class ImageAddingWidget extends StatelessWidget {
                 : Stack(
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(8),
                         child: Image.file(
                           image,
                           width: double.infinity,

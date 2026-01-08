@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/button_styles.dart';
+import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/data/local/shared_preference/app_starting_state.dart';
 import 'package:stock_pilot/data/models/user_profle_model.dart';
@@ -34,6 +35,12 @@ class CreateProfileButtonWidget extends StatelessWidget {
           await AppStartingState.setProfileDone();
           drawerProvider.selectedDrawerItem(1);
           profileForm.formKey.currentState!.reset();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Center(child: Text("Profile created successfully")),
+              backgroundColor: ColourStyles.colorGreen,
+            ),
+          );
           Navigator.pushNamedAndRemoveUntil(
             context,
             AppRoutes.dashboard,

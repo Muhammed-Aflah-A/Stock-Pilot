@@ -113,18 +113,18 @@ class TextStyles {
     color: ColourStyles.primaryColor_2,
   );
 
-  static const TextStyle primaryText_3 = TextStyle(
+  static const TextStyle dashboardCardText = TextStyle(
     fontSize: 30,
     fontWeight: FontWeight.w700,
     fontFamily: "ManRope",
     color: ColourStyles.primaryColor_2,
   );
 
-  static const TextStyle primaryText_4 = TextStyle(
+  static const TextStyle primaryTextBlue = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w700,
     fontFamily: "ManRope",
-    color: ColourStyles.primaryTextBlue,
+    color: ColourStyles.colorBlue,
   );
 
   static const TextStyle primaryTextRed = TextStyle(
@@ -165,6 +165,13 @@ class TextStyles {
   static const TextStyle label_2 = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w500,
+    fontFamily: "ManRope",
+    color: ColourStyles.primaryColor_2,
+  );
+
+  static const TextStyle sectionHeading = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.w700,
     fontFamily: "ManRope",
     color: ColourStyles.primaryColor_2,
   );

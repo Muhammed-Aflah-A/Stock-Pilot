@@ -28,13 +28,16 @@ class _DashboardState extends State<Dashboard> {
       drawer: AppDrawer(),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(h * 0.010),
+          padding: EdgeInsets.symmetric(
+            vertical: h * 0.01,
+            horizontal: h * 0.01,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               DashboardCardWidget(),
               SizedBox(height: h * 0.02),
-              Text("Recent Activity", style: TextStyles.primaryText_4),
+              Text("Recent Activity", style: TextStyles.primaryTextBlue),
               SizedBox(height: h * 0.02),
               DashboardActivityWidget(),
             ],

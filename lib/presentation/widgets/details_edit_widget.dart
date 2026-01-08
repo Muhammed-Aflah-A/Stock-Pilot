@@ -5,7 +5,7 @@ import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
 
-class DetailsWidget extends StatelessWidget {
+class DetailsEditWidget extends StatelessWidget {
   final List<dynamic> items;
   final void Function(
     ProfilePageProvider provider,
@@ -13,7 +13,11 @@ class DetailsWidget extends StatelessWidget {
     String value,
   )
   onSave;
-  const DetailsWidget({super.key, required this.items, required this.onSave});
+  const DetailsEditWidget({
+    super.key,
+    required this.items,
+    required this.onSave,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +111,17 @@ class DetailsWidget extends StatelessWidget {
                                     formkey.currentState!.save();
                                     await provider.updateUser();
                                     formkey.currentState!.reset();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Center(
+                                          child: Text(
+                                            "Profile editted successfully",
+                                          ),
+                                        ),
+                                        backgroundColor:
+                                            ColourStyles.colorGreen,
+                                      ),
+                                    );
                                     Navigator.pop(context);
                                   }
                                 },

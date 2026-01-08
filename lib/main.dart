@@ -16,7 +16,8 @@ import 'package:stock_pilot/presentation/indroduction/screens/onboarding_screen_
 import 'package:stock_pilot/presentation/indroduction/screens/onboarding_screen_3.dart';
 import 'package:stock_pilot/presentation/indroduction/screens/profile_creation.dart';
 import 'package:stock_pilot/presentation/indroduction/viewmodel/profile_creation_provider.dart';
-import 'package:stock_pilot/presentation/product/screens/product_adding_page.dart';
+import 'package:stock_pilot/presentation/product/screens/product_adding_page_1.dart';
+import 'package:stock_pilot/presentation/product/screens/product_adding_page_2.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
 import 'package:stock_pilot/presentation/profile/screens/profile_page.dart';
 import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
@@ -81,12 +82,15 @@ class StockPilot extends StatelessWidget {
             return TransitionAnimations.fadeRoute(const ProfilePage());
           case AppRoutes.productListPage:
             return TransitionAnimations.fadeRoute(const ProductListPage());
-          case AppRoutes.productAddingPage:
-            return TransitionAnimations.fadeRoute(const ProductAddingPage());
+          case AppRoutes.productAddingPage1:
+            return TransitionAnimations.fadeRoute(const ProductAddingPage1());
+
           case AppRoutes.onBoardingScreen_2:
             return TransitionAnimations.slideRoute(const OnboardingScreen2());
           case AppRoutes.onBoardingScreen_3:
             return TransitionAnimations.slideRoute(const OnboardingScreen3());
+          case AppRoutes.productAddingPage2:
+            return TransitionAnimations.slideRoute(const ProductAddingPage2());
         }
         return null;
       },

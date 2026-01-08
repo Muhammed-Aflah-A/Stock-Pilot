@@ -5,7 +5,7 @@ import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
 import 'package:stock_pilot/presentation/widgets/app_drawer_widget.dart';
-import 'package:stock_pilot/presentation/widgets/details_widget.dart';
+import 'package:stock_pilot/presentation/widgets/details_edit_widget.dart';
 import 'package:stock_pilot/presentation/widgets/permission_dialog.dart';
 import 'package:stock_pilot/presentation/widgets/user_avatar_edit_widget.dart';
 
@@ -32,9 +32,11 @@ class _ProfilePageState extends State<ProfilePage> {
       drawer: AppDrawer(),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          padding: EdgeInsets.symmetric(
+            vertical: h * 0.01,
+            horizontal: h * 0.02,
+          ),
+          child: ListView(
             children: [
               Center(
                 child: Consumer<ProfilePageProvider>(
@@ -61,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Text("Personal Information", style: TextStyles.heading_3),
                   SizedBox(height: h * 0.01),
-                  DetailsWidget(
+                  DetailsEditWidget(
                     items: provider.personalInfo,
                     onSave: (provider, feildType, value) {
                       switch (feildType) {
@@ -80,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   SizedBox(height: h * 0.01),
                   Text("Shop Information", style: TextStyles.heading_3),
                   SizedBox(height: h * 0.01),
-                  DetailsWidget(
+                  DetailsEditWidget(
                     items: provider.shopInfo,
                     onSave: (provider, feildType, value) {
                       switch (feildType) {

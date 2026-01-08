@@ -18,8 +18,8 @@ class ProductModelAdapter extends TypeAdapter<ProductModel> {
     };
     return ProductModel(
       images: (fields[0] as List).cast<String>(),
-      name: fields[1] as String,
-      description: fields[2] as String,
+      productName: fields[1] as String,
+      productDescription: fields[2] as String,
       brand: fields[3] as String,
       category: fields[4] as String,
       purchaseRate: fields[5] as double,
@@ -36,9 +36,9 @@ class ProductModelAdapter extends TypeAdapter<ProductModel> {
       ..writeByte(0)
       ..write(obj.images)
       ..writeByte(1)
-      ..write(obj.name)
+      ..write(obj.productName)
       ..writeByte(2)
-      ..write(obj.description)
+      ..write(obj.productDescription)
       ..writeByte(3)
       ..write(obj.brand)
       ..writeByte(4)

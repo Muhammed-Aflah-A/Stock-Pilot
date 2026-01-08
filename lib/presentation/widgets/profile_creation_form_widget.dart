@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stock_pilot/core/theme/colours_styles.dart';
-import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/presentation/indroduction/viewmodel/profile_creation_provider.dart';
+import 'package:stock_pilot/presentation/widgets/form_widget.dart';
 
 class ProfileCreationFormWidget extends StatelessWidget {
   const ProfileCreationFormWidget({super.key});
@@ -15,24 +14,10 @@ class ProfileCreationFormWidget extends StatelessWidget {
       key: profileForm.formKey,
       child: Column(
         children: [
-          TextFormField(
-            keyboardType: TextInputType.name,
-            decoration: InputDecoration(
-              labelText: "Full Name",
-              labelStyle: TextStyles.formLabel,
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: ColourStyles.primaryColor_2,
-                  width: 2,
-                ),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: ColourStyles.primaryColor_2,
-                  width: 2,
-                ),
-              ),
-            ),
+          FormWidget(
+            maxlength: 50,
+            keyboard: TextInputType.name,
+            labelText: "Full Name",
             validator: (value) {
               value = value?.trim();
               if (value == null || value.isEmpty) {
@@ -50,38 +35,28 @@ class ProfileCreationFormWidget extends StatelessWidget {
               if (value.length < 3) {
                 return "Name must be at least 3 characters";
               }
+              if (value.length > 25) {
+                return "Name cannot be more than 25 characters";
+              }
               return null;
             },
             onSaved: (newValue) {
               profileForm.fullName = newValue!.trim();
             },
-            textInputAction: TextInputAction.next,
+            action: TextInputAction.next,
             onFieldSubmitted: (value) {
               FocusScope.of(
                 context,
               ).requestFocus(profileForm.personalNumberFocus);
             },
           ),
-          SizedBox(height: h * 0.02),
-          TextFormField(
-            focusNode: profileForm.personalNumberFocus,
-            keyboardType: TextInputType.phone,
-            decoration: InputDecoration(
-              labelText: "Phone Number",
-              labelStyle: TextStyles.formLabel,
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: ColourStyles.primaryColor_2,
-                  width: 2,
-                ),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: ColourStyles.primaryColor_2,
-                  width: 2,
-                ),
-              ),
-            ),
+          SizedBox(height: h * 0.005),
+          FormWidget(
+            focus: profileForm.personalNumberFocus,
+            maxlength: 15,
+            keyboard: TextInputType.phone,
+            labelText: "Phone Number",
+            hintText: "Start with country code",
             validator: (value) {
               value = value?.trim();
               if (value == null || value.isEmpty) {
@@ -105,31 +80,17 @@ class ProfileCreationFormWidget extends StatelessWidget {
             onSaved: (newValue) {
               profileForm.personalNumber = newValue!.trim();
             },
-            textInputAction: TextInputAction.next,
+            action: TextInputAction.next,
             onFieldSubmitted: (value) {
               FocusScope.of(context).requestFocus(profileForm.shopNameFocus);
             },
           ),
-          SizedBox(height: h * 0.02),
-          TextFormField(
-            focusNode: profileForm.shopNameFocus,
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-              labelText: "Shop Name",
-              labelStyle: TextStyles.formLabel,
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: ColourStyles.primaryColor_2,
-                  width: 2,
-                ),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: ColourStyles.primaryColor_2,
-                  width: 2,
-                ),
-              ),
-            ),
+          SizedBox(height: h * 0.005),
+          FormWidget(
+            focus: profileForm.shopNameFocus,
+            maxlength: 25,
+            keyboard: TextInputType.name,
+            labelText: "Shop Name",
             validator: (value) {
               value = value?.trim();
               if (value == null || value.isEmpty) {
@@ -138,37 +99,29 @@ class ProfileCreationFormWidget extends StatelessWidget {
               if (RegExp(r'\s{2,}').hasMatch(value)) {
                 return "Shop name cannot contain multiple spaces together";
               }
+              if (value.length < 3) {
+                return "Shop name must be at least 3 characters";
+              }
+              if (value.length > 25) {
+                return "Shop name cannot be more than 25 characters";
+              }
               value = value.replaceAll("  ", " ");
               return null;
             },
             onSaved: (newValue) {
               profileForm.shopName = newValue!.trim();
             },
-            textInputAction: TextInputAction.next,
+            action: TextInputAction.next,
             onFieldSubmitted: (value) {
               FocusScope.of(context).requestFocus(profileForm.shopAdressFocus);
             },
           ),
-          SizedBox(height: h * 0.02),
-          TextFormField(
-            focusNode: profileForm.shopAdressFocus,
-            keyboardType: TextInputType.multiline,
-            decoration: InputDecoration(
-              labelText: "Shop Address",
-              labelStyle: TextStyles.formLabel,
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: ColourStyles.primaryColor_2,
-                  width: 2,
-                ),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: ColourStyles.primaryColor_2,
-                  width: 2,
-                ),
-              ),
-            ),
+          SizedBox(height: h * 0.005),
+          FormWidget(
+            focus: profileForm.shopAdressFocus,
+            maxlength: 250,
+            keyboard: TextInputType.multiline,
+            labelText: "Shop Address",
             validator: (value) {
               value = value?.trim();
               if (value == null || value.isEmpty) {
@@ -180,37 +133,27 @@ class ProfileCreationFormWidget extends StatelessWidget {
               if (RegExp(r'\s{2,}').hasMatch(value)) {
                 return "Shop address cannot contain multiple spaces together";
               }
+              if (!RegExp(r'^.{1,250}$').hasMatch(value)) {
+                return 'Address must not exceed 250 characters';
+              }
               value = value.replaceAll("  ", " ");
               return null;
             },
             onSaved: (newValue) {
               profileForm.shopAdress = newValue!.trim();
             },
-            textInputAction: TextInputAction.next,
+            action: TextInputAction.next,
             onFieldSubmitted: (value) {
               FocusScope.of(context).requestFocus(profileForm.shopNumberFocus);
             },
           ),
-          SizedBox(height: h * 0.02),
-          TextFormField(
-            focusNode: profileForm.shopNumberFocus,
-            keyboardType: TextInputType.phone,
-            decoration: InputDecoration(
-              labelText: "Shop's phone Number",
-              labelStyle: TextStyles.formLabel,
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: ColourStyles.primaryColor_2,
-                  width: 2,
-                ),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: ColourStyles.primaryColor_2,
-                  width: 2,
-                ),
-              ),
-            ),
+          SizedBox(height: h * 0.005),
+          FormWidget(
+            focus: profileForm.shopNumberFocus,
+            maxlength: 15,
+            keyboard: TextInputType.phone,
+            labelText: "Shop's Phone Number",
+            hintText: "Start with country code",
             validator: (value) {
               value = value?.trim();
               if (value == null || value.isEmpty) {
@@ -234,31 +177,17 @@ class ProfileCreationFormWidget extends StatelessWidget {
             onSaved: (newValue) {
               profileForm.shopNumber = newValue!.trim();
             },
-            textInputAction: TextInputAction.next,
+            action: TextInputAction.next,
             onFieldSubmitted: (value) {
               FocusScope.of(context).requestFocus(profileForm.emailFocus);
             },
           ),
-          SizedBox(height: h * 0.02),
-          TextFormField(
-            focusNode: profileForm.emailFocus,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-              labelText: "Email",
-              labelStyle: TextStyles.formLabel,
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: ColourStyles.primaryColor_2,
-                  width: 2,
-                ),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: ColourStyles.primaryColor_2,
-                  width: 2,
-                ),
-              ),
-            ),
+          SizedBox(height: h * 0.005),
+          FormWidget(
+            focus: profileForm.emailFocus,
+            maxlength: 100,
+            keyboard: TextInputType.emailAddress,
+            labelText: "Email Address",
             validator: (value) {
               value = value?.trim();
               if (value == null || value.isEmpty) {
@@ -267,13 +196,16 @@ class ProfileCreationFormWidget extends StatelessWidget {
               if (!RegExp(r'^[a-z0-9._%+-]+@gmail\.com$').hasMatch(value)) {
                 return "Please enter a valid email";
               }
+              if (value.length > 100) {
+                return "Email cannot be more than 100 characters";
+              }
               value = value.replaceAll(" ", "");
               return null;
             },
             onSaved: (newValue) {
               profileForm.gmail = newValue!.trim();
             },
-            textInputAction: TextInputAction.done,
+            action: TextInputAction.done,
             onFieldSubmitted: (value) {
               FocusScope.of(context).unfocus();
             },

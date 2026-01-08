@@ -175,10 +175,13 @@ class ProfilePageProvider with ChangeNotifier {
           return "Name cannot contain special characters";
         }
         if (RegExp(r'\s{2,}').hasMatch(value)) {
-          return "Name cannot contain multiple spaces together";
+          return "Name cannot contain multiple spaces";
         }
         if (value.length < 3) {
           return "Name must be at least 3 characters";
+        }
+        if (value.length > 25) {
+          return "Name cannot be more than 25 characters";
         }
         return null;
       case 'personalnumber':
@@ -216,8 +219,14 @@ class ProfilePageProvider with ChangeNotifier {
         if (RegExp(r'\s{2,}').hasMatch(value)) {
           return "Shop name cannot contain multiple spaces together";
         }
+        if (value.length < 3) {
+          return "Shop name must be at least 3 characters";
+        }
+        if (value.length > 25) {
+          return "Shop name cannot be more than 25 characters";
+        }
         return null;
-      case 'shop address':
+      case 'address':
         value = value?.trim();
         if (value == null || value.isEmpty) {
           return "Please enter your shop address";
@@ -228,6 +237,10 @@ class ProfilePageProvider with ChangeNotifier {
         if (RegExp(r'\s{2,}').hasMatch(value)) {
           return "Shop address cannot contain multiple spaces together";
         }
+        if (!RegExp(r'^.{1,250}$').hasMatch(value)) {
+          return 'Address must not exceed 250 characters';
+        }
+
         return null;
       case 'shopnumber':
         value = value?.trim();

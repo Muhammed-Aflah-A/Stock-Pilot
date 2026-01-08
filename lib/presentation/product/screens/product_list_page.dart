@@ -19,6 +19,7 @@ class _ProductListPageState extends State<ProductListPage> {
   final TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
@@ -31,12 +32,15 @@ class _ProductListPageState extends State<ProductListPage> {
       drawer: AppDrawer(),
       floatingActionButton: FloatingactionbuttonWidget(
         onPressed: () {
-          Navigator.pushNamed(context, AppRoutes.productAddingPage);
+          Navigator.pushNamed(context, AppRoutes.productAddingPage1);
         },
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.symmetric(
+            vertical: h * 0.01,
+            horizontal: h * 0.01,
+          ),
           child: Column(
             children: [
               Row(
