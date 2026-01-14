@@ -9,19 +9,29 @@ class ImageAddingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentHeigth = MediaQuery.of(context).size.height;
+    final currentWidth = MediaQuery.of(context).size.width;
     final provider = context.watch<ProductProvider>();
+    final filledCount = provider.productImages
+        .where((img) => img != null)
+        .length;
+    final itemCount = filledCount < 4 ? filledCount + 1 : 4;
+
     return GridView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      itemCount: 4,
+      itemCount: itemCount,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        crossAxisSpacing: 17,
-        mainAxisSpacing: 12,
-        childAspectRatio: 1.5,
+        crossAxisSpacing: currentWidth * 0.03,
+        mainAxisSpacing: currentHeigth * 0.02,
+        childAspectRatio: currentHeigth * 0.0015,
       ),
       itemBuilder: (context, index) {
-        final image = provider.productImages[index];
+        final image = index < provider.productImages.length
+            ? provider.productImages[index]
+            : null;
+
         return GestureDetector(
           onTap: () {
             showDialog(
@@ -38,7 +48,7 @@ class ImageAddingWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: ColourStyles.primaryColor,
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: ColourStyles.primaryColor_2,width: 2),
+              border: Border.all(color: ColourStyles.primaryColor_2, width: 2),
             ),
             child: image == null
                 ? Column(

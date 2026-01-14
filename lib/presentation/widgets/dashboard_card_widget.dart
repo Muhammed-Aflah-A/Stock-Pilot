@@ -9,34 +9,39 @@ class DashboardCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
+    final currentHeigth = MediaQuery.of(context).size.height;
+    final currentWidth = MediaQuery.of(context).size.width;
     final dashboardProvider = context.watch<DashboardProvider>();
     return GridView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        crossAxisSpacing: 5,
-        mainAxisSpacing: 5,
-        childAspectRatio: 1.7,
+        crossAxisSpacing: currentWidth * 0.02,
+        mainAxisSpacing: currentHeigth * 0.01,
+        childAspectRatio: currentHeigth * 0.002,
       ),
       itemCount: dashboardProvider.dashboardCards.length,
       itemBuilder: (context, index) {
         final item = dashboardProvider.dashboardCards[index];
         return Card(
+          elevation: 5,
           shape: RoundedRectangleBorder(
             side: BorderSide(color: ColourStyles.cardborderColor, width: 1),
             borderRadius: BorderRadius.circular(10),
           ),
           color: ColourStyles.primaryColor_3,
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.symmetric(
+              vertical: currentHeigth * 0.01,
+              horizontal: currentWidth * 0.03,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(item.title!, style: TextStyles.primaryText_2),
-                SizedBox(height: h * 0.008),
+                SizedBox(height: currentHeigth * 0.005),
                 Text(item.value!, style: item.valueStyle),
               ],
             ),

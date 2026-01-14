@@ -9,17 +9,17 @@ class DashboardActivityWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
-    final w = MediaQuery.of(context).size.width;
-    return Expanded(
-      child: Consumer<DashboardProvider>(
-        builder: (context, provider, _) {
-          return ListView.separated(
-            separatorBuilder: (context, index) => SizedBox(height: h * 0.01),
-            itemCount: provider.dashboardActivity.length,
-            itemBuilder: (context, index) {
-              final activity = provider.dashboardActivity[index];
-              return Card(
+    final currentHeigth = MediaQuery.of(context).size.height;
+    final currentWidth = MediaQuery.of(context).size.width;
+    return Consumer<DashboardProvider>(
+      builder: (context, provider, _) {
+        return Column(
+          children: List.generate(provider.dashboardActivity.length, (index) {
+            final activity = provider.dashboardActivity[index];
+            return Padding(
+              padding: EdgeInsets.only(bottom: currentHeigth * 0.01),
+              child: Card(
+                elevation: 5,
                 shape: RoundedRectangleBorder(
                   side: BorderSide(
                     color: ColourStyles.cardborderColor,
@@ -29,7 +29,7 @@ class DashboardActivityWidget extends StatelessWidget {
                 ),
                 color: ColourStyles.primaryColor_3,
                 child: Padding(
-                  padding: EdgeInsets.all(h * 0.016),
+                  padding: EdgeInsets.all(currentHeigth * 0.015),
                   child: Row(
                     children: [
                       Container(
@@ -46,7 +46,7 @@ class DashboardActivityWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(width: w * 0.03),
+                      SizedBox(width: currentWidth * 0.05),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,17 +57,11 @@ class DashboardActivityWidget extends StatelessWidget {
                             ),
                             Text(
                               activity.product!,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey[600],
-                              ),
+                              style: TextStyles.recentCardtext,
                             ),
                             Text(
                               activity.category!,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey[600],
-                              ),
+                              style: TextStyles.recentCardtext,
                             ),
                           ],
                         ),
@@ -77,9 +71,7 @@ class DashboardActivityWidget extends StatelessWidget {
                         children: [
                           Text(
                             '${activity.unit}',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
+                            style: TextStyles.recentCardtext_2.copyWith(
                               color: activity.isPositive!
                                   ? ColourStyles.colorGreen
                                   : ColourStyles.colorRed,
@@ -87,21 +79,18 @@ class DashboardActivityWidget extends StatelessWidget {
                           ),
                           Text(
                             activity.label!,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey[600],
-                            ),
+                            style: TextStyles.recentCardtext_3,
                           ),
                         ],
                       ),
                     ],
                   ),
                 ),
-              );
-            },
-          );
-        },
-      ),
+              ),
+            );
+          }),
+        );
+      },
     );
   }
 }

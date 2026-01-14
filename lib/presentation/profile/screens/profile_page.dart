@@ -5,7 +5,7 @@ import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
 import 'package:stock_pilot/presentation/widgets/app_drawer_widget.dart';
-import 'package:stock_pilot/presentation/widgets/details_edit_widget.dart';
+import 'package:stock_pilot/presentation/widgets/profile_details_widget.dart';
 import 'package:stock_pilot/presentation/widgets/permission_dialog.dart';
 import 'package:stock_pilot/presentation/widgets/user_avatar_edit_widget.dart';
 
@@ -19,7 +19,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
+    final currentHeigth = MediaQuery.of(context).size.height;
+    final currentWidth = MediaQuery.of(context).size.width;
     final provider = context.watch<ProfilePageProvider>();
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
@@ -33,8 +34,8 @@ class _ProfilePageState extends State<ProfilePage> {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(
-            vertical: h * 0.01,
-            horizontal: h * 0.02,
+            vertical: currentHeigth * 0.01,
+            horizontal: currentWidth * 0.05,
           ),
           child: ListView(
             children: [
@@ -57,13 +58,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                 ),
               ),
-              SizedBox(height: h * 0.05),
+              SizedBox(height: currentHeigth * 0.01),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Personal Information", style: TextStyles.heading_3),
-                  SizedBox(height: h * 0.01),
-                  DetailsEditWidget(
+                  SizedBox(height: currentHeigth * 0.01),
+                  ProfileDetailsWidget(
                     items: provider.personalInfo,
                     onSave: (provider, feildType, value) {
                       switch (feildType) {
@@ -79,10 +80,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       }
                     },
                   ),
-                  SizedBox(height: h * 0.01),
+                  SizedBox(height: currentHeigth * 0.02),
                   Text("Shop Information", style: TextStyles.heading_3),
-                  SizedBox(height: h * 0.01),
-                  DetailsEditWidget(
+                  SizedBox(height: currentHeigth * 0.01),
+                  ProfileDetailsWidget(
                     items: provider.shopInfo,
                     onSave: (provider, feildType, value) {
                       switch (feildType) {

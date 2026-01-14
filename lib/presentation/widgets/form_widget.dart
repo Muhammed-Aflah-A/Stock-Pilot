@@ -9,10 +9,12 @@ class FormWidget extends StatelessWidget {
   final TextInputType keyboard;
   final String? labelText;
   final String? hintText;
+  final String? initialValue;
   final String? Function(String?) validator;
   final void Function(String?) onSaved;
   final TextInputAction action;
   final void Function(String?) onFieldSubmitted;
+
   const FormWidget({
     this.maxline,
     this.maxlength,
@@ -21,6 +23,7 @@ class FormWidget extends StatelessWidget {
     required this.keyboard,
     this.labelText,
     this.hintText,
+    this.initialValue,
     required this.validator,
     required this.onSaved,
     required this.action,
@@ -30,6 +33,7 @@ class FormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: initialValue,
       maxLines: maxline,
       maxLength: maxlength,
       focusNode: focus,

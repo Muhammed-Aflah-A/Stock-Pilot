@@ -11,7 +11,7 @@ class PermissionDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
+    final currentHeigth = MediaQuery.of(context).size.height;
     return AlertDialog(
       backgroundColor: ColourStyles.primaryColor,
       title: Center(child: Text("Choose option", style: TextStyles.heading_2)),
@@ -76,7 +76,7 @@ class PermissionDialog extends StatelessWidget {
                                 style: ButtonStyles.dialogBackButton,
                                 child: Text("Cancel"),
                               ),
-                              SizedBox(height: h * 0.01),
+                              SizedBox(height: currentHeigth * 0.01),
                               ElevatedButton(
                                 onPressed: () async {
                                   Navigator.pop(context);
@@ -161,7 +161,7 @@ class PermissionDialog extends StatelessWidget {
                                 style: ButtonStyles.dialogBackButton,
                                 child: Text("Cancel"),
                               ),
-                              SizedBox(height: h * 0.01),
+                              SizedBox(height: currentHeigth * 0.01),
                               ElevatedButton(
                                 onPressed: () {
                                   openAppSettings();
@@ -188,7 +188,7 @@ class PermissionDialog extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          SizedBox(height: h * 0.01),
+          SizedBox(height: currentHeigth * 0.01),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);

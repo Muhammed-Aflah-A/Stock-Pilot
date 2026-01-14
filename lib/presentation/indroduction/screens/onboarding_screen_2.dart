@@ -13,7 +13,7 @@ class OnboardingScreen2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
+    final currentHeigth = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
       body: SafeArea(
@@ -21,23 +21,24 @@ class OnboardingScreen2 extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(height: currentHeigth * 0.05),
               AppnameWidget(),
-              SizedBox(height: h * 0.05),
+              SizedBox(height: currentHeigth * 0.05),
               HeroimageWidget(
-                heightFactor: 0.6,
+                heightFactor: 1,
                 imagePath: AppImages.onboardingScreen2,
               ),
-              SizedBox(height: h * 0.05),
+              SizedBox(height: currentHeigth * 0.05),
               Text("Never Run Out Again", style: TextStyles.tagLine),
-              SizedBox(height: h * 0.02),
+              SizedBox(height: currentHeigth * 0.02),
               Text(
                 "Get alerts for low-stock items and",
                 style: TextStyles.caption,
               ),
               Text("restock at the right time", style: TextStyles.caption),
-              SizedBox(height: h * 0.08),
+              SizedBox(height: currentHeigth * 0.05),
               BackbuttonWidget(),
-              SizedBox(height: h * 0.03),
+              SizedBox(height: currentHeigth * 0.02),
               NextbuttonWidget(
                 onPressed: () {
                   Navigator.pushNamed(context, AppRoutes.onBoardingScreen_3);

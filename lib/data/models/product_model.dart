@@ -1,9 +1,10 @@
 import 'package:hive_flutter/adapters.dart';
 part 'product_model.g.dart';
+
 @HiveType(typeId: 6)
 class ProductModel {
   @HiveField(0)
-  List<String> images;
+  List<String> productImages;
   @HiveField(1)
   String productName;
   @HiveField(2)
@@ -13,15 +14,16 @@ class ProductModel {
   @HiveField(4)
   String category;
   @HiveField(5)
-  double purchaseRate;
+  String purchaseRate;
   @HiveField(6)
-  double salesRate;
+  String salesRate;
   @HiveField(7)
-  int itemCount;
+  String itemCount;
   @HiveField(8)
-  int lowStockCount;
+  String lowStockCount;
+
   ProductModel({
-    required this.images,
+    required this.productImages,
     required this.productName,
     required this.productDescription,
     required this.brand,

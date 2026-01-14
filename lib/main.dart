@@ -7,6 +7,9 @@ import 'package:stock_pilot/core/service/image_permission.dart';
 import 'package:stock_pilot/core/service/image_selector.dart';
 import 'package:stock_pilot/data/local/hive/hive_adapters.dart';
 import 'package:stock_pilot/data/local/hive/hive_service.dart';
+import 'package:stock_pilot/data/models/product_model.dart';
+import 'package:stock_pilot/presentation/brand/screens/brand_list_page.dart';
+import 'package:stock_pilot/presentation/category/screens/category_list_page.dart';
 import 'package:stock_pilot/presentation/dashboard/screens/dashboard.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/drawer_provider.dart';
@@ -18,6 +21,7 @@ import 'package:stock_pilot/presentation/indroduction/screens/profile_creation.d
 import 'package:stock_pilot/presentation/indroduction/viewmodel/profile_creation_provider.dart';
 import 'package:stock_pilot/presentation/product/screens/product_adding_page_1.dart';
 import 'package:stock_pilot/presentation/product/screens/product_adding_page_2.dart';
+import 'package:stock_pilot/presentation/product/screens/product_details_page.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
 import 'package:stock_pilot/presentation/profile/screens/profile_page.dart';
 import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
@@ -51,6 +55,7 @@ void main() async {
           create: (_) => ProductProvider(
             imagePermission: ImagePermission(),
             imageSelector: ImageSelector(),
+            hiveService: HiveService(),
           ),
         ),
       ],
@@ -70,6 +75,7 @@ class StockPilot extends StatelessWidget {
       initialRoute: AppRoutes.splashScreen,
       onGenerateRoute: (settings) {
         switch (settings.name) {
+          //Fade animation
           case AppRoutes.splashScreen:
             return TransitionAnimations.fadeRoute(const SplashScreen());
           case AppRoutes.onBoardingScreen_1:
@@ -83,14 +89,39 @@ class StockPilot extends StatelessWidget {
           case AppRoutes.productListPage:
             return TransitionAnimations.fadeRoute(const ProductListPage());
           case AppRoutes.productAddingPage1:
-            return TransitionAnimations.fadeRoute(const ProductAddingPage1());
+            final args = settings.arguments as Map<String, dynamic>?;
+            return TransitionAnimations.fadeRoute(
+              ProductAddingPage1(
+                product: args?['product'] as ProductModel?,
+                productIndex: args?['productIndex'] as int?,
+              ),
+            );
+          case AppRoutes.category:
+            return TransitionAnimations.fadeRoute(const CategoryListPage());
+          case AppRoutes.brand:
+            return TransitionAnimations.fadeRoute(const BrandListPage());
 
+          //Slide animation
           case AppRoutes.onBoardingScreen_2:
             return TransitionAnimations.slideRoute(const OnboardingScreen2());
           case AppRoutes.onBoardingScreen_3:
             return TransitionAnimations.slideRoute(const OnboardingScreen3());
           case AppRoutes.productAddingPage2:
-            return TransitionAnimations.slideRoute(const ProductAddingPage2());
+            final args = settings.arguments as Map<String, dynamic>?;
+            return TransitionAnimations.slideRoute(
+              ProductAddingPage2(
+                product: args?['product'] as ProductModel?,
+                productIndex: args?['productIndex'] as int?,
+              ),
+            );
+          case AppRoutes.productDetailsPage:
+            final args = settings.arguments as Map<String, dynamic>;
+            return TransitionAnimations.slideRoute(
+              ProductDetailsPage(
+                product: args['product'] as ProductModel,
+                productIndex: args['index'] as int,
+              ),
+            );
         }
         return null;
       },

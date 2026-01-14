@@ -24,7 +24,7 @@ class HiveService implements HiveServiceLayer {
 
   @override
   Future<void> updateUser(UserProfile user) async {
-    final box = await Hive.openBox<UserProfile>(HiveBoxes.userProfile);
+    final box = Hive.box<UserProfile>(HiveBoxes.userProfile);
     await box.put('user', user);
   }
 
@@ -32,5 +32,23 @@ class HiveService implements HiveServiceLayer {
   Future<void> addProduct(ProductModel product) async {
     final box = Hive.box<ProductModel>(HiveBoxes.productList);
     await box.add(product);
+  }
+
+  @override
+  Future<List<ProductModel>> getAllProducts() async {
+    final box = Hive.box<ProductModel>(HiveBoxes.productList);
+    return box.values.toList();
+  }
+
+  @override
+  Future<void> updateProduct(int index, ProductModel product) async {
+    final box = Hive.box<ProductModel>(HiveBoxes.productList); // ✅ Fixed!
+    await box.putAt(index, product);
+  }
+
+  @override
+  Future<void> deleteProduct(int index) async {
+    final box = Hive.box<ProductModel>(HiveBoxes.productList);
+    await box.deleteAt(index);
   }
 }

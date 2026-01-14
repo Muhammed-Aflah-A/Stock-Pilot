@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/presentation/widgets/user_avatar_widget.dart';
@@ -16,12 +17,17 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     required this.showAvatar,
   });
   @override
-  Size get preferredSize => const Size.fromHeight(100);
+  Size get preferredSize => const Size.fromHeight(90);
   @override
   Widget build(BuildContext context) {
+    final currentHeigth = MediaQuery.of(context).size.height;
     return AppBar(
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: ColourStyles.primaryColor,
+      ),
       backgroundColor: ColourStyles.primaryColor,
-      toolbarHeight: 100,
+      toolbarHeight: currentHeigth * 0.1,
+      scrolledUnderElevation: 0,
       leading: showleading
           ? IconButton(
               onPressed: () {
@@ -33,7 +39,12 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       title: Text(title, style: TextStyles.heading_2),
       centerTitle: centeredTitle,
       actions: showAvatar
-          ? [Padding(padding: EdgeInsets.all(20), child: UserAvatarWidget())]
+          ? [
+              Padding(
+                padding: EdgeInsets.all(currentHeigth * 0.02),
+                child: UserAvatarWidget(),
+              ),
+            ]
           : null,
     );
   }

@@ -11,10 +11,11 @@ class UserAvatarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentHeigth = MediaQuery.of(context).size.height;
     return Consumer<ProfilePageProvider>(
       builder: (context, provider, child) {
         return CircleAvatar(
-          radius: 20,
+          radius: currentHeigth*0.03,
           backgroundColor: ColourStyles.primaryColor_2,
           backgroundImage:
               (provider.user?.profileImage != null &&

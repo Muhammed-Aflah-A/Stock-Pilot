@@ -11,7 +11,7 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
+    final currentHeigth = MediaQuery.of(context).size.height;
     return Drawer(
       backgroundColor: ColourStyles.primaryColor,
       child: Column(
@@ -41,18 +41,19 @@ class AppDrawer extends StatelessWidget {
               builder: (context, provider, child) {
                 return ListView.separated(
                   separatorBuilder: (context, index) =>
-                      SizedBox(height: h * 0.01),
-
+                      SizedBox(height: currentHeigth * 0.01),
                   itemCount: provider.drawerItems.length,
-
                   itemBuilder: (context, index) {
                     final item = provider.drawerItems[index];
-
                     return ListTile(
                       selected: provider.selectedIndex == index,
                       selectedTileColor: ColourStyles.baseBackgroundColor,
                       tileColor: ColourStyles.primaryColor,
-                      leading: Image.asset(item.icon!, height: 35, width: 35),
+                      leading: Image.asset(
+                        item.icon!,
+                        height: currentHeigth * 0.045,
+                        width: currentHeigth * 0.045,
+                      ),
                       title: Text(item.title!, style: TextStyles.primaryText_2),
                       onTap: () {
                         provider.selectedDrawerItem(index);

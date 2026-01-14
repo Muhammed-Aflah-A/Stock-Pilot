@@ -18,23 +18,27 @@ class ProfileCreation extends StatefulWidget {
 class _ProfileCreationState extends State<ProfileCreation> {
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
+    final currentHeigth = MediaQuery.of(context).size.height;
+    final currentWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: EdgeInsets.symmetric(
+            horizontal: currentWidth * 0.03,
+            vertical: currentHeigth * 0.01,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: h * 0.05),
+              SizedBox(height: currentHeigth * 0.02),
               Text("Get Started!", style: TextStyles.heading),
               Text(
                 "Create a profile to manage inventory",
                 style: TextStyles.caption_2,
               ),
-              SizedBox(height: h * 0.02),
+              SizedBox(height: currentHeigth * 0.01),
               Center(
                 child: Consumer<ProfileCreationProvider>(
                   builder: (context, provider, child) {
@@ -54,14 +58,14 @@ class _ProfileCreationState extends State<ProfileCreation> {
                   },
                 ),
               ),
-              SizedBox(height: h * 0.02),
+              SizedBox(height: currentHeigth * 0.01),
               ProfileCreationFormWidget(),
-              SizedBox(height: h * 0.02),
+              SizedBox(height: currentHeigth * 0.01),
               Center(
                 child: Column(
                   children: [
                     CreateProfileButtonWidget(),
-                    SizedBox(height: h * 0.01),
+                    SizedBox(height: currentHeigth * 0.01),
                     Text("Manage your inventory", style: TextStyles.caption_3),
                   ],
                 ),

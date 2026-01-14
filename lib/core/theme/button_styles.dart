@@ -32,7 +32,7 @@ class ButtonStyles {
   );
 
   static final dialogBackButton = ElevatedButton.styleFrom(
-    backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+    backgroundColor: ColourStyles.primaryColor,
     foregroundColor: ColourStyles.primaryColor_2,
     minimumSize: Size(250, 50),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
@@ -40,10 +40,41 @@ class ButtonStyles {
   );
 
   static final dialogBackButton_2 = ElevatedButton.styleFrom(
-    backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+    backgroundColor: ColourStyles.primaryColor,
     foregroundColor: ColourStyles.primaryColor_2,
     minimumSize: Size(120, 50),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
     side: BorderSide(color: ColourStyles.primaryColor_2, width: 2),
+  );
+
+  static final detailPageButton = ElevatedButton.styleFrom(
+    backgroundColor: ColourStyles.primaryColor,
+    foregroundColor: ColourStyles.primaryColor_2,
+    minimumSize: Size(120, 60),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    side: BorderSide(color: ColourStyles.primaryColor_2, width: 2),
+  );
+
+  static final detailPageButton_2 = ElevatedButton.styleFrom(
+    backgroundColor: ColourStyles.primaryColor_2,
+    foregroundColor: ColourStyles.primaryColor,
+    minimumSize: Size(400, 60),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    side: BorderSide(color: ColourStyles.primaryColor_2, width: 2),
+  );
+
+  static final removeButton = ElevatedButton.styleFrom(
+    backgroundColor: ColourStyles.colorRed,
+    foregroundColor: ColourStyles.primaryColor,
+    minimumSize: Size(120, 60),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    side: BorderSide(color: ColourStyles.colorRed, width: 2),
+  );
+  static final removeButton_2 = ElevatedButton.styleFrom(
+    backgroundColor: ColourStyles.colorRed,
+    foregroundColor: ColourStyles.primaryColor,
+    minimumSize: Size(120, 50),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+    side: BorderSide(color: ColourStyles.colorRed, width: 2),
   );
 }

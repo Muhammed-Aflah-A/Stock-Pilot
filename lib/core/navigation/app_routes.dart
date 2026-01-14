@@ -19,4 +19,10 @@ class AppRoutes {
       'package:stock_pilot/presentation/product/screens/product_adding_page_1.dart';
   static const productAddingPage2 =
       'package:stock_pilot/presentation/product/screens/product_adding_page_2.dart';
+  static const productDetailsPage =
+      'package:stock_pilot/presentation/product/screens/product_details_page.dart';
+  static const category =
+      'package:stock_pilot/presentation/category/screens/category_list_page.dart';
+  static const brand =
+      'package:stock_pilot/presentation/brand/screens/brand_lisdartt_page.dart';
 }

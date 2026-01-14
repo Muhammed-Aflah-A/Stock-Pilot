@@ -23,12 +23,12 @@ class DrawerProvider with ChangeNotifier {
     DrawerItems(
       icon: AppIcons.category,
       title: 'Category',
-      navigation: AppRoutes.dashboard,
+      navigation: AppRoutes.category,
     ),
     DrawerItems(
       icon: AppIcons.brand,
       title: 'Brand',
-      navigation: AppRoutes.dashboard,
+      navigation: AppRoutes.brand,
     ),
     DrawerItems(
       icon: AppIcons.lowStock,

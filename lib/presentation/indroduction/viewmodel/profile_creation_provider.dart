@@ -28,10 +28,6 @@ class ProfileCreationProvider with ChangeNotifier {
     required this.imagePermission,
     required this.imageSelector,
   });
-  Future<void> addUser(UserProfile user) async {
-    await hiveService.addUser(user);
-  }
-
   Future<PermissionStatus> cameraPermission() async {
     return imagePermission.cameraPermission();
   }
@@ -54,5 +50,9 @@ class ProfileCreationProvider with ChangeNotifier {
       profileImage = path;
       notifyListeners();
     }
+  }
+
+  Future<void> addUser(UserProfile user) async {
+    await hiveService.addUser(user);
   }
 }

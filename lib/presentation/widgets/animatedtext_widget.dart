@@ -1,22 +1,19 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:stock_pilot/core/theme/text_styles.dart';
 
 class AnimatedtextWidget extends StatelessWidget {
-  final String text;
-  final TextStyle textStyle;
-  final Duration speed;
-  const AnimatedtextWidget({
-    super.key,
-    required this.text,
-    required this.textStyle,
-    required this.speed,
-  });
+  const AnimatedtextWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     return AnimatedTextKit(
       animatedTexts: [
-        TypewriterAnimatedText(text, textStyle: textStyle, speed: speed),
+        TypewriterAnimatedText(
+          'Smart Stock, Smooth Business',
+          textStyle: TextStyles.splashQuote,
+          speed: Duration(milliseconds: 100),
+        ),
       ],
       totalRepeatCount: 1,
       pause: Duration(seconds: 1),

@@ -17,15 +17,15 @@ class ProductModelAdapter extends TypeAdapter<ProductModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ProductModel(
-      images: (fields[0] as List).cast<String>(),
+      productImages: (fields[0] as List).cast<String>(),
       productName: fields[1] as String,
       productDescription: fields[2] as String,
       brand: fields[3] as String,
       category: fields[4] as String,
-      purchaseRate: fields[5] as double,
-      salesRate: fields[6] as double,
-      itemCount: fields[7] as int,
-      lowStockCount: fields[8] as int,
+      purchaseRate: fields[5] as String,
+      salesRate: fields[6] as String,
+      itemCount: fields[7] as String,
+      lowStockCount: fields[8] as String,
     );
   }
 
@@ -34,7 +34,7 @@ class ProductModelAdapter extends TypeAdapter<ProductModel> {
     writer
       ..writeByte(9)
       ..writeByte(0)
-      ..write(obj.images)
+      ..write(obj.productImages)
       ..writeByte(1)
       ..write(obj.productName)
       ..writeByte(2)

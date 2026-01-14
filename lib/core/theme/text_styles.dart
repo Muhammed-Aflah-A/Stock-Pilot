@@ -56,6 +56,12 @@ class TextStyles {
     color: ColourStyles.captionColor_2,
   );
 
+  static const TextStyle caption_4 = TextStyle(
+    fontSize: 16,
+    fontFamily: "ManRope",
+    color: ColourStyles.captionColor,
+  );
+
   static const TextStyle buttonText = TextStyle(
     fontSize: 20,
     fontFamily: "Aldrich",
@@ -87,6 +93,12 @@ class TextStyles {
     fontFamily: "ManRope",
     color: ColourStyles.captionColor,
   );
+  static const TextStyle heading_4 = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+    fontFamily: "ManRope",
+    color: ColourStyles.primaryColor_2,
+  );
 
   static const TextStyle formLabel = TextStyle(
     fontSize: 20,
@@ -114,10 +126,37 @@ class TextStyles {
   );
 
   static const TextStyle dashboardCardText = TextStyle(
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: FontWeight.w700,
     fontFamily: "ManRope",
     color: ColourStyles.primaryColor_2,
+  );
+
+  static const TextStyle recentCardtext = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    fontFamily: "ManRope",
+    color: ColourStyles.captionColor,
+  );
+
+  static const TextStyle recentCardtext_2 = TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.w700,
+    fontFamily: "ManRope",
+  );
+
+  static const TextStyle recentCardtext_3 = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+    fontFamily: "ManRope",
+    color: ColourStyles.captionColor,
+  );
+
+  static const TextStyle primaryTextWhite = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.w600,
+    fontFamily: "ManRope",
+    color: ColourStyles.primaryColor,
   );
 
   static const TextStyle primaryTextBlue = TextStyle(

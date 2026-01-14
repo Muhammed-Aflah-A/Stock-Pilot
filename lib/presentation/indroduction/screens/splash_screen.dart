@@ -3,9 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/assets/app_images.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
-import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/data/local/shared_preference/app_starting_state.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/drawer_provider.dart';
+import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
+import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
 import 'package:stock_pilot/presentation/widgets/animatedtext_widget.dart';
 import 'package:stock_pilot/presentation/widgets/heroimage_widget.dart';
 
@@ -36,6 +37,8 @@ class _SplashScreenState extends State<SplashScreen> {
     } else if (!profileDone) {
       navigate(AppRoutes.profileCreation);
     } else {
+      await context.read<ProfilePageProvider>().loadUser();
+      await context.read<ProductProvider>().loadProducts();
       context.read<DrawerProvider>().selectedDrawerItem(1);
       navigate(AppRoutes.dashboard);
     }
@@ -47,6 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: ColourStyles.splashBackgroundColor,
       body: SafeArea(
@@ -54,12 +58,9 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              HeroimageWidget(heightFactor: 0.65, imagePath: AppImages.appLogo),
-              AnimatedtextWidget(
-                text: 'Smart Stock, Smooth Business',
-                textStyle: TextStyles.splashQuote,
-                speed: Duration(milliseconds: 100),
-              ),
+              HeroimageWidget(heightFactor: 1, imagePath: AppImages.appLogo),
+              SizedBox(height: currentHeight * 0.01),
+              AnimatedtextWidget(),
             ],
           ),
         ),

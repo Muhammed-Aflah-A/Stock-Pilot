@@ -8,7 +8,7 @@ class ProfileCreationFormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
+    final currentHeigth = MediaQuery.of(context).size.height;
     final profileForm = context.watch<ProfileCreationProvider>();
     return Form(
       key: profileForm.formKey,
@@ -50,7 +50,7 @@ class ProfileCreationFormWidget extends StatelessWidget {
               ).requestFocus(profileForm.personalNumberFocus);
             },
           ),
-          SizedBox(height: h * 0.005),
+          SizedBox(height: currentHeigth * 0.002),
           FormWidget(
             focus: profileForm.personalNumberFocus,
             maxlength: 15,
@@ -85,7 +85,7 @@ class ProfileCreationFormWidget extends StatelessWidget {
               FocusScope.of(context).requestFocus(profileForm.shopNameFocus);
             },
           ),
-          SizedBox(height: h * 0.005),
+          SizedBox(height: currentHeigth * 0.002),
           FormWidget(
             focus: profileForm.shopNameFocus,
             maxlength: 25,
@@ -116,7 +116,7 @@ class ProfileCreationFormWidget extends StatelessWidget {
               FocusScope.of(context).requestFocus(profileForm.shopAdressFocus);
             },
           ),
-          SizedBox(height: h * 0.005),
+          SizedBox(height: currentHeigth * 0.002),
           FormWidget(
             focus: profileForm.shopAdressFocus,
             maxlength: 250,
@@ -147,7 +147,7 @@ class ProfileCreationFormWidget extends StatelessWidget {
               FocusScope.of(context).requestFocus(profileForm.shopNumberFocus);
             },
           ),
-          SizedBox(height: h * 0.005),
+          SizedBox(height: currentHeigth * 0.002),
           FormWidget(
             focus: profileForm.shopNumberFocus,
             maxlength: 15,
@@ -182,7 +182,7 @@ class ProfileCreationFormWidget extends StatelessWidget {
               FocusScope.of(context).requestFocus(profileForm.emailFocus);
             },
           ),
-          SizedBox(height: h * 0.005),
+          SizedBox(height: currentHeigth * 0.002),
           FormWidget(
             focus: profileForm.emailFocus,
             maxlength: 100,

@@ -12,7 +12,7 @@ class OnboardingScreen1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
+    final currentHeigth = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
       body: SafeArea(
@@ -20,21 +20,22 @@ class OnboardingScreen1 extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(height: currentHeigth * 0.05),
               AppnameWidget(),
-              SizedBox(height: h * 0.05),
+              SizedBox(height: currentHeigth * 0.05),
               HeroimageWidget(
-                heightFactor: 0.5,
+                heightFactor: 1,
                 imagePath: AppImages.onboardingScreen1,
               ),
-              SizedBox(height: h * 0.1),
+              SizedBox(height: currentHeigth * 0.05),
               Text("Track Your Stock Effortlessly", style: TextStyles.tagLine),
-              SizedBox(height: h * 0.02),
+              SizedBox(height: currentHeigth * 0.02),
               Text("Stay updated with real-time", style: TextStyles.caption),
               Text(
                 "item counts and accurate stock levels",
                 style: TextStyles.caption,
               ),
-              SizedBox(height: h * 0.1),
+              SizedBox(height: currentHeigth * 0.15),
               NextbuttonWidget(
                 onPressed: () {
                   Navigator.pushNamed(context, AppRoutes.onBoardingScreen_2);

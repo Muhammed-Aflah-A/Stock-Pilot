@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
-import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
 import 'package:stock_pilot/presentation/widgets/app_drawer_widget.dart';
-import 'package:stock_pilot/presentation/widgets/dashboard_activity_widget.dart';
-import 'package:stock_pilot/presentation/widgets/dashboard_card_widget.dart';
+import 'package:stock_pilot/presentation/widgets/floatingactionbutton_widget.dart';
+import 'package:stock_pilot/presentation/widgets/searchbar_widget.dart';
 
-class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+class BrandListPage extends StatefulWidget {
+  const BrandListPage({super.key});
 
   @override
-  State<Dashboard> createState() => _DashboardState();
+  State<BrandListPage> createState() => _BrandListPageState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _BrandListPageState extends State<BrandListPage> {
+  final TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final currentHeigth = MediaQuery.of(context).size.height;
@@ -22,28 +22,26 @@ class _DashboardState extends State<Dashboard> {
       backgroundColor: ColourStyles.primaryColor,
       appBar: AppBarWidget(
         showleading: false,
-        title: "Dashboard",
+        title: "Brand",
         centeredTitle: false,
         showAvatar: true,
       ),
       drawer: AppDrawer(),
+      floatingActionButton: FloatingactionbuttonWidget(onPressed: () {}),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(
             vertical: currentHeigth * 0.01,
             horizontal: currentWidth * 0.03,
           ),
-          child: ListView(
+          child: Column(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  DashboardCardWidget(),
-                  SizedBox(height: currentHeigth * 0.01),
-                  Text("Recent Activity", style: TextStyles.primaryTextBlue),
-                  SizedBox(height: currentHeigth * 0.01),
-                  DashboardActivityWidget(),
-                ],
+              Expanded(
+                child: SearchbarWidget(
+                  controller: controller,
+                  onChanged: (value) {},
+                  hintText: "Search by name",
+                ),
               ),
             ],
           ),

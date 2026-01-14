@@ -6,4 +6,7 @@ abstract class HiveServiceLayer {
   Future<UserProfile?> getUser();
   Future<void> updateUser(UserProfile user);
   Future<void> addProduct(ProductModel product);
+  Future<List<ProductModel>> getAllProducts();
+  Future<void> deleteProduct(int index);
+  Future<void> updateProduct(int index, ProductModel product);
 }

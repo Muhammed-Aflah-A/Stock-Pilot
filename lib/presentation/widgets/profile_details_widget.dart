@@ -5,7 +5,7 @@ import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
 
-class DetailsEditWidget extends StatelessWidget {
+class ProfileDetailsWidget extends StatelessWidget {
   final List<dynamic> items;
   final void Function(
     ProfilePageProvider provider,
@@ -13,7 +13,7 @@ class DetailsEditWidget extends StatelessWidget {
     String value,
   )
   onSave;
-  const DetailsEditWidget({
+  const ProfileDetailsWidget({
     super.key,
     required this.items,
     required this.onSave,
@@ -21,22 +21,23 @@ class DetailsEditWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
-    final w = MediaQuery.of(context).size.width;
+    final currentHeigth = MediaQuery.of(context).size.height;
+    final currentWidth = MediaQuery.of(context).size.width;
     return Consumer<ProfilePageProvider>(
       builder: (context, provider, child) {
         return ListView.separated(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemCount: items.length,
-          separatorBuilder: (context, index) => SizedBox(height: h * 0.01),
+          separatorBuilder: (context, index) =>
+              SizedBox(height: currentHeigth * 0.01),
           itemBuilder: (context, index) {
             final item = items[index];
             return ListTile(
               contentPadding: EdgeInsets.zero,
               leading: Container(
-                width: 48,
-                height: 48,
+                width: 50,
+                height: 50,
                 decoration: BoxDecoration(
                   color: ColourStyles.baseBackgroundColor,
                   borderRadius: BorderRadius.circular(10),
@@ -103,13 +104,14 @@ class DetailsEditWidget extends StatelessWidget {
                                 },
                                 child: Text("cancel"),
                               ),
-                              SizedBox(width: w * 0.02),
+                              SizedBox(width: currentWidth * 0.02),
                               ElevatedButton(
                                 style: ButtonStyles.dialogNextButton_2,
                                 onPressed: () async {
                                   if (formkey.currentState!.validate()) {
                                     formkey.currentState!.save();
                                     await provider.updateUser();
+                                    await provider.loadUser();
                                     formkey.currentState!.reset();
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
