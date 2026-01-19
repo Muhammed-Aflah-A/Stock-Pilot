@@ -1,19 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:stock_pilot/core/service/image_permission.dart';
-import 'package:stock_pilot/core/service/image_selector.dart';
+import 'package:stock_pilot/core/utils/image_selector_util.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/data/services/hive_service_layer.dart';
 
 class ProductProvider with ChangeNotifier {
-  final ImagePermission imagePermission;
-  final ImageSelector imageSelector;
+  final ImageSelectorUtil imageSelector;
   final HiveServiceLayer hiveService;
 
   ProductProvider({
-    required this.imagePermission,
     required this.imageSelector,
     required this.hiveService,
   });
@@ -48,14 +44,6 @@ class ProductProvider with ChangeNotifier {
   final salesRateFocus = FocusNode();
   String? salesRate;
   List<ProductModel> products = [];
-
-  Future<PermissionStatus> cameraPermission() async {
-    return imagePermission.cameraPermission();
-  }
-
-  Future<PermissionStatus> libraryPermission() async {
-    return imagePermission.libraryPermission();
-  }
 
   Future<void> openCamera([int? index]) async {
     final path = await imageSelector.openCamera();

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/button_styles.dart';
-import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
+import 'package:stock_pilot/core/utils/snackbar_util.dart';
 import 'package:stock_pilot/data/local/shared_preference/app_starting_state.dart';
 import 'package:stock_pilot/data/models/user_profle_model.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/drawer_provider.dart';
@@ -21,6 +21,8 @@ class CreateProfileButtonWidget extends StatelessWidget {
       onPressed: () async {
         if (profileForm.formKey.currentState!.validate()) {
           profileForm.formKey.currentState!.save();
+          final navigator = Navigator.of(context);
+          final profileProvider = context.read<ProfilePageProvider>();
           final user = UserProfile(
             profileImage: profileForm.profileImage,
             fullName: profileForm.fullName,
@@ -31,25 +33,24 @@ class CreateProfileButtonWidget extends StatelessWidget {
             gmail: profileForm.gmail,
           );
           await profileForm.addUser(user);
-          context.read<ProfilePageProvider>().loadUser();
+          if (!context.mounted) return;
+          profileProvider.loadUser();
           await AppStartingState.setProfileDone();
           drawerProvider.selectedDrawerItem(1);
-          profileForm.formKey.currentState!.reset();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Center(child: Text("Profile created successfully")),
-              backgroundColor: ColourStyles.colorGreen,
-            ),
-          );
-          Navigator.pushNamedAndRemoveUntil(
+          if (!context.mounted) return;
+          SnackbarUtil.showSnackBar(
             context,
+            "Profile created successfully",
+            false,
+          );
+          navigator.pushNamedAndRemoveUntil(
             AppRoutes.dashboard,
             (route) => false,
           );
         }
       },
-      style: ButtonStyles.nextButton,
-      child: Text("Create Profile", style: TextStyles.buttonText),
+      style: ButtonStyles.nextButton(context),
+      child: Text("Create Profile", style: TextStyles.buttonTextWhite(context)),
     );
   }
 }

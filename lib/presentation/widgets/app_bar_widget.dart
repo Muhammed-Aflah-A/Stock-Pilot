@@ -36,7 +36,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               icon: Icon(Icons.arrow_back_ios),
             )
           : null,
-      title: Text(title, style: TextStyles.heading_2),
+      title: Text(title, style: TextStyles.dialogueHeading(context)),
       centerTitle: centeredTitle,
       actions: showAvatar
           ? [

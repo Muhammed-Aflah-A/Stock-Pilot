@@ -13,10 +13,10 @@ class FormWidget extends StatelessWidget {
   final String? Function(String?) validator;
   final void Function(String?) onSaved;
   final TextInputAction action;
-  final void Function(String?) onFieldSubmitted;
+  final void Function(String?)? onFieldSubmitted;
 
   const FormWidget({
-    this.maxline,
+    this.maxline = 1,
     this.maxlength,
     super.key,
     this.focus,
@@ -27,7 +27,7 @@ class FormWidget extends StatelessWidget {
     required this.validator,
     required this.onSaved,
     required this.action,
-    required this.onFieldSubmitted,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -38,16 +38,19 @@ class FormWidget extends StatelessWidget {
       maxLength: maxlength,
       focusNode: focus,
       keyboardType: keyboard,
+      style: TextStyles.formLabel.copyWith(color: Colors.black),
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: TextStyles.formLabel,
         hintText: hintText,
         hintStyle: TextStyles.formHint,
+        counterText: "",
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: ColourStyles.primaryColor_2, width: 2),
         ),
         focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: ColourStyles.primaryColor_2, width: 2),
         ),
         errorBorder: OutlineInputBorder(

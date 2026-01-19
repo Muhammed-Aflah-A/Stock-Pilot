@@ -72,10 +72,10 @@ class AddproductButtonWidget extends StatelessWidget {
           }
         }
       },
-      style: ButtonStyles.nextButton,
+      style: ButtonStyles.nextButton(context),
       child: Text(
         isEditing ? "Update Product" : "Add Product",
-        style: TextStyles.buttonText,
+        style: TextStyles.buttonTextWhite(context),
       ),
     );
   }

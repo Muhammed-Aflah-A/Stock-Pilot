@@ -58,7 +58,7 @@ class ProfileDetailsWidget extends StatelessWidget {
                         title: Center(
                           child: Text(
                             "Edit ${item.title}",
-                            style: TextStyles.heading_2,
+                            style: TextStyles.dialogueHeading(context),
                           ),
                         ),
                         content: Form(

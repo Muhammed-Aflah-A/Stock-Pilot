@@ -4,9 +4,9 @@ import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/data/local/shared_preference/app_starting_state.dart';
-import 'package:stock_pilot/presentation/widgets/appname_widget.dart';
+import 'package:stock_pilot/presentation/indroduction/widgets/appname_widget.dart';
 import 'package:stock_pilot/presentation/widgets/backbutton_widget.dart';
-import 'package:stock_pilot/presentation/widgets/heroimage_widget.dart';
+import 'package:stock_pilot/presentation/indroduction/widgets/heroimage_widget.dart';
 import 'package:stock_pilot/presentation/widgets/nextbutton_widget.dart';
 
 class OnboardingScreen3 extends StatelessWidget {
@@ -14,45 +14,67 @@ class OnboardingScreen3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentHeigth = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
       body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: currentHeigth * 0.05),
-              AppnameWidget(),
-              SizedBox(height: currentHeigth * 0.05),
-              HeroimageWidget(
-                heightFactor: 1,
-                imagePath: AppImages.onboardingScreen3,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: IntrinsicHeight(
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: constraints.maxWidth * 0.08,
+                        vertical: 20,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const AppnameWidget(),
+                          SizedBox(height: constraints.maxHeight * 0.05),
+                          HeroimageWidget(
+                            heightFactor: 0.3,
+                            imagePath: AppImages.onboardingScreen3,
+                          ),
+                          SizedBox(height: constraints.maxHeight * 0.05),
+                          Text(
+                            "Smart Reports & Analytics",
+                            style: TextStyles.tagLine(context),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: constraints.maxHeight * 0.02),
+                          Text(
+                            "Stay updated with real-time item counts and accurate stock levels",
+                            style: TextStyles.tagLineCaption(context),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: constraints.maxHeight * 0.01),
+                          const Spacer(),
+                          const BackbuttonWidget(),
+                          SizedBox(height: constraints.maxHeight * 0.02),
+                          NextbuttonWidget(
+                            onPressed: () async {
+                              await AppStartingState.setOnboardingDone();
+                              if (context.mounted) {
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  AppRoutes.profileCreation,
+                                  (route) => false,
+                                );
+                              }
+                            },
+                            text: "Get Started",
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
-              SizedBox(height: currentHeigth * 0.05),
-              Text("Smart Reports & Analytics", style: TextStyles.tagLine),
-              SizedBox(height: currentHeigth * 0.02),
-              Text("Stay updated with real-time", style: TextStyles.caption),
-              Text(
-                "item counts and accurate stock levels",
-                style: TextStyles.caption,
-              ),
-              SizedBox(height: currentHeigth * 0.05),
-              BackbuttonWidget(),
-              SizedBox(height: currentHeigth * 0.02),
-              NextbuttonWidget(
-                onPressed: () async {
-                  await AppStartingState.setOnboardingDone();
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    AppRoutes.profileCreation,
-                    (route) => false,
-                  );
-                },
-                text: "Get Started",
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

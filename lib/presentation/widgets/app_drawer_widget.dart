@@ -22,7 +22,7 @@ class AppDrawer extends StatelessWidget {
               builder: (context, provider, child) {
                 return Text(
                   "${provider.user?.fullName}",
-                  style: TextStyles.primaryText,
+                  style: TextStyles.primaryText(context),
                 );
               },
             ),
@@ -30,7 +30,7 @@ class AppDrawer extends StatelessWidget {
               builder: (context, provider, child) {
                 return Text(
                   "${provider.user?.gmail}",
-                  style: TextStyles.primaryText,
+                  style: TextStyles.primaryText(context),
                 );
               },
             ),

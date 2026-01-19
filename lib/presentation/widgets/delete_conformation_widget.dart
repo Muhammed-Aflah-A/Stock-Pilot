@@ -23,12 +23,14 @@ class DeleteConformationWidget extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: Text(
         'Remove Product',
-        style: TextStyles.heading_2,
+        style: TextStyles.dialogueHeading(context),
         textAlign: TextAlign.center,
       ),
       content: Text(
         'Are you sure you want to remove "$productName"? This action cannot be undone.',
-        style: TextStyles.primaryTextRed,
+        style: TextStyles.primaryText(
+          context,
+        ).copyWith(color: ColourStyles.colorRed),
         textAlign: TextAlign.center,
       ),
       actions: [

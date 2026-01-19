@@ -3,8 +3,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/navigation/transition_animation.dart';
-import 'package:stock_pilot/core/service/image_permission.dart';
-import 'package:stock_pilot/core/service/image_selector.dart';
+import 'package:stock_pilot/core/utils/image_selector_util.dart';
 import 'package:stock_pilot/data/local/hive/hive_adapters.dart';
 import 'package:stock_pilot/data/local/hive/hive_service.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
@@ -19,6 +18,7 @@ import 'package:stock_pilot/presentation/indroduction/screens/onboarding_screen_
 import 'package:stock_pilot/presentation/indroduction/screens/onboarding_screen_3.dart';
 import 'package:stock_pilot/presentation/indroduction/screens/profile_creation.dart';
 import 'package:stock_pilot/presentation/indroduction/viewmodel/profile_creation_provider.dart';
+import 'package:stock_pilot/presentation/indroduction/viewmodel/splash_screen_provider.dart';
 import 'package:stock_pilot/presentation/product/screens/product_adding_page_1.dart';
 import 'package:stock_pilot/presentation/product/screens/product_adding_page_2.dart';
 import 'package:stock_pilot/presentation/product/screens/product_details_page.dart';
@@ -35,11 +35,11 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => SplashScreenProvider()),
         ChangeNotifierProvider(
           create: (_) => ProfileCreationProvider(
             hiveService: HiveService(),
-            imagePermission: ImagePermission(),
-            imageSelector: ImageSelector(),
+            imageSelector: ImageSelectorUtil(),
           ),
         ),
         ChangeNotifierProvider(create: (_) => DrawerProvider()),
@@ -47,14 +47,12 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => ProfilePageProvider(
             hiveService: HiveService(),
-            imagePermission: ImagePermission(),
-            imageSelector: ImageSelector(),
+            imageSelector: ImageSelectorUtil(),
           ),
         ),
         ChangeNotifierProvider(
           create: (_) => ProductProvider(
-            imagePermission: ImagePermission(),
-            imageSelector: ImageSelector(),
+            imageSelector: ImageSelectorUtil(),
             hiveService: HiveService(),
           ),
         ),

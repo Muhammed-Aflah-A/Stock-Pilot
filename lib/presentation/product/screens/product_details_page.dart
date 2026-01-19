@@ -73,7 +73,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   children: [
                     Text(
                       widget.product.productName,
-                      style: TextStyles.heading_2,
+                      style: TextStyles.dialogueHeading(context),
                     ),
                     SizedBox(height: currentHeight * 0.005),
                     Text(widget.product.category, style: TextStyles.caption_4),

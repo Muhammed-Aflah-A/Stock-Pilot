@@ -11,8 +11,8 @@ class BackbuttonWidget extends StatelessWidget {
       onPressed: () {
         Navigator.pop(context);
       },
-      style: ButtonStyles.backButton,
-      child: Text("Back", style: TextStyles.buttonText_2),
+      style: ButtonStyles.backButton(context),
+      child: Text("Back", style: TextStyles.buttonTextBlack(context)),
     );
   }
 }

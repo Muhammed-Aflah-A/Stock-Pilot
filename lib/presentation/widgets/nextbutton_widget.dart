@@ -15,8 +15,8 @@ class NextbuttonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
-      style: ButtonStyles.nextButton,
-      child: Text(text, style: TextStyles.buttonText),
+      style: ButtonStyles.nextButton(context),
+      child: Text(text, style: TextStyles.buttonTextWhite(context)),
     );
   }
 }
