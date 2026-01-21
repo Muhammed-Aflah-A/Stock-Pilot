@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/utils/form_validator_util.dart';
@@ -12,7 +13,6 @@ class ProfileCreationFormWidget extends StatelessWidget {
     final screenHeight = MediaQuery.sizeOf(context).height;
     final profileForm = context.watch<ProfileCreationProvider>();
     final double fieldGap = (screenHeight * 0.015).clamp(8.0, 16.0);
-
     return Form(
       key: profileForm.formKey,
       child: Column(
@@ -24,26 +24,32 @@ class ProfileCreationFormWidget extends StatelessWidget {
             action: TextInputAction.next,
             validator: (v) => FormValidatorUtil.validateName(v, "Full Name"),
             onSaved: (v) => profileForm.fullName = v?.trim(),
-            onFieldSubmitted: (_) => FocusScope.of(
-              context,
-            ).requestFocus(profileForm.personalNumberFocus),
+            onFieldSubmitted: kIsWeb
+                ? null
+                : (_) => FocusScope.of(
+                    context,
+                  ).requestFocus(profileForm.personalNumberFocus),
           ),
           SizedBox(height: fieldGap),
           FormWidget(
-            focus: profileForm.personalNumberFocus,
+            focus: kIsWeb ? null : profileForm.personalNumberFocus,
             labelText: "Phone Number",
             hintText: "+[CountryCode][Number]",
             maxlength: 15,
             keyboard: TextInputType.phone,
             action: TextInputAction.next,
-            validator: (v) => FormValidatorUtil.validatePhone(v, "Phone Number"),
+            validator: (v) =>
+                FormValidatorUtil.validatePhone(v, "Phone Number"),
             onSaved: (v) => profileForm.personalNumber = v?.trim(),
-            onFieldSubmitted: (_) =>
-                FocusScope.of(context).requestFocus(profileForm.shopNameFocus),
+            onFieldSubmitted: kIsWeb
+                ? null
+                : (_) => FocusScope.of(
+                    context,
+                  ).requestFocus(profileForm.shopNameFocus),
           ),
           SizedBox(height: fieldGap),
           FormWidget(
-            focus: profileForm.shopNameFocus,
+            focus: kIsWeb ? null : profileForm.shopNameFocus,
             labelText: "Shop Name",
             maxlength: 25,
             keyboard: TextInputType.text,
@@ -51,13 +57,15 @@ class ProfileCreationFormWidget extends StatelessWidget {
             validator: (v) =>
                 FormValidatorUtil.validateShopName(v, "Shop Name"),
             onSaved: (v) => profileForm.shopName = v?.trim(),
-            onFieldSubmitted: (_) => FocusScope.of(
-              context,
-            ).requestFocus(profileForm.shopAdressFocus),
+            onFieldSubmitted: kIsWeb
+                ? null
+                : (_) => FocusScope.of(
+                    context,
+                  ).requestFocus(profileForm.shopAdressFocus),
           ),
           SizedBox(height: fieldGap),
           FormWidget(
-            focus: profileForm.shopAdressFocus,
+            focus: kIsWeb ? null : profileForm.shopAdressFocus,
             labelText: "Shop Address",
             maxlength: 250,
             keyboard: TextInputType.multiline,
@@ -65,26 +73,32 @@ class ProfileCreationFormWidget extends StatelessWidget {
             validator: (v) =>
                 FormValidatorUtil.validateAddress(v, "Shop Address"),
             onSaved: (v) => profileForm.shopAdress = v?.trim(),
-            onFieldSubmitted: (_) => FocusScope.of(
-              context,
-            ).requestFocus(profileForm.shopNumberFocus),
+            onFieldSubmitted: kIsWeb
+                ? null
+                : (_) => FocusScope.of(
+                    context,
+                  ).requestFocus(profileForm.shopNumberFocus),
           ),
           SizedBox(height: fieldGap),
           FormWidget(
-            focus: profileForm.shopNumberFocus,
+            focus: kIsWeb ? null : profileForm.shopNumberFocus,
             labelText: "Shop's Phone Number",
+            hintText: "+[CountryCode][Number]",
             maxlength: 15,
             keyboard: TextInputType.phone,
             action: TextInputAction.next,
             validator: (v) =>
                 FormValidatorUtil.validatePhone(v, "Phone Number"),
             onSaved: (v) => profileForm.shopNumber = v?.trim(),
-            onFieldSubmitted: (_) =>
-                FocusScope.of(context).requestFocus(profileForm.emailFocus),
+            onFieldSubmitted: kIsWeb
+                ? null
+                : (_) => FocusScope.of(
+                    context,
+                  ).requestFocus(profileForm.emailFocus),
           ),
           SizedBox(height: fieldGap),
           FormWidget(
-            focus: profileForm.emailFocus,
+            focus: kIsWeb ? null : profileForm.emailFocus,
             labelText: "Email Address",
             maxlength: 100,
             keyboard: TextInputType.emailAddress,

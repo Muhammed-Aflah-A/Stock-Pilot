@@ -9,13 +9,13 @@ class ColourStyles {
   static const captionColor = Color(0xFF5D5858);
   static const colorRed = Colors.red;
   static const colorGreen = Colors.green;
+  static const selectionColor = Colors.black26;
 
   static const shadowColor = Colors.black54;
   static const captionColor_2 = Color.fromARGB(255, 150, 150, 150);
   static const colorYellow = Color(0xFFFFBF00);
   static const colorBlue = Colors.blue;
   static final colorgrey = Colors.grey[400];
-  static const baseBackgroundColor = Colors.black26;
   static const primaryColor_3 = Color(0xFFF8F9FA);
   static const cardborderColor = Color(0xFFE5E7EB);
 }

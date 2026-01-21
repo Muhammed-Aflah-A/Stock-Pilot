@@ -7,61 +7,73 @@ import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.
 class DashboardActivityWidget extends StatelessWidget {
   const DashboardActivityWidget({super.key});
 
+  double _scale(BuildContext context, double size) {
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    if (screenWidth < 360) return size * 0.9;
+    if (screenWidth < 600) return size * 1.0;
+    return size * 1.2;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final currentHeigth = MediaQuery.of(context).size.height;
-    final currentWidth = MediaQuery.of(context).size.width;
+    final currentHeight = MediaQuery.sizeOf(context).height;
+    final currentWidth = MediaQuery.sizeOf(context).width;
     return Consumer<DashboardProvider>(
       builder: (context, provider, _) {
         return Column(
           children: List.generate(provider.dashboardActivity.length, (index) {
             final activity = provider.dashboardActivity[index];
+            final double imageSize = _scale(context, 50);
             return Padding(
-              padding: EdgeInsets.only(bottom: currentHeigth * 0.01),
+              padding: EdgeInsets.only(bottom: currentHeight * 0.015),
               child: Card(
-                elevation: 5,
+                elevation: 4,
                 shape: RoundedRectangleBorder(
-                  side: BorderSide(
+                  side: const BorderSide(
                     color: ColourStyles.cardborderColor,
                     width: 1,
                   ),
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(_scale(context, 10)),
                 ),
                 color: ColourStyles.primaryColor_3,
                 child: Padding(
-                  padding: EdgeInsets.all(currentHeigth * 0.015),
+                  padding: EdgeInsets.all(_scale(context, 12)),
                   child: Row(
                     children: [
                       Container(
-                        width: 50,
-                        height: 50,
+                        width: imageSize,
+                        height: imageSize,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(
+                            _scale(context, 8),
+                          ),
                         ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(
+                            _scale(context, 8),
+                          ),
                           child: Image.asset(
                             activity.image!,
                             fit: BoxFit.cover,
                           ),
                         ),
                       ),
-                      SizedBox(width: currentWidth * 0.05),
+                      SizedBox(width: currentWidth * 0.04),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               activity.title!,
-                              style: TextStyles.primaryText_2,
+                              style: TextStyles.titleText(context),
                             ),
                             Text(
                               activity.product!,
-                              style: TextStyles.recentCardtext,
+                              style: TextStyles.activityCardText(context),
                             ),
                             Text(
                               activity.category!,
-                              style: TextStyles.recentCardtext,
+                              style: TextStyles.activityCardText(context),
                             ),
                           ],
                         ),
@@ -71,15 +83,16 @@ class DashboardActivityWidget extends StatelessWidget {
                         children: [
                           Text(
                             '${activity.unit}',
-                            style: TextStyles.recentCardtext_2.copyWith(
-                              color: activity.isPositive!
-                                  ? ColourStyles.colorGreen
-                                  : ColourStyles.colorRed,
-                            ),
+                            style: TextStyles.activityCardUnit(context)
+                                .copyWith(
+                                  color: activity.isPositive!
+                                      ? ColourStyles.colorGreen
+                                      : ColourStyles.colorRed,
+                                ),
                           ),
                           Text(
                             activity.label!,
-                            style: TextStyles.recentCardtext_3,
+                            style: TextStyles.activityCardLabel(context),
                           ),
                         ],
                       ),

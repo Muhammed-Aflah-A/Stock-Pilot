@@ -9,6 +9,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool centeredTitle;
   final bool showAvatar;
+
   const AppBarWidget({
     super.key,
     required this.showleading,
@@ -16,33 +17,41 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     required this.centeredTitle,
     required this.showAvatar,
   });
+
+  double _scale(BuildContext context, double size) {
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    if (screenWidth < 360) return size * 0.9;
+    if (screenWidth < 600) return size * 1.0;
+    return size * 1.2;
+  }
+
   @override
-  Size get preferredSize => const Size.fromHeight(90);
+  Size get preferredSize => const Size.fromHeight(100);
+
   @override
   Widget build(BuildContext context) {
-    final currentHeigth = MediaQuery.of(context).size.height;
+    final currentWidth = MediaQuery.sizeOf(context).width;
+
     return AppBar(
-      systemOverlayStyle: SystemUiOverlayStyle(
+      systemOverlayStyle: const SystemUiOverlayStyle(
         statusBarColor: ColourStyles.primaryColor,
       ),
       backgroundColor: ColourStyles.primaryColor,
-      toolbarHeight: currentHeigth * 0.1,
+      toolbarHeight: _scale(context, 80),
       scrolledUnderElevation: 0,
       leading: showleading
           ? IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.arrow_back_ios),
+              onPressed: () => Navigator.pop(context),
+              icon: Icon(Icons.arrow_back_ios, size: _scale(context, 20)),
             )
           : null,
-      title: Text(title, style: TextStyles.dialogueHeading(context)),
+      title: Text(title, style: TextStyles.appBarHeading(context)),
       centerTitle: centeredTitle,
       actions: showAvatar
           ? [
               Padding(
-                padding: EdgeInsets.all(currentHeigth * 0.02),
-                child: UserAvatarWidget(),
+                padding: EdgeInsets.symmetric(horizontal: currentWidth * 0.04),
+                child: const UserAvatarWidget(),
               ),
             ]
           : null,

@@ -17,6 +17,7 @@ class TextStyles {
   static TextStyle _responsive(BuildContext context, TextStyle baseStyle) {
     return baseStyle.copyWith(
       fontSize: _getFontSize(context, baseStyle.fontSize ?? 14),
+      height: baseStyle.height ?? 1.2,
     );
   }
 
@@ -96,6 +97,16 @@ class TextStyles {
     ),
   );
 
+  static TextStyle appBarHeading(BuildContext context) => _responsive(
+    context,
+    const TextStyle(
+      fontSize: 24,
+      fontWeight: FontWeight.w700,
+      fontFamily: "ManRope",
+      color: ColourStyles.primaryColor_2,
+    ),
+  );
+
   static TextStyle dialogueHeading(BuildContext context) => _responsive(
     context,
     const TextStyle(
@@ -144,6 +155,65 @@ class TextStyles {
     ),
   );
 
+  static TextStyle titleText(BuildContext context) => _responsive(
+    context,
+    const TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w500,
+      fontFamily: "ManRope",
+      color: ColourStyles.primaryColor_2,
+    ),
+  );
+
+  static TextStyle valueText(BuildContext context) => _responsive(
+    context,
+    const TextStyle(
+      fontSize: 25,
+      fontWeight: FontWeight.w700,
+      fontFamily: "ManRope",
+      color: ColourStyles.primaryColor_2,
+    ),
+  );
+
+  static TextStyle recentActivity(BuildContext context) => _responsive(
+    context,
+    const TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w700,
+      fontFamily: "ManRope",
+      color: ColourStyles.colorBlue,
+    ),
+  );
+
+  static TextStyle activityCardText(BuildContext context) => _responsive(
+    context,
+    const TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      fontFamily: "ManRope",
+      color: ColourStyles.captionColor,
+    ),
+  );
+
+  static TextStyle activityCardUnit(BuildContext context) => _responsive(
+    context,
+    const TextStyle(
+      fontSize: 24,
+      fontWeight: FontWeight.w700,
+      fontFamily: "ManRope",
+    ),
+  );
+
+  static TextStyle activityCardLabel(BuildContext context) => _responsive(
+    context,
+    const TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+      fontFamily: "ManRope",
+      color: ColourStyles.captionColor,
+    ),
+  );
+
   static const TextStyle caption_4 = TextStyle(
     fontSize: 16,
     fontFamily: "ManRope",
@@ -174,73 +244,11 @@ class TextStyles {
     color: ColourStyles.captionColor,
   );
 
-  static const TextStyle primaryText_2 = TextStyle(
-    fontSize: 15,
-    fontWeight: FontWeight.w500,
-    fontFamily: "ManRope",
-    color: ColourStyles.primaryColor_2,
-  );
-
-  static const TextStyle dashboardCardText = TextStyle(
-    fontSize: 25,
-    fontWeight: FontWeight.w700,
-    fontFamily: "ManRope",
-    color: ColourStyles.primaryColor_2,
-  );
-
-  static const TextStyle recentCardtext = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
-    fontFamily: "ManRope",
-    color: ColourStyles.captionColor,
-  );
-
-  static const TextStyle recentCardtext_2 = TextStyle(
-    fontSize: 24,
-    fontWeight: FontWeight.w700,
-    fontFamily: "ManRope",
-  );
-
-  static const TextStyle recentCardtext_3 = TextStyle(
-    fontSize: 12,
-    fontWeight: FontWeight.w500,
-    fontFamily: "ManRope",
-    color: ColourStyles.captionColor,
-  );
-
   static const TextStyle primaryTextWhite = TextStyle(
     fontSize: 15,
     fontWeight: FontWeight.w600,
     fontFamily: "ManRope",
     color: ColourStyles.primaryColor,
-  );
-
-  static const TextStyle primaryTextBlue = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w700,
-    fontFamily: "ManRope",
-    color: ColourStyles.colorBlue,
-  );
-
-  static const TextStyle turnOver = TextStyle(
-    fontSize: 30,
-    fontWeight: FontWeight.w700,
-    fontFamily: "ManRope",
-    color: ColourStyles.colorGreen,
-  );
-
-  static const TextStyle lowStock = TextStyle(
-    fontSize: 30,
-    fontWeight: FontWeight.w700,
-    fontFamily: "ManRope",
-    color: ColourStyles.colorYellow,
-  );
-
-  static const TextStyle outOfStock = TextStyle(
-    fontSize: 30,
-    fontWeight: FontWeight.w700,
-    fontFamily: "ManRope",
-    color: ColourStyles.colorRed,
   );
 
   static const TextStyle label = TextStyle(

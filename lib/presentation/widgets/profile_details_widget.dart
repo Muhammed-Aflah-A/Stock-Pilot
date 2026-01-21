@@ -39,7 +39,7 @@ class ProfileDetailsWidget extends StatelessWidget {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: ColourStyles.baseBackgroundColor,
+                  color: ColourStyles.selectionColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: item.leadingIcon,

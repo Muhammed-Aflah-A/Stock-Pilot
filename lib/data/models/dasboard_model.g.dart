@@ -19,23 +19,17 @@ class DashboardCardsAdapter extends TypeAdapter<DashboardCards> {
     return DashboardCards(
       title: fields[0] as String?,
       value: fields[1] as String?,
-      titleStyle: fields[2] as TextStyle?,
-      valueStyle: fields[3] as TextStyle?,
     );
   }
 
   @override
   void write(BinaryWriter writer, DashboardCards obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(2)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
-      ..write(obj.value)
-      ..writeByte(2)
-      ..write(obj.titleStyle)
-      ..writeByte(3)
-      ..write(obj.valueStyle);
+      ..write(obj.value);
   }
 
   @override

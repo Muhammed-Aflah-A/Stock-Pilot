@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:stock_pilot/core/assets/app_images.dart';
-import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
 
 class DashboardProvider with ChangeNotifier {
@@ -8,50 +7,34 @@ class DashboardProvider with ChangeNotifier {
     DashboardCards(
       title: "Total Items",
       value: "1250",
-      titleStyle: TextStyles.primaryText_2,
-      valueStyle: TextStyles.dashboardCardText,
     ),
     DashboardCards(
       title: "Total Value",
       value: "\$150k",
-      titleStyle: TextStyles.primaryText_2,
-      valueStyle: TextStyles.dashboardCardText,
     ),
     DashboardCards(
       title: "Total Category",
       value: "4",
-      titleStyle: TextStyles.primaryText_2,
-      valueStyle: TextStyles.dashboardCardText,
     ),
     DashboardCards(
       title: "Total Brand",
       value: "4",
-      titleStyle: TextStyles.primaryText_2,
-      valueStyle: TextStyles.dashboardCardText,
     ),
     DashboardCards(
       title: "Purchase Cost",
       value: "\$100k",
-      titleStyle: TextStyles.primaryText_2,
-      valueStyle: TextStyles.dashboardCardText,
     ),
     DashboardCards(
       title: "Monthly Turnover",
       value: "\$50k",
-      titleStyle: TextStyles.primaryText_2,
-      valueStyle: TextStyles.turnOver,
     ),
     DashboardCards(
       title: "Low Stock",
       value: "5",
-      titleStyle: TextStyles.primaryText_2,
-      valueStyle: TextStyles.lowStock,
     ),
     DashboardCards(
       title: "Out of Stock",
       value: "1",
-      titleStyle: TextStyles.primaryText_2,
-      valueStyle: TextStyles.outOfStock,
     ),
   ];
   List<DasboardActivity> dashboardActivity = [

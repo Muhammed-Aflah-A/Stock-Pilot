@@ -74,14 +74,20 @@ class ProductListTileWidget extends StatelessWidget {
                   children: [
                     Text(
                       product.productName,
-                      style: TextStyles.primaryText_2,
+                      style: TextStyles.titleText(context),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: currentHeight * 0.001),
-                    Text(product.brand, style: TextStyles.recentCardtext),
+                    Text(
+                      product.brand,
+                      style: TextStyles.activityCardText(context),
+                    ),
                     SizedBox(height: currentHeight * 0.001),
-                    Text(product.category, style: TextStyles.recentCardtext_3),
+                    Text(
+                      product.category,
+                      style: TextStyles.activityCardLabel(context),
+                    ),
                     SizedBox(height: currentHeight * 0.005),
                     Row(
                       children: [
@@ -96,7 +102,7 @@ class ProductListTileWidget extends StatelessWidget {
                         SizedBox(width: currentWidth * 0.02),
                         Text(
                           provider.getStockText(product),
-                          style: TextStyles.recentCardtext_3,
+                          style: TextStyles.activityCardLabel(context),
                         ),
                       ],
                     ),
