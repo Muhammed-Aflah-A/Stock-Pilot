@@ -68,7 +68,7 @@ class ProfilePageProvider with ChangeNotifier {
           Icons.edit_outlined,
           color: ColourStyles.primaryColor_2,
         ),
-        feildtype: 'personalNumber',
+        feildtype: 'personal number',
       ),
       PersonalInfo(
         leadingIcon: Icon(
@@ -125,131 +125,8 @@ class ProfilePageProvider with ChangeNotifier {
           Icons.edit_outlined,
           color: ColourStyles.primaryColor_2,
         ),
-        feildtype: 'shopNumber',
+        feildtype: 'shop number',
       ),
     ];
-  }
-
-  TextInputType? getKeyboardType(String type) {
-    switch (type.toLowerCase()) {
-      case "name":
-        return TextInputType.name;
-      case "email":
-        return TextInputType.emailAddress;
-      case 'personalnumber':
-        return TextInputType.phone;
-      case 'shop name':
-        return TextInputType.text;
-      case 'shop address':
-        return TextInputType.multiline;
-      case 'shopnumber':
-        return TextInputType.phone;
-      default:
-        return null;
-    }
-  }
-
-  String? validate(String? value, String type) {
-    switch (type.toLowerCase()) {
-      case 'name':
-        value = value?.trim();
-        if (value == null || value.isEmpty) {
-          return "Please enter your full name";
-        }
-        if (RegExp(r'\d').hasMatch(value)) {
-          return "Name cannot contain numbers";
-        }
-        if (!RegExp(r'^[A-Za-z ]+$').hasMatch(value)) {
-          return "Name cannot contain special characters";
-        }
-        if (RegExp(r'\s{2,}').hasMatch(value)) {
-          return "Name cannot contain multiple spaces";
-        }
-        if (value.length < 3) {
-          return "Name must be at least 3 characters";
-        }
-        if (value.length > 25) {
-          return "Name cannot be more than 25 characters";
-        }
-        return null;
-      case 'personalnumber':
-        value = value?.trim();
-        if (value == null || value.isEmpty) {
-          return "Please enter a phone number";
-        }
-        if (!value.startsWith('+')) {
-          return "Phone number must start with +";
-        }
-        if (RegExp(r'\s').hasMatch(value)) {
-          return "Phone number must not contain spaces";
-        }
-        if (!RegExp(r'^\+\d+$').hasMatch(value)) {
-          return "Only numbers are allowed after +";
-        }
-        if (!RegExp(r'^\+\d{7,15}$').hasMatch(value)) {
-          return "Enter a valid international phone number";
-        }
-        return null;
-      case 'email':
-        value = value?.trim();
-        if (value == null || value.isEmpty) {
-          return "Please enter a email";
-        }
-        if (!RegExp(r'^[a-z0-9._%+-]+@gmail\.com$').hasMatch(value)) {
-          return "Please enter a valid email";
-        }
-        return null;
-      case 'shop name':
-        value = value?.trim();
-        if (value == null || value.isEmpty) {
-          return "Please enter you shop name";
-        }
-        if (RegExp(r'\s{2,}').hasMatch(value)) {
-          return "Shop name cannot contain multiple spaces together";
-        }
-        if (value.length < 3) {
-          return "Shop name must be at least 3 characters";
-        }
-        if (value.length > 25) {
-          return "Shop name cannot be more than 25 characters";
-        }
-        return null;
-      case 'address':
-        value = value?.trim();
-        if (value == null || value.isEmpty) {
-          return "Please enter your shop address";
-        }
-        if (value.length < 10) {
-          return "Shop address must be at least 10 characters";
-        }
-        if (RegExp(r'\s{2,}').hasMatch(value)) {
-          return "Shop address cannot contain multiple spaces together";
-        }
-        if (!RegExp(r'^.{1,250}$').hasMatch(value)) {
-          return 'Address must not exceed 250 characters';
-        }
-
-        return null;
-      case 'shopnumber':
-        value = value?.trim();
-        if (value == null || value.isEmpty) {
-          return "Please enter a phone number";
-        }
-        if (!value.startsWith('+')) {
-          return "Phone number must start with +";
-        }
-        if (RegExp(r'\s').hasMatch(value)) {
-          return "Phone number must not contain spaces";
-        }
-        if (!RegExp(r'^\+\d+$').hasMatch(value)) {
-          return "Only numbers are allowed after +";
-        }
-        if (!RegExp(r'^\+\d{7,15}$').hasMatch(value)) {
-          return "Enter a valid international phone number";
-        }
-        return null;
-      default:
-        return null;
-    }
   }
 }

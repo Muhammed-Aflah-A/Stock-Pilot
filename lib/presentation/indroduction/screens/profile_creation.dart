@@ -31,7 +31,7 @@ class _ProfileCreationState extends State<ProfileCreation> {
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: constraints.maxWidth * 0.08,
-                      vertical: 20,
+                      vertical: 10,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,7 +74,7 @@ class _ProfileCreationState extends State<ProfileCreation> {
                           child: Column(
                             children: [
                               const CreateProfileButtonWidget(),
-                              SizedBox(height: constraints.maxHeight * 0.02),
+                              SizedBox(height: constraints.maxHeight * 0.01),
                               Text(
                                 "Manage your inventory",
                                 style: TextStyles.buttonCaption(context),
@@ -82,7 +82,7 @@ class _ProfileCreationState extends State<ProfileCreation> {
                             ],
                           ),
                         ),
-                        SizedBox(height: constraints.maxHeight * 0.02),
+                        
                       ],
                     ),
                   ),

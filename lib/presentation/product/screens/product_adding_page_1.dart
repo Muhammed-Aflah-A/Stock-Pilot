@@ -46,7 +46,7 @@ class _ProductAddingState extends State<ProductAddingPage1> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Product Image", style: TextStyles.sectionHeading),
+                Text("Product Image", style: TextStyles.sectionHeading_),
                 SizedBox(height: currentHeigth * 0.01),
                 ImageAddingWidget(),
                 SizedBox(height: currentHeigth * 0.01),
@@ -63,7 +63,7 @@ class _ProductAddingState extends State<ProductAddingPage1> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Product Name", style: TextStyles.sectionHeading),
+                      Text("Product Name", style: TextStyles.sectionHeading_),
                       SizedBox(height: currentHeigth * 0.01),
                       FormWidget(
                         maxlength: 25,
@@ -97,7 +97,7 @@ class _ProductAddingState extends State<ProductAddingPage1> {
                       ),
                       Text(
                         "Product Description",
-                        style: TextStyles.sectionHeading,
+                        style: TextStyles.sectionHeading_,
                       ),
                       SizedBox(height: currentHeigth * 0.01),
                       FormWidget(

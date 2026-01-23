@@ -43,7 +43,7 @@ class _DashboardState extends State<Dashboard> {
                     SizedBox(height: constraints.maxHeight * 0.03),
                     Text(
                       "Recent Activity",
-                      style: TextStyles.recentActivity(context),
+                      style: TextStyles.sectionHeading(context).copyWith(color: ColourStyles.colorBlue),
                     ),
                     SizedBox(height: constraints.maxHeight * 0.015),
                     const DashboardActivityWidget(),

@@ -97,7 +97,7 @@ class TextStyles {
     ),
   );
 
-  static TextStyle appBarHeading(BuildContext context) => _responsive(
+  static TextStyle dialogueHeading(BuildContext context) => _responsive(
     context,
     const TextStyle(
       fontSize: 24,
@@ -107,7 +107,7 @@ class TextStyles {
     ),
   );
 
-  static TextStyle dialogueHeading(BuildContext context) => _responsive(
+  static TextStyle appBarHeading(BuildContext context) => _responsive(
     context,
     const TextStyle(
       fontSize: 24,
@@ -145,6 +145,24 @@ class TextStyles {
     ),
   );
 
+  static TextStyle smallButtonTextWhite(BuildContext context) => _responsive(
+    context,
+    const TextStyle(
+      fontSize: 15,
+      fontFamily: "Aldrich",
+      color: ColourStyles.primaryColor,
+    ),
+  );
+
+  static TextStyle smallButtonTextBlack(BuildContext context) => _responsive(
+    context,
+    const TextStyle(
+      fontSize: 15,
+      fontFamily: "Aldrich",
+      color: ColourStyles.primaryColor_2,
+    ),
+  );
+
   static TextStyle buttonCaption(BuildContext context) => _responsive(
     context,
     const TextStyle(
@@ -159,7 +177,7 @@ class TextStyles {
     context,
     const TextStyle(
       fontSize: 15,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w700,
       fontFamily: "ManRope",
       color: ColourStyles.primaryColor_2,
     ),
@@ -175,13 +193,13 @@ class TextStyles {
     ),
   );
 
-  static TextStyle recentActivity(BuildContext context) => _responsive(
+  static TextStyle sectionHeading(BuildContext context) => _responsive(
     context,
     const TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w700,
       fontFamily: "ManRope",
-      color: ColourStyles.colorBlue,
+      color: ColourStyles.captionColor,
     ),
   );
 
@@ -220,12 +238,6 @@ class TextStyles {
     color: ColourStyles.captionColor,
   );
 
-  static const TextStyle heading_3 = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w700,
-    fontFamily: "ManRope",
-    color: ColourStyles.captionColor,
-  );
   static const TextStyle heading_4 = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w700,
@@ -265,7 +277,7 @@ class TextStyles {
     color: ColourStyles.primaryColor_2,
   );
 
-  static const TextStyle sectionHeading = TextStyle(
+  static const TextStyle sectionHeading_ = TextStyle(
     fontSize: 15,
     fontWeight: FontWeight.w700,
     fontFamily: "ManRope",

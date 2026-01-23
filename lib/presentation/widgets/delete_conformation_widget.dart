@@ -39,7 +39,7 @@ class DeleteConformationWidget extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () => Navigator.pop(context),
-              style: ButtonStyles.dialogBackButton_2,
+              style: ButtonStyles.smallDialogBackButton(context),
               child: Text('Cancel'),
             ),
             SizedBox(width: currentWidth * 0.02),

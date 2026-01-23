@@ -1,5 +1,5 @@
 class FormValidatorUtil {
-  static String? validateName(String? value, String fieldName) {
+  static String? validateName(String? value, String? fieldName) {
     final val = value?.trim() ?? '';
     if (val.isEmpty) return "Please enter $fieldName";
     if (val.length < 3) return "$fieldName must be at least 3 characters";
@@ -10,7 +10,7 @@ class FormValidatorUtil {
     return null;
   }
 
-  static String? validateShopName(String? value, String fieldName) {
+  static String? validateShopName(String? value, String? fieldName) {
     final val = value?.trim() ?? '';
     if (val.isEmpty) return "Please enter your shop name";
     if (val.length < 3) return "Shop name must be at least 3 characters";
@@ -26,7 +26,7 @@ class FormValidatorUtil {
     return null;
   }
 
-  static String? validatePhone(String? value, String fieldName) {
+  static String? validatePhone(String? value, String? fieldName) {
     final val = value?.trim() ?? '';
     if (val.isEmpty) return "$fieldName is required";
     if (val.contains(' ')) return "$fieldName cannot contain spaces";
@@ -37,7 +37,7 @@ class FormValidatorUtil {
     return null;
   }
 
-  static String? validateEmail(String? value, String fieldName) {
+  static String? validateEmail(String? value, String? fieldName) {
     final val = value?.trim() ?? '';
     if (val.isEmpty) return "$fieldName is required";
     final gmailRegex = RegExp(r"^[a-z0-9.]+@gmail\.com$");
@@ -47,7 +47,7 @@ class FormValidatorUtil {
     return null;
   }
 
-  static String? validateAddress(String? value, String fieldName) {
+  static String? validateAddress(String? value, String? fieldName) {
     final val = value?.trim() ?? '';
     if (val.isEmpty) return "$fieldName is required";
     if (val.length < 10) return "$fieldName must be at least 10 characters";

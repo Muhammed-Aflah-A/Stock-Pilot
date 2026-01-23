@@ -51,7 +51,7 @@ class _ProductAddingPage2State extends State<ProductAddingPage2> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Product brand", style: TextStyles.sectionHeading),
+                      Text("Product brand", style: TextStyles.sectionHeading_),
                       SizedBox(height: currentHeigth * 0.01),
                       DropdownFeildWidget(
                         value: provider.brand,
@@ -69,7 +69,7 @@ class _ProductAddingPage2State extends State<ProductAddingPage2> {
                       SizedBox(height: currentHeigth * 0.01),
                       Text(
                         "Product category",
-                        style: TextStyles.sectionHeading,
+                        style: TextStyles.sectionHeading_,
                       ),
                       SizedBox(height: currentHeigth * 0.01),
                       DropdownFeildWidget(
@@ -86,7 +86,7 @@ class _ProductAddingPage2State extends State<ProductAddingPage2> {
                         },
                       ),
                       SizedBox(height: currentHeigth * 0.01),
-                      Text("Purchase Rate", style: TextStyles.sectionHeading),
+                      Text("Purchase Rate", style: TextStyles.sectionHeading_),
                       SizedBox(height: currentHeigth * 0.01),
                       FormWidget(
                         initialValue: provider.purchaseRate,
@@ -126,7 +126,7 @@ class _ProductAddingPage2State extends State<ProductAddingPage2> {
                         },
                       ),
                       SizedBox(height: currentHeigth * 0.01),
-                      Text("Sales Rate", style: TextStyles.sectionHeading),
+                      Text("Sales Rate", style: TextStyles.sectionHeading_),
                       SizedBox(height: currentHeigth * 0.01),
                       FormWidget(
                         initialValue: provider.salesRate,
@@ -167,7 +167,7 @@ class _ProductAddingPage2State extends State<ProductAddingPage2> {
                         },
                       ),
                       SizedBox(height: currentHeigth * 0.01),
-                      Text("Item count", style: TextStyles.sectionHeading),
+                      Text("Item count", style: TextStyles.sectionHeading_),
                       SizedBox(height: currentHeigth * 0.01),
                       FormWidget(
                         initialValue: provider.itemCount,
@@ -205,7 +205,7 @@ class _ProductAddingPage2State extends State<ProductAddingPage2> {
                         },
                       ),
                       SizedBox(height: currentHeigth * 0.01),
-                      Text("Low stock count", style: TextStyles.sectionHeading),
+                      Text("Low stock count", style: TextStyles.sectionHeading_),
                       SizedBox(height: currentHeigth * 0.01),
                       FormWidget(
                         initialValue: provider.lowStockCount,

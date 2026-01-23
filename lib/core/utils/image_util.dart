@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/assets/app_images.dart';
@@ -20,6 +22,10 @@ class ImageUtil {
   }
 
   static ImageProvider _getMobileImage(String path) {
+    final file = File(path);
+    if (file.existsSync()) {
+      return FileImage(file);
+    }
     return const AssetImage(AppImages.profilePicture);
   }
 }
