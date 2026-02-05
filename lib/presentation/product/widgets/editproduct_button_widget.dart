@@ -27,8 +27,12 @@ class EditproductButtonWidget extends StatelessWidget {
           arguments: {'product': product, 'productIndex': productIndex},
         );
       },
-      style: ButtonStyles.detailPageButton,
-      child: Text('Edit Product', style: TextStyles.primaryText(context)),
+      style: ButtonStyles.detailPageEditButton(context),
+      child: Text(
+        'Edit Product',
+        style: TextStyles.primaryText(context),
+        textAlign: TextAlign.center,
+      ),
     );
   }
 }

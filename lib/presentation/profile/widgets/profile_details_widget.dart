@@ -7,12 +7,7 @@ import 'package:stock_pilot/presentation/widgets/edit_details_widget.dart';
 
 class ProfileDetailsWidget extends StatelessWidget {
   final List<dynamic> items;
-  final void Function(
-    ProfilePageProvider provider,
-    String fieldType,
-    String value,
-  )
-  onSave;
+  final Future<void> Function(String fieldType, String value) onSave;
 
   const ProfileDetailsWidget({
     super.key,
@@ -65,9 +60,9 @@ class ProfileDetailsWidget extends StatelessWidget {
                       title: item.title,
                       initialValue: item.subtitle,
                       fieldtype: item.feildtype,
-                      provider: provider,
                       screenWidth: screenWidth,
-                      onSave: onSave,
+                      isEditing: true,
+                      onSave: (value) => onSave(item.feildtype, value),
                     );
                   },
                 ),

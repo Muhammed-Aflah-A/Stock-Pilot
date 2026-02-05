@@ -63,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     SizedBox(height: screenHeight * 0.01),
                     ProfileDetailsWidget(
                       items: provider.personalInfo,
-                      onSave: (provider, fieldType, value) {
+                      onSave: (fieldType, value) async {
                         switch (fieldType) {
                           case 'name':
                             provider.user!.fullName = value;
@@ -75,6 +75,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             provider.user!.gmail = value;
                             break;
                         }
+                        await provider.updateUser();
                       },
                     ),
                     SizedBox(height: screenHeight * 0.04),
@@ -85,7 +86,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     SizedBox(height: screenHeight * 0.01),
                     ProfileDetailsWidget(
                       items: provider.shopInfo,
-                      onSave: (provider, fieldtype, value) {
+                      onSave: (fieldtype, value) async {
                         switch (fieldtype) {
                           case 'shop name':
                             provider.user!.shopName = value;
@@ -97,6 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             provider.user!.shopNumber = value;
                             break;
                         }
+                        await provider.updateUser();
                       },
                     ),
                     SizedBox(height: screenHeight * 0.05),

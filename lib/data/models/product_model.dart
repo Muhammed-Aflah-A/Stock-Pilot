@@ -6,21 +6,21 @@ class ProductModel {
   @HiveField(0)
   List<String> productImages;
   @HiveField(1)
-  String productName;
+  String? productName;
   @HiveField(2)
-  String productDescription;
+  String? productDescription;
   @HiveField(3)
-  String brand;
+  String? brand;
   @HiveField(4)
-  String category;
+  String? category;
   @HiveField(5)
-  String purchaseRate;
+  String? purchaseRate;
   @HiveField(6)
-  String salesRate;
+  String?salesRate;
   @HiveField(7)
-  String itemCount;
+  String? itemCount;
   @HiveField(8)
-  String lowStockCount;
+  String? lowStockCount;
 
   ProductModel({
     required this.productImages,

@@ -1,4 +1,6 @@
 import 'package:hive/hive.dart';
+import 'package:stock_pilot/data/models/brand_model.dart';
+import 'package:stock_pilot/data/models/category_model.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
 import 'package:stock_pilot/data/models/drawer_model.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
@@ -13,5 +15,7 @@ class HiveAdapters {
     Hive.registerAdapter(PersonalInfoAdapter());
     Hive.registerAdapter(ShopInfoAdapter());
     Hive.registerAdapter(ProductModelAdapter());
+    Hive.registerAdapter(CategoryModelAdapter());
+    Hive.registerAdapter(BrandModelAdapter());
   }
 }

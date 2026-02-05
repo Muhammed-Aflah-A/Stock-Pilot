@@ -64,14 +64,19 @@ class AppDrawer extends StatelessWidget {
                       ),
                       title: Text(
                         item.title!,
-                        style: TextStyles.titleText(
-                          context,
-                        ),
+                        style: TextStyles.titleText(context),
                       ),
                       onTap: () {
                         provider.selectedDrawerItem(index);
                         Navigator.pop(context);
-                        Navigator.pushNamed(context, "${item.navigation}");
+                        if (ModalRoute.of(context)?.settings.name !=
+                            item.navigation) {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            "${item.navigation}",
+                            (route) => false,
+                          );
+                        }
                       },
                     );
                   },

@@ -5,29 +5,25 @@ import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/core/utils/keyboard_type_util.dart';
 import 'package:stock_pilot/core/utils/select_validator_util.dart';
 import 'package:stock_pilot/core/utils/snackbar_util.dart';
-import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
 
 class EditDetailsWidget extends StatefulWidget {
   final String title;
-  final String initialValue;
+  final String? initialValue;
   final dynamic fieldtype;
-  final ProfilePageProvider provider;
+  final int? maxlength;
   final double screenWidth;
-  final void Function(
-    ProfilePageProvider provider,
-    String fieldType,
-    String value,
-  )
-  onSave;
+  final bool isEditing;
+  final Future<void> Function(String value) onSave;
 
   const EditDetailsWidget({
     super.key,
     required this.title,
-    required this.initialValue,
-    required this.fieldtype,
-    required this.provider,
+    this.initialValue,
+    this.fieldtype,
+    this.maxlength,
     required this.screenWidth,
     required this.onSave,
+    this.isEditing = false,
   });
 
   @override
@@ -50,7 +46,7 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
       backgroundColor: ColourStyles.primaryColor,
       title: Center(
         child: Text(
-          "Edit ${widget.title}",
+          "${widget.isEditing ? 'Edit' : 'Add'} ${widget.title}",
           style: TextStyles.dialogueHeading(context),
         ),
       ),
@@ -59,9 +55,11 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
         child: Form(
           key: formKey,
           child: TextFormField(
+            maxLength: widget.maxlength,
             controller: controller,
             keyboardType: KeyboardTypeUtil.getKeyboardType(widget.fieldtype),
             decoration: InputDecoration(
+              counterText: "",
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
                   color: ColourStyles.primaryColor_2,
@@ -101,19 +99,12 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
                   style: ButtonStyles.smallDialogNextButton(context),
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
-                      widget.onSave(
-                        widget.provider,
-                        widget.fieldtype,
-                        controller.text.trim(),
-                      );
-                      await widget.provider.updateUser();
-                      await widget.provider.loadUser();
+                      await widget.onSave(controller.text.trim());
                       if (context.mounted) {
-                        SnackbarUtil.showSnackBar(
-                          context,
-                          "${widget.title} edited Successfully",
-                          false,
-                        );
+                        final message = widget.isEditing
+                            ? "${widget.title} updated successfully"
+                            : "${widget.title} added successfully";
+                        SnackbarUtil.showSnackBar(context, message, false);
                         Navigator.pop(context);
                       }
                     }

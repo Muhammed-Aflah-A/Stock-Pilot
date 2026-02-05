@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:stock_pilot/core/theme/colours_styles.dart';
+import 'package:stock_pilot/core/theme/text_styles.dart';
 
 class DetailRowWidget extends StatelessWidget {
   final String label;
@@ -27,11 +29,7 @@ class DetailRowWidget extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[700],
-                  fontWeight: FontWeight.w400,
-                ),
+                style: TextStyles.caption2(context)
               ),
               Row(
                 children: [
@@ -41,7 +39,7 @@ class DetailRowWidget extends StatelessWidget {
                       height: 8,
                       margin: const EdgeInsets.only(right: 8),
                       decoration: BoxDecoration(
-                        color: valueColor ?? Colors.black,
+                        color: valueColor ?? ColourStyles.primaryColor_2,
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -58,7 +56,7 @@ class DetailRowWidget extends StatelessWidget {
             ],
           ),
         ),
-        if (showDivider) Divider(color: Colors.grey[300], height: 1),
+        if (showDivider) Divider(),
       ],
     );
   }

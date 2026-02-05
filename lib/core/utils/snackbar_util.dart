@@ -34,11 +34,16 @@ class SnackbarUtil {
               size: _scale(context, 20),
             ),
             SizedBox(width: _scale(context, 12)),
-            Text(
-              message,
-              style: TextStyles.primaryText(context).copyWith(
-                color: ColourStyles.primaryColor,
-                fontSize: _scale(context, 14),
+            Expanded(
+              child: Text(
+                message,
+                style: TextStyles.primaryText(context).copyWith(
+                  color: ColourStyles.primaryColor,
+                  fontSize: _scale(context, 14),
+                ),
+                textAlign: TextAlign.start,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],

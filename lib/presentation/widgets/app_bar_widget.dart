@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/presentation/widgets/user_avatar_widget.dart';
@@ -33,9 +32,6 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     final currentWidth = MediaQuery.sizeOf(context).width;
 
     return AppBar(
-      systemOverlayStyle: const SystemUiOverlayStyle(
-        statusBarColor: ColourStyles.primaryColor,
-      ),
       backgroundColor: ColourStyles.primaryColor,
       toolbarHeight: _scale(context, 80),
       scrolledUnderElevation: 0,
@@ -50,7 +46,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       actions: showAvatar
           ? [
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: currentWidth * 0.04),
+                padding: EdgeInsets.symmetric(horizontal: currentWidth * 0.05),
                 child: const UserAvatarWidget(),
               ),
             ]

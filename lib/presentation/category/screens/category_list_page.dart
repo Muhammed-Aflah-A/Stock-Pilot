@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
+import 'package:stock_pilot/data/models/category_model.dart';
+import 'package:stock_pilot/presentation/category/viewmodel/category_provider.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
 import 'package:stock_pilot/presentation/widgets/app_drawer_widget.dart';
+import 'package:stock_pilot/presentation/widgets/delete_confirmation_widget.dart';
+import 'package:stock_pilot/presentation/widgets/edit_details_widget.dart';
+import 'package:stock_pilot/presentation/widgets/emptypage_message_widget.dart';
+import 'package:stock_pilot/presentation/widgets/filterlist_tile_widget.dart';
 import 'package:stock_pilot/presentation/widgets/floatingactionbutton_widget.dart';
 import 'package:stock_pilot/presentation/widgets/searchbar_widget.dart';
 
@@ -27,20 +34,104 @@ class _CategoryListPageState extends State<CategoryListPage> {
         showAvatar: true,
       ),
       drawer: AppDrawer(),
-      floatingActionButton: FloatingactionbuttonWidget(onPressed: () {}),
+      floatingActionButton: FloatingactionbuttonWidget(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return EditDetailsWidget(
+                maxlength: 30,
+                title: "Category",
+                fieldtype: "category",
+                screenWidth: currentWidth,
+                isEditing: false,
+                onSave: (value) async {
+                  final newCategory = CategoryModel(category: value);
+                  await context.read<CategoryProvider>().addCategory(
+                    newCategory,
+                  );
+                },
+              );
+            },
+          );
+        },
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(
+            horizontal: currentWidth * 0.04,
             vertical: currentHeigth * 0.01,
-            horizontal: currentWidth * 0.03,
           ),
           child: Column(
             children: [
+              SearchbarWidget(
+                controller: controller,
+                onChanged: (value) {},
+                hintText: "Search categories",
+              ),
+              SizedBox(height: currentHeigth * 0.02),
               Expanded(
-                child: SearchbarWidget(
-                  controller: controller,
-                  onChanged: (value) {},
-                  hintText: "Search by name",
+                child: Consumer<CategoryProvider>(
+                  builder: (context, provider, child) {
+                    if (provider.categories.isEmpty) {
+                      return const Center(
+                        child: SingleChildScrollView(
+                          child: EmptypageMessageWidget(
+                            heading: "No categories yet",
+                            label: "Add your first category to get started",
+                          ),
+                        ),
+                      );
+                    }
+                    return ListView.builder(
+                      itemCount: provider.categories.length,
+                      itemBuilder: (context, index) {
+                        final categoryItem = provider.categories[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: FilterlistTileWidget(
+                            title: categoryItem.category ?? "Unknown",
+                            onEdit: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => EditDetailsWidget(
+                                  maxlength: 30,
+                                  title: "Category",
+                                  fieldtype: "category",
+                                  initialValue: categoryItem.category,
+                                  screenWidth: currentWidth,
+                                  isEditing: true,
+                                  onSave: (value) async {
+                                    final updatedCategory = CategoryModel(
+                                      category: value,
+                                    );
+                                    await context
+                                        .read<CategoryProvider>()
+                                        .updateCategory(index, updatedCategory);
+                                  },
+                                ),
+                              );
+                            },
+                            onDelete: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => DeleteConfirmationWidget(
+                                  title: "Remove Category",
+                                  displayName:
+                                      categoryItem.category ?? "Unknown",
+                                  onDelete: () async {
+                                    await context
+                                        .read<CategoryProvider>()
+                                        .deleteCategory(index);
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    );
+                  },
                 ),
               ),
             ],

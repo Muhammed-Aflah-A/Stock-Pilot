@@ -29,8 +29,7 @@ class _DashboardState extends State<Dashboard> {
         child: LayoutBuilder(
           builder: (context, constraints) {
             return SingleChildScrollView(
-              physics:
-                  const AlwaysScrollableScrollPhysics(),
+              physics: const AlwaysScrollableScrollPhysics(),
               child: Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: constraints.maxWidth * 0.05,
@@ -43,7 +42,9 @@ class _DashboardState extends State<Dashboard> {
                     SizedBox(height: constraints.maxHeight * 0.03),
                     Text(
                       "Recent Activity",
-                      style: TextStyles.sectionHeading(context).copyWith(color: ColourStyles.colorBlue),
+                      style: TextStyles.sectionHeading(
+                        context,
+                      ).copyWith(color: ColourStyles.colorBlue),
                     ),
                     SizedBox(height: constraints.maxHeight * 0.015),
                     const DashboardActivityWidget(),

@@ -38,12 +38,12 @@ class FormWidget extends StatelessWidget {
       maxLength: maxlength,
       focusNode: focus,
       keyboardType: keyboard,
-      style: TextStyles.formLabel.copyWith(color: Colors.black),
+      style: TextStyles.formLabel(context),
       decoration: InputDecoration(
         labelText: labelText,
-        labelStyle: TextStyles.formLabel,
+        labelStyle: TextStyles.formLabel(context),
         hintText: hintText,
-        hintStyle: TextStyles.formHint,
+        hintStyle: TextStyles.formHint(context),
         counterText: "",
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),

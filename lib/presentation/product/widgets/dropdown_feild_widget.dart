@@ -6,6 +6,7 @@ class DropdownFeildWidget extends StatelessWidget {
   final List<String> items;
   final ValueChanged<String?> onChanged;
   final String? Function(String?)? validator;
+
   const DropdownFeildWidget({
     super.key,
     required this.value,
@@ -16,15 +17,19 @@ class DropdownFeildWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField(
-      initialValue: value,
+    final String? effectiveValue = items.contains(value) ? value : null;
+    return DropdownButtonFormField<String>(
+      initialValue: effectiveValue,
       isExpanded: true,
+      dropdownColor: ColourStyles.primaryColor,
+      hint: const Text("Select from menu"),
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: ColourStyles.primaryColor_2, width: 2),
         ),
         focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: ColourStyles.primaryColor_2, width: 2),
         ),
         errorBorder: OutlineInputBorder(
@@ -36,8 +41,8 @@ class DropdownFeildWidget extends StatelessWidget {
           borderSide: BorderSide(color: ColourStyles.colorRed, width: 2),
         ),
       ),
-      icon: Icon(Icons.keyboard_arrow_down_sharp),
-      items: items.map((String item) {
+      icon: const Icon(Icons.keyboard_arrow_down_sharp),
+      items: items.toSet().map((String item) {
         return DropdownMenuItem<String>(value: item, child: Text(item));
       }).toList(),
       onChanged: onChanged,

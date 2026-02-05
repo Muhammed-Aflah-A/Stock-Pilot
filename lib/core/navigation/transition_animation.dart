@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class TransitionAnimations {
   //------------------------------ (FADE Animation Code)------------------------
-  static PageRouteBuilder fadeRoute(Widget page) {
+  static PageRouteBuilder fadeRoute(Widget page, {RouteSettings? settings}) {
     return PageRouteBuilder(
+      settings: settings,
       transitionDuration: const Duration(milliseconds: 500),
       pageBuilder: (_, __, ___) => page,
       transitionsBuilder: (_, animation, __, child) {
@@ -13,8 +14,9 @@ class TransitionAnimations {
   }
 
   //------------------------------ (SLIDE Animation Code)------------------------
-  static PageRouteBuilder slideRoute(Widget page) {
+  static PageRouteBuilder slideRoute(Widget page, {RouteSettings? settings}) {
     return PageRouteBuilder(
+      settings: settings,
       transitionDuration: const Duration(milliseconds: 500),
       pageBuilder: (_, __, ___) => page,
       transitionsBuilder: (_, animation, __, child) {

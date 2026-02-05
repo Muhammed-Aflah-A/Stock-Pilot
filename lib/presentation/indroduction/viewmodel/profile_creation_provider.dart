@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:stock_pilot/core/utils/image_selector_util.dart';
 import 'package:stock_pilot/data/models/user_profle_model.dart';
-import 'package:stock_pilot/data/services/hive_service_layer.dart';
+import 'package:stock_pilot/data/service%20layer/hive_service_layer.dart';
 
 class ProfileCreationProvider with ChangeNotifier {
   String? profileImage;

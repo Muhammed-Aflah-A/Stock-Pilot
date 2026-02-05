@@ -10,11 +10,37 @@ class SelectValidatorUtil {
       case 'email':
         return FormValidatorUtil.validateEmail(value, "Email");
       case 'shop name':
-       return FormValidatorUtil.validateName(value, "Shop Name");
+        return FormValidatorUtil.validateName(value, "Shop Name");
       case 'address':
         return FormValidatorUtil.validateAddress(value, "Address");
-        case 'shop number':
+      case 'shop number':
         return FormValidatorUtil.validatePhone(value, "Phone Number");
+      case 'product name':
+        return FormValidatorUtil.validateProductName(value, "Product Name");
+      case 'product description':
+        return FormValidatorUtil.validateProductDescription(
+          value,
+          "Product description",
+        );
+      case 'product brand':
+        return FormValidatorUtil.validateProductfilter(value, "Product brand");
+      case 'product category':
+        return FormValidatorUtil.validateProductfilter(
+          value,
+          "Product category",
+        );
+      case 'purchase rate':
+        return FormValidatorUtil.validateRate(value, "Purchase rate");
+      case 'sales rate':
+        return FormValidatorUtil.validateRate(value, "Sales rate");
+      case 'item count':
+        return FormValidatorUtil.validateCount(value, "Item count");
+      case 'low stock count':
+        return FormValidatorUtil.validateCount(value, "Low stock count");
+      case 'category':
+        return FormValidatorUtil.validatefilter(value, "Category");
+      case 'brand':
+        return FormValidatorUtil.validatefilter(value, "Brand");
       default:
         return null;
     }

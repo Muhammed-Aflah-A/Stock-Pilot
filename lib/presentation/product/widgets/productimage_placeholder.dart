@@ -10,7 +10,7 @@ class ProductimagePlaceholder extends StatelessWidget {
       child: Icon(
         Icons.inventory_2_outlined,
         size: 80,
-        color: ColourStyles.colorgrey,
+        color: ColourStyles.colorGrey,
       ),
     );
   }

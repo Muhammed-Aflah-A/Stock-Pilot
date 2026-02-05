@@ -25,4 +25,8 @@ class AppRoutes {
       'package:stock_pilot/presentation/category/screens/category_list_page.dart';
   static const brand =
       'package:stock_pilot/presentation/brand/screens/brand_lisdartt_page.dart';
+  static const lowStockPage =
+      'package:stock_pilot/presentation/low stock/screens/lowstock_list_page.dart';
+  static const outOfStockPage =
+      'package:stock_pilot/presentation/out of stock/screens/out_of_stock_list_page.dart';
 }

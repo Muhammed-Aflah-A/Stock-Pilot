@@ -6,16 +6,19 @@ class SortbuttonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {},
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: ColourStyles.primaryColor_2, width: 2),
+    return AspectRatio(
+      aspectRatio: 1,
+      child: InkWell(
+        onTap: () {},
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: ColourStyles.primaryColor_2, width: 2),
+          ),
+          child: Icon(Icons.sort, size: 22, color: ColourStyles.primaryColor_2),
         ),
-        child: Icon(Icons.sort, size: 20, color: ColourStyles.primaryColor_2),
       ),
     );
   }

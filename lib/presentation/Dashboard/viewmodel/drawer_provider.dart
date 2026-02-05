@@ -21,23 +21,28 @@ class DrawerProvider with ChangeNotifier {
       navigation: AppRoutes.productListPage,
     ),
     DrawerItems(
-      icon: AppIcons.category,
-      title: 'Category',
-      navigation: AppRoutes.category,
-    ),
-    DrawerItems(
       icon: AppIcons.brand,
       title: 'Brand',
       navigation: AppRoutes.brand,
     ),
     DrawerItems(
+      icon: AppIcons.category,
+      title: 'Category',
+      navigation: AppRoutes.category,
+    ),
+    DrawerItems(
       icon: AppIcons.lowStock,
       title: 'Low stock',
-      navigation: AppRoutes.dashboard,
+      navigation: AppRoutes.lowStockPage,
     ),
     DrawerItems(
       icon: AppIcons.outOfStock,
       title: 'Out of stock',
+      navigation: AppRoutes.outOfStockPage,
+    ),
+    DrawerItems(
+      icon: AppIcons.cart,
+      title: 'Cart',
       navigation: AppRoutes.dashboard,
     ),
     DrawerItems(

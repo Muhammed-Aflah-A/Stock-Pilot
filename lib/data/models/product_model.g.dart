@@ -18,14 +18,14 @@ class ProductModelAdapter extends TypeAdapter<ProductModel> {
     };
     return ProductModel(
       productImages: (fields[0] as List).cast<String>(),
-      productName: fields[1] as String,
-      productDescription: fields[2] as String,
-      brand: fields[3] as String,
-      category: fields[4] as String,
-      purchaseRate: fields[5] as String,
-      salesRate: fields[6] as String,
-      itemCount: fields[7] as String,
-      lowStockCount: fields[8] as String,
+      productName: fields[1] as String?,
+      productDescription: fields[2] as String?,
+      brand: fields[3] as String?,
+      category: fields[4] as String?,
+      purchaseRate: fields[5] as String?,
+      salesRate: fields[6] as String?,
+      itemCount: fields[7] as String?,
+      lowStockCount: fields[8] as String?,
     );
   }
 

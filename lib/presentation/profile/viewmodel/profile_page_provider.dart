@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/utils/image_selector_util.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/data/models/user_profle_model.dart';
-import 'package:stock_pilot/data/services/hive_service_layer.dart';
+import 'package:stock_pilot/data/service%20layer/hive_service_layer.dart';
 
 class ProfilePageProvider with ChangeNotifier {
   final HiveServiceLayer hiveService;
@@ -21,7 +21,7 @@ class ProfilePageProvider with ChangeNotifier {
 
   Future<void> updateUser() async {
     await hiveService.updateUser(user!);
-    notifyListeners();
+    loadUser();
   }
 
   Future<void> openCamera() async {
@@ -51,10 +51,7 @@ class ProfilePageProvider with ChangeNotifier {
         ),
         title: "Full Name",
         subtitle: user!.fullName,
-        trailingIcon: Icon(
-          Icons.edit_outlined,
-          color: ColourStyles.primaryColor_2,
-        ),
+        trailingIcon: Icon(Icons.mode_edit_outlined, color: ColourStyles.primaryColor_2),
         feildtype: 'name',
       ),
       PersonalInfo(
@@ -64,10 +61,7 @@ class ProfilePageProvider with ChangeNotifier {
         ),
         title: "Phone number",
         subtitle: user!.personalNumber,
-        trailingIcon: Icon(
-          Icons.edit_outlined,
-          color: ColourStyles.primaryColor_2,
-        ),
+        trailingIcon: Icon(Icons.mode_edit_outlined, color: ColourStyles.primaryColor_2),
         feildtype: 'personal number',
       ),
       PersonalInfo(
@@ -77,10 +71,7 @@ class ProfilePageProvider with ChangeNotifier {
         ),
         title: "Email",
         subtitle: user!.gmail,
-        trailingIcon: Icon(
-          Icons.edit_outlined,
-          color: ColourStyles.primaryColor_2,
-        ),
+        trailingIcon: Icon(Icons.mode_edit_outlined, color: ColourStyles.primaryColor_2),
         feildtype: 'email',
       ),
     ];
@@ -95,10 +86,7 @@ class ProfilePageProvider with ChangeNotifier {
         ),
         title: "Shop Name",
         subtitle: user!.shopName,
-        trailingIcon: Icon(
-          Icons.edit_outlined,
-          color: ColourStyles.primaryColor_2,
-        ),
+        trailingIcon: Icon(Icons.mode_edit_outlined, color: ColourStyles.primaryColor_2),
         feildtype: 'shop name',
       ),
       ShopInfo(
@@ -108,10 +96,7 @@ class ProfilePageProvider with ChangeNotifier {
         ),
         title: "Shop Address",
         subtitle: user!.shopAdress,
-        trailingIcon: Icon(
-          Icons.edit_outlined,
-          color: ColourStyles.primaryColor_2,
-        ),
+        trailingIcon: Icon(Icons.mode_edit_outlined, color: ColourStyles.primaryColor_2),
         feildtype: 'address',
       ),
       ShopInfo(
@@ -121,10 +106,7 @@ class ProfilePageProvider with ChangeNotifier {
         ),
         title: "Shop Number",
         subtitle: user!.shopNumber,
-        trailingIcon: Icon(
-          Icons.edit_outlined,
-          color: ColourStyles.primaryColor_2,
-        ),
+        trailingIcon: Icon(Icons.mode_edit_outlined, color: ColourStyles.primaryColor_2),
         feildtype: 'shop number',
       ),
     ];

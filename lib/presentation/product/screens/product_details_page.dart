@@ -3,13 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
+import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
-import 'package:stock_pilot/presentation/widgets/addcart_button_widget.dart';
+import 'package:stock_pilot/presentation/product/widgets/addcart_button_widget.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
-import 'package:stock_pilot/presentation/widgets/editproduct_button_widget.dart';
-import 'package:stock_pilot/presentation/widgets/producct_image_widget.dart';
-import 'package:stock_pilot/presentation/widgets/product_detailrow_widget.dart';
-import 'package:stock_pilot/presentation/widgets/removeproduct_button_widget.dart';
+import 'package:stock_pilot/presentation/product/widgets/editproduct_button_widget.dart';
+import 'package:stock_pilot/presentation/product/widgets/product_image_widget.dart';
+import 'package:stock_pilot/presentation/product/widgets/product_detailrow_widget.dart';
+import 'package:stock_pilot/presentation/product/widgets/removeproduct_button_widget.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   final ProductModel product;
@@ -33,6 +34,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     final currentHeight = MediaQuery.of(context).size.height;
     final currentWidth = MediaQuery.of(context).size.width;
     final provider = context.watch<ProductProvider>();
+    if (widget.productIndex < 0 ||
+        widget.productIndex >= provider.products.length) {
+      return const Scaffold(body: Center(child: Text("Product not found")));
+    }
+    final product = provider.products[widget.productIndex];
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
       appBar: AppBarWidget(
@@ -50,7 +56,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           child: Column(
             children: [
               ProductImageWidget(
-                images: widget.product.productImages,
+                images: product.productImages,
                 height: currentHeight * 0.35,
               ),
               SizedBox(height: currentHeight * 0.025),
@@ -64,7 +70,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     BoxShadow(
                       color: ColourStyles.shadowColor,
                       blurRadius: 10,
-                      offset: Offset(0, 2),
+                      offset: const Offset(0, 2),
                     ),
                   ],
                 ),
@@ -72,28 +78,28 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.product.productName,
+                      product.productName!,
                       style: TextStyles.dialogueHeading(context),
                     ),
                     SizedBox(height: currentHeight * 0.005),
-                    Text(widget.product.category, style: TextStyles.caption_4),
+                    Text(product.category!, style: TextStyles.caption(context)),
                     SizedBox(height: currentHeight * 0.025),
                     DetailRowWidget(
+                      label: 'Brand',
+                      value: product.brand!,
+                      showDivider: true,
+                    ),
+                    DetailRowWidget(
                       label: 'Price',
-                      value: '\$${widget.product.salesRate}',
+                      value: '\$${product.salesRate}',
                       showDivider: true,
                     ),
                     DetailRowWidget(
                       label: 'Stock Quantity',
-                      value: provider.getStockText(widget.product),
-                      showDivider: true,
-                      valueColor: provider.getStockColor(widget.product),
-                      showDot: true,
-                    ),
-                    DetailRowWidget(
-                      label: 'Brand',
-                      value: widget.product.brand,
+                      value: provider.getStockText(product),
                       showDivider: false,
+                      valueColor: provider.getStockColor(product),
+                      showDot: true,
                     ),
                   ],
                 ),
@@ -103,7 +109,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 width: double.infinity,
                 padding: EdgeInsets.all(currentWidth * 0.05),
                 decoration: BoxDecoration(
-                  color: ColourStyles.primaryColor,
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
@@ -125,9 +131,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
+                          Text(
                             'Description',
-                            style: TextStyles.heading_4,
+                            style: TextStyles.cardHeading(context),
                           ),
                           Icon(
                             _isDescriptionExpanded
@@ -140,10 +146,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     if (_isDescriptionExpanded) ...[
                       SizedBox(height: currentHeight * 0.015),
                       Text(
-                        widget.product.productDescription,
+                        product.productDescription!,
                         style: TextStyle(
                           fontSize: 14,
-                          color: Colors.grey[700],
+                          color: ColourStyles.colorGrey,
                           height: 1.5,
                         ),
                       ),
@@ -156,22 +162,33 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 children: [
                   Expanded(
                     child: EditproductButtonWidget(
-                      product: widget.product,
+                      product: product,
                       productIndex: widget.productIndex,
                     ),
                   ),
                   SizedBox(width: currentWidth * 0.03),
                   Expanded(
                     child: RemoveproductButtonWidget(
-                      product: widget.product,
-                      productIndex: widget.productIndex,
+                      label: 'Remove Product',
+                      dialogTitle: 'Delete Product',
+                      itemName: product.productName!,
+                      onDeleteAction: () async {
+                        final dashProvider = context.read<DashboardProvider>();
+                        await provider.deleteProduct(
+                          widget.productIndex,
+                          dashProvider,
+                        );
+                        if (context.mounted) {
+                          Navigator.pop(context);
+                        }
+                      },
                     ),
                   ),
                 ],
               ),
               SizedBox(height: currentHeight * 0.02),
               AddcartButtonWidget(
-                product: widget.product,
+                product: product,
                 productIndex: widget.productIndex,
               ),
               SizedBox(height: currentHeight * 0.02),

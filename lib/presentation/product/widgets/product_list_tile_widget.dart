@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -27,19 +26,19 @@ class ProductListTileWidget extends StatelessWidget {
       color: ColourStyles.primaryColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: ColourStyles.colorgrey!),
       ),
       elevation: 2,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: EdgeInsets.all(currentWidth * 0.03),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                width: 80,
-                height: 60,
+                width: currentWidth * 0.22,
+                height: currentWidth * 0.16,
                 decoration: BoxDecoration(
                   color: ColourStyles.primaryColor_2,
                   borderRadius: BorderRadius.circular(8),
@@ -52,64 +51,79 @@ class ProductListTileWidget extends StatelessWidget {
                         child: Image.file(
                           File(product.productImages.first),
                           fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Icon(
-                              Icons.inventory_2_outlined,
-                              color: ColourStyles.colorgrey,
-                              size: 30,
-                            );
-                          },
+                          errorBuilder: (context, error, stackTrace) => Icon(
+                            Icons.inventory_2_outlined,
+                            size: currentWidth * 0.08,
+                            color: ColourStyles.colorGrey,
+                          ),
                         ),
                       )
                     : Icon(
                         Icons.inventory_2_outlined,
-                        color: ColourStyles.colorgrey,
-                        size: 30,
+                        size: currentWidth * 0.08,
+                        color: ColourStyles.colorGrey,
                       ),
               ),
               SizedBox(width: currentWidth * 0.04),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      product.productName,
+                      product.productName!,
                       style: TextStyles.titleText(context),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: currentHeight * 0.001),
+                    SizedBox(height: currentHeight * 0.002),
                     Text(
-                      product.brand,
+                      product.brand!,
                       style: TextStyles.activityCardText(context),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: currentHeight * 0.001),
+                    SizedBox(height: currentHeight * 0.002),
                     Text(
-                      product.category,
+                      product.category!,
                       style: TextStyles.activityCardLabel(context),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: currentHeight * 0.005),
                     Row(
                       children: [
                         Container(
-                          width: 8,
-                          height: 8,
+                          width: currentWidth * 0.02,
+                          height: currentWidth * 0.02,
                           decoration: BoxDecoration(
                             color: provider.getStockColor(product),
                             shape: BoxShape.circle,
                           ),
                         ),
                         SizedBox(width: currentWidth * 0.02),
-                        Text(
-                          provider.getStockText(product),
-                          style: TextStyles.activityCardLabel(context),
+                        Flexible(
+                          child: Text(
+                            provider.getStockText(product),
+                            style: TextStyles.activityCardLabel(
+                              context,
+                            ).copyWith(color: provider.getStockColor(product)),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
-              Text('\$ ${product.salesRate}', style: TextStyles.heading_4),
+              Padding(
+                padding: EdgeInsets.only(left: currentWidth * 0.02),
+                child: Text(
+                  '\$ ${product.salesRate}',
+                  style: TextStyles.productPriceText(context),
+                ),
+              ),
             ],
           ),
         ),

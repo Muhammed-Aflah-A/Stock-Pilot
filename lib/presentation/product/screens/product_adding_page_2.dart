@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
+import 'package:stock_pilot/core/utils/select_validator_util.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
-import 'package:stock_pilot/presentation/widgets/addProduct_button_widget.dart';
+import 'package:stock_pilot/presentation/product/widgets/addproduct_button_widget.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
-import 'package:stock_pilot/presentation/widgets/dropdown_feild_widget.dart';
+import 'package:stock_pilot/presentation/product/widgets/dropdown_feild_widget.dart';
 import 'package:stock_pilot/presentation/widgets/form_widget.dart';
 
 class ProductAddingPage2 extends StatefulWidget {
@@ -22,7 +23,7 @@ class ProductAddingPage2 extends StatefulWidget {
 class _ProductAddingPage2State extends State<ProductAddingPage2> {
   @override
   Widget build(BuildContext context) {
-    final currentHeigth = MediaQuery.of(context).size.height;
+    final currentHeight = MediaQuery.of(context).size.height;
     final currentWidth = MediaQuery.of(context).size.width;
     final provider = context.watch<ProductProvider>();
     final isEditing = widget.product != null;
@@ -37,221 +38,197 @@ class _ProductAddingPage2State extends State<ProductAddingPage2> {
         showAvatar: false,
       ),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: currentHeigth * 0.01,
-            horizontal: currentWidth * 0.03,
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Form(
-                  key: provider.secondFormKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Product brand", style: TextStyles.sectionHeading_),
-                      SizedBox(height: currentHeigth * 0.01),
-                      DropdownFeildWidget(
-                        value: provider.brand,
-                        items: provider.brandsList,
-                        onChanged: (value) {
-                          provider.brand = value;
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please select a brand';
-                          }
-                          return null;
-                        },
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: currentHeight * 0.015,
+                      horizontal: currentWidth * 0.04,
+                    ),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Form(
+                            key: provider.secondFormKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Product brand",
+                                  style: TextStyles.sectionHeading(context)
+                                      .copyWith(
+                                        color: ColourStyles.primaryColor_2,
+                                      ),
+                                ),
+                                SizedBox(height: currentHeight * 0.01),
+                                DropdownFeildWidget(
+                                  value: provider.brand,
+                                  items: provider.brandsList,
+                                  onChanged: (value) {
+                                    provider.brand = value;
+                                  },
+                                  validator: (value) =>
+                                      SelectValidatorUtil.validate(
+                                        value,
+                                        "product brand",
+                                      ),
+                                ),
+                                SizedBox(height: currentHeight * 0.02),
+                                Text(
+                                  "Product category",
+                                  style: TextStyles.sectionHeading(context)
+                                      .copyWith(
+                                        color: ColourStyles.primaryColor_2,
+                                      ),
+                                ),
+                                SizedBox(height: currentHeight * 0.01),
+                                DropdownFeildWidget(
+                                  value: provider.category,
+                                  items: provider.categoryList,
+                                  onChanged: (value) {
+                                    provider.category = value;
+                                  },
+                                  validator: (value) =>
+                                      SelectValidatorUtil.validate(
+                                        value,
+                                        "Product category",
+                                      ),
+                                ),
+                                SizedBox(height: currentHeight * 0.02),
+                                Text(
+                                  "Purchase Rate",
+                                  style: TextStyles.sectionHeading(context)
+                                      .copyWith(
+                                        color: ColourStyles.primaryColor_2,
+                                      ),
+                                ),
+                                SizedBox(height: currentHeight * 0.01),
+                                FormWidget(
+                                  initialValue: provider.purchaseRate,
+                                  keyboard: TextInputType.number,
+                                  validator: (value) =>
+                                      SelectValidatorUtil.validate(
+                                        value,
+                                        "purchase rate",
+                                      ),
+                                  onSaved: (newValue) {
+                                    provider.purchaseRate = newValue!.trim();
+                                  },
+                                  action: TextInputAction.next,
+                                  onFieldSubmitted: (value) {
+                                    FocusScope.of(
+                                      context,
+                                    ).requestFocus(provider.salesRateFocus);
+                                  },
+                                ),
+                                SizedBox(height: currentHeight * 0.02),
+                                Text(
+                                  "Sales Rate",
+                                  style: TextStyles.sectionHeading(context)
+                                      .copyWith(
+                                        color: ColourStyles.primaryColor_2,
+                                      ),
+                                ),
+                                SizedBox(height: currentHeight * 0.01),
+                                FormWidget(
+                                  initialValue: provider.salesRate,
+                                  keyboard: TextInputType.number,
+                                  focus: provider.salesRateFocus,
+                                  validator: (value) =>
+                                      SelectValidatorUtil.validate(
+                                        value,
+                                        "sales rate",
+                                      ),
+                                  onSaved: (newValue) {
+                                    provider.salesRate = newValue!.trim();
+                                  },
+                                  action: TextInputAction.next,
+                                  onFieldSubmitted: (value) {
+                                    FocusScope.of(
+                                      context,
+                                    ).requestFocus(provider.itemCountFocus);
+                                  },
+                                ),
+                                SizedBox(height: currentHeight * 0.02),
+                                Text(
+                                  "Item count",
+                                  style: TextStyles.sectionHeading(context)
+                                      .copyWith(
+                                        color: ColourStyles.primaryColor_2,
+                                      ),
+                                ),
+                                SizedBox(height: currentHeight * 0.01),
+                                FormWidget(
+                                  initialValue: provider.itemCount,
+                                  keyboard: TextInputType.number,
+                                  focus: provider.itemCountFocus,
+                                  validator: (value) =>
+                                      SelectValidatorUtil.validate(
+                                        value,
+                                        "item count",
+                                      ),
+                                  onSaved: (newValue) {
+                                    provider.itemCount = newValue!.trim();
+                                  },
+                                  action: TextInputAction.next,
+                                  onFieldSubmitted: (value) {
+                                    FocusScope.of(
+                                      context,
+                                    ).requestFocus(provider.lowStockCountFocus);
+                                  },
+                                ),
+                                SizedBox(height: currentHeight * 0.02),
+                                Text(
+                                  "Low stock count",
+                                  style: TextStyles.sectionHeading(context)
+                                      .copyWith(
+                                        color: ColourStyles.primaryColor_2,
+                                      ),
+                                ),
+                                SizedBox(height: currentHeight * 0.01),
+                                FormWidget(
+                                  initialValue: provider.lowStockCount,
+                                  keyboard: TextInputType.number,
+                                  focus: provider.lowStockCountFocus,
+                                  validator: (value) =>
+                                      SelectValidatorUtil.validate(
+                                        value,
+                                        "low stock count",
+                                      ),
+                                  onSaved: (newValue) {
+                                    provider.lowStockCount = newValue!.trim();
+                                  },
+                                  action: TextInputAction.done,
+                                  onFieldSubmitted: (value) {
+                                    FocusScope.of(context).unfocus();
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Spacer(),
+                          SizedBox(height: currentHeight * 0.04),
+                          Center(
+                            child: AddproductButtonWidget(
+                              product: widget.product,
+                              productIndex: widget.productIndex,
+                            ),
+                          ),
+                          SizedBox(height: currentHeight * 0.02),
+                        ],
                       ),
-                      SizedBox(height: currentHeigth * 0.01),
-                      Text(
-                        "Product category",
-                        style: TextStyles.sectionHeading_,
-                      ),
-                      SizedBox(height: currentHeigth * 0.01),
-                      DropdownFeildWidget(
-                        value: provider.category,
-                        items: provider.categoryList,
-                        onChanged: (value) {
-                          provider.category = value;
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please select a category';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: currentHeigth * 0.01),
-                      Text("Purchase Rate", style: TextStyles.sectionHeading_),
-                      SizedBox(height: currentHeigth * 0.01),
-                      FormWidget(
-                        initialValue: provider.purchaseRate,
-                        keyboard: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter the purchase rate';
-                          }
-                          if (RegExp(r'\s').hasMatch(value)) {
-                            return "Purchase rate must not contain spaces";
-                          }
-                          if (value.startsWith('-')) {
-                            return "Purchase rate must not be negative";
-                          }
-                          if (RegExp(r'[A-Za-z]').hasMatch(value)) {
-                            return "Purchase rate must not contain letters";
-                          }
-                          if (RegExp(r'[^0-9.]').hasMatch(value)) {
-                            return "Purchase rate must not contain special characters";
-                          }
-                          if (RegExp(r'\.\d{3,}$').hasMatch(value)) {
-                            return "Purchase rate must not contain more than 2 decimals";
-                          }
-                          if (!RegExp(r'^\d+(\.\d+)?$').hasMatch(value)) {
-                            return "Invalid purchase rate format";
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          provider.purchaseRate = newValue!.trim();
-                        },
-                        action: TextInputAction.next,
-                        onFieldSubmitted: (value) {
-                          FocusScope.of(
-                            context,
-                          ).requestFocus(provider.salesRateFocus);
-                        },
-                      ),
-                      SizedBox(height: currentHeigth * 0.01),
-                      Text("Sales Rate", style: TextStyles.sectionHeading_),
-                      SizedBox(height: currentHeigth * 0.01),
-                      FormWidget(
-                        initialValue: provider.salesRate,
-                        keyboard: TextInputType.number,
-                        focus: provider.salesRateFocus,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter the Sales rate';
-                          }
-                          if (RegExp(r'\s').hasMatch(value)) {
-                            return "Sales rate must not contain spaces";
-                          }
-                          if (value.startsWith('-')) {
-                            return "Sales rate must not be negative";
-                          }
-                          if (RegExp(r'[A-Za-z]').hasMatch(value)) {
-                            return "Sales rate must not contain letters";
-                          }
-                          if (RegExp(r'[^0-9.]').hasMatch(value)) {
-                            return "Sales rate must not contain special characters";
-                          }
-                          if (RegExp(r'\.\d{3,}$').hasMatch(value)) {
-                            return "sales rate must not contain more than 2 decimals";
-                          }
-                          if (!RegExp(r'^\d+(\.\d+)?$').hasMatch(value)) {
-                            return "Invalid Sales rate format";
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          provider.salesRate = newValue!.trim();
-                        },
-                        action: TextInputAction.next,
-                        onFieldSubmitted: (value) {
-                          FocusScope.of(
-                            context,
-                          ).requestFocus(provider.itemCountFocus);
-                        },
-                      ),
-                      SizedBox(height: currentHeigth * 0.01),
-                      Text("Item count", style: TextStyles.sectionHeading_),
-                      SizedBox(height: currentHeigth * 0.01),
-                      FormWidget(
-                        initialValue: provider.itemCount,
-                        keyboard: TextInputType.number,
-                        focus: provider.itemCountFocus,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter the item count';
-                          }
-                          if (RegExp(r'\s').hasMatch(value)) {
-                            return "Item count must not contain spaces";
-                          }
-                          if (value.startsWith('-')) {
-                            return "Item count must not be negative";
-                          }
-                          if (RegExp(r'[A-Za-z]').hasMatch(value)) {
-                            return "Item count must not contain letters";
-                          }
-                          if (RegExp(r'[^0-9]').hasMatch(value)) {
-                            return "Item count must not contain special characters or decimals";
-                          }
-                          if (!RegExp(r'^\d+$').hasMatch(value)) {
-                            return "Item count must be a whole number";
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          provider.itemCount = newValue!.trim();
-                        },
-                        action: TextInputAction.next,
-                        onFieldSubmitted: (value) {
-                          FocusScope.of(
-                            context,
-                          ).requestFocus(provider.lowStockCountFocus);
-                        },
-                      ),
-                      SizedBox(height: currentHeigth * 0.01),
-                      Text("Low stock count", style: TextStyles.sectionHeading_),
-                      SizedBox(height: currentHeigth * 0.01),
-                      FormWidget(
-                        initialValue: provider.lowStockCount,
-                        keyboard: TextInputType.number,
-                        focus: provider.lowStockCountFocus,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter the Low stock count';
-                          }
-                          if (RegExp(r'\s').hasMatch(value)) {
-                            return "Low stock count must not contain spaces";
-                          }
-                          if (value.startsWith('-')) {
-                            return "Low stock count must not be negative";
-                          }
-                          if (RegExp(r'[A-Za-z]').hasMatch(value)) {
-                            return "Low stock count must not contain letters";
-                          }
-                          if (RegExp(r'[^0-9]').hasMatch(value)) {
-                            return "Low stock count must not contain special characters or decimals";
-                          }
-                          if (!RegExp(r'^\d+$').hasMatch(value)) {
-                            return "Low stock count must be a whole number";
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          provider.lowStockCount = newValue!.trim();
-                        },
-                        action: TextInputAction.done,
-                        onFieldSubmitted: (value) {
-                          FocusScope.of(context).unfocus();
-                        },
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-                SizedBox(height: currentHeigth * 0.05),
-                Center(
-                  child: AddproductButtonWidget(
-                    product: widget.product,
-                    productIndex: widget.productIndex,
-                  ),
-                ),
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),

@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 
-class NoproductMessageWidget extends StatelessWidget {
-  const NoproductMessageWidget({super.key});
+class EmptypageMessageWidget extends StatelessWidget {
+  final String heading;
+  final String label;
+  const EmptypageMessageWidget({
+    super.key,
+    required this.heading,
+    required this.label,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +21,14 @@ class NoproductMessageWidget extends StatelessWidget {
           Icon(
             Icons.inventory_2_outlined,
             size: 80,
-            color: ColourStyles.colorgrey,
+            color: ColourStyles.colorGrey,
           ),
           SizedBox(height: currentHeigth * 0.016),
-          Text('No products yet', style: TextStyles.caption_4),
+          Text(heading, style: TextStyles.caption(context)),
           SizedBox(height: currentHeigth * 0.01),
           Text(
-            'Add your first product to get started',
-            style: TextStyles.caption_4,
+            label,
+            style: TextStyles.caption(context),
           ),
         ],
       ),

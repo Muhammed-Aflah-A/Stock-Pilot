@@ -3,43 +3,34 @@ import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
+import 'package:stock_pilot/presentation/product/widgets/product_list_tile_widget.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
 import 'package:stock_pilot/presentation/widgets/app_drawer_widget.dart';
-import 'package:stock_pilot/presentation/widgets/filterbutton_widget.dart';
-import 'package:stock_pilot/presentation/widgets/floatingactionbutton_widget.dart';
 import 'package:stock_pilot/presentation/widgets/emptypage_message_widget.dart';
-import 'package:stock_pilot/presentation/product/widgets/product_list_tile_widget.dart';
+import 'package:stock_pilot/presentation/widgets/filterbutton_widget.dart';
 import 'package:stock_pilot/presentation/widgets/searchbar_widget.dart';
 import 'package:stock_pilot/presentation/widgets/sortbutton_widget.dart';
 
-class ProductListPage extends StatefulWidget {
-  const ProductListPage({super.key});
+class OutOfStockListPage extends StatefulWidget {
+  const OutOfStockListPage({super.key});
 
   @override
-  State<ProductListPage> createState() => _ProductListPageState();
+  State<OutOfStockListPage> createState() => _OutOfStockListPageState();
 }
 
-class _ProductListPageState extends State<ProductListPage> {
+class _OutOfStockListPageState extends State<OutOfStockListPage> {
   final TextEditingController controller = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
       appBar: const AppBarWidget(
         showleading: false,
-        title: "Product",
+        title: "Out of Stock",
         centeredTitle: false,
         showAvatar: true,
       ),
       drawer: const AppDrawer(),
-      floatingActionButton: FloatingactionbuttonWidget(
-        onPressed: () {
-          context.read<ProductProvider>().resetForm();
-          Navigator.pushNamed(context, AppRoutes.productAddingPage1);
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -73,20 +64,21 @@ class _ProductListPageState extends State<ProductListPage> {
                   Expanded(
                     child: Consumer<ProductProvider>(
                       builder: (context, provider, child) {
-                        if (provider.products.isEmpty) {
+                        final outOfStockList = provider.outOfStockProducts;
+                        if (outOfStockList.isEmpty) {
                           return const Center(
                             child: SingleChildScrollView(
                               child: EmptypageMessageWidget(
-                                heading: "No products yet",
-                                label: "Add your first product to get started",
+                                heading: "No Out of stock yet",
+                                label: "check here for out of stock product",
                               ),
                             ),
                           );
                         }
                         return ListView.builder(
-                          itemCount: provider.products.length,
+                          itemCount: outOfStockList.length,
                           itemBuilder: (context, index) {
-                            final product = provider.products[index];
+                            final product = outOfStockList[index];
                             return Padding(
                               padding: EdgeInsets.only(
                                 bottom: constraints.maxHeight * 0.015,
@@ -99,7 +91,9 @@ class _ProductListPageState extends State<ProductListPage> {
                                     AppRoutes.productDetailsPage,
                                     arguments: {
                                       'product': product,
-                                      'index': index,
+                                      'index': provider.products.indexOf(
+                                        product,
+                                      ),
                                     },
                                   );
                                 },

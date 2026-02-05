@@ -38,6 +38,7 @@ class PermissionDialog extends StatelessWidget {
               context: context,
               provider: provider,
               isCamera: true,
+              index: index,
             ),
           ),
           OptionTileWidget(
@@ -47,6 +48,7 @@ class PermissionDialog extends StatelessWidget {
               context: context,
               provider: provider,
               isCamera: false,
+              index: index,
             ),
           ),
           SizedBox(height: _scale(context, 20)),

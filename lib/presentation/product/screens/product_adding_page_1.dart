@@ -3,11 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
+import 'package:stock_pilot/core/utils/select_validator_util.dart';
+import 'package:stock_pilot/core/utils/snackbar_util.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
 import 'package:stock_pilot/presentation/widgets/form_widget.dart';
-import 'package:stock_pilot/presentation/widgets/image_adding_widget.dart';
+import 'package:stock_pilot/presentation/product/widgets/image_adding_widget.dart';
 import 'package:stock_pilot/presentation/widgets/nextbutton_widget.dart';
 
 class ProductAddingPage1 extends StatefulWidget {
@@ -20,10 +22,9 @@ class ProductAddingPage1 extends StatefulWidget {
 }
 
 class _ProductAddingState extends State<ProductAddingPage1> {
-  
   @override
   Widget build(BuildContext context) {
-    final currentHeigth = MediaQuery.of(context).size.height;
+    final currentHeight = MediaQuery.of(context).size.height;
     final currentWidth = MediaQuery.of(context).size.width;
     final provider = context.watch<ProductProvider>();
     final isEditing = widget.product != null;
@@ -37,139 +38,153 @@ class _ProductAddingState extends State<ProductAddingPage1> {
         showAvatar: false,
       ),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: currentHeigth * 0.01,
-            horizontal: currentWidth * 0.03,
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Product Image", style: TextStyles.sectionHeading_),
-                SizedBox(height: currentHeigth * 0.01),
-                ImageAddingWidget(),
-                SizedBox(height: currentHeigth * 0.01),
-                if (!provider.hasImage)
-                  Center(
-                    child: Text(
-                      "Please add at least one product image",
-                      style: TextStyle(color: ColourStyles.colorRed),
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: currentWidth * 0.04,
+                      vertical: currentHeight * 0.015,
                     ),
-                  ),
-                SizedBox(height: currentHeigth * 0.01),
-                Form(
-                  key: provider.firstFormKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Product Name", style: TextStyles.sectionHeading_),
-                      SizedBox(height: currentHeigth * 0.01),
-                      FormWidget(
-                        maxlength: 25,
-                        initialValue: provider.productName,
-                        keyboard: TextInputType.name,
-                        validator: (value) {
-                          value = value?.trim();
-                          if (value == null || value.isEmpty) {
-                            return "Please enter the name of product";
-                          }
-                          if (RegExp(r'\s{2,}').hasMatch(value)) {
-                            return "product name cannot contain multiple spaces together";
-                          }
-                          if (!RegExp(r'^.{3,25}$').hasMatch(value)) {
-                            return "Name must be between 3 and 25 characters";
-                          }
-                          if (!RegExp(r'^[A-Za-z ]+$').hasMatch(value)) {
-                            return "Name must contain only letters and spaces";
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          provider.productName = newValue!.trim();
-                        },
-                        action: TextInputAction.next,
-                        onFieldSubmitted: (value) {
-                          FocusScope.of(
-                            context,
-                          ).requestFocus(provider.productDescriptionFocus);
-                        },
-                      ),
-                      Text(
-                        "Product Description",
-                        style: TextStyles.sectionHeading_,
-                      ),
-                      SizedBox(height: currentHeigth * 0.01),
-                      FormWidget(
-                        maxlength: 500,
-                        maxline: 6,
-                        initialValue: provider.productDescription,
-                        focus: provider.productDescriptionFocus,
-                        keyboard: TextInputType.multiline,
-                        validator: (value) {
-                          value = value?.trim();
-                          if (value == null || value.isEmpty) {
-                            return "Please enter product details";
-                          }
-                          if (!RegExp(r'^.{10,500}$').hasMatch(value)) {
-                            return "Description must be 10–500 characters";
-                          }
-                          if (RegExp(r'\s{2,}').hasMatch(value)) {
-                            return "description cannot contain multiple spaces together";
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          provider.productDescription = newValue!.trim();
-                        },
-                        action: TextInputAction.done,
-                        onFieldSubmitted: (value) {
-                          FocusScope.of(context).unfocus();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: currentHeigth * 0.01),
-                Center(
-                  child: Column(
-                    children: [
-                      NextbuttonWidget(
-                        onPressed: () {
-                          final formValid = provider.firstFormKey.currentState!
-                              .validate();
-                          if (!provider.hasImage || !formValid) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Center(
-                                  child: Text(
-                                    "Please add image and complete the form",
+                    child: IntrinsicHeight(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: Text(
+                              "Product Image",
+                              style: TextStyles.sectionHeading(
+                                context,
+                              ).copyWith(color: ColourStyles.primaryColor_2),
+                            ),
+                          ),
+                          SizedBox(height: currentHeight * 0.015),
+                          const ImageAddingWidget(),
+                          if (!provider.hasImage)
+                            Padding(
+                              padding: EdgeInsets.only(
+                                top: currentHeight * 0.01,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Please add at least one product image",
+                                  style: TextStyle(
+                                    color: ColourStyles.colorRed,
+                                    fontSize: currentWidth * 0.035,
                                   ),
                                 ),
-                                backgroundColor: ColourStyles.colorRed,
                               ),
-                            );
-                            return;
-                          }
-                          if (formValid) {
-                            provider.firstFormKey.currentState!.save();
-                            Navigator.pushNamed(
-                              context,
-                              AppRoutes.productAddingPage2,
-                              arguments: {
-                                'product': widget.product,
-                                'productIndex': widget.productIndex,
+                            ),
+                          SizedBox(height: currentHeight * 0.02),
+                          Form(
+                            key: provider.firstFormKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Product Name",
+                                  style: TextStyles.sectionHeading(context)
+                                      .copyWith(
+                                        color: ColourStyles.primaryColor_2,
+                                      ),
+                                ),
+                                SizedBox(height: currentHeight * 0.01),
+                                FormWidget(
+                                  maxlength: 25,
+                                  initialValue: provider.productName,
+                                  keyboard: TextInputType.name,
+                                  validator: (value) =>
+                                      SelectValidatorUtil.validate(
+                                        value,
+                                        "product name",
+                                      ),
+                                  onSaved: (newValue) {
+                                    provider.productName = newValue!.trim();
+                                  },
+                                  action: TextInputAction.next,
+                                  onFieldSubmitted: (value) {
+                                    FocusScope.of(context).requestFocus(
+                                      provider.productDescriptionFocus,
+                                    );
+                                  },
+                                ),
+                                SizedBox(height: currentHeight * 0.02),
+                                Text(
+                                  "Product Description",
+                                  style: TextStyles.sectionHeading(context)
+                                      .copyWith(
+                                        color: ColourStyles.primaryColor_2,
+                                      ),
+                                ),
+                                SizedBox(height: currentHeight * 0.01),
+                                FormWidget(
+                                  maxlength: 500,
+                                  maxline: currentHeight < 700 ? 4 : 6,
+                                  initialValue: provider.productDescription,
+                                  focus: provider.productDescriptionFocus,
+                                  keyboard: TextInputType.multiline,
+                                  validator: (value) =>
+                                      SelectValidatorUtil.validate(
+                                        value,
+                                        "product description",
+                                      ),
+                                  onSaved: (newValue) {
+                                    provider.productDescription = newValue!
+                                        .trim();
+                                  },
+                                  action: TextInputAction.done,
+                                  onFieldSubmitted: (value) {
+                                    FocusScope.of(context).unfocus();
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Spacer(),
+                          SizedBox(height: currentHeight * 0.04),
+                          Center(
+                            child: NextbuttonWidget(
+                              onPressed: () {
+                                final formValid = provider
+                                    .firstFormKey
+                                    .currentState!
+                                    .validate();
+                                if (!provider.hasImage || !formValid) {
+                                  SnackbarUtil.showSnackBar(
+                                    context,
+                                    "images and details must be correct",
+                                    true,
+                                  );
+                                  return;
+                                }
+                                if (formValid) {
+                                  provider.firstFormKey.currentState!.save();
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRoutes.productAddingPage2,
+                                    arguments: {
+                                      'product': widget.product,
+                                      'productIndex': widget.productIndex,
+                                    },
+                                  );
+                                }
                               },
-                            );
-                          }
-                        },
-                        text: "Next",
+                              text: "Next",
+                            ),
+                          ),
+                          SizedBox(height: currentHeight * 0.02),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),

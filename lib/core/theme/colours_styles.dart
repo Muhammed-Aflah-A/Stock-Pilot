@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ColourStyles {
-  static const splashBackgroundColor = Color(0xFF15293D);
+  static const splashBackgroundColor = ColourStyles.primaryColor;
   static const iconColor = Colors.grey;
   static const primaryColor = Colors.white;
   static const primaryColor_2 = Colors.black;
@@ -10,12 +10,12 @@ class ColourStyles {
   static const colorRed = Colors.red;
   static const colorGreen = Colors.green;
   static const selectionColor = Colors.black26;
+  static final colorGrey = Colors.grey[700];
+  static const colorYellow = Color(0xFFFFBF00);
+  static const colorBlue = Colors.blue;
 
   static const shadowColor = Colors.black54;
   static const captionColor_2 = Color.fromARGB(255, 150, 150, 150);
-  static const colorYellow = Color(0xFFFFBF00);
-  static const colorBlue = Colors.blue;
-  static final colorgrey = Colors.grey[400];
   static const primaryColor_3 = Color(0xFFF8F9FA);
   static const cardborderColor = Color(0xFFE5E7EB);
 }

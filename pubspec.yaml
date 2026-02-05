@@ -80,6 +80,7 @@ flutter:
     - lib/assets/images/brand.png
     - lib/assets/images/low-stock.png
     - lib/assets/images/out-of-stock.png
+    - lib/assets/images/shopping-cart.png
     - lib/assets/images/history.png
     - lib/assets/images/revenue.png
     - lib/assets/images/headphone.png
