@@ -15,7 +15,7 @@ class SortbuttonWidget extends StatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: ColourStyles.primaryColor_2, width: 2),
+            border: Border.all(color: ColourStyles.primaryColor_2, width: 1.5),
           ),
           child: Icon(Icons.sort, size: 22, color: ColourStyles.primaryColor_2),
         ),

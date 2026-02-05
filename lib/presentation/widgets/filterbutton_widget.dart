@@ -14,7 +14,7 @@ class FilterbuttonWidget extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: ColourStyles.primaryColor_2, width: 2),
+            border: Border.all(color: ColourStyles.primaryColor_2, width: 1.5),
           ),
           child: Icon(
             Icons.filter_alt_outlined,
