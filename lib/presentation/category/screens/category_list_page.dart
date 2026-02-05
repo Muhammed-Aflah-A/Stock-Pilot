@@ -66,7 +66,15 @@ class _CategoryListPageState extends State<CategoryListPage> {
             children: [
               SearchbarWidget(
                 controller: controller,
-                onChanged: (value) {},
+                onChanged: (value) {
+                  context.read<CategoryProvider>().searchCategories(value);
+                  setState(() {});
+                },
+                onClear: () {
+                  controller.clear();
+                  context.read<CategoryProvider>().clearSearch();
+                  setState(() {});
+                },
                 hintText: "Search categories",
               ),
               SizedBox(height: currentHeigth * 0.02),
@@ -83,14 +91,24 @@ class _CategoryListPageState extends State<CategoryListPage> {
                         ),
                       );
                     }
+                    if (provider.filteredCategory.isEmpty) {
+                      return const Center(
+                        child: SingleChildScrollView(
+                          child: EmptypageMessageWidget(
+                            heading: "No results found",
+                            label: "Try a different category name",
+                          ),
+                        ),
+                      );
+                    }
                     return ListView.builder(
-                      itemCount: provider.categories.length,
+                      itemCount: provider.filteredCategory.length,
                       itemBuilder: (context, index) {
-                        final categoryItem = provider.categories[index];
+                        final categoryItem = provider.filteredCategory[index];
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: FilterlistTileWidget(
-                            title: categoryItem.category ?? "Unknown",
+                            title: categoryItem.category!,
                             onEdit: () {
                               showDialog(
                                 context: context,
@@ -117,8 +135,7 @@ class _CategoryListPageState extends State<CategoryListPage> {
                                 context: context,
                                 builder: (context) => DeleteConfirmationWidget(
                                   title: "Remove Category",
-                                  displayName:
-                                      categoryItem.category ?? "Unknown",
+                                  displayName: categoryItem.category!,
                                   onDelete: () async {
                                     await context
                                         .read<CategoryProvider>()

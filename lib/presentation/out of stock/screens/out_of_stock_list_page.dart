@@ -49,7 +49,19 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
                         Expanded(
                           child: SearchbarWidget(
                             controller: controller,
-                            onChanged: (value) {},
+                            onChanged: (value) {
+                              context.read<ProductProvider>().searchOutOfStock(
+                                value,
+                              );
+                              setState(() {});
+                            },
+                            onClear: () {
+                              controller.clear();
+                              context
+                                  .read<ProductProvider>()
+                                  .clearOutOfStockSearch();
+                              setState(() {});
+                            },
                             hintText: "Search by name",
                           ),
                         ),
@@ -64,8 +76,8 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
                   Expanded(
                     child: Consumer<ProductProvider>(
                       builder: (context, provider, child) {
-                        final outOfStockList = provider.outOfStockProducts;
-                        if (outOfStockList.isEmpty) {
+                        final displayList = provider.filteredOutOfStock;
+                        if (provider.outOfStockProducts.isEmpty) {
                           return const Center(
                             child: SingleChildScrollView(
                               child: EmptypageMessageWidget(
@@ -75,10 +87,19 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
                             ),
                           );
                         }
+                        if (displayList.isEmpty) {
+                          return const Center(
+                            child: EmptypageMessageWidget(
+                              heading: "No matches",
+                              label:
+                                  "No out of stock products match your search",
+                            ),
+                          );
+                        }
                         return ListView.builder(
-                          itemCount: outOfStockList.length,
+                          itemCount: displayList.length,
                           itemBuilder: (context, index) {
-                            final product = outOfStockList[index];
+                            final product = displayList[index];
                             return Padding(
                               padding: EdgeInsets.only(
                                 bottom: constraints.maxHeight * 0.015,

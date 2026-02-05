@@ -23,6 +23,12 @@ class _ProductListPageState extends State<ProductListPage> {
   final TextEditingController controller = TextEditingController();
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
@@ -58,7 +64,17 @@ class _ProductListPageState extends State<ProductListPage> {
                         Expanded(
                           child: SearchbarWidget(
                             controller: controller,
-                            onChanged: (value) {},
+                            onChanged: (value) {
+                              context.read<ProductProvider>().searchProducts(
+                                value,
+                              );
+                              setState(() {});
+                            },
+                            onClear: () {
+                              controller.clear();
+                              context.read<ProductProvider>().clearSearch();
+                              setState(() {});
+                            },
                             hintText: "Search by name",
                           ),
                         ),
@@ -83,10 +99,20 @@ class _ProductListPageState extends State<ProductListPage> {
                             ),
                           );
                         }
+                        if (provider.filteredProducts.isEmpty) {
+                          return const Center(
+                            child: SingleChildScrollView(
+                              child: EmptypageMessageWidget(
+                                heading: "No results found",
+                                label: "Try a different product name",
+                              ),
+                            ),
+                          );
+                        }
                         return ListView.builder(
-                          itemCount: provider.products.length,
+                          itemCount: provider.filteredProducts.length,
                           itemBuilder: (context, index) {
-                            final product = provider.products[index];
+                            final product = provider.filteredProducts[index];
                             return Padding(
                               padding: EdgeInsets.only(
                                 bottom: constraints.maxHeight * 0.015,

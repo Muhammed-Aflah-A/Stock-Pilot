@@ -49,7 +49,19 @@ class _LowstockListPageState extends State<LowstockListPage> {
                         Expanded(
                           child: SearchbarWidget(
                             controller: controller,
-                            onChanged: (value) {},
+                            onChanged: (value) {
+                              context.read<ProductProvider>().searchLowStock(
+                                value,
+                              );
+                              setState(() {});
+                            },
+                            onClear: () {
+                              controller.clear();
+                              context
+                                  .read<ProductProvider>()
+                                  .clearLowStockSearch();
+                              setState(() {});
+                            },
                             hintText: "Search by name",
                           ),
                         ),
@@ -64,8 +76,8 @@ class _LowstockListPageState extends State<LowstockListPage> {
                   Expanded(
                     child: Consumer<ProductProvider>(
                       builder: (context, provider, child) {
-                        final lowStockList = provider.lowStockProducts;
-                        if (lowStockList.isEmpty) {
+                        final displayList = provider.filteredLowStock;
+                        if (provider.lowStockProducts.isEmpty) {
                           return const Center(
                             child: SingleChildScrollView(
                               child: EmptypageMessageWidget(
@@ -75,10 +87,18 @@ class _LowstockListPageState extends State<LowstockListPage> {
                             ),
                           );
                         }
+                        if (displayList.isEmpty) {
+                          return const Center(
+                            child: EmptypageMessageWidget(
+                              heading: "No matches",
+                              label: "No low stock products match your search",
+                            ),
+                          );
+                        }
                         return ListView.builder(
-                          itemCount: lowStockList.length,
+                          itemCount: displayList.length,
                           itemBuilder: (context, index) {
-                            final product = lowStockList[index];
+                            final product = displayList[index];
                             return Padding(
                               padding: EdgeInsets.only(
                                 bottom: constraints.maxHeight * 0.015,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/assets/app_images.dart';
 import 'package:stock_pilot/core/utils/image_selector_util.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
+import 'package:stock_pilot/core/utils/search_bar_util.dart';
 import 'package:stock_pilot/data/models/brand_model.dart';
 import 'package:stock_pilot/data/models/category_model.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
@@ -17,7 +18,12 @@ class ProductProvider with ChangeNotifier {
   ProductProvider({required this.imageSelector, required this.hiveService}) {
     loadProducts();
   }
-
+  List<ProductModel> filteredProducts = [];
+  String _searchQuery = "";
+  List<ProductModel> filteredLowStock = [];
+  String _lowStockSearchQuery = "";
+  List<ProductModel> filteredOutOfStock = [];
+  String _outOfStockSearchQuery = "";
   final firstFormKey = GlobalKey<FormState>();
   final secondFormKey = GlobalKey<FormState>();
   List<File?> productImages = List.generate(4, (_) => null);
@@ -53,6 +59,30 @@ class ProductProvider with ChangeNotifier {
   String? lowStockCount;
   List<ProductModel> products = [];
   int currentCarouselIndex = 0;
+
+  void searchProducts(String query) {
+    _searchQuery = query;
+    _applySearch();
+    notifyListeners();
+  }
+
+  void _applySearch() {
+    filteredProducts = SearchBarUtil.getFilteredList<ProductModel>(
+      sourceList: products,
+      query: _searchQuery,
+      searchField: (product) => product.productName ?? "",
+    );
+  }
+
+  void clearSearch() {
+    _searchQuery = "";
+    filteredProducts = SearchBarUtil.getFilteredList<ProductModel>(
+      sourceList: products,
+      query: _searchQuery,
+      searchField: (product) => product.productName ?? "",
+    );
+    notifyListeners();
+  }
 
   Future<void> openCamera([int? index]) async {
     final path = await imageSelector.openCamera();
@@ -103,6 +133,9 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> loadProducts() async {
     products = await hiveService.getAllProducts();
+    _applySearch();
+    _applyLowStockSearch();
+    _applyOutOfStockSearch();
     notifyListeners();
   }
 
@@ -214,12 +247,60 @@ class ProductProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void searchLowStock(String query) {
+    _lowStockSearchQuery = query;
+    _applyLowStockSearch();
+    notifyListeners();
+  }
+
+  void _applyLowStockSearch() {
+    filteredLowStock = SearchBarUtil.getFilteredList<ProductModel>(
+      sourceList: lowStockProducts,
+      query: _lowStockSearchQuery,
+      searchField: (product) => product.productName ?? "",
+    );
+  }
+
+  void clearLowStockSearch() {
+    _lowStockSearchQuery = "";
+    filteredLowStock = SearchBarUtil.getFilteredList<ProductModel>(
+      sourceList: products,
+      query: _searchQuery,
+      searchField: (product) => product.productName ?? "",
+    );
+    notifyListeners();
+  }
+
   List<ProductModel> get lowStockProducts {
     return products.where((product) {
       final count = int.tryParse(product.itemCount ?? '0') ?? 0;
       final lowStock = int.tryParse(product.lowStockCount ?? '0') ?? 0;
       return count <= lowStock && count > 0;
     }).toList();
+  }
+
+  void searchOutOfStock(String query) {
+    _outOfStockSearchQuery = query;
+    _applyOutOfStockSearch();
+    notifyListeners();
+  }
+
+  void _applyOutOfStockSearch() {
+    filteredOutOfStock = SearchBarUtil.getFilteredList<ProductModel>(
+      sourceList: outOfStockProducts,
+      query: _outOfStockSearchQuery,
+      searchField: (product) => product.productName ?? "",
+    );
+  }
+
+  void clearOutOfStockSearch() {
+    _outOfStockSearchQuery = "";
+    filteredOutOfStock = SearchBarUtil.getFilteredList<ProductModel>(
+      sourceList: products,
+      query: _searchQuery,
+      searchField: (product) => product.productName ?? "",
+    );
+    notifyListeners();
   }
 
   List<ProductModel> get outOfStockProducts {

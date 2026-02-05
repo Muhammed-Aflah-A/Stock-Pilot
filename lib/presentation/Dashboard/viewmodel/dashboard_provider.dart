@@ -7,7 +7,7 @@ class DashboardProvider with ChangeNotifier {
   final HiveServiceLayer hiveService;
 
   DashboardProvider({required this.hiveService}) {
-    initDashboard();
+    loadActivities();
   }
 
   List<DashboardCards> _dashboardCards = [];
@@ -17,9 +17,6 @@ class DashboardProvider with ChangeNotifier {
       _allActivities.take(5).toList();
   List<DasboardActivity> get fullHistory => _allActivities;
   final double _monthlyTurnover = 0.0;
-  Future<void> initDashboard() async {
-    await loadActivities();
-  }
 
   Future<void> loadActivities() async {
     final results = await Future.wait([
