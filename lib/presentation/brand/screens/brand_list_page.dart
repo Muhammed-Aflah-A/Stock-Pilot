@@ -31,8 +31,13 @@ class _BrandListPageState extends State<BrandListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final currentHeight = MediaQuery.of(context).size.height;
-    final currentWidth = MediaQuery.of(context).size.width;
+    final size = MediaQuery.of(context).size;
+
+    final horizontalPadding = (size.width * 0.04).clamp(16.0, 40.0);
+    final verticalPadding = (size.height * 0.02).clamp(12.0, 24.0);
+    final spacing = (size.height * 0.02).clamp(12.0, 20.0);
+    final itemSpacing = (size.height * 0.015).clamp(8.0, 16.0);
+
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
       appBar: const AppBarWidget(
@@ -51,7 +56,7 @@ class _BrandListPageState extends State<BrandListPage> {
                 maxlength: 30,
                 title: "Brand",
                 fieldtype: "brand",
-                screenWidth: currentWidth,
+                screenWidth: size.width,
                 isEditing: false,
                 onSave: (value) async {
                   final newBrand = BrandModel(brand: value);
@@ -66,106 +71,109 @@ class _BrandListPageState extends State<BrandListPage> {
         },
       ),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: currentWidth * 0.04,
-            vertical: currentHeight * 0.01,
-          ),
-          child: Column(
-            children: [
-              SearchbarWidget(
-                controller: controller,
-                onChanged: (value) {
-                  context.read<BrandProvider>().searchBrands(value);
-                  setState(() {});
-                },
-                onClear: () {
-                  controller.clear();
-                  context.read<BrandProvider>().clearSearch();
-                  setState(() {});
-                },
-                hintText: "Search brands",
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1400),
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: horizontalPadding,
+                vertical: verticalPadding,
               ),
-              SizedBox(height: currentHeight * 0.02),
-              Expanded(
-                child: Consumer<BrandProvider>(
-                  builder: (context, provider, child) {
-                    if (provider.brands.isEmpty) {
-                      return const Center(
-                        child: SingleChildScrollView(
-                          child: EmptypageMessageWidget(
-                            heading: "No brands yet",
-                            label: "Add your first brand to get started",
-                          ),
-                        ),
-                      );
-                    }
-                    if (provider.filteredBrands.isEmpty) {
-                      return const Center(
-                        child: SingleChildScrollView(
-                          child: EmptypageMessageWidget(
-                            heading: "No results found",
-                            label: "Try a different brand name",
-                          ),
-                        ),
-                      );
-                    }
-                    return ListView.builder(
-                      itemCount: provider.filteredBrands.length,
-                      itemBuilder: (context, index) {
-                        final brandItem = provider.filteredBrands[index];
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: FilterlistTileWidget(
-                            title: brandItem.brand!,
-                            onEdit: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => EditDetailsWidget(
-                                  maxlength: 30,
-                                  title: "Brand",
-                                  fieldtype: "brand",
-                                  initialValue: brandItem.brand,
-                                  screenWidth: currentWidth,
-                                  isEditing: true,
-                                  onSave: (value) async {
-                                    final updatedBrand = BrandModel(
-                                      brand: value,
-                                    );
-                                    await context
-                                        .read<BrandProvider>()
-                                        .updateBrand(index, updatedBrand);
-                                  },
-                                ),
-                              );
-                            },
-                            onDelete: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => DeleteConfirmationWidget(
-                                  title: "Remove Brand",
-                                  displayName: brandItem.brand!,
-                                  onDelete: () async {
-                                    await context
-                                        .read<BrandProvider>()
-                                        .deleteBrand(index);
-                                    if (context.mounted) {
-                                      context
-                                          .read<DashboardProvider>()
-                                          .loadActivities();
-                                    }
-                                  },
-                                ),
-                              );
-                            },
-                          ),
+              child: Column(
+                children: [
+                  SearchbarWidget(
+                    controller: controller,
+                    hintText: "Search brands",
+                    onChanged: (value) {
+                      context.read<BrandProvider>().searchBrands(value);
+                    },
+                    onClear: () {
+                      controller.clear();
+                      context.read<BrandProvider>().clearSearch();
+                    },
+                  ),
+                  SizedBox(height: spacing),
+                  Expanded(
+                    child: Consumer<BrandProvider>(
+                      builder: (context, provider, child) {
+                        if (provider.brands.isEmpty) {
+                          return const Center(
+                            child: EmptypageMessageWidget(
+                              heading: "No brands yet",
+                              label: "Add your first brand to get started",
+                            ),
+                          );
+                        }
+                        if (provider.filteredBrands.isEmpty) {
+                          return const Center(
+                            child: EmptypageMessageWidget(
+                              icon: Icons.search_off_rounded,
+                              heading: "No results found",
+                              label: "Try a different brand name",
+                            ),
+                          );
+                        }
+                        return ListView.separated(
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.onDrag,
+                          itemCount: provider.filteredBrands.length,
+                          separatorBuilder: (_, __) =>
+                              SizedBox(height: itemSpacing),
+                          itemBuilder: (context, index) {
+                            final brandItem = provider.filteredBrands[index];
+                            return FilterlistTileWidget(
+                              title: brandItem.brand!,
+                              onEdit: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => EditDetailsWidget(
+                                    maxlength: 30,
+                                    title: "Brand",
+                                    fieldtype: "brand",
+                                    initialValue: brandItem.brand,
+                                    screenWidth: size.width,
+                                    isEditing: true,
+                                    onSave: (value) async {
+                                      final updatedBrand = BrandModel(
+                                        brand: value,
+                                      );
+                                      await context
+                                          .read<BrandProvider>()
+                                          .updateBrand(index, updatedBrand);
+                                    },
+                                  ),
+                                );
+                              },
+                              onDelete: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) =>
+                                      DeleteConfirmationWidget(
+                                        title: "Remove Brand",
+                                        displayName: brandItem.brand!,
+                                        onDelete: () async {
+                                          await context
+                                              .read<BrandProvider>()
+                                              .deleteBrand(index);
+
+                                          if (context.mounted) {
+                                            context
+                                                .read<DashboardProvider>()
+                                                .loadActivities();
+                                          }
+                                        },
+                                      ),
+                                );
+                              },
+                            );
+                          },
                         );
                       },
-                    );
-                  },
-                ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

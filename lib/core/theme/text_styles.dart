@@ -6,14 +6,14 @@ class TextStyles {
     final double width = MediaQuery.of(context).size.width;
     const double referenceWidth = 375.0;
     double scaleFactor = width / referenceWidth;
-    scaleFactor = scaleFactor.clamp(0.85, 1.4);
+    scaleFactor = scaleFactor.clamp(0.85, 1.5);
     return baseSize * scaleFactor;
   }
 
   static TextStyle _responsive(BuildContext context, TextStyle baseStyle) {
     return baseStyle.copyWith(
-      fontSize: _getFontSize(context, baseStyle.fontSize ?? 14),
-      height: baseStyle.height ?? 1.2,
+      fontSize: _getFontSize(context, baseStyle.fontSize ?? 15),
+      height: baseStyle.height ?? 1.5,
     );
   }
 

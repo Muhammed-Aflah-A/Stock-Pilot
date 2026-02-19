@@ -17,56 +17,57 @@ class ProfileDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
+    final size = MediaQuery.of(context).size;
+    final verticalSpacing = (size.height * 0.015).clamp(8.0, 18.0);
+    final iconBoxSize = (size.width * 0.12).clamp(40.0, 50.0);
     return Consumer<ProfilePageProvider>(
-      builder: (context, provider, child) {
+      builder: (context, provider, _) {
         return ListView.separated(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: items.length,
-          separatorBuilder: (context, index) =>
-              SizedBox(height: screenHeight * 0.015),
+          padding: EdgeInsets.zero,
+          separatorBuilder: (_, __) => SizedBox(height: verticalSpacing),
           itemBuilder: (context, index) {
             final item = items[index];
             return ListTile(
-              contentPadding: EdgeInsets.zero,
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: size.width * 0.02,
+              ),
               leading: Container(
-                width: screenWidth * 0.12,
-                height: screenWidth * 0.12,
-                constraints: const BoxConstraints(
-                  maxWidth: 50,
-                  maxHeight: 50,
-                  minWidth: 40,
-                  minHeight: 40,
-                ),
+                width: iconBoxSize,
+                height: iconBoxSize,
                 decoration: BoxDecoration(
                   color: ColourStyles.selectionColor,
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Center(child: item.leadingIcon),
               ),
-              title: Text(item.title, style: TextStyles.titleText(context)),
+              title: Text(
+                item.title,
+                style: TextStyles.titleText(context),
+                overflow: TextOverflow.ellipsis,
+              ),
               subtitle: Text(
                 item.subtitle,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
               trailing: IconButton(
-                onPressed: () => showDialog(
-                  context: context,
-                  builder: (context) {
-                    return EditDetailsWidget(
+                icon: item.trailingIcon!,
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => EditDetailsWidget(
                       title: item.title,
                       initialValue: item.subtitle,
                       fieldtype: item.feildtype,
-                      screenWidth: screenWidth,
+                      screenWidth: size.width,
                       isEditing: true,
                       onSave: (value) => onSave(item.feildtype, value),
-                    );
-                  },
-                ),
-                icon: item.trailingIcon!,
+                    ),
+                  );
+                },
               ),
             );
           },

@@ -1,57 +1,57 @@
-import 'package:flutter/widgets.dart';
-import 'package:stock_pilot/core/assets/app_icons.dart';
+import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
+import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/data/models/drawer_model.dart';
 
 class DrawerProvider with ChangeNotifier {
   final List<DrawerItems> drawerItems = [
     DrawerItems(
-      icon: AppIcons.userAvatar,
+      icon: Icon(Icons.person, color: ColourStyles.primaryColor_2),
       title: 'Profile',
       navigation: AppRoutes.profilePage,
     ),
     DrawerItems(
-      icon: AppIcons.dashboard,
+      icon: Icon(Icons.space_dashboard, color: ColourStyles.primaryColor_2),
       title: 'Dashboard',
       navigation: AppRoutes.dashboard,
     ),
     DrawerItems(
-      icon: AppIcons.product,
+      icon: Icon(Icons.inventory_2, color: ColourStyles.primaryColor_2),
       title: 'Products',
       navigation: AppRoutes.productListPage,
     ),
     DrawerItems(
-      icon: AppIcons.brand,
+      icon: Icon(Icons.sell, color: ColourStyles.primaryColor_2),
       title: 'Brand',
       navigation: AppRoutes.brand,
     ),
     DrawerItems(
-      icon: AppIcons.category,
+      icon: Icon(Icons.category, color: ColourStyles.primaryColor_2),
       title: 'Category',
       navigation: AppRoutes.category,
     ),
     DrawerItems(
-      icon: AppIcons.lowStock,
+      icon: Icon(Icons.warning_amber, color: ColourStyles.primaryColor_2),
       title: 'Low stock',
       navigation: AppRoutes.lowStockPage,
     ),
     DrawerItems(
-      icon: AppIcons.outOfStock,
+      icon: Icon(Icons.cancel, color: ColourStyles.primaryColor_2),
       title: 'Out of stock',
       navigation: AppRoutes.outOfStockPage,
     ),
     DrawerItems(
-      icon: AppIcons.cart,
+      icon: Icon(Icons.shopping_cart, color: ColourStyles.primaryColor_2),
       title: 'Cart',
       navigation: AppRoutes.dashboard,
     ),
     DrawerItems(
-      icon: AppIcons.history,
+      icon: Icon(Icons.history, color: ColourStyles.primaryColor_2),
       title: 'History',
       navigation: AppRoutes.dashboard,
     ),
     DrawerItems(
-      icon: AppIcons.revenue,
+      icon: Icon(Icons.trending_up, color: ColourStyles.primaryColor_2),
       title: 'Revenue',
       navigation: AppRoutes.dashboard,
     ),

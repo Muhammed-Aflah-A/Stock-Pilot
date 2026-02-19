@@ -56,16 +56,6 @@ class ProfilePageProvider with ChangeNotifier {
       ),
       PersonalInfo(
         leadingIcon: Icon(
-          Icons.phone_android_outlined,
-          color: ColourStyles.primaryColor_2,
-        ),
-        title: "Phone number",
-        subtitle: user!.personalNumber,
-        trailingIcon: Icon(Icons.mode_edit_outlined, color: ColourStyles.primaryColor_2),
-        feildtype: 'personal number',
-      ),
-      PersonalInfo(
-        leadingIcon: Icon(
           Icons.mail_outline,
           color: ColourStyles.primaryColor_2,
         ),
@@ -74,9 +64,18 @@ class ProfilePageProvider with ChangeNotifier {
         trailingIcon: Icon(Icons.mode_edit_outlined, color: ColourStyles.primaryColor_2),
         feildtype: 'email',
       ),
+      PersonalInfo(
+        leadingIcon: Icon(
+          Icons.phone_android_outlined,
+          color: ColourStyles.primaryColor_2,
+        ),
+        title: "Phone number",
+        subtitle: user!.personalNumber,
+        trailingIcon: Icon(Icons.mode_edit_outlined, color: ColourStyles.primaryColor_2),
+        feildtype: 'personal number',
+      ),
     ];
   }
-
   List<ShopInfo> get shopInfo {
     return [
       ShopInfo(

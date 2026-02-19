@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 part 'drawer_model.g.dart';
 
 @HiveType(typeId: 1)
 class DrawerItems {
   @HiveField(0)
-  String? icon;
+  Icon? icon;
   @HiveField(1)
   String? title;
   @HiveField(2)

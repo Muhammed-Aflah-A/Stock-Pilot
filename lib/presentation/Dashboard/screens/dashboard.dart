@@ -6,16 +6,16 @@ import 'package:stock_pilot/presentation/widgets/app_drawer_widget.dart';
 import 'package:stock_pilot/presentation/dashboard/widgets/dashboard_activity_widget.dart';
 import 'package:stock_pilot/presentation/dashboard/widgets/dashboard_card_widget.dart';
 
-class Dashboard extends StatefulWidget {
+class Dashboard extends StatelessWidget {
   const Dashboard({super.key});
 
   @override
-  State<Dashboard> createState() => _DashboardState();
-}
-
-class _DashboardState extends State<Dashboard> {
-  @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final horizontalPadding = (size.width * 0.05).clamp(16.0, 40.0);
+    final verticalPadding = (size.height * 0.02).clamp(12.0, 24.0);
+    final sectionSpacing = (size.height * 0.03).clamp(20.0, 40.0);
+    final smallSpacing = (size.height * 0.015).clamp(10.0, 20.0);
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
       appBar: const AppBarWidget(
@@ -26,34 +26,31 @@ class _DashboardState extends State<Dashboard> {
       ),
       drawer: const AppDrawer(),
       body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: constraints.maxWidth * 0.05,
-                  vertical: constraints.maxHeight * 0.02,
+        child: SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: horizontalPadding,
+              vertical: verticalPadding,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const DashboardCardWidget(),
+                SizedBox(height: sectionSpacing),
+                Text(
+                  "Recent Activity",
+                  style: TextStyles.sectionHeading(
+                    context,
+                  ).copyWith(color: ColourStyles.colorBlue),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const DashboardCardWidget(),
-                    SizedBox(height: constraints.maxHeight * 0.03),
-                    Text(
-                      "Recent Activity",
-                      style: TextStyles.sectionHeading(
-                        context,
-                      ).copyWith(color: ColourStyles.colorBlue),
-                    ),
-                    SizedBox(height: constraints.maxHeight * 0.015),
-                    const DashboardActivityWidget(),
-                    SizedBox(height: constraints.maxHeight * 0.02),
-                  ],
-                ),
-              ),
-            );
-          },
+                SizedBox(height: smallSpacing),
+                const DashboardActivityWidget(),
+                SizedBox(height: verticalPadding),
+              ],
+            ),
+          ),
         ),
       ),
     );

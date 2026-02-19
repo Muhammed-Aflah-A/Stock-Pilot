@@ -18,30 +18,50 @@ class SearchbarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      onChanged: onChanged,
-      textAlignVertical: TextAlignVertical.center,
-      style: TextStyles.formHint(
-        context,
-      ).copyWith(color: ColourStyles.primaryColor_2),
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: TextStyles.formHint(context),
-        suffixIcon: controller.text.isNotEmpty
-            ? IconButton(icon: const Icon(Icons.close), onPressed: onClear)
-            : Icon(Icons.search),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: ColourStyles.primaryColor_2, width: 1.5),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: ColourStyles.primaryColor_2, width: 1.5),
-        ),
-        filled: true,
-        fillColor: Colors.transparent,
+    final size = MediaQuery.of(context).size;
+    final height = (size.height * 0.06).clamp(44.0, 56.0);
+    return SizedBox(
+      height: height,
+      child: ValueListenableBuilder<TextEditingValue>(
+        valueListenable: controller,
+        builder: (context, value, _) {
+          return TextField(
+            controller: controller,
+            onChanged: onChanged,
+            textAlignVertical: TextAlignVertical.center,
+            style: TextStyles.formHint(
+              context,
+            ).copyWith(color: ColourStyles.primaryColor_2),
+            decoration: InputDecoration(
+              hintText: hintText,
+              hintStyle: TextStyles.formHint(context),
+              prefixIcon: const Icon(Icons.search),
+              suffixIcon: value.text.isNotEmpty
+                  ? IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: onClear,
+                    )
+                  : null,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(
+                  color: ColourStyles.primaryColor_2,
+                  width: 1.5,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(
+                  color: ColourStyles.primaryColor_2,
+                  width: 1.5,
+                ),
+              ),
+              filled: true,
+              fillColor: ColourStyles.primaryColor,
+            ),
+          );
+        },
       ),
     );
   }

@@ -18,7 +18,7 @@ class DrawerItemsAdapter extends TypeAdapter<DrawerItems> {
     };
     return DrawerItems(
       title: fields[1] as String?,
-      icon: fields[0] as String?,
+      icon: fields[0] as Icon?,
       navigation: fields[2] as String?,
     );
   }

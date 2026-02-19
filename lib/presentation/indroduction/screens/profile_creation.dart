@@ -8,88 +8,74 @@ import 'package:stock_pilot/presentation/widgets/permission_dialog.dart';
 import 'package:stock_pilot/presentation/indroduction/widgets/profile_creation_form_widget.dart';
 import 'package:stock_pilot/presentation/widgets/user_avatar_edit_widget.dart';
 
-class ProfileCreation extends StatefulWidget {
+class ProfileCreation extends StatelessWidget {
   const ProfileCreation({super.key});
 
   @override
-  State<ProfileCreation> createState() => _ProfileCreationState();
-}
-
-class _ProfileCreationState extends State<ProfileCreation> {
-  @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
       resizeToAvoidBottomInset: true,
       body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                child: IntrinsicHeight(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: constraints.maxWidth * 0.08,
-                      vertical: 10,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: constraints.maxHeight * 0.02),
-                        Text(
-                          "Get Started!",
-                          style: TextStyles.indroductionHeading(context),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: size.width * 0.08,
+            vertical: 20,
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: size.height * 0.02),
+                      Text(
+                        "Get Started!",
+                        style: TextStyles.indroductionHeading(context),
+                      ),
+                      SizedBox(height: 6),
+                      Text(
+                        "Create a profile to manage inventory",
+                        style: TextStyles.indroductionCaption(context),
+                      ),
+                      SizedBox(height: size.height * 0.05),
+                      Center(
+                        child: Consumer<ProfileCreationProvider>(
+                          builder: (context, provider, _) {
+                            return UserAvatarEditWidget(
+                              imagePath: provider.profileImage,
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (_) => PermissionDialog(
+                                    provider: context
+                                        .read<ProfileCreationProvider>(),
+                                  ),
+                                );
+                              },
+                            );
+                          },
                         ),
-                        Text(
-                          "Create a profile to manage inventory",
-                          style: TextStyles.indroductionCaption(context),
-                        ),
-                        SizedBox(height: constraints.maxHeight * 0.04),
-                        Center(
-                          child: Consumer<ProfileCreationProvider>(
-                            builder: (context, provider, child) {
-                              return UserAvatarEditWidget(
-                                imagePath: provider.profileImage,
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return PermissionDialog(
-                                        provider: context
-                                            .read<ProfileCreationProvider>(),
-                                      );
-                                    },
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                        ),
-                        SizedBox(height: constraints.maxHeight * 0.04),
-                        const ProfileCreationFormWidget(),
-                        SizedBox(height: constraints.maxHeight * 0.01),
-                        const Spacer(),
-                        Center(
-                          child: Column(
-                            children: [
-                              const CreateProfileButtonWidget(),
-                              SizedBox(height: constraints.maxHeight * 0.01),
-                              Text(
-                                "Manage your inventory",
-                                style: TextStyles.buttonCaption(context),
-                              ),
-                            ],
-                          ),
-                        ),
-                        
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: size.height * 0.05),
+                      ProfileCreationFormWidget(),
+                    ],
                   ),
                 ),
               ),
-            );
-          },
+              SizedBox(height: 12),
+              CreateProfileButtonWidget(),
+              SizedBox(height: 8),
+              Text(
+                "Manage your inventory",
+                style: TextStyles.buttonCaption(context),
+              ),
+            ],
+          ),
         ),
       ),
     );

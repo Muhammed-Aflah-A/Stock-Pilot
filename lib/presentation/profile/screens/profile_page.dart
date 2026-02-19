@@ -9,18 +9,15 @@ import 'package:stock_pilot/presentation/profile/widgets/profile_details_widget.
 import 'package:stock_pilot/presentation/widgets/permission_dialog.dart';
 import 'package:stock_pilot/presentation/widgets/user_avatar_edit_widget.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
-  @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
+    final size = MediaQuery.of(context).size;
+    final verticalPadding = (size.height * 0.02).clamp(12.0, 24.0);
+    final sectionSpacing = (size.height * 0.04).clamp(20.0, 40.0);
+    final horizontalPadding = (size.width * 0.05).clamp(16.0, 40.0);
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
       appBar: const AppBarWidget(
@@ -32,76 +29,78 @@ class _ProfilePageState extends State<ProfilePage> {
       drawer: const AppDrawer(),
       body: SafeArea(
         child: Consumer<ProfilePageProvider>(
-          builder: (context, provider, child) {
+          builder: (context, provider, _) {
+            final user = provider.user;
             return SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                  vertical: screenHeight * 0.02,
-                  horizontal: screenWidth * 0.05,
+                  vertical: verticalPadding,
+                  horizontal: horizontalPadding,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(
                       child: UserAvatarEditWidget(
-                        imagePath: provider.user?.profileImage,
+                        imagePath: user?.profileImage,
                         onPressed: () {
                           showDialog(
                             context: context,
-                            builder: (context) => PermissionDialog(
+                            builder: (_) => PermissionDialog(
                               provider: context.read<ProfilePageProvider>(),
                             ),
                           );
                         },
                       ),
                     ),
-                    SizedBox(height: screenHeight * 0.03),
+                    SizedBox(height: sectionSpacing),
                     Text(
                       "Personal Information",
                       style: TextStyles.sectionHeading(context),
                     ),
-                    SizedBox(height: screenHeight * 0.01),
+                    const SizedBox(height: 12),
                     ProfileDetailsWidget(
                       items: provider.personalInfo,
                       onSave: (fieldType, value) async {
                         switch (fieldType) {
                           case 'name':
-                            provider.user!.fullName = value;
-                            break;
-                          case 'personal number':
-                            provider.user!.personalNumber = value;
+                            user?.fullName = value;
                             break;
                           case 'email':
-                            provider.user!.gmail = value;
+                            user?.gmail = value;
+                            break;
+                          case 'personal number':
+                            user?.personalNumber = value;
                             break;
                         }
                         await provider.updateUser();
                       },
                     ),
-                    SizedBox(height: screenHeight * 0.04),
+                    SizedBox(height: sectionSpacing),
                     Text(
                       "Shop Information",
                       style: TextStyles.sectionHeading(context),
                     ),
-                    SizedBox(height: screenHeight * 0.01),
+                    const SizedBox(height: 12),
                     ProfileDetailsWidget(
                       items: provider.shopInfo,
-                      onSave: (fieldtype, value) async {
-                        switch (fieldtype) {
+                      onSave: (fieldType, value) async {
+                        switch (fieldType) {
                           case 'shop name':
-                            provider.user!.shopName = value;
+                            user?.shopName = value;
                             break;
                           case 'address':
-                            provider.user!.shopAdress = value;
+                            user?.shopAdress = value;
                             break;
                           case 'shop number':
-                            provider.user!.shopNumber = value;
+                            user?.shopNumber = value;
                             break;
                         }
                         await provider.updateUser();
                       },
                     ),
-                    SizedBox(height: screenHeight * 0.05),
+                    SizedBox(height: sectionSpacing),
                   ],
                 ),
               ),

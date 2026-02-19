@@ -25,30 +25,28 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColourStyles.splashBackgroundColor,
+      backgroundColor: ColourStyles.primaryColor,
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
             return SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                child: IntrinsicHeight(
-                  child: Center(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: constraints.maxWidth * 0.1,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const HeroimageWidget(
-                            heightFactor: 0.3,
-                            imagePath: AppImages.appLogo,
-                          ),
-                          SizedBox(height: constraints.maxHeight * 0.02),
-                          const AnimatedtextWidget(),
-                        ],
-                      ),
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: constraints.maxWidth * 0.1,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        HeroimageWidget(
+                          heightFactor: 0.3,
+                          imagePath: AppImages.appLogo,
+                        ),
+                        SizedBox(height: constraints.maxHeight * 0.02),
+                        AnimatedtextWidget(),
+                      ],
                     ),
                   ),
                 ),

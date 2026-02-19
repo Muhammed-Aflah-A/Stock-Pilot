@@ -31,92 +31,90 @@ class EditDetailsWidget extends StatefulWidget {
 }
 
 class _EditDetailsWidgetState extends State<EditDetailsWidget> {
-  late TextEditingController controller;
+  late final TextEditingController controller;
   final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    controller = TextEditingController(text: widget.initialValue);
+    controller = TextEditingController(text: widget.initialValue ?? "");
+  }
+
+  OutlineInputBorder _border(Color color) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: color, width: 2),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final errorColor = ColourStyles.colorRed;
+    final dialogWidth = (widget.screenWidth * 0.85).clamp(280.0, 500.0);
     return AlertDialog(
       backgroundColor: ColourStyles.primaryColor,
       title: Center(
         child: Text(
           "${widget.isEditing ? 'Edit' : 'Add'} ${widget.title}",
           style: TextStyles.dialogueHeading(context),
+          textAlign: TextAlign.center,
         ),
       ),
       content: SizedBox(
-        width: widget.screenWidth * 0.8,
+        width: dialogWidth,
         child: Form(
           key: formKey,
           child: TextFormField(
-            maxLength: widget.maxlength,
             controller: controller,
+            maxLength: widget.maxlength,
             keyboardType: KeyboardTypeUtil.getKeyboardType(widget.fieldtype),
             decoration: InputDecoration(
               counterText: "",
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: ColourStyles.primaryColor_2,
-                  width: 2,
-                ),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: ColourStyles.primaryColor_2,
-                  width: 2,
-                ),
-              ),
+              enabledBorder: _border(ColourStyles.primaryColor_2),
+              focusedBorder: _border(ColourStyles.primaryColor_2),
+              errorBorder: _border(errorColor),
+              focusedErrorBorder: _border(errorColor),
             ),
             validator: (value) =>
                 SelectValidatorUtil.validate(value, widget.fieldtype),
           ),
         ),
       ),
+      actionsPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       actions: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
-          child: Row(
-            children: [
-              Expanded(
-                child: ElevatedButton(
-                  style: ButtonStyles.smallDialogBackButton(context),
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(
-                    "cancel",
-                    style: TextStyles.smallButtonTextBlack(context),
-                  ),
+        Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                style: ButtonStyles.smallDialogBackButton(context),
+                onPressed: () => Navigator.pop(context),
+                child: Text(
+                  "Cancel",
+                  style: TextStyles.smallButtonTextBlack(context),
                 ),
               ),
-              SizedBox(width: widget.screenWidth * 0.03),
-              Expanded(
-                child: ElevatedButton(
-                  style: ButtonStyles.smallDialogNextButton(context),
-                  onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      await widget.onSave(controller.text.trim());
-                      if (context.mounted) {
-                        final message = widget.isEditing
-                            ? "${widget.title} updated successfully"
-                            : "${widget.title} added successfully";
-                        SnackbarUtil.showSnackBar(context, message, false);
-                        Navigator.pop(context);
-                      }
-                    }
-                  },
-                  child: Text(
-                    "save",
-                    style: TextStyles.smallButtonTextWhite(context),
-                  ),
+            ),
+            SizedBox(width: dialogWidth * 0.05),
+            Expanded(
+              child: ElevatedButton(
+                style: ButtonStyles.smallDialogNextButton(context),
+                onPressed: () async {
+                  if (!formKey.currentState!.validate()) return;
+                  await widget.onSave(controller.text.trim());
+                  if (!context.mounted) return;
+                  final message = widget.isEditing
+                      ? "${widget.title} updated successfully"
+                      : "${widget.title} added successfully";
+                  SnackbarUtil.showSnackBar(context, message, false);
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  "Save",
+                  style: TextStyles.smallButtonTextWhite(context),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );

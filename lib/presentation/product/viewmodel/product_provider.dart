@@ -11,6 +11,13 @@ import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/data/service%20layer/hive_service_layer.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 
+enum SortOption {
+  priceHighToLow,
+  priceLowToHigh,
+  alphabeticalAZ,
+  alphabeticalZA,
+}
+
 class ProductProvider with ChangeNotifier {
   final ImageSelectorUtil imageSelector;
   final HiveServiceLayer hiveService;
@@ -72,6 +79,7 @@ class ProductProvider with ChangeNotifier {
       query: _searchQuery,
       searchField: (product) => product.productName ?? "",
     );
+    _applySorting();
   }
 
   void clearSearch() {
@@ -308,5 +316,36 @@ class ProductProvider with ChangeNotifier {
       final count = int.tryParse(product.itemCount ?? '0') ?? 0;
       return count == 0;
     }).toList();
+  }
+
+  SortOption _currentSort = SortOption.priceHighToLow;
+  SortOption get currentSort => _currentSort;
+  void sortProducts(SortOption option) {
+    _currentSort = option;
+    _applySorting();
+    notifyListeners();
+  }
+
+  void _applySorting() {
+    filteredProducts.sort((a, b) {
+      switch (_currentSort) {
+        case SortOption.priceHighToLow:
+          final aPrice = double.tryParse(a.salesRate ?? '0') ?? 0;
+          final bPrice = double.tryParse(b.salesRate ?? '0') ?? 0;
+          return bPrice.compareTo(aPrice);
+        case SortOption.priceLowToHigh:
+          final aPrice = double.tryParse(a.salesRate ?? '0') ?? 0;
+          final bPrice = double.tryParse(b.salesRate ?? '0') ?? 0;
+          return aPrice.compareTo(bPrice);
+        case SortOption.alphabeticalAZ:
+          return (a.productName ?? '').toLowerCase().compareTo(
+            (b.productName ?? '').toLowerCase(),
+          );
+        case SortOption.alphabeticalZA:
+          return (b.productName ?? '').toLowerCase().compareTo(
+            (a.productName ?? '').toLowerCase(),
+          );
+      }
+    });
   }
 }

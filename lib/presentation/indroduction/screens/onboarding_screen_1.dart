@@ -15,58 +15,47 @@ class OnboardingScreen1 extends StatelessWidget {
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
       body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                child: IntrinsicHeight(
-                  child: Center(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: constraints.maxWidth * 0.08,
-                        vertical: 20,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      AppnameWidget(),
+                      SizedBox(height: 30),
+                      HeroimageWidget(
+                        heightFactor: 0.3,
+                        imagePath: AppImages.onboardingScreen1,
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const AppnameWidget(),
-                          SizedBox(height: constraints.maxHeight * 0.05),
-                          HeroimageWidget(
-                            heightFactor: 0.3,
-                            imagePath: AppImages.onboardingScreen1,
-                          ),
-                          SizedBox(height: constraints.maxHeight * 0.05),
-                          Text(
-                            "Track Your Stock Effortlessly",
-                            style: TextStyles.tagLine(context),
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(height: constraints.maxHeight * 0.02),
-                          Text(
-                            "Stay updated with real-time item counts and accurate stock levels",
-                            style: TextStyles.tagLineCaption(context),
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(height: constraints.maxHeight * 0.01),
-                          const Spacer(),
-                          NextbuttonWidget(
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                context,
-                                AppRoutes.onBoardingScreen_2,
-                              );
-                            },
-                            text: "Next",
-                          ),
-                        ],
+                      SizedBox(height: 30),
+                      Text(
+                        "Track Your Stock Effortlessly",
+                        style: TextStyles.tagLine(context),
+                        textAlign: TextAlign.center,
                       ),
-                    ),
+                      SizedBox(height: 12),
+                      Text(
+                        "Stay updated with real-time item counts and accurate stock levels",
+                        style: TextStyles.tagLineCaption(context),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 10),
+                      Text("1/3", style: TextStyles.tagLineCaption(context)),
+                    ],
                   ),
                 ),
               ),
-            );
-          },
+              SizedBox(height: 8),
+              NextbuttonWidget(
+                text: "Next",
+                onPressed: () {
+                  Navigator.pushNamed(context, AppRoutes.onBoardingScreen_2);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

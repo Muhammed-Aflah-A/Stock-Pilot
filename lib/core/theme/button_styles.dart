@@ -22,7 +22,7 @@ class ButtonStyles {
       ElevatedButton.styleFrom(
         backgroundColor: ColourStyles.primaryColor_2,
         foregroundColor: ColourStyles.primaryColor,
-        minimumSize: _responsiveSize(context, 280, 65),
+        minimumSize: _responsiveSize(context, 280, 60),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       );
 
@@ -30,7 +30,7 @@ class ButtonStyles {
       ElevatedButton.styleFrom(
         backgroundColor: ColourStyles.primaryColor,
         foregroundColor: ColourStyles.primaryColor_2,
-        minimumSize: _responsiveSize(context, 280, 65),
+        minimumSize: _responsiveSize(context, 280, 60),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         side: BorderSide(color: ColourStyles.primaryColor_2, width: 2),
       );

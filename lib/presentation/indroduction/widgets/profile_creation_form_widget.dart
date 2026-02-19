@@ -10,9 +10,9 @@ class ProfileCreationFormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.sizeOf(context).height;
+    final size = MediaQuery.of(context).size;
     final profileForm = context.watch<ProfileCreationProvider>();
-    final double fieldGap = (screenHeight * 0.025).clamp(8.0, 16.0);
+    final double fieldGap = (size.height * 0.025).clamp(10.0, 18.0);
     return Form(
       key: profileForm.formKey,
       child: Column(

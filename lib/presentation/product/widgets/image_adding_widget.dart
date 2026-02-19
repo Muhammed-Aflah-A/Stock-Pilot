@@ -10,86 +10,96 @@ class ImageAddingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentWidth = MediaQuery.of(context).size.width;
-    final provider = context.watch<ProductProvider>();
-    final images = provider.productImages.whereType<File>().toList();
-    final itemCount = images.length < 4 ? images.length + 1 : 4;
-    return Center(
-      child: Wrap(
-        spacing: currentWidth * 0.03,
-        runSpacing: currentWidth * 0.03,
-        alignment: WrapAlignment.center,
-        children: List.generate(itemCount, (index) {
-          final File? image = index < images.length ? images[index] : null;
-          return GestureDetector(
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) => PermissionDialog(
-                  provider: context.read<ProductProvider>(),
-                  index: index,
-                ),
-              );
-            },
-            child: Container(
-              width: currentWidth * 0.43,
-              height: currentWidth * 0.43,
-              decoration: BoxDecoration(
-                color: ColourStyles.primaryColor,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: ColourStyles.primaryColor_2,
-                  width: 2,
-                ),
-              ),
-              child: image == null
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.add_photo_alternate_sharp,
-                          size: currentWidth * 0.08,
+    return Selector<ProductProvider, List<File>>(
+      selector: (_, provider) =>
+          provider.productImages.whereType<File>().toList(),
+      builder: (context, images, _) {
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final maxWidth = constraints.maxWidth;
+            final tileSize = (maxWidth / 2 - 12).clamp(120.0, 200.0);
+            final itemCount = images.length < 4 ? images.length + 1 : 4;
+            return Center(
+              child: Wrap(
+                spacing: 12,
+                runSpacing: 12,
+                alignment: WrapAlignment.center,
+                children: List.generate(itemCount, (index) {
+                  final File? image = index < images.length
+                      ? images[index]
+                      : null;
+                  return GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) => PermissionDialog(
+                          provider: context.read<ProductProvider>(),
+                          index: index,
                         ),
-                        const SizedBox(height: 4),
-                        const Text("Add Photo"),
-                      ],
-                    )
-                  : Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.file(
-                            image,
-                            width: double.infinity,
-                            height: double.infinity,
-                            fit: BoxFit.cover,
-                          ),
+                      );
+                    },
+                    child: Container(
+                      width: tileSize,
+                      height: tileSize,
+                      decoration: BoxDecoration(
+                        color: ColourStyles.primaryColor,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: ColourStyles.primaryColor_2,
+                          width: 2,
                         ),
-                        Positioned(
-                          top: 6,
-                          right: 6,
-                          child: GestureDetector(
-                            onTap: () => provider.removeImage(index),
-                            child: Container(
-                              padding: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                color: ColourStyles.primaryColor_2,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.close,
-                                size: 16,
-                                color: ColourStyles.primaryColor,
-                              ),
+                      ),
+                      child: image == null
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(Icons.add_photo_alternate_rounded, size: 30),
+                                SizedBox(height: 6),
+                                Text("Add Photo"),
+                              ],
+                            )
+                          : Stack(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.file(
+                                    image,
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 6,
+                                  right: 6,
+                                  child: GestureDetector(
+                                    onTap: () => context
+                                        .read<ProductProvider>()
+                                        .removeImage(index),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(4),
+                                      decoration: const BoxDecoration(
+                                        color: ColourStyles.primaryColor_2,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: const Icon(
+                                        Icons.close,
+                                        size: 16,
+                                        color: ColourStyles.primaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ),
-                      ],
                     ),
-            ),
-          );
-        }),
-      ),
+                  );
+                }),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

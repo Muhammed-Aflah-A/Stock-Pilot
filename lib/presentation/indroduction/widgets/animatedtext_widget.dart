@@ -12,11 +12,11 @@ class AnimatedtextWidget extends StatelessWidget {
         TypewriterAnimatedText(
           'Smart Stock, Smooth Business',
           textStyle: TextStyles.splashQuote(context),
-          speed: const Duration(milliseconds: 100),
+          speed: Duration(milliseconds: 100),
         ),
       ],
       totalRepeatCount: 1,
-      pause: const Duration(seconds: 1),
+      pause: Duration(seconds: 1),
       displayFullTextOnTap: true,
       stopPauseOnTap: true,
     );

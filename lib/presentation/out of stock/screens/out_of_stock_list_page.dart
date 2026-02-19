@@ -20,8 +20,22 @@ class OutOfStockListPage extends StatefulWidget {
 
 class _OutOfStockListPageState extends State<OutOfStockListPage> {
   final TextEditingController controller = TextEditingController();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
+    final horizontalPadding = (size.width * 0.04).clamp(16.0, 40.0);
+    final verticalPadding = (size.height * 0.02).clamp(12.0, 24.0);
+    final spacing = (size.height * 0.02).clamp(12.0, 20.0);
+    final itemSpacing = (size.height * 0.015).clamp(8.0, 16.0);
+
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
       appBar: const AppBarWidget(
@@ -32,79 +46,79 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
       ),
       drawer: const AppDrawer(),
       body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: constraints.maxWidth * 0.04,
-                vertical: constraints.maxHeight * 0.01,
-              ),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: constraints.maxHeight * 0.07,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1400),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: horizontalPadding,
+                  vertical: verticalPadding,
+                ),
+                child: Column(
+                  children: [
+                    Row(
                       children: [
                         Expanded(
                           child: SearchbarWidget(
                             controller: controller,
+                            hintText: "Search by name",
                             onChanged: (value) {
                               context.read<ProductProvider>().searchOutOfStock(
                                 value,
                               );
-                              setState(() {});
                             },
                             onClear: () {
                               controller.clear();
                               context
                                   .read<ProductProvider>()
                                   .clearOutOfStockSearch();
-                              setState(() {});
                             },
-                            hintText: "Search by name",
                           ),
                         ),
-                        SizedBox(width: constraints.maxWidth * 0.02),
+                        const SizedBox(width: 10),
                         const FilterbuttonWidget(),
-                        SizedBox(width: constraints.maxWidth * 0.02),
+                        const SizedBox(width: 10),
                         const SortbuttonWidget(),
                       ],
                     ),
-                  ),
-                  SizedBox(height: constraints.maxHeight * 0.02),
-                  Expanded(
-                    child: Consumer<ProductProvider>(
-                      builder: (context, provider, child) {
-                        final displayList = provider.filteredOutOfStock;
-                        if (provider.outOfStockProducts.isEmpty) {
-                          return const Center(
-                            child: SingleChildScrollView(
+                    SizedBox(height: spacing),
+                    Expanded(
+                      child: Consumer<ProductProvider>(
+                        builder: (context, provider, _) {
+                          final displayList = provider.filteredOutOfStock;
+
+                          if (provider.outOfStockProducts.isEmpty) {
+                            return const Center(
                               child: EmptypageMessageWidget(
                                 heading: "No Out of stock yet",
-                                label: "check here for out of stock product",
+                                label: "Check here for out of stock product",
                               ),
-                            ),
-                          );
-                        }
-                        if (displayList.isEmpty) {
-                          return const Center(
-                            child: EmptypageMessageWidget(
-                              heading: "No matches",
-                              label:
-                                  "No out of stock products match your search",
-                            ),
-                          );
-                        }
-                        return ListView.builder(
-                          itemCount: displayList.length,
-                          itemBuilder: (context, index) {
-                            final product = displayList[index];
-                            return Padding(
-                              padding: EdgeInsets.only(
-                                bottom: constraints.maxHeight * 0.015,
+                            );
+                          }
+
+                          if (displayList.isEmpty) {
+                            return const Center(
+                              child: EmptypageMessageWidget(
+                                heading: "No matches",
+                                label:
+                                    "No out of stock products match your search",
                               ),
-                              child: ProductListTileWidget(
+                            );
+                          }
+
+                          return ListView.separated(
+                            keyboardDismissBehavior:
+                                ScrollViewKeyboardDismissBehavior.onDrag,
+                            itemCount: displayList.length,
+                            separatorBuilder: (_, __) =>
+                                SizedBox(height: itemSpacing),
+                            itemBuilder: (context, index) {
+                              final product = displayList[index];
+
+                              return ProductListTileWidget(
                                 product: product,
                                 onTap: () {
                                   Navigator.pushNamed(
@@ -118,17 +132,17 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
                                     },
                                   );
                                 },
-                              ),
-                            );
-                          },
-                        );
-                      },
+                              );
+                            },
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            );
-          },
+            ),
+          ),
         ),
       ),
     );

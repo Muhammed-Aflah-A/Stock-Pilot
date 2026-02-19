@@ -9,82 +9,82 @@ import 'package:stock_pilot/presentation/widgets/user_avatar_widget.dart';
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
-  double _scale(BuildContext context, double size) {
-    final screenWidth = MediaQuery.sizeOf(context).width;
-    if (screenWidth < 360) return size * 0.9;
-    if (screenWidth < 600) return size * 1.0;
-    return size * 1.2;
-  }
-
   @override
   Widget build(BuildContext context) {
-    final currentHeight = MediaQuery.sizeOf(context).height;
+    final size = MediaQuery.of(context).size;
+    final verticalPadding = (size.height * 0.01).clamp(8.0, 16.0);
+    final itemSpacing = (size.height * 0.005).clamp(4.0, 10.0);
+
     return Drawer(
       backgroundColor: ColourStyles.primaryColor,
-      child: Column(
-        children: [
-          UserAccountsDrawerHeader(
-            decoration: const BoxDecoration(color: ColourStyles.primaryColor),
-            accountName: Consumer<ProfilePageProvider>(
-              builder: (context, provider, child) {
-                return Text(
-                  "${provider.user?.fullName}",
-                  style: TextStyles.primaryText(context),
+      child: SafeArea(
+        child: Column(
+          children: [
+            Consumer<ProfilePageProvider>(
+              builder: (context, profileProvider, _) {
+                final user = profileProvider.user;
+                return UserAccountsDrawerHeader(
+                  margin: EdgeInsets.zero,
+                  decoration: const BoxDecoration(
+                    color: ColourStyles.primaryColor,
+                  ),
+                  accountName: Text(
+                    user?.fullName ?? "User",
+                    style: TextStyles.primaryText(context),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  accountEmail: Text(
+                    user?.gmail ?? "",
+                    style: TextStyles.primaryText(context),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  currentAccountPicture: const UserAvatarWidget(),
                 );
               },
             ),
-            accountEmail: Consumer<ProfilePageProvider>(
-              builder: (context, provider, child) {
-                return Text(
-                  "${provider.user?.gmail}",
-                  style: TextStyles.primaryText(context),
-                );
-              },
+            Expanded(
+              child: Consumer<DrawerProvider>(
+                builder: (context, drawerProvider, _) {
+                  return ListView.separated(
+                    padding: EdgeInsets.symmetric(vertical: verticalPadding),
+                    itemCount: drawerProvider.drawerItems.length,
+                    separatorBuilder: (_, __) => SizedBox(height: itemSpacing),
+                    itemBuilder: (context, index) {
+                      final item = drawerProvider.drawerItems[index];
+                      return ListTile(
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: size.width * 0.06,
+                        ),
+                        selected: drawerProvider.selectedIndex == index,
+                        selectedTileColor: ColourStyles.selectionColor,
+                        tileColor: ColourStyles.primaryColor,
+                        leading: item.icon,
+                        title: Text(
+                          item.title!,
+                          style: TextStyles.titleText(context),
+                        ),
+                        onTap: () {
+                          drawerProvider.selectedDrawerItem(index);
+
+                          Navigator.pop(context);
+
+                          if (ModalRoute.of(context)?.settings.name !=
+                              item.navigation) {
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              "${item.navigation}",
+                              (route) => false,
+                            );
+                          }
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
             ),
-            currentAccountPicture: const UserAvatarWidget(),
-          ),
-          Expanded(
-            child: Consumer<DrawerProvider>(
-              builder: (context, provider, child) {
-                return ListView.separated(
-                  padding: EdgeInsets.symmetric(vertical: currentHeight * 0.01),
-                  separatorBuilder: (context, index) =>
-                      SizedBox(height: currentHeight * 0.005),
-                  itemCount: provider.drawerItems.length,
-                  itemBuilder: (context, index) {
-                    final item = provider.drawerItems[index];
-                    return ListTile(
-                      selected: provider.selectedIndex == index,
-                      selectedTileColor: ColourStyles.selectionColor,
-                      tileColor: ColourStyles.primaryColor,
-                      leading: Image.asset(
-                        item.icon!,
-                        height: _scale(context, 28),
-                        width: _scale(context, 28),
-                      ),
-                      title: Text(
-                        item.title!,
-                        style: TextStyles.titleText(context),
-                      ),
-                      onTap: () {
-                        provider.selectedDrawerItem(index);
-                        Navigator.pop(context);
-                        if (ModalRoute.of(context)?.settings.name !=
-                            item.navigation) {
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            "${item.navigation}",
-                            (route) => false,
-                          );
-                        }
-                      },
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

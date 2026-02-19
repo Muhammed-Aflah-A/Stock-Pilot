@@ -14,25 +14,32 @@ class OptionTileWidget extends StatelessWidget {
     required this.onTap,
   });
 
-  double _scale(BuildContext context, double size) {
-    final screenWidth = MediaQuery.sizeOf(context).width;
-    if (screenWidth < 360) return size * 0.9;
-    if (screenWidth < 600) return size * 1.0;
-    if (screenWidth < 900) return size * 1.1;
-    return size * 1.2;
-  }
-
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(
-        icon,
-        size: _scale(context, 24),
-        color: ColourStyles.primaryColor_2,
+    final size = MediaQuery.of(context).size;
+    final horizontalPadding = (size.width * 0.05).clamp(12.0, 20.0);
+    final iconSize = (size.width * 0.06).clamp(20.0, 28.0);
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: onTap,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: horizontalPadding,
+            vertical: 12,
+          ),
+          child: Row(
+            children: [
+              Icon(icon, size: iconSize, color: ColourStyles.primaryColor_2),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Text(title, style: TextStyles.primaryText(context)),
+              ),
+            ],
+          ),
+        ),
       ),
-      title: Text(title, style: TextStyles.primaryText(context)),
-      onTap: onTap,
-      contentPadding: EdgeInsets.symmetric(horizontal: _scale(context, 16)),
     );
   }
 }

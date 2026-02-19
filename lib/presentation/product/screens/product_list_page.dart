@@ -30,6 +30,11 @@ class _ProductListPageState extends State<ProductListPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final horizontalPadding = (size.width * 0.04).clamp(16.0, 40.0);
+    final verticalPadding = (size.height * 0.02).clamp(12.0, 24.0);
+    final spacing = (size.height * 0.02).clamp(12.0, 20.0);
+    final itemSpacing = (size.height * 0.015).clamp(8.0, 16.0);
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
       appBar: const AppBarWidget(
@@ -47,89 +52,80 @@ class _ProductListPageState extends State<ProductListPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return Padding(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1400),
+            child: Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: constraints.maxWidth * 0.04,
-                vertical: constraints.maxHeight * 0.01,
+                horizontal: horizontalPadding,
+                vertical: verticalPadding,
               ),
               child: Column(
                 children: [
-                  SizedBox(
-                    height: constraints.maxHeight * 0.07,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(
-                          child: SearchbarWidget(
-                            controller: controller,
-                            onChanged: (value) {
-                              context.read<ProductProvider>().searchProducts(
-                                value,
-                              );
-                              setState(() {});
-                            },
-                            onClear: () {
-                              controller.clear();
-                              context.read<ProductProvider>().clearSearch();
-                              setState(() {});
-                            },
-                            hintText: "Search by name",
-                          ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SearchbarWidget(
+                          controller: controller,
+                          hintText: "Search by name",
+                          onChanged: (value) {
+                            context.read<ProductProvider>().searchProducts(
+                              value,
+                            );
+                          },
+                          onClear: () {
+                            controller.clear();
+                            context.read<ProductProvider>().clearSearch();
+                          },
                         ),
-                        SizedBox(width: constraints.maxWidth * 0.02),
-                        const FilterbuttonWidget(),
-                        SizedBox(width: constraints.maxWidth * 0.02),
-                        const SortbuttonWidget(),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(width: 10),
+                      const FilterbuttonWidget(),
+                      const SizedBox(width: 10),
+                      const SortbuttonWidget(),
+                    ],
                   ),
-                  SizedBox(height: constraints.maxHeight * 0.02),
+                  SizedBox(height: spacing),
                   Expanded(
                     child: Consumer<ProductProvider>(
-                      builder: (context, provider, child) {
+                      builder: (context, provider, _) {
                         if (provider.products.isEmpty) {
                           return const Center(
-                            child: SingleChildScrollView(
-                              child: EmptypageMessageWidget(
-                                heading: "No products yet",
-                                label: "Add your first product to get started",
-                              ),
+                            child: EmptypageMessageWidget(
+                              heading: "No products yet",
+                              label: "Add your first product to get started",
                             ),
                           );
                         }
                         if (provider.filteredProducts.isEmpty) {
                           return const Center(
-                            child: SingleChildScrollView(
-                              child: EmptypageMessageWidget(
-                                heading: "No results found",
-                                label: "Try a different product name",
-                              ),
+                            child: EmptypageMessageWidget(
+                              icon: Icons.search_off_rounded,
+                              heading: "No results found",
+                              label: "Try a different product name",
                             ),
                           );
                         }
-                        return ListView.builder(
+                        return ListView.separated(
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.onDrag,
                           itemCount: provider.filteredProducts.length,
+                          separatorBuilder: (_, __) =>
+                              SizedBox(height: itemSpacing),
                           itemBuilder: (context, index) {
                             final product = provider.filteredProducts[index];
-                            return Padding(
-                              padding: EdgeInsets.only(
-                                bottom: constraints.maxHeight * 0.015,
-                              ),
-                              child: ProductListTileWidget(
-                                product: product,
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    AppRoutes.productDetailsPage,
-                                    arguments: {
-                                      'product': product,
-                                      'index': index,
-                                    },
-                                  );
-                                },
-                              ),
+                            return ProductListTileWidget(
+                              product: product,
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRoutes.productDetailsPage,
+                                  arguments: {
+                                    'product': product,
+                                    'index': index,
+                                  },
+                                );
+                              },
                             );
                           },
                         );
@@ -138,8 +134,8 @@ class _ProductListPageState extends State<ProductListPage> {
                   ),
                 ],
               ),
-            );
-          },
+            ),
+          ),
         ),
       ),
     );

@@ -3,8 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/data/local/shared_preference/app_starting_state.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/drawer_provider.dart';
-import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
-import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
 
 class SplashScreenProvider with ChangeNotifier {
   static const _splashDuration = Duration(seconds: 4);
@@ -19,13 +17,8 @@ class SplashScreenProvider with ChangeNotifier {
     } else if (!profileDone) {
       _navigate(context, AppRoutes.profileCreation);
     } else {
-      final profileProvider = context.read<ProfilePageProvider>();
-      final productProvider = context.read<ProductProvider>();
       final drawerProvider = context.read<DrawerProvider>();
-      await profileProvider.loadUser();
-      await productProvider.loadProducts();
       drawerProvider.selectedDrawerItem(1);
-      if (!context.mounted) return;
       _navigate(context, AppRoutes.dashboard);
     }
   }

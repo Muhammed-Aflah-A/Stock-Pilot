@@ -27,172 +27,200 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
-  bool _isDescriptionExpanded = true;
+  final ValueNotifier<bool> _isDescriptionExpanded = ValueNotifier(true);
+
+  @override
+  void dispose() {
+    _isDescriptionExpanded.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final currentHeight = MediaQuery.of(context).size.height;
-    final currentWidth = MediaQuery.of(context).size.width;
+    final size = MediaQuery.of(context).size;
+    final horizontalPadding = (size.width * 0.05).clamp(16.0, 40.0);
+    final verticalPadding = (size.height * 0.02).clamp(16.0, 28.0);
+    final spacing = (size.height * 0.025).clamp(16.0, 28.0);
     final provider = context.watch<ProductProvider>();
+
     if (widget.productIndex < 0 ||
         widget.productIndex >= provider.products.length) {
       return const Scaffold(body: Center(child: Text("Product not found")));
     }
+
     final product = provider.products[widget.productIndex];
+
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
-      appBar: AppBarWidget(
+      appBar: const AppBarWidget(
         showleading: true,
         title: "Product Details",
         centeredTitle: true,
         showAvatar: false,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: currentWidth * 0.05,
-            vertical: currentHeight * 0.02,
-          ),
-          child: Column(
-            children: [
-              ProductImageWidget(
-                images: product.productImages,
-                height: currentHeight * 0.35,
+      body: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 900),
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(
+                horizontal: horizontalPadding,
+                vertical: verticalPadding,
               ),
-              SizedBox(height: currentHeight * 0.025),
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(currentWidth * 0.05),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: ColourStyles.shadowColor,
-                      blurRadius: 10,
-                      offset: const Offset(0, 2),
+              child: Column(
+                children: [
+                  ProductImageWidget(
+                    images: product.productImages,
+                    height: (size.height * 0.35).clamp(220.0, 400.0),
+                  ),
+                  SizedBox(height: spacing),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(horizontalPadding),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: ColourStyles.shadowColor,
+                          blurRadius: 10,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      product.productName!,
-                      style: TextStyles.dialogueHeading(context),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          product.productName!,
+                          style: TextStyles.dialogueHeading(context),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          product.category!,
+                          style: TextStyles.caption(context),
+                        ),
+                        SizedBox(height: spacing),
+                        DetailRowWidget(
+                          label: 'Brand',
+                          value: product.brand!,
+                          showDivider: true,
+                        ),
+                        DetailRowWidget(
+                          label: 'Price',
+                          value: '\$${product.salesRate}',
+                          showDivider: true,
+                        ),
+                        DetailRowWidget(
+                          label: 'Stock Quantity',
+                          value: provider.getStockText(product),
+                          showDivider: false,
+                          valueColor: provider.getStockColor(product),
+                          showDot: true,
+                        ),
+                      ],
                     ),
-                    SizedBox(height: currentHeight * 0.005),
-                    Text(product.category!, style: TextStyles.caption(context)),
-                    SizedBox(height: currentHeight * 0.025),
-                    DetailRowWidget(
-                      label: 'Brand',
-                      value: product.brand!,
-                      showDivider: true,
+                  ),
+                  SizedBox(height: spacing),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(horizontalPadding),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: ColourStyles.shadowColor,
+                          blurRadius: 10,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
-                    DetailRowWidget(
-                      label: 'Price',
-                      value: '\$${product.salesRate}',
-                      showDivider: true,
-                    ),
-                    DetailRowWidget(
-                      label: 'Stock Quantity',
-                      value: provider.getStockText(product),
-                      showDivider: false,
-                      valueColor: provider.getStockColor(product),
-                      showDot: true,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: currentHeight * 0.02),
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(currentWidth * 0.05),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: ColourStyles.shadowColor,
-                      blurRadius: 10,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          _isDescriptionExpanded = !_isDescriptionExpanded;
-                        });
+                    child: ValueListenableBuilder<bool>(
+                      valueListenable: _isDescriptionExpanded,
+                      builder: (context, expanded, _) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                _isDescriptionExpanded.value = !expanded;
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Description',
+                                    style: TextStyles.cardHeading(context),
+                                  ),
+                                  Icon(
+                                    expanded
+                                        ? Icons.keyboard_arrow_up
+                                        : Icons.keyboard_arrow_down,
+                                        size: 35,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (expanded) ...[
+                              const SizedBox(height: 14),
+                              Text(
+                                product.productDescription!,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  height: 1.5,
+                                  color: ColourStyles.colorGrey,
+                                ),
+                              ),
+                            ],
+                          ],
+                        );
                       },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Description',
-                            style: TextStyles.cardHeading(context),
-                          ),
-                          Icon(
-                            _isDescriptionExpanded
-                                ? Icons.keyboard_arrow_up
-                                : Icons.keyboard_arrow_down,
-                          ),
-                        ],
-                      ),
                     ),
-                    if (_isDescriptionExpanded) ...[
-                      SizedBox(height: currentHeight * 0.015),
-                      Text(
-                        product.productDescription!,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: ColourStyles.colorGrey,
-                          height: 1.5,
+                  ),
+                  SizedBox(height: spacing),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: EditproductButtonWidget(
+                          product: product,
+                          productIndex: widget.productIndex,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: RemoveproductButtonWidget(
+                          label: 'Remove Product',
+                          dialogTitle: 'Delete Product',
+                          itemName: product.productName!,
+                          onDeleteAction: () async {
+                            final dashProvider = context
+                                .read<DashboardProvider>();
+                            await provider.deleteProduct(
+                              widget.productIndex,
+                              dashProvider,
+                            );
+                            if (context.mounted) {
+                              Navigator.pop(
+                                context,
+                                "Product deleted successfully",
+                              );
+                            }
+                          },
                         ),
                       ),
                     ],
-                  ],
-                ),
-              ),
-              SizedBox(height: currentHeight * 0.03),
-              Row(
-                children: [
-                  Expanded(
-                    child: EditproductButtonWidget(
-                      product: product,
-                      productIndex: widget.productIndex,
-                    ),
                   ),
-                  SizedBox(width: currentWidth * 0.03),
-                  Expanded(
-                    child: RemoveproductButtonWidget(
-                      label: 'Remove Product',
-                      dialogTitle: 'Delete Product',
-                      itemName: product.productName!,
-                      onDeleteAction: () async {
-                        final dashProvider = context.read<DashboardProvider>();
-                        await provider.deleteProduct(
-                          widget.productIndex,
-                          dashProvider,
-                        );
-                        if (context.mounted) {
-                          Navigator.pop(context);
-                        }
-                      },
-                    ),
+                  SizedBox(height: spacing),
+                  AddcartButtonWidget(
+                    product: product,
+                    productIndex: widget.productIndex,
                   ),
+                  SizedBox(height: spacing),
                 ],
               ),
-              SizedBox(height: currentHeight * 0.02),
-              AddcartButtonWidget(
-                product: product,
-                productIndex: widget.productIndex,
-              ),
-              SizedBox(height: currentHeight * 0.02),
-            ],
+            ),
           ),
         ),
       ),

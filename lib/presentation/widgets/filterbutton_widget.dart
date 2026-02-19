@@ -6,20 +6,27 @@ class FilterbuttonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1,
-      child: InkWell(
-        onTap: () {},
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: ColourStyles.primaryColor_2, width: 1.5),
-          ),
-          child: Icon(
-            Icons.filter_alt_outlined,
-            size: 22,
-            color: ColourStyles.primaryColor_2,
+    return SizedBox(
+      width: 48,
+      height: 48,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {},
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: ColourStyles.primaryColor_2,
+                width: 1.5,
+              ),
+            ),
+            child: const Icon(
+              Icons.filter_alt_outlined,
+              size: 22,
+              color: ColourStyles.primaryColor_2,
+            ),
           ),
         ),
       ),

@@ -70,9 +70,6 @@ class FormValidatorUtil {
     if (!RegExp(r'^.{3,25}$').hasMatch(value)) {
       return "$fieldName must be between 3 and 25 characters";
     }
-    if (!RegExp(r'^[A-Za-z ]+$').hasMatch(value)) {
-      return "$fieldName must contain only letters and spaces";
-    }
     return null;
   }
 

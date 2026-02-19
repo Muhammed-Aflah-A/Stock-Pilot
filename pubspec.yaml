@@ -72,17 +72,7 @@ flutter:
     - lib/assets/images/onboarding1.png
     - lib/assets/images/onboarding2.png
     - lib/assets/images/onboarding3.png
-    - lib/assets/images/user-profile.avif
-    - lib/assets/images/user-avatar.png
-    - lib/assets/images/dashboard.png
-    - lib/assets/images/product.png
-    - lib/assets/images/categories.png
-    - lib/assets/images/brand.png
-    - lib/assets/images/low-stock.png
-    - lib/assets/images/out-of-stock.png
-    - lib/assets/images/shopping-cart.png
-    - lib/assets/images/history.png
-    - lib/assets/images/revenue.png
+    - lib/assets/images/avatar-icon.png
     - lib/assets/images/headphone.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
