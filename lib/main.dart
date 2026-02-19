@@ -23,7 +23,9 @@ import 'package:stock_pilot/presentation/indroduction/screens/profile_creation.d
 import 'package:stock_pilot/presentation/indroduction/viewmodel/profile_creation_provider.dart';
 import 'package:stock_pilot/presentation/indroduction/viewmodel/splash_screen_provider.dart';
 import 'package:stock_pilot/presentation/low%20stock/screens/lowstock_list_page.dart';
+import 'package:stock_pilot/presentation/low%20stock/viewmodel/lowStock_provider.dart';
 import 'package:stock_pilot/presentation/out%20of%20stock/screens/out_of_stock_list_page.dart';
+import 'package:stock_pilot/presentation/out%20of%20stock/viewmodel/outofstock_provider.dart';
 import 'package:stock_pilot/presentation/product/screens/product_adding_page_1.dart';
 import 'package:stock_pilot/presentation/product/screens/product_adding_page_2.dart';
 import 'package:stock_pilot/presentation/product/screens/product_details_page.dart';
@@ -82,6 +84,20 @@ void main() async {
             productProvider!.categories(categoryProvider.categories);
             productProvider.brands(brandProvider.brands);
             return productProvider;
+          },
+        ),
+        ChangeNotifierProxyProvider<ProductProvider, LowstockProvider>(
+          create: (_) => LowstockProvider(),
+          update: (_, productProvider, lowstockProvider) {
+            lowstockProvider!.updateProductProvider(productProvider);
+            return lowstockProvider;
+          },
+        ),
+        ChangeNotifierProxyProvider<ProductProvider, OutofstockProvider>(
+          create: (_) => OutofstockProvider(),
+          update: (_, productProvider, outProvider) {
+            outProvider!.updateProductProvider(productProvider);
+            return outProvider;
           },
         ),
       ],

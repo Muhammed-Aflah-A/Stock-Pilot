@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
+import 'package:stock_pilot/presentation/out%20of%20stock/viewmodel/outofstock_provider.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
 import 'package:stock_pilot/presentation/product/widgets/product_list_tile_widget.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
@@ -30,7 +31,6 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
     final horizontalPadding = (size.width * 0.04).clamp(16.0, 40.0);
     final verticalPadding = (size.height * 0.02).clamp(12.0, 24.0);
     final spacing = (size.height * 0.02).clamp(12.0, 20.0);
@@ -64,17 +64,15 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
                         Expanded(
                           child: SearchbarWidget(
                             controller: controller,
-                            hintText: "Search by name",
+                            hintText: "Search out of stock products",
                             onChanged: (value) {
-                              context.read<ProductProvider>().searchOutOfStock(
-                                value,
-                              );
+                              context
+                                  .read<OutofstockProvider>()
+                                  .searchOutOfStock(value);
                             },
                             onClear: () {
                               controller.clear();
-                              context
-                                  .read<ProductProvider>()
-                                  .clearOutOfStockSearch();
+                              context.read<OutofstockProvider>().clearSearch();
                             },
                           ),
                         ),
@@ -86,29 +84,17 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
                     ),
                     SizedBox(height: spacing),
                     Expanded(
-                      child: Consumer<ProductProvider>(
-                        builder: (context, provider, _) {
-                          final displayList = provider.filteredOutOfStock;
-
-                          if (provider.outOfStockProducts.isEmpty) {
-                            return const Center(
-                              child: EmptypageMessageWidget(
-                                heading: "No Out of stock yet",
-                                label: "Check here for out of stock product",
-                              ),
-                            );
-                          }
-
+                      child: Consumer<OutofstockProvider>(
+                        builder: (context, outProvider, _) {
+                          final displayList = outProvider.filteredOutOfStock;
                           if (displayList.isEmpty) {
                             return const Center(
                               child: EmptypageMessageWidget(
-                                heading: "No matches",
-                                label:
-                                    "No out of stock products match your search",
+                                heading: "No Out of Stock Products",
+                                label: "Everything is currently in stock",
                               ),
                             );
                           }
-
                           return ListView.separated(
                             keyboardDismissBehavior:
                                 ScrollViewKeyboardDismissBehavior.onDrag,
@@ -117,7 +103,8 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
                                 SizedBox(height: itemSpacing),
                             itemBuilder: (context, index) {
                               final product = displayList[index];
-
+                              final mainProvider = context
+                                  .read<ProductProvider>();
                               return ProductListTileWidget(
                                 product: product,
                                 onTap: () {
@@ -126,7 +113,7 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
                                     AppRoutes.productDetailsPage,
                                     arguments: {
                                       'product': product,
-                                      'index': provider.products.indexOf(
+                                      'index': mainProvider.products.indexOf(
                                         product,
                                       ),
                                     },

@@ -28,9 +28,6 @@ class ProductProvider with ChangeNotifier {
   List<ProductModel> filteredProducts = [];
   String _searchQuery = "";
   List<ProductModel> filteredLowStock = [];
-  String _lowStockSearchQuery = "";
-  List<ProductModel> filteredOutOfStock = [];
-  String _outOfStockSearchQuery = "";
   final firstFormKey = GlobalKey<FormState>();
   final secondFormKey = GlobalKey<FormState>();
   List<File?> productImages = List.generate(4, (_) => null);
@@ -142,8 +139,6 @@ class ProductProvider with ChangeNotifier {
   Future<void> loadProducts() async {
     products = await hiveService.getAllProducts();
     _applySearch();
-    _applyLowStockSearch();
-    _applyOutOfStockSearch();
     notifyListeners();
   }
 
@@ -253,69 +248,6 @@ class ProductProvider with ChangeNotifier {
     firstFormKey.currentState?.reset();
     secondFormKey.currentState?.reset();
     notifyListeners();
-  }
-
-  void searchLowStock(String query) {
-    _lowStockSearchQuery = query;
-    _applyLowStockSearch();
-    notifyListeners();
-  }
-
-  void _applyLowStockSearch() {
-    filteredLowStock = SearchBarUtil.getFilteredList<ProductModel>(
-      sourceList: lowStockProducts,
-      query: _lowStockSearchQuery,
-      searchField: (product) => product.productName ?? "",
-    );
-  }
-
-  void clearLowStockSearch() {
-    _lowStockSearchQuery = "";
-    filteredLowStock = SearchBarUtil.getFilteredList<ProductModel>(
-      sourceList: products,
-      query: _searchQuery,
-      searchField: (product) => product.productName ?? "",
-    );
-    notifyListeners();
-  }
-
-  List<ProductModel> get lowStockProducts {
-    return products.where((product) {
-      final count = int.tryParse(product.itemCount ?? '0') ?? 0;
-      final lowStock = int.tryParse(product.lowStockCount ?? '0') ?? 0;
-      return count <= lowStock && count > 0;
-    }).toList();
-  }
-
-  void searchOutOfStock(String query) {
-    _outOfStockSearchQuery = query;
-    _applyOutOfStockSearch();
-    notifyListeners();
-  }
-
-  void _applyOutOfStockSearch() {
-    filteredOutOfStock = SearchBarUtil.getFilteredList<ProductModel>(
-      sourceList: outOfStockProducts,
-      query: _outOfStockSearchQuery,
-      searchField: (product) => product.productName ?? "",
-    );
-  }
-
-  void clearOutOfStockSearch() {
-    _outOfStockSearchQuery = "";
-    filteredOutOfStock = SearchBarUtil.getFilteredList<ProductModel>(
-      sourceList: products,
-      query: _searchQuery,
-      searchField: (product) => product.productName ?? "",
-    );
-    notifyListeners();
-  }
-
-  List<ProductModel> get outOfStockProducts {
-    return products.where((product) {
-      final count = int.tryParse(product.itemCount ?? '0') ?? 0;
-      return count == 0;
-    }).toList();
   }
 
   SortOption _currentSort = SortOption.priceHighToLow;

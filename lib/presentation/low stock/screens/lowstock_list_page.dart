@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
+import 'package:stock_pilot/presentation/low stock/viewmodel/lowStock_provider.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
 import 'package:stock_pilot/presentation/product/widgets/product_list_tile_widget.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
@@ -30,12 +31,10 @@ class _LowstockListPageState extends State<LowstockListPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
     final horizontalPadding = (size.width * 0.04).clamp(16.0, 40.0);
     final verticalPadding = (size.height * 0.02).clamp(12.0, 24.0);
     final spacing = (size.height * 0.02).clamp(12.0, 20.0);
     final itemSpacing = (size.height * 0.015).clamp(8.0, 16.0);
-
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
       appBar: const AppBarWidget(
@@ -66,15 +65,13 @@ class _LowstockListPageState extends State<LowstockListPage> {
                             controller: controller,
                             hintText: "Search by name",
                             onChanged: (value) {
-                              context.read<ProductProvider>().searchLowStock(
+                              context.read<LowstockProvider>().searchLowStock(
                                 value,
                               );
                             },
                             onClear: () {
                               controller.clear();
-                              context
-                                  .read<ProductProvider>()
-                                  .clearLowStockSearch();
+                              context.read<LowstockProvider>().clearSearch();
                             },
                           ),
                         ),
@@ -86,23 +83,15 @@ class _LowstockListPageState extends State<LowstockListPage> {
                     ),
                     SizedBox(height: spacing),
                     Expanded(
-                      child: Consumer<ProductProvider>(
-                        builder: (context, provider, _) {
-                          final displayList = provider.filteredLowStock;
-                          if (provider.lowStockProducts.isEmpty) {
+                      child: Consumer<LowstockProvider>(
+                        builder: (context, lowStockProvider, _) {
+                          final displayList = lowStockProvider.filteredLowStock;
+
+                          if (displayList.isEmpty) {
                             return const Center(
                               child: EmptypageMessageWidget(
                                 heading: "No Low stock yet",
                                 label: "Check here for low stock product",
-                              ),
-                            );
-                          }
-                          if (displayList.isEmpty) {
-                            return const Center(
-                              child: EmptypageMessageWidget(
-                                heading: "No matches",
-                                label:
-                                    "No low stock products match your search",
                               ),
                             );
                           }
@@ -117,12 +106,14 @@ class _LowstockListPageState extends State<LowstockListPage> {
                               return ProductListTileWidget(
                                 product: product,
                                 onTap: () {
+                                  final mainProvider = context
+                                      .read<ProductProvider>();
                                   Navigator.pushNamed(
                                     context,
                                     AppRoutes.productDetailsPage,
                                     arguments: {
                                       'product': product,
-                                      'index': provider.products.indexOf(
+                                      'index': mainProvider.products.indexOf(
                                         product,
                                       ),
                                     },
