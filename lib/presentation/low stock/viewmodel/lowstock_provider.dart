@@ -4,8 +4,8 @@ import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
 
 enum LowStockSortOption {
-  priceHighToLow,
   priceLowToHigh,
+  priceHighToLow,
   alphabeticalAZ,
   alphabeticalZA,
 }
@@ -14,7 +14,7 @@ class LowstockProvider with ChangeNotifier {
   late ProductProvider _productProvider;
   List<ProductModel> filteredLowStock = [];
   String _searchQuery = "";
-  LowStockSortOption _currentSort = LowStockSortOption.priceHighToLow;
+  LowStockSortOption _currentSort = LowStockSortOption.priceLowToHigh;
   LowStockSortOption get currentSort => _currentSort;
   void updateProductProvider(ProductProvider provider) {
     _productProvider = provider;
@@ -55,14 +55,14 @@ class LowstockProvider with ChangeNotifier {
   void _applySorting() {
     filteredLowStock.sort((a, b) {
       switch (_currentSort) {
-        case LowStockSortOption.priceHighToLow:
-          final aPrice = double.tryParse(a.salesRate ?? '0') ?? 0;
-          final bPrice = double.tryParse(b.salesRate ?? '0') ?? 0;
-          return bPrice.compareTo(aPrice);
         case LowStockSortOption.priceLowToHigh:
           final aPrice = double.tryParse(a.salesRate ?? '0') ?? 0;
           final bPrice = double.tryParse(b.salesRate ?? '0') ?? 0;
           return aPrice.compareTo(bPrice);
+        case LowStockSortOption.priceHighToLow:
+          final aPrice = double.tryParse(a.salesRate ?? '0') ?? 0;
+          final bPrice = double.tryParse(b.salesRate ?? '0') ?? 0;
+          return bPrice.compareTo(aPrice);
         case LowStockSortOption.alphabeticalAZ:
           return (a.productName ?? '').toLowerCase().compareTo(
             (b.productName ?? '').toLowerCase(),

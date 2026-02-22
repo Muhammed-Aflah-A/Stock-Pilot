@@ -4,8 +4,8 @@ import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
 
 enum OutOfStockSortOption {
-  priceHighToLow,
   priceLowToHigh,
+  priceHighToLow,
   alphabeticalAZ,
   alphabeticalZA,
 }
@@ -15,7 +15,7 @@ class OutofstockProvider with ChangeNotifier {
 
   List<ProductModel> filteredOutOfStock = [];
   String _searchQuery = "";
-  OutOfStockSortOption _currentSort = OutOfStockSortOption.priceHighToLow;
+  OutOfStockSortOption _currentSort = OutOfStockSortOption.priceLowToHigh;
   OutOfStockSortOption get currentSort => _currentSort;
   void updateProductProvider(ProductProvider provider) {
     _productProvider = provider;
@@ -61,14 +61,14 @@ class OutofstockProvider with ChangeNotifier {
   void _applySorting() {
     filteredOutOfStock.sort((a, b) {
       switch (_currentSort) {
-        case OutOfStockSortOption.priceHighToLow:
-          final aPrice = double.tryParse(a.salesRate ?? '0') ?? 0;
-          final bPrice = double.tryParse(b.salesRate ?? '0') ?? 0;
-          return bPrice.compareTo(aPrice);
         case OutOfStockSortOption.priceLowToHigh:
           final aPrice = double.tryParse(a.salesRate ?? '0') ?? 0;
           final bPrice = double.tryParse(b.salesRate ?? '0') ?? 0;
           return aPrice.compareTo(bPrice);
+        case OutOfStockSortOption.priceHighToLow:
+          final aPrice = double.tryParse(a.salesRate ?? '0') ?? 0;
+          final bPrice = double.tryParse(b.salesRate ?? '0') ?? 0;
+          return bPrice.compareTo(aPrice);
         case OutOfStockSortOption.alphabeticalAZ:
           return (a.productName ?? '').toLowerCase().compareTo(
             (b.productName ?? '').toLowerCase(),

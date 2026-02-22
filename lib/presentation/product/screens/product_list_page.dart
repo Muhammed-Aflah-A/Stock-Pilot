@@ -82,7 +82,24 @@ class _ProductListPageState extends State<ProductListPage> {
                       const SizedBox(width: 10),
                       const FilterbuttonWidget(),
                       const SizedBox(width: 10),
-                      const SortbuttonWidget(),
+                      Consumer<ProductProvider>(
+                        builder: (context, provider, _) {
+                          return SortbuttonWidget<SortOption>(
+                            options: const {
+                              SortOption.priceLowToHigh: 'Price : Low to High',
+                              SortOption.priceHighToLow: 'Price : High to Low',
+                              SortOption.alphabeticalAZ:
+                                  'Alphabetical ( A – Z )',
+                              SortOption.alphabeticalZA:
+                                  'Alphabetical ( Z – A )',
+                            },
+                            currentValue: provider.currentSort,
+                            onSelected: (value) {
+                              provider.sortProducts(value);
+                            },
+                          );
+                        },
+                      ),
                     ],
                   ),
                   SizedBox(height: spacing),

@@ -78,7 +78,26 @@ class _LowstockListPageState extends State<LowstockListPage> {
                         const SizedBox(width: 10),
                         const FilterbuttonWidget(),
                         const SizedBox(width: 10),
-                        const SortbuttonWidget(),
+                        Consumer<LowstockProvider>(
+                          builder: (context, provider, _) {
+                            return SortbuttonWidget<LowStockSortOption>(
+                              options: const {
+                                LowStockSortOption.priceLowToHigh:
+                                    'Price : Low to High',
+                                LowStockSortOption.priceHighToLow:
+                                    'Price : High to Low',
+                                LowStockSortOption.alphabeticalAZ:
+                                    'Alphabetical ( A – Z )',
+                                LowStockSortOption.alphabeticalZA:
+                                    'Alphabetical ( Z – A )',
+                              },
+                              currentValue: provider.currentSort,
+                              onSelected: (value) {
+                                provider.sortProducts(value);
+                              },
+                            );
+                          },
+                        ),
                       ],
                     ),
                     SizedBox(height: spacing),

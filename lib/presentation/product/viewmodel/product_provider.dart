@@ -12,8 +12,8 @@ import 'package:stock_pilot/data/service%20layer/hive_service_layer.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 
 enum SortOption {
-  priceHighToLow,
   priceLowToHigh,
+  priceHighToLow,
   alphabeticalAZ,
   alphabeticalZA,
 }
@@ -250,7 +250,7 @@ class ProductProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  SortOption _currentSort = SortOption.priceHighToLow;
+  SortOption _currentSort = SortOption.priceLowToHigh;
   SortOption get currentSort => _currentSort;
   void sortProducts(SortOption option) {
     _currentSort = option;
@@ -261,14 +261,14 @@ class ProductProvider with ChangeNotifier {
   void _applySorting() {
     filteredProducts.sort((a, b) {
       switch (_currentSort) {
-        case SortOption.priceHighToLow:
-          final aPrice = double.tryParse(a.salesRate ?? '0') ?? 0;
-          final bPrice = double.tryParse(b.salesRate ?? '0') ?? 0;
-          return bPrice.compareTo(aPrice);
         case SortOption.priceLowToHigh:
           final aPrice = double.tryParse(a.salesRate ?? '0') ?? 0;
           final bPrice = double.tryParse(b.salesRate ?? '0') ?? 0;
           return aPrice.compareTo(bPrice);
+        case SortOption.priceHighToLow:
+          final aPrice = double.tryParse(a.salesRate ?? '0') ?? 0;
+          final bPrice = double.tryParse(b.salesRate ?? '0') ?? 0;
+          return bPrice.compareTo(aPrice);
         case SortOption.alphabeticalAZ:
           return (a.productName ?? '').toLowerCase().compareTo(
             (b.productName ?? '').toLowerCase(),

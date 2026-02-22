@@ -79,7 +79,26 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
                         const SizedBox(width: 10),
                         const FilterbuttonWidget(),
                         const SizedBox(width: 10),
-                        const SortbuttonWidget(),
+                        Consumer<OutofstockProvider>(
+                          builder: (context, provider, _) {
+                            return SortbuttonWidget<OutOfStockSortOption>(
+                              options: const {
+                                OutOfStockSortOption.priceLowToHigh:
+                                    'Price : Low to High',
+                                OutOfStockSortOption.priceHighToLow:
+                                    'Price : High to Low',
+                                OutOfStockSortOption.alphabeticalAZ:
+                                    'Alphabetical ( A – Z )',
+                                OutOfStockSortOption.alphabeticalZA:
+                                    'Alphabetical ( Z – A )',
+                              },
+                              currentValue: provider.currentSort,
+                              onSelected: (value) {
+                                provider.sortProducts(value);
+                              },
+                            );
+                          },
+                        ),
                       ],
                     ),
                     SizedBox(height: spacing),
