@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
+import 'package:stock_pilot/core/utils/snackbar_util.dart';
 import 'package:stock_pilot/data/models/brand_model.dart';
 import 'package:stock_pilot/presentation/brand/viewmodel/brand_provider.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
@@ -147,22 +148,34 @@ class _BrandListPageState extends State<BrandListPage> {
                               onDelete: () {
                                 showDialog(
                                   context: context,
-                                  builder: (context) =>
-                                      DeleteConfirmationWidget(
-                                        title: "Remove Brand",
-                                        displayName: brandItem.brand!,
-                                        onDelete: () async {
-                                          await context
-                                              .read<BrandProvider>()
-                                              .deleteBrand(index);
-
-                                          if (context.mounted) {
-                                            context
-                                                .read<DashboardProvider>()
-                                                .loadActivities();
-                                          }
-                                        },
-                                      ),
+                                  builder: (context) => DeleteConfirmationWidget(
+                                    title: "Remove Brand",
+                                    displayName: brandItem.brand!,
+                                    onDelete: () async {
+                                      final canDelete = await context
+                                          .read<BrandProvider>()
+                                          .canDeleteBrand(brandItem.brand!);
+                                      if (!context.mounted) return false;
+                                      if (!canDelete) {
+                                        Navigator.pop(context);
+                                        SnackbarUtil.showSnackBar(
+                                          context,
+                                          '"${brandItem.brand}" is used by one or more products and cannot be deleted',
+                                          true,
+                                        );
+                                        return false;
+                                      }
+                                      await context
+                                          .read<BrandProvider>()
+                                          .deleteBrand(index);
+                                      if (context.mounted) {
+                                        context
+                                            .read<DashboardProvider>()
+                                            .loadActivities();
+                                      }
+                                      return true;
+                                    },
+                                  ),
                                 );
                               },
                             );

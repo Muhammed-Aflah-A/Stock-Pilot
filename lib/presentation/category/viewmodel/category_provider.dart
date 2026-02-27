@@ -47,6 +47,11 @@ class CategoryProvider with ChangeNotifier {
     await loadCategory();
   }
 
+  Future<bool> canDeleteCategory(String categoryName) async {
+    final products = await hiveService.getAllProducts();
+    return !products.any((p) => p.category == categoryName);
+  }
+
   Future<void> deleteCategory(int index) async {
     await hiveService.deleteCategory(index);
     await loadCategory();

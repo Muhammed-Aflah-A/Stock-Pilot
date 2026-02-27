@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/assets/app_images.dart';
+import 'package:stock_pilot/core/interfaces/filter_provider_interface.dart';
 import 'package:stock_pilot/core/utils/image_selector_util.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
-import 'package:stock_pilot/core/utils/search_bar_util.dart';
 import 'package:stock_pilot/data/models/brand_model.dart';
 import 'package:stock_pilot/data/models/category_model.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
@@ -18,7 +18,7 @@ enum SortOption {
   alphabeticalZA,
 }
 
-class ProductProvider with ChangeNotifier {
+class ProductProvider extends FilterProviderInterface {
   final ImageSelectorUtil imageSelector;
   final HiveServiceLayer hiveService;
 
@@ -34,6 +34,8 @@ class ProductProvider with ChangeNotifier {
   String? productName;
   final productDescriptionFocus = FocusNode();
   String? productDescription;
+
+  @override
   List<String> brandsList = [];
   void brands(List<BrandModel> newBrands) {
     brandsList = newBrands.map((e) => e.brand ?? 'Unknown').toList();
@@ -42,8 +44,8 @@ class ProductProvider with ChangeNotifier {
     }
     notifyListeners();
   }
-
   String? brand;
+  @override
   List<String> categoryList = [];
   void categories(List<CategoryModel> newCategories) {
     categoryList = newCategories.map((e) => e.category ?? 'Unknown').toList();
@@ -66,26 +68,13 @@ class ProductProvider with ChangeNotifier {
 
   void searchProducts(String query) {
     _searchQuery = query;
-    _applySearch();
+    _applyFilters();
     notifyListeners();
-  }
-
-  void _applySearch() {
-    filteredProducts = SearchBarUtil.getFilteredList<ProductModel>(
-      sourceList: products,
-      query: _searchQuery,
-      searchField: (product) => product.productName ?? "",
-    );
-    _applySorting();
   }
 
   void clearSearch() {
     _searchQuery = "";
-    filteredProducts = SearchBarUtil.getFilteredList<ProductModel>(
-      sourceList: products,
-      query: _searchQuery,
-      searchField: (product) => product.productName ?? "",
-    );
+    _applyFilters();
     notifyListeners();
   }
 
@@ -113,7 +102,6 @@ class ProductProvider with ChangeNotifier {
     productImages[index] = null;
     notifyListeners();
   }
-
   bool get hasImage => productImages.any((img) => img != null);
 
   Future<void> addproduct(
@@ -138,7 +126,15 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> loadProducts() async {
     products = await hiveService.getAllProducts();
-    _applySearch();
+    final prices = products
+        .map((p) => double.tryParse(p.salesRate ?? '0') ?? 0)
+        .toList();
+    if (prices.isNotEmpty) {
+      maxPrice = prices.reduce((a, b) => a > b ? a : b);
+      if (selectedMaxPrice > maxPrice) selectedMaxPrice = maxPrice;
+      if (tempMaxPrice > maxPrice) tempMaxPrice = maxPrice;
+    }
+    _applyFilters();
     notifyListeners();
   }
 
@@ -210,7 +206,6 @@ class ProductProvider with ChangeNotifier {
         label: isAddition ? 'units added' : 'units removed',
         isPositive: isAddition,
       );
-
       dashboard.addNewActivity(activity);
     }
     await loadProducts();
@@ -230,7 +225,6 @@ class ProductProvider with ChangeNotifier {
       label: 'units removed',
       isPositive: false,
     );
-
     dashboard.addNewActivity(activity);
     await loadProducts();
   }
@@ -249,7 +243,6 @@ class ProductProvider with ChangeNotifier {
     secondFormKey.currentState?.reset();
     notifyListeners();
   }
-
   SortOption _currentSort = SortOption.priceLowToHigh;
   SortOption get currentSort => _currentSort;
   void sortProducts(SortOption option) {
@@ -279,5 +272,131 @@ class ProductProvider with ChangeNotifier {
           );
       }
     });
+  }
+  Set<String> selectedCategories = {};
+  Set<String> selectedBrands = {};
+  @override
+  double maxPrice = 5000;
+  double selectedMaxPrice = 5000;
+  String stockStatus = 'All';
+  @override
+  Set<String> tempCategories = {};
+  @override
+  Set<String> tempBrands = {};
+  @override
+  double tempMaxPrice = 5000;
+  @override
+  String tempStockStatus = 'All';
+  @override
+  bool get hasActiveFilters =>
+      selectedCategories.isNotEmpty ||
+      selectedBrands.isNotEmpty ||
+      selectedMaxPrice < maxPrice ||
+      stockStatus != 'All';
+
+  @override
+  void initTempFilters() {
+    tempCategories = Set.from(selectedCategories);
+    tempBrands = Set.from(selectedBrands);
+    tempMaxPrice = selectedMaxPrice;
+    tempStockStatus = stockStatus;
+    notifyListeners();
+  }
+
+  @override
+  void toggleTempCategory(String cat) {
+    tempCategories = Set.from(tempCategories);
+    tempCategories.contains(cat)
+        ? tempCategories.remove(cat)
+        : tempCategories.add(cat);
+    notifyListeners();
+  }
+
+  @override
+  void toggleTempBrand(String brand) {
+    tempBrands = Set.from(tempBrands);
+    tempBrands.contains(brand)
+        ? tempBrands.remove(brand)
+        : tempBrands.add(brand);
+    notifyListeners();
+  }
+
+  @override
+  void setTempMaxPrice(double value) {
+    tempMaxPrice = value;
+    notifyListeners();
+  }
+
+  @override
+  void setTempStockStatus(String status) {
+    tempStockStatus = status;
+    notifyListeners();
+  }
+
+  @override
+  void applyFilters() {
+    selectedCategories = Set.from(tempCategories);
+    selectedBrands = Set.from(tempBrands);
+    selectedMaxPrice = tempMaxPrice;
+    stockStatus = tempStockStatus;
+    _applyFilters();
+    notifyListeners();
+  }
+
+  @override
+  void clearFilters() {
+    selectedCategories = {};
+    selectedBrands = {};
+    selectedMaxPrice = maxPrice;
+    stockStatus = 'All';
+    tempCategories = {};
+    tempBrands = {};
+    tempMaxPrice = maxPrice;
+    tempStockStatus = 'All';
+    _applyFilters();
+    notifyListeners();
+  }
+
+  void _applyFilters() {
+    List<ProductModel> result = List.from(products);
+    if (_searchQuery.isNotEmpty) {
+      result = result
+          .where(
+            (p) => (p.productName ?? '').toLowerCase().contains(
+              _searchQuery.toLowerCase(),
+            ),
+          )
+          .toList();
+    }
+    if (selectedCategories.isNotEmpty) {
+      result = result
+          .where((p) => selectedCategories.contains(p.category))
+          .toList();
+    }
+    if (selectedBrands.isNotEmpty) {
+      result = result.where((p) => selectedBrands.contains(p.brand)).toList();
+    }
+    result = result.where((p) {
+      final price = double.tryParse(p.salesRate ?? '0') ?? 0;
+      return price <= selectedMaxPrice;
+    }).toList();
+    if (stockStatus != 'All') {
+      result = result.where((p) {
+        final count = int.tryParse(p.itemCount ?? '0') ?? 0;
+        final low = int.tryParse(p.lowStockCount ?? '0') ?? 0;
+        switch (stockStatus) {
+          case 'In Stock':
+            return count > low;
+          case 'Low Stock':
+            return count > 0 && count <= low;
+          case 'Out of Stock':
+            return count == 0;
+          default:
+            return true;
+        }
+      }).toList();
+    }
+    filteredProducts = result;
+    _applySorting();
   }
 }

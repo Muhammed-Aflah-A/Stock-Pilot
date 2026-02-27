@@ -45,6 +45,11 @@ class BrandProvider with ChangeNotifier {
     await loadBrand();
   }
 
+  Future<bool> canDeleteBrand(String brandName) async {
+    final products = await hiveService.getAllProducts();
+    return !products.any((p) => p.brand == brandName);
+  }
+
   Future<void> deleteBrand(int index) async {
     await hiveService.deleteBrand(index);
     await loadBrand();

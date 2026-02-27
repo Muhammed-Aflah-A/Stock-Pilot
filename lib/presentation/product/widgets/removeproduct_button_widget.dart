@@ -7,7 +7,7 @@ class RemoveproductButtonWidget extends StatelessWidget {
   final String label;
   final String dialogTitle;
   final String itemName;
-  final Future<void> Function() onDeleteAction;
+  final Future<bool> Function() onDeleteAction;
   const RemoveproductButtonWidget({
     super.key,
     required this.label,

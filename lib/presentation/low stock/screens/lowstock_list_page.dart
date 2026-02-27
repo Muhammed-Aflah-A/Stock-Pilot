@@ -76,7 +76,11 @@ class _LowstockListPageState extends State<LowstockListPage> {
                           ),
                         ),
                         const SizedBox(width: 10),
-                        const FilterbuttonWidget(),
+                        Consumer<LowstockProvider>(
+                          builder: (context, provider, _) {
+                            return FilterbuttonWidget(provider: provider);
+                          },
+                        ),
                         const SizedBox(width: 10),
                         Consumer<LowstockProvider>(
                           builder: (context, provider, _) {
@@ -92,9 +96,9 @@ class _LowstockListPageState extends State<LowstockListPage> {
                                     'Alphabetical ( Z – A )',
                               },
                               currentValue: provider.currentSort,
-                              onSelected: (value) {
-                                provider.sortProducts(value);
-                              },
+                              defaultValue: LowStockSortOption.priceLowToHigh,
+                              onSelected: (value) =>
+                                  provider.sortProducts(value),
                             );
                           },
                         ),
@@ -105,7 +109,6 @@ class _LowstockListPageState extends State<LowstockListPage> {
                       child: Consumer<LowstockProvider>(
                         builder: (context, lowStockProvider, _) {
                           final displayList = lowStockProvider.filteredLowStock;
-
                           if (displayList.isEmpty) {
                             return const Center(
                               child: EmptypageMessageWidget(

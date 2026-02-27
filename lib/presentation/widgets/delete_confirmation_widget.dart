@@ -7,7 +7,7 @@ import 'package:stock_pilot/core/utils/snackbar_util.dart';
 class DeleteConfirmationWidget extends StatelessWidget {
   final String title;
   final String displayName;
-  final Future<void> Function() onDelete;
+  final Future<bool> Function() onDelete;
 
   const DeleteConfirmationWidget({
     super.key,
@@ -61,14 +61,16 @@ class DeleteConfirmationWidget extends StatelessWidget {
               width: currentWidth * 0.3,
               child: ElevatedButton(
                 onPressed: () async {
-                  await onDelete();
+                  final success = await onDelete();
                   if (!context.mounted) return;
-                  Navigator.pop(context);
-                  SnackbarUtil.showSnackBar(
-                    context,
-                    '$displayName removed successfully',
-                    false,
-                  );
+                  if (success) {
+                    Navigator.pop(context);
+                    SnackbarUtil.showSnackBar(
+                      context,
+                      '$displayName removed successfully',
+                      false,
+                    );
+                  }
                 },
                 style: ButtonStyles.dialogueRemoveButton(context),
                 child: Text(

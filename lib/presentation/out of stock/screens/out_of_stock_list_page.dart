@@ -77,7 +77,11 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
                           ),
                         ),
                         const SizedBox(width: 10),
-                        const FilterbuttonWidget(),
+                        Consumer<OutofstockProvider>(
+                          builder: (context, provider, _) {
+                            return FilterbuttonWidget(provider: provider);
+                          },
+                        ),
                         const SizedBox(width: 10),
                         Consumer<OutofstockProvider>(
                           builder: (context, provider, _) {
@@ -93,9 +97,9 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
                                     'Alphabetical ( Z – A )',
                               },
                               currentValue: provider.currentSort,
-                              onSelected: (value) {
-                                provider.sortProducts(value);
-                              },
+                              defaultValue: OutOfStockSortOption.priceLowToHigh,
+                              onSelected: (value) =>
+                                  provider.sortProducts(value),
                             );
                           },
                         ),
@@ -122,11 +126,11 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
                                 SizedBox(height: itemSpacing),
                             itemBuilder: (context, index) {
                               final product = displayList[index];
-                              final mainProvider = context
-                                  .read<ProductProvider>();
                               return ProductListTileWidget(
                                 product: product,
                                 onTap: () {
+                                  final mainProvider = context
+                                      .read<ProductProvider>();
                                   Navigator.pushNamed(
                                     context,
                                     AppRoutes.productDetailsPage,

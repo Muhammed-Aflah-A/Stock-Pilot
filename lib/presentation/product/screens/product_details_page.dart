@@ -158,7 +158,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     expanded
                                         ? Icons.keyboard_arrow_up
                                         : Icons.keyboard_arrow_down,
-                                        size: 35,
+                                    size: 35,
                                   ),
                                 ],
                               ),
@@ -207,6 +207,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 "Product deleted successfully",
                               );
                             }
+                            return true;
                           },
                         ),
                       ),

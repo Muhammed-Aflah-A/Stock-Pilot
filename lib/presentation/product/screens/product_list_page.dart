@@ -80,7 +80,11 @@ class _ProductListPageState extends State<ProductListPage> {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      const FilterbuttonWidget(),
+                      Consumer<ProductProvider>(
+                        builder: (context, provider, _) {
+                          return FilterbuttonWidget(provider: provider);
+                        },
+                      ),
                       const SizedBox(width: 10),
                       Consumer<ProductProvider>(
                         builder: (context, provider, _) {
@@ -94,9 +98,8 @@ class _ProductListPageState extends State<ProductListPage> {
                                   'Alphabetical ( Z – A )',
                             },
                             currentValue: provider.currentSort,
-                            onSelected: (value) {
-                              provider.sortProducts(value);
-                            },
+                            defaultValue: SortOption.priceLowToHigh,
+                            onSelected: (value) => provider.sortProducts(value),
                           );
                         },
                       ),
