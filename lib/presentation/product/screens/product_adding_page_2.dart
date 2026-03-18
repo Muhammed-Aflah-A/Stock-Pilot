@@ -3,87 +3,52 @@ import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/core/utils/select_validator_util.dart';
-import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
-import 'package:stock_pilot/presentation/product/widgets/addproduct_button_widget.dart';
+import 'package:stock_pilot/presentation/product/widgets/add_product_button_widget.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
 import 'package:stock_pilot/presentation/product/widgets/dropdown_feild_widget.dart';
 import 'package:stock_pilot/presentation/widgets/form_widget.dart';
 
-class ProductAddingPage2 extends StatefulWidget {
-  final ProductModel? product;
-  final int? productIndex;
+// Second step: pricing and inventory
+class ProductAddingPage2 extends StatelessWidget {
+  const ProductAddingPage2({super.key});
 
-  const ProductAddingPage2({super.key, this.product, this.productIndex});
-
-  @override
-  State<ProductAddingPage2> createState() => _ProductAddingPage2State();
-}
-
-class _ProductAddingPage2State extends State<ProductAddingPage2> {
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final horizontalPadding = (size.width * 0.05).clamp(16.0, 40.0);
-    final verticalPadding = (size.height * 0.02).clamp(12.0, 24.0);
-    final spacing = (size.height * 0.02).clamp(14.0, 24.0);
     final provider = context.watch<ProductProvider>();
-    final isEditing = widget.product != null;
+    final headingStyle = TextStyles.sectionHeading(
+      context,
+    ).copyWith(color: ColourStyles.primaryColor_2);
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
-      resizeToAvoidBottomInset: true,
-      appBar: AppBarWidget(
-        showleading: true,
-        title: isEditing ? "Edit Pricing & Inventory" : "Pricing & Inventory",
+      appBar: const AppBarWidget(
+        showLeading: true,
+        title: "Pricing & Inventory",
         centeredTitle: true,
         showAvatar: false,
       ),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
-          behavior: HitTestBehavior.opaque,
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 900),
               child: SingleChildScrollView(
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.onDrag,
-                padding: EdgeInsets.symmetric(
-                  horizontal: horizontalPadding,
-                  vertical: verticalPadding,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
                 ),
                 child: Form(
                   key: provider.secondFormKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Product brand",
-                        style: TextStyles.sectionHeading(
-                          context,
-                        ).copyWith(color: ColourStyles.primaryColor_2),
-                      ),
+                      /// CATEGORY
+                      Text("Product category", style: headingStyle),
                       const SizedBox(height: 8),
-                      DropdownFeildWidget(
-                        value: provider.brand,
-                        items: provider.brandsList,
-                        onChanged: (value) {
-                          provider.brand = value;
-                        },
-                        validator: (value) => SelectValidatorUtil.validate(
-                          value,
-                          "product brand",
-                        ),
-                      ),
-                      SizedBox(height: spacing),
-                      Text(
-                        "Product category",
-                        style: TextStyles.sectionHeading(
-                          context,
-                        ).copyWith(color: ColourStyles.primaryColor_2),
-                      ),
-                      const SizedBox(height: 8),
-                      DropdownFeildWidget(
+                      DropdownFieldWidget(
                         value: provider.category,
                         items: provider.categoryList,
                         onChanged: (value) {
@@ -94,13 +59,24 @@ class _ProductAddingPage2State extends State<ProductAddingPage2> {
                           "product category",
                         ),
                       ),
-                      SizedBox(height: spacing),
-                      Text(
-                        "Purchase Rate",
-                        style: TextStyles.sectionHeading(
-                          context,
-                        ).copyWith(color: ColourStyles.primaryColor_2),
+                      const SizedBox(height: 20),
+                      // BRAND
+                      Text("Product brand", style: headingStyle),
+                      const SizedBox(height: 8),
+                      DropdownFieldWidget(
+                        value: provider.brand,
+                        items: provider.brandsList,
+                        onChanged: (value) {
+                          provider.brand = value;
+                        },
+                        validator: (value) => SelectValidatorUtil.validate(
+                          value,
+                          "product brand",
+                        ),
                       ),
+                      const SizedBox(height: 20),
+                      // PURCHASE RATE
+                      Text("Purchase Rate", style: headingStyle),
                       const SizedBox(height: 8),
                       FormWidget(
                         initialValue: provider.purchaseRate,
@@ -109,9 +85,8 @@ class _ProductAddingPage2State extends State<ProductAddingPage2> {
                           value,
                           "purchase rate",
                         ),
-                        onSaved: (newValue) {
-                          provider.purchaseRate = newValue!.trim();
-                        },
+                        onSaved: (value) =>
+                            provider.purchaseRate = value!.trim(),
                         action: TextInputAction.next,
                         onFieldSubmitted: (_) {
                           FocusScope.of(
@@ -119,13 +94,9 @@ class _ProductAddingPage2State extends State<ProductAddingPage2> {
                           ).requestFocus(provider.salesRateFocus);
                         },
                       ),
-                      SizedBox(height: spacing),
-                      Text(
-                        "Sales Rate",
-                        style: TextStyles.sectionHeading(
-                          context,
-                        ).copyWith(color: ColourStyles.primaryColor_2),
-                      ),
+                      const SizedBox(height: 20),
+                      // SALES RATE
+                      Text("Sales Rate", style: headingStyle),
                       const SizedBox(height: 8),
                       FormWidget(
                         initialValue: provider.salesRate,
@@ -133,9 +104,7 @@ class _ProductAddingPage2State extends State<ProductAddingPage2> {
                         focus: provider.salesRateFocus,
                         validator: (value) =>
                             SelectValidatorUtil.validate(value, "sales rate"),
-                        onSaved: (newValue) {
-                          provider.salesRate = newValue!.trim();
-                        },
+                        onSaved: (value) => provider.salesRate = value!.trim(),
                         action: TextInputAction.next,
                         onFieldSubmitted: (_) {
                           FocusScope.of(
@@ -143,13 +112,9 @@ class _ProductAddingPage2State extends State<ProductAddingPage2> {
                           ).requestFocus(provider.itemCountFocus);
                         },
                       ),
-                      SizedBox(height: spacing),
-                      Text(
-                        "Item count",
-                        style: TextStyles.sectionHeading(
-                          context,
-                        ).copyWith(color: ColourStyles.primaryColor_2),
-                      ),
+                      const SizedBox(height: 20),
+                      // ITEM COUNT
+                      Text("Item count", style: headingStyle),
                       const SizedBox(height: 8),
                       FormWidget(
                         initialValue: provider.itemCount,
@@ -157,9 +122,7 @@ class _ProductAddingPage2State extends State<ProductAddingPage2> {
                         focus: provider.itemCountFocus,
                         validator: (value) =>
                             SelectValidatorUtil.validate(value, "item count"),
-                        onSaved: (newValue) {
-                          provider.itemCount = newValue!.trim();
-                        },
+                        onSaved: (value) => provider.itemCount = value!.trim(),
                         action: TextInputAction.next,
                         onFieldSubmitted: (_) {
                           FocusScope.of(
@@ -167,13 +130,9 @@ class _ProductAddingPage2State extends State<ProductAddingPage2> {
                           ).requestFocus(provider.lowStockCountFocus);
                         },
                       ),
-                      SizedBox(height: spacing),
-                      Text(
-                        "Low stock count",
-                        style: TextStyles.sectionHeading(
-                          context,
-                        ).copyWith(color: ColourStyles.primaryColor_2),
-                      ),
+                      const SizedBox(height: 20),
+                      // LOW STOCK COUNT
+                      Text("Low stock count", style: headingStyle),
                       const SizedBox(height: 8),
                       FormWidget(
                         initialValue: provider.lowStockCount,
@@ -183,20 +142,15 @@ class _ProductAddingPage2State extends State<ProductAddingPage2> {
                           value,
                           "low stock count",
                         ),
-                        onSaved: (newValue) {
-                          provider.lowStockCount = newValue!.trim();
-                        },
+                        onSaved: (value) =>
+                            provider.lowStockCount = value!.trim(),
                         action: TextInputAction.done,
                         onFieldSubmitted: (_) =>
                             FocusScope.of(context).unfocus(),
                       ),
-                      SizedBox(height: spacing * 2),
-                      Center(
-                        child: AddproductButtonWidget(
-                          product: widget.product,
-                          productIndex: widget.productIndex,
-                        ),
-                      ),
+                      const SizedBox(height: 40),
+                      // ADD PRODUCT BUTTON
+                      const Center(child: AddProductButtonWidget()),
                     ],
                   ),
                 ),

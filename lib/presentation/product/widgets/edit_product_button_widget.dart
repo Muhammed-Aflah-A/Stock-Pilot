@@ -6,10 +6,12 @@ import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
 
-class EditproductButtonWidget extends StatelessWidget {
+// Button used on the product details page to start editing a product
+class EditProductButtonWidget extends StatelessWidget {
   final ProductModel product;
   final int productIndex;
-  const EditproductButtonWidget({
+
+  const EditProductButtonWidget({
     super.key,
     required this.product,
     required this.productIndex,
@@ -20,12 +22,9 @@ class EditproductButtonWidget extends StatelessWidget {
     final provider = context.read<ProductProvider>();
     return ElevatedButton(
       onPressed: () {
-        provider.loadProductForEdit(product);
-        Navigator.pushNamed(
-          context,
-          AppRoutes.productAddingPage1,
-          arguments: {'product': product, 'productIndex': productIndex},
-        );
+        // Store editing state inside the provider
+        provider.setEditingProduct(product, productIndex);
+        Navigator.pushNamed(context, AppRoutes.productAddingPage1);
       },
       style: ButtonStyles.detailPageEditButton(context),
       child: Text(

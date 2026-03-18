@@ -18,6 +18,11 @@ class ButtonStyles {
     return Size(_scale(context, width), _scale(context, height));
   }
 
+  // Skip button used in onboarding screen
+  static ButtonStyle skipButton(BuildContext context) =>
+      TextButton.styleFrom(foregroundColor: ColourStyles.primaryColor_2);
+
+  // Largest next button used in onboarding/profile creation/product detail
   static ButtonStyle nextButton(BuildContext context) =>
       ElevatedButton.styleFrom(
         backgroundColor: ColourStyles.primaryColor_2,
@@ -25,7 +30,7 @@ class ButtonStyles {
         minimumSize: _responsiveSize(context, 280, 60),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       );
-
+  // Largest cancel button used in onboarding/profile creation/product detail
   static ButtonStyle backButton(BuildContext context) =>
       ElevatedButton.styleFrom(
         backgroundColor: ColourStyles.primaryColor,

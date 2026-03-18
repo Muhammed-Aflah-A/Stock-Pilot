@@ -4,10 +4,9 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/navigation/transition_animation.dart';
-import 'package:stock_pilot/core/utils/image_selector_util.dart';
+import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/data/local/hive/hive_adapters.dart';
 import 'package:stock_pilot/data/local/hive/hive_service.dart';
-import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/presentation/brand/screens/brand_list_page.dart';
 import 'package:stock_pilot/presentation/brand/viewmodel/brand_provider.dart';
 import 'package:stock_pilot/presentation/category/screens/category_list_page.dart';
@@ -20,8 +19,9 @@ import 'package:stock_pilot/presentation/indroduction/screens/splash_screen.dart
 import 'package:stock_pilot/presentation/indroduction/screens/onboarding_screen_2.dart';
 import 'package:stock_pilot/presentation/indroduction/screens/onboarding_screen_3.dart';
 import 'package:stock_pilot/presentation/indroduction/screens/profile_creation.dart';
-import 'package:stock_pilot/presentation/indroduction/viewmodel/profile_creation_provider.dart';
-import 'package:stock_pilot/presentation/indroduction/viewmodel/splash_screen_provider.dart';
+import 'package:stock_pilot/presentation/indroduction/view_model/onboarding_screen_provider.dart';
+import 'package:stock_pilot/presentation/indroduction/view_model/profile_creation_provider.dart';
+import 'package:stock_pilot/presentation/indroduction/view_model/splash_screen_provider.dart';
 import 'package:stock_pilot/presentation/low%20stock/screens/lowstock_list_page.dart';
 import 'package:stock_pilot/presentation/low%20stock/viewmodel/lowStock_provider.dart';
 import 'package:stock_pilot/presentation/out%20of%20stock/screens/out_of_stock_list_page.dart';
@@ -38,7 +38,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
+      statusBarColor: ColourStyles.primaryColor,
       statusBarIconBrightness: Brightness.dark,
     ),
   );
@@ -49,21 +49,16 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => SplashScreenProvider()),
+        ChangeNotifierProvider(create: (_) => OnboardingScreenProvider()),
         ChangeNotifierProvider(
-          create: (_) => ProfileCreationProvider(
-            hiveService: HiveService(),
-            imageSelector: ImageSelectorUtil(),
-          ),
+          create: (_) => ProfileCreationProvider(hiveService: HiveService()),
         ),
         ChangeNotifierProvider(create: (_) => DrawerProvider()),
         ChangeNotifierProvider(
-          create: (_) => DashboardProvider(hiveService: HiveService()),
+          create: (_) => ProfilePageProvider(hiveService: HiveService()),
         ),
         ChangeNotifierProvider(
-          create: (_) => ProfilePageProvider(
-            hiveService: HiveService(),
-            imageSelector: ImageSelectorUtil(),
-          ),
+          create: (_) => DashboardProvider(hiveService: HiveService()),
         ),
         ChangeNotifierProvider(
           create: (_) => CategoryProvider(hiveService: HiveService()),
@@ -76,13 +71,11 @@ void main() async {
           BrandProvider,
           ProductProvider
         >(
-          create: (context) => ProductProvider(
-            imageSelector: ImageSelectorUtil(),
-            hiveService: HiveService(),
-          ),
+          create: (context) => ProductProvider(hiveService: HiveService()),
           update: (context, categoryProvider, brandProvider, productProvider) {
-            productProvider!.categories(categoryProvider.categories);
-            productProvider.brands(brandProvider.brands);
+            final provider = productProvider!;
+            provider.setCategories(categoryProvider.categories);
+            provider.setBrands(brandProvider.brands);
             return productProvider;
           },
         ),
@@ -131,14 +124,7 @@ class StockPilot extends StatelessWidget {
           case AppRoutes.productListPage:
             return TransitionAnimations.fadeRoute(const ProductListPage());
           case AppRoutes.productAddingPage1:
-            final args = settings.arguments as Map<String, dynamic>?;
-            return TransitionAnimations.fadeRoute(
-              ProductAddingPage1(
-                product: args?['product'] as ProductModel?,
-                productIndex: args?['productIndex'] as int?,
-              ),
-              settings: settings,
-            );
+            return TransitionAnimations.fadeRoute(ProductAddingPage1());
           case AppRoutes.category:
             return TransitionAnimations.fadeRoute(const CategoryListPage());
           case AppRoutes.brand:
@@ -154,21 +140,11 @@ class StockPilot extends StatelessWidget {
           case AppRoutes.onBoardingScreen_3:
             return TransitionAnimations.slideRoute(const OnboardingScreen3());
           case AppRoutes.productAddingPage2:
-            final args = settings.arguments as Map<String, dynamic>?;
-            return TransitionAnimations.slideRoute(
-              ProductAddingPage2(
-                product: args?['product'] as ProductModel?,
-                productIndex: args?['productIndex'] as int?,
-              ),
-              settings: settings,
-            );
+            return TransitionAnimations.slideRoute(ProductAddingPage2());
           case AppRoutes.productDetailsPage:
             final args = settings.arguments as Map<String, dynamic>;
             return TransitionAnimations.slideRoute(
-              ProductDetailsPage(
-                product: args['product'] as ProductModel,
-                productIndex: args['index'] as int,
-              ),
+              ProductDetailsPage(productIndex: args['index'] as int),
               settings: settings,
             );
         }

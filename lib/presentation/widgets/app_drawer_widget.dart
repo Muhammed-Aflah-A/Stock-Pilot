@@ -11,63 +11,64 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final verticalPadding = (size.height * 0.01).clamp(8.0, 16.0);
-    final itemSpacing = (size.height * 0.005).clamp(4.0, 10.0);
-
     return Drawer(
       backgroundColor: ColourStyles.primaryColor,
       child: SafeArea(
         child: Column(
           children: [
+            // Profile section
             Consumer<ProfilePageProvider>(
               builder: (context, profileProvider, _) {
                 final user = profileProvider.user;
                 return UserAccountsDrawerHeader(
                   margin: EdgeInsets.zero,
-                  decoration: const BoxDecoration(
-                    color: ColourStyles.primaryColor,
-                  ),
+                  decoration: BoxDecoration(color: ColourStyles.primaryColor),
+                  // Account name
                   accountName: Text(
                     user?.fullName ?? "User",
                     style: TextStyles.primaryText(context),
                     overflow: TextOverflow.ellipsis,
                   ),
+                  // Account email
                   accountEmail: Text(
-                    user?.gmail ?? "",
+                    user?.gmail ?? "user@gmail.com",
                     style: TextStyles.primaryText(context),
                     overflow: TextOverflow.ellipsis,
                   ),
+                  // Profile photo
                   currentAccountPicture: const UserAvatarWidget(),
                 );
               },
             ),
+            // Drawer items
             Expanded(
               child: Consumer<DrawerProvider>(
                 builder: (context, drawerProvider, _) {
                   return ListView.separated(
-                    padding: EdgeInsets.symmetric(vertical: verticalPadding),
+                    padding: EdgeInsets.symmetric(vertical: 12),
                     itemCount: drawerProvider.drawerItems.length,
-                    separatorBuilder: (_, __) => SizedBox(height: itemSpacing),
+                    separatorBuilder: (context, index) => SizedBox(height: 6),
                     itemBuilder: (context, index) {
                       final item = drawerProvider.drawerItems[index];
                       return ListTile(
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: size.width * 0.06,
-                        ),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 20),
                         selected: drawerProvider.selectedIndex == index,
                         selectedTileColor: ColourStyles.selectionColor,
                         tileColor: ColourStyles.primaryColor,
-                        leading: item.icon,
+                        // Drawer item icon
+                        leading: Icon(
+                          item.icon,
+                          color: ColourStyles.primaryColor_2,
+                        ),
+                        // Drawer item title
                         title: Text(
                           item.title!,
                           style: TextStyles.titleText(context),
                         ),
+                        // Drawer item tap
                         onTap: () {
                           drawerProvider.selectedDrawerItem(index);
-
                           Navigator.pop(context);
-
                           if (ModalRoute.of(context)?.settings.name !=
                               item.navigation) {
                             Navigator.pushNamedAndRemoveUntil(

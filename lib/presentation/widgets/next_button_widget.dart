@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/button_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 
+// Button created to Navigate to another page
 class NextbuttonWidget extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
@@ -16,6 +17,7 @@ class NextbuttonWidget extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ButtonStyles.nextButton(context),
+      // Button label
       child: Text(text, style: TextStyles.buttonTextWhite(context)),
     );
   }

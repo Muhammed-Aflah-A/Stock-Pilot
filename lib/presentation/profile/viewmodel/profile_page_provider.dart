@@ -1,113 +1,155 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:stock_pilot/core/interfaces/image_permission_handler_interface.dart';
 import 'package:stock_pilot/core/utils/image_selector_util.dart';
-import 'package:stock_pilot/core/theme/colours_styles.dart';
+import 'package:stock_pilot/core/utils/image_util.dart';
+import 'package:stock_pilot/core/utils/permission_util.dart';
+import 'package:stock_pilot/data/models/user_profile_details_model.dart';
 import 'package:stock_pilot/data/models/user_profle_model.dart';
 import 'package:stock_pilot/data/service%20layer/hive_service_layer.dart';
 
-class ProfilePageProvider with ChangeNotifier {
+// Provider responsible for handling profile page state and logic
+class ProfilePageProvider
+    with ChangeNotifier
+    implements ImagePermissionHandler {
+  // Hive service used to read and update user data
   final HiveServiceLayer hiveService;
-  final ImageSelectorUtil imageSelector;
-  ProfilePageProvider({
-    required this.hiveService,
-    required this.imageSelector,
-  }) {
+  ProfilePageProvider({required this.hiveService}) {
     loadUser();
   }
   UserProfile? user;
+  // Handles permission logic for camera or gallery
+  @override
+  Future<void> handleImagePermission({
+    required BuildContext context,
+    required bool isCamera,
+    int? index,
+  }) async {
+    await PermissionUtil.handleImagePermission(
+      context: context,
+      provider: this,
+      isCamera: isCamera,
+      index: index,
+    );
+  }
+
+  // Loads the user profile from Hive database
   Future<void> loadUser() async {
     user = await hiveService.getUser();
     notifyListeners();
   }
 
-  Future<void> updateUser() async {
-    await hiveService.updateUser(user!);
-    loadUser();
-  }
-
+  // Opens camera and selects an image
   Future<void> openCamera() async {
-    final path = await imageSelector.openCamera();
+    final path = await ImageSelectorUtil.openCamera();
+    // Updates profile image if a path is returned
     if (path != null) {
-      user?.profileImage = path;
-      await hiveService.updateUser(user!);
-      notifyListeners();
+      final savedPath = await ImageUtil.saveImage(File(path));
+      await updateProfileImage(savedPath);
     }
   }
 
+  // Opens gallery to select an image
   Future<void> openLibrary() async {
-    final path = await imageSelector.openLibrary();
+    final path = await ImageSelectorUtil.openLibrary();
+    // Updates profile image if a path is returned
     if (path != null) {
-      user?.profileImage = path;
-      await hiveService.updateUser(user!);
-      notifyListeners();
+      final savedPath = await ImageUtil.saveImage(File(path));
+      await updateProfileImage(savedPath);
     }
   }
 
-  List<PersonalInfo> get personalInfo {
+  // Personal information list used by UI to build profile section
+  List<UserProfileDetailsModel> get personalInfo {
     return [
-      PersonalInfo(
-        leadingIcon: Icon(
-          Icons.person_2_outlined,
-          color: ColourStyles.primaryColor_2,
-        ),
+      UserProfileDetailsModel(
+        leadingIcon: Icons.person_2_outlined,
         title: "Full Name",
-        subtitle: user!.fullName,
-        trailingIcon: Icon(Icons.mode_edit_outlined, color: ColourStyles.primaryColor_2),
+        subtitle: user?.fullName ?? "",
+        trailingIcon: Icons.mode_edit_outlined,
         feildtype: 'name',
       ),
-      PersonalInfo(
-        leadingIcon: Icon(
-          Icons.mail_outline,
-          color: ColourStyles.primaryColor_2,
-        ),
+      UserProfileDetailsModel(
+        leadingIcon: Icons.mail_outline,
         title: "Email",
-        subtitle: user!.gmail,
-        trailingIcon: Icon(Icons.mode_edit_outlined, color: ColourStyles.primaryColor_2),
+        subtitle: user!.gmail ?? "",
+        trailingIcon: Icons.mode_edit_outlined,
         feildtype: 'email',
       ),
-      PersonalInfo(
-        leadingIcon: Icon(
-          Icons.phone_android_outlined,
-          color: ColourStyles.primaryColor_2,
-        ),
+      UserProfileDetailsModel(
+        leadingIcon: Icons.phone_android_outlined,
         title: "Phone number",
-        subtitle: user!.personalNumber,
-        trailingIcon: Icon(Icons.mode_edit_outlined, color: ColourStyles.primaryColor_2),
+        subtitle: user!.personalNumber ?? "",
+        trailingIcon: Icons.mode_edit_outlined,
         feildtype: 'personal number',
       ),
     ];
   }
-  List<ShopInfo> get shopInfo {
+
+  // Shop information list used by UI
+  List<UserProfileDetailsModel> get shopInfo {
     return [
-      ShopInfo(
-        leadingIcon: Icon(
-          Icons.store_outlined,
-          color: ColourStyles.primaryColor_2,
-        ),
+      UserProfileDetailsModel(
+        leadingIcon: Icons.store_outlined,
         title: "Shop Name",
-        subtitle: user!.shopName,
-        trailingIcon: Icon(Icons.mode_edit_outlined, color: ColourStyles.primaryColor_2),
+        subtitle: user!.shopName ?? "",
+        trailingIcon: Icons.mode_edit_outlined,
         feildtype: 'shop name',
       ),
-      ShopInfo(
-        leadingIcon: Icon(
-          Icons.location_on_outlined,
-          color: ColourStyles.primaryColor_2,
-        ),
+      UserProfileDetailsModel(
+        leadingIcon: Icons.location_on_outlined,
         title: "Shop Address",
-        subtitle: user!.shopAdress,
-        trailingIcon: Icon(Icons.mode_edit_outlined, color: ColourStyles.primaryColor_2),
+        subtitle: user!.shopAddress ?? "",
+        trailingIcon: Icons.mode_edit_outlined,
         feildtype: 'address',
       ),
-      ShopInfo(
-        leadingIcon: Icon(
-          Icons.phone_outlined,
-          color: ColourStyles.primaryColor_2,
-        ),
+      UserProfileDetailsModel(
+        leadingIcon: Icons.phone_outlined,
         title: "Shop Number",
-        subtitle: user!.shopNumber,
-        trailingIcon: Icon(Icons.mode_edit_outlined, color: ColourStyles.primaryColor_2),
+        subtitle: user!.shopNumber ?? "",
+        trailingIcon: Icons.mode_edit_outlined,
         feildtype: 'shop number',
       ),
     ];
+  }
+
+  // Updates a specific field of the user profile
+  Future<void> updateProfile(String feildType, String value) async {
+    switch (feildType) {
+      case 'name':
+        user?.fullName = value;
+        break;
+      case 'email':
+        user?.gmail = value;
+        break;
+      case 'personal number':
+        user?.personalNumber = value;
+        break;
+      case 'shop name':
+        user?.shopName = value;
+        break;
+      case 'address':
+        user?.shopAddress = value;
+        break;
+      case 'shop number':
+        user?.shopNumber = value;
+        break;
+    }
+    await updateUser();
+  }
+
+  // Updates only the profile image
+  Future<void> updateProfileImage(String? path) async {
+    if (path == null) return;
+    user?.profileImage = path;
+    await hiveService.updateUser(user!);
+    notifyListeners();
+  }
+
+  // Saves the updated user data to Hive
+  Future<void> updateUser() async {
+    await hiveService.updateUser(user!);
+    notifyListeners();
   }
 }

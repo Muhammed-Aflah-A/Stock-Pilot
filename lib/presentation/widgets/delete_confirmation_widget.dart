@@ -4,10 +4,12 @@ import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/core/utils/snackbar_util.dart';
 
+// Confirmation dialog shown before deleting an item
 class DeleteConfirmationWidget extends StatelessWidget {
   final String title;
   final String displayName;
-  final Future<bool> Function() onDelete;
+  final Future<bool> Function()
+  onDelete;
 
   const DeleteConfirmationWidget({
     super.key,
@@ -18,59 +20,54 @@ class DeleteConfirmationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentWidth = MediaQuery.of(context).size.width;
-    final currentHeight = MediaQuery.of(context).size.height;
+    final size = MediaQuery.of(context).size;
 
     return AlertDialog(
       backgroundColor: ColourStyles.primaryColor,
       surfaceTintColor: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      titlePadding: EdgeInsets.only(top: currentHeight * 0.03),
+      // TITLE
+      titlePadding: EdgeInsets.only(top: size.height * 0.03),
       title: Text(
         title,
         style: TextStyles.dialogueHeading(context),
         textAlign: TextAlign.center,
       ),
+      // CONTENT MESSAGE
       contentPadding: EdgeInsets.symmetric(
-        horizontal: currentWidth * 0.06,
-        vertical: currentHeight * 0.02,
+        horizontal: size.width * 0.06,
+        vertical: size.height * 0.02,
       ),
       content: Text(
-        'Are you sure you want to remove "$displayName"? This action cannot be undone.',
-        style: TextStyles.primaryText(context).copyWith(
-          color: ColourStyles.colorRed,
-          fontSize: currentWidth * 0.035,
-        ),
+        'Are you sure you want to remove "$displayName"? '
+        'This action cannot be undone.',
+        style: TextStyles.primaryText(
+          context,
+        ).copyWith(color: ColourStyles.colorRed, fontSize: size.width * 0.035),
         textAlign: TextAlign.center,
       ),
-      actionsPadding: EdgeInsets.only(bottom: currentHeight * 0.02),
+      // ACTION BUTTONS
+      actionsPadding: EdgeInsets.only(bottom: size.height * 0.02),
       actions: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // CANCEL BUTTON
             SizedBox(
-              width: currentWidth * 0.3,
+              width: size.width * 0.3,
               child: ElevatedButton(
                 onPressed: () => Navigator.pop(context),
                 style: ButtonStyles.smallDialogBackButton(context),
                 child: Text('Cancel', style: TextStyles.primaryText(context)),
               ),
             ),
-            SizedBox(width: currentWidth * 0.03),
+            SizedBox(width: size.width * 0.03),
+            // REMOVE BUTTON
             SizedBox(
-              width: currentWidth * 0.3,
+              width: size.width * 0.3,
               child: ElevatedButton(
                 onPressed: () async {
-                  final success = await onDelete();
-                  if (!context.mounted) return;
-                  if (success) {
-                    Navigator.pop(context);
-                    SnackbarUtil.showSnackBar(
-                      context,
-                      '$displayName removed successfully',
-                      false,
-                    );
-                  }
+                  await _handleDelete(context);
                 },
                 style: ButtonStyles.dialogueRemoveButton(context),
                 child: Text(
@@ -85,5 +82,19 @@ class DeleteConfirmationWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  // Handles delete logic and success message
+  Future<void> _handleDelete(BuildContext context) async {
+    final success = await onDelete();
+    if (!context.mounted) return;
+    if (success) {
+      Navigator.pop(context);
+      SnackbarUtil.showSnackBar(
+        context,
+        '$displayName removed successfully',
+        false,
+      );
+    }
   }
 }

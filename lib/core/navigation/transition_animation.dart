@@ -6,8 +6,8 @@ class TransitionAnimations {
     return PageRouteBuilder(
       settings: settings,
       transitionDuration: const Duration(milliseconds: 500),
-      pageBuilder: (_, __, ___) => page,
-      transitionsBuilder: (_, animation, __, child) {
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return FadeTransition(opacity: animation, child: child);
       },
     );
@@ -18,10 +18,10 @@ class TransitionAnimations {
     return PageRouteBuilder(
       settings: settings,
       transitionDuration: const Duration(milliseconds: 500),
-      pageBuilder: (_, __, ___) => page,
-      transitionsBuilder: (_, animation, __, child) {
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
         final slide = Tween<Offset>(
-          begin: const Offset(1, 0), // from right
+          begin: const Offset(1, 0),
           end: Offset.zero,
         ).animate(animation);
 

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+// Utility class used to decide which keyboard should appear
 class KeyboardTypeUtil {
-  static TextInputType? getKeyboardType(String type) {
+  // Returns the correct keyboard type based on the field type
+  static TextInputType getKeyboardType(String type) {
     switch (type.toLowerCase()) {
       case "name":
         return TextInputType.name;
@@ -15,8 +17,9 @@ class KeyboardTypeUtil {
         return TextInputType.multiline;
       case 'shop number':
         return TextInputType.phone;
+      // Default keyboard if type does not match anything
       default:
-        return null;
+        return TextInputType.text;
     }
   }
 }

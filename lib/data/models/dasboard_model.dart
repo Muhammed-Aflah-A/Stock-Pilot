@@ -1,7 +1,7 @@
 import 'package:hive_flutter/adapters.dart';
 part 'dasboard_model.g.dart';
 
-@HiveType(typeId: 2)
+@HiveType(typeId: 3)
 class DashboardCards {
   @HiveField(0)
   String? title;
@@ -13,7 +13,7 @@ class DashboardCards {
   });
 }
 
-@HiveType(typeId: 3)
+@HiveType(typeId: 4)
 class DasboardActivity {
   @HiveField(0)
   String? image;

@@ -1,24 +1,27 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:image_picker/image_picker.dart';
 
+// Utility class responsible for selecting images
 class ImageSelectorUtil {
-  final ImagePicker _picker = ImagePicker();
-
-  Future<String?> openCamera() async {
-    if (kIsWeb) {
-      return null;
-    }
-    final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+  // Single instance of ImagePicker used throughout the app.
+  static final ImagePicker picker = ImagePicker();
+  // Opens the device camera to capture an image.
+  static Future<String?> openCamera() async {
+    final XFile? image = await picker.pickImage(source: ImageSource.camera);
+    // Return the image file path if an image was captured
     return image?.path;
   }
 
-  Future<String?> openLibrary() async {
-    final XFile? image = await _picker.pickImage(
+  // Opens the device gallery to select an image.
+  static Future<String?> openLibrary() async {
+    final XFile? image = await picker.pickImage(
       source: ImageSource.gallery,
-      maxWidth: kIsWeb ? 1024 : null,
-      maxHeight: kIsWeb ? 1024 : null,
-      imageQuality: kIsWeb ? 85 : null,
+      // Resize image to reduce memory usage
+      maxWidth: 1024,
+      maxHeight: 1024,
+      // Compress image to reduce file size
+      imageQuality: 85,
     );
+    // Return the image path if selection was successful
     return image?.path;
   }
 }

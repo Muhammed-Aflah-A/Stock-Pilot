@@ -141,6 +141,16 @@ class TextStyles {
     ),
   );
 
+  static TextStyle primaryTextWhite(BuildContext context) => _responsive(
+    context,
+    const TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      fontFamily: "ManRope",
+      color: ColourStyles.primaryColor,
+    ),
+  );
+
   static TextStyle buttonTextWhite(BuildContext context) => _responsive(
     context,
     const TextStyle(
@@ -207,6 +217,15 @@ class TextStyles {
     ),
   );
 
+  static TextStyle sectionTitle(BuildContext context) => _responsive(
+    context,
+    const TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.w700,
+      fontFamily: "ManRope",
+      color: ColourStyles.primaryColor_2,
+    ),
+  );
   static TextStyle sectionHeading(BuildContext context) => _responsive(
     context,
     const TextStyle(
@@ -283,12 +302,5 @@ class TextStyles {
       fontFamily: "ManRope",
       color: ColourStyles.colorGrey,
     ),
-  );
-
-  static const TextStyle primaryTextWhite = TextStyle(
-    fontSize: 15,
-    fontWeight: FontWeight.w600,
-    fontFamily: "ManRope",
-    color: ColourStyles.primaryColor,
   );
 }

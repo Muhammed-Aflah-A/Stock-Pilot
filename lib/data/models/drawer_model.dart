@@ -5,7 +5,7 @@ part 'drawer_model.g.dart';
 @HiveType(typeId: 1)
 class DrawerItems {
   @HiveField(0)
-  Icon? icon;
+  IconData? icon;
   @HiveField(1)
   String? title;
   @HiveField(2)

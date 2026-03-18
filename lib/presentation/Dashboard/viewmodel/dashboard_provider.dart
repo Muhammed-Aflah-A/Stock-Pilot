@@ -3,100 +3,148 @@ import 'package:stock_pilot/data/models/dasboard_model.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/data/service%20layer/hive_service_layer.dart';
 
+// Provider responsible for handling dashboard data and calculations
 class DashboardProvider with ChangeNotifier {
+  // Hive service used to read data from local database
   final HiveServiceLayer hiveService;
-
   DashboardProvider({required this.hiveService}) {
     loadActivities();
   }
-
-  List<DashboardCards> _dashboardCards = [];
-  List<DashboardCards> get dashboardCards => _dashboardCards;
-  List<DasboardActivity> _allActivities = [];
-  List<DasboardActivity> get recentActivities =>
-      _allActivities.take(5).toList();
-  List<DasboardActivity> get fullHistory => _allActivities;
-  final double _monthlyTurnover = 0.0;
-
+  // Stores all dashboard activities
+  List<DasboardActivity> allActivities = [];
+  // Stores summary cards shown on dashboard
+  List<DashboardCards> dashboardCards = [];
+  // Returns the latest 5 activities for dashboard display
+  List<DasboardActivity> get recentActivities => allActivities.take(5).toList();
+  // Returns the full activity history
+  List<DasboardActivity> get fullHistory => allActivities;
+  // Placeholder for monthly turnover (currently static)
+  final double monthlyTurnover = 0.0;
+  // Loads activities and dashboard data from Hive
   Future<void> loadActivities() async {
-    final results = await Future.wait([
-      hiveService.getAllActivities(),
-      hiveService.getAllProducts(),
-      hiveService.getAllCategories(),
-      hiveService.getAllBrands(),
-    ]);
-
-    _allActivities = results[0] as List<DasboardActivity>;
-    final products = results[1] as List<ProductModel>;
-    final totalBrands = (results[3] as List).length;
-    final totalCategory = (results[2] as List).length;
-    updateValues(products, totalBrands, totalCategory);
+    // Fetch stored activities
+    final activities = await hiveService.getAllActivities();
+    // Fetch product list
+    final products = await hiveService.getAllProducts();
+    // Fetch brand list
+    final brands = await hiveService.getAllBrands();
+    // Fetch category list
+    final categories = await hiveService.getAllCategories();
+    // Update activity list
+    allActivities = activities;
+    // Build dashboard summary cards
+    dashboardCards = buildDashboardCards(
+      products,
+      brands.length,
+      categories.length,
+    );
+    // Notify UI to rebuild
     notifyListeners();
   }
 
-  void updateValues(
+  // Builds all dashboard summary cards
+  List<DashboardCards> buildDashboardCards(
     List<ProductModel> products,
-    int globalBrandCount,
-    int globalCategoryCount,
+    int brandCount,
+    int categoryCount,
   ) {
-    int totalItems = 0;
-    double totalInventoryValue = 0.0;
-    double totalPurchaseCost = 0.0;
-    Set<String> categories = {};
-    Set<String> brands = {};
-    int lowStockCount = 0;
-    int outOfStockCount = 0;
-    for (var product in products) {
-      final count = int.tryParse(product.itemCount ?? '0') ?? 0;
-      final lowLimit = int.tryParse(product.lowStockCount ?? '0') ?? 0;
-      final sRate = double.tryParse(product.salesRate ?? '0') ?? 0.0;
-      final pRate = double.tryParse(product.purchaseRate ?? '0') ?? 0.0;
-      totalItems += count;
-      totalInventoryValue += (count * sRate);
-      totalPurchaseCost += (count * pRate);
-      if (product.category != null && product.category!.trim().isNotEmpty) {
-        categories.add(product.category!.trim().toLowerCase());
-      }
-      if (product.brand != null && product.brand!.trim().isNotEmpty) {
-        brands.add(product.brand!.trim().toLowerCase());
-      }
-      if (count == 0) {
-        outOfStockCount++;
-      } else if (count <= lowLimit) {
-        lowStockCount++;
-      }
-    }
-    _dashboardCards = [
+    // Calculate different dashboard values
+    final totalItems = calculateTotalItems(products);
+    final inventoryValue = calculateInventoryValue(products);
+    final purchaseCost = calculatePurchaseCost(products);
+    final lowStock = calculateLowStock(products);
+    final outOfStock = calculateOutOfStock(products);
+    // Create dashboard card models
+    return [
       DashboardCards(title: "Total Items", value: totalItems.toString()),
       DashboardCards(
         title: "Total Value",
-        value: formatCurrency(totalInventoryValue),
+        value: formatCurrency(inventoryValue),
       ),
-      DashboardCards(title: "Total Brand", value: globalBrandCount.toString()),
-      DashboardCards(
-        title: "Total Category",
-        value: globalCategoryCount.toString(),
-      ),
+      DashboardCards(title: "Total Brand", value: brandCount.toString()),
+      DashboardCards(title: "Total Category", value: categoryCount.toString()),
       DashboardCards(
         title: "Purchase Cost",
-        value: formatCurrency(totalPurchaseCost),
+        value: formatCurrency(purchaseCost),
       ),
       DashboardCards(
         title: "Monthly Turnover",
-        value: formatCurrency(_monthlyTurnover),
+        value: formatCurrency(monthlyTurnover),
       ),
-      DashboardCards(title: "Low Stock", value: lowStockCount.toString()),
-      DashboardCards(title: "Out of Stock", value: outOfStockCount.toString()),
+      DashboardCards(title: "Low Stock", value: lowStock.toString()),
+      DashboardCards(title: "Out of Stock", value: outOfStock.toString()),
     ];
   }
 
+  // Calculates total number of items across all products
+  int calculateTotalItems(List<ProductModel> products) {
+    int total = 0;
+    for (var product in products) {
+      final count = int.tryParse(product.itemCount ?? '0') ?? 0;
+      total += count;
+    }
+    return total;
+  }
+
+  // Calculates total inventory value based on sales rate
+  double calculateInventoryValue(List<ProductModel> products) {
+    double total = 0;
+    for (var product in products) {
+      final count = int.tryParse(product.itemCount ?? '0') ?? 0;
+      final rate = double.tryParse(product.salesRate ?? '0') ?? 0;
+      total += count * rate;
+    }
+    return total;
+  }
+
+  // Calculates total purchase cost of all products
+  double calculatePurchaseCost(List<ProductModel> products) {
+    double total = 0;
+    for (var product in products) {
+      final count = int.tryParse(product.itemCount ?? '0') ?? 0;
+      final rate = double.tryParse(product.purchaseRate ?? '0') ?? 0;
+      total += count * rate;
+    }
+    return total;
+  }
+
+  // Counts products that are in low stock
+  int calculateLowStock(List<ProductModel> products) {
+    int count = 0;
+    for (var product in products) {
+      final stock = int.tryParse(product.itemCount ?? '0') ?? 0;
+      final limit = int.tryParse(product.lowStockCount ?? '0') ?? 0;
+      if (stock > 0 && stock <= limit) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  // Counts products that are completely out of stock
+  int calculateOutOfStock(List<ProductModel> products) {
+    int count = 0;
+    for (var product in products) {
+      final stock = int.tryParse(product.itemCount ?? '0') ?? 0;
+      if (stock == 0) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  // Formats currency values for dashboard display
   String formatCurrency(double value) {
-    if (value >= 1000) return "\$${(value / 1000).toStringAsFixed(1)}k";
+    if (value >= 1000) {
+      return "\$${(value / 1000).toStringAsFixed(1)}k";
+    }
     return "\$${value.toStringAsFixed(0)}";
   }
 
+  // Adds a new activity to Hive and refreshes dashboard
   Future<void> addNewActivity(DasboardActivity activity) async {
     await hiveService.addActivity(activity);
+    // Reload dashboard data after activity update
     await loadActivities();
   }
 }

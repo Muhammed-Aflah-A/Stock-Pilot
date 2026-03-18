@@ -1,10 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
-import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
-import 'package:stock_pilot/presentation/product/widgets/productimage_placeholder.dart';
+import 'package:stock_pilot/presentation/product/widgets/product_image_placeholder.dart';
 
+// Widget that displays product images in a carousel
 class ProductImageWidget extends StatefulWidget {
   final List<String> images;
   final double? height;
@@ -16,47 +15,60 @@ class ProductImageWidget extends StatefulWidget {
 }
 
 class _ProductImageWidgetState extends State<ProductImageWidget> {
-  late PageController _pageController;
+  // Controller used to control the PageView (carousel)
+  late final PageController _pageController;
   int _localIndex = 0;
 
   @override
   void initState() {
     super.initState();
+    // Initialize PageController when widget is created
     _pageController = PageController();
   }
 
   @override
-  Widget build(BuildContext context) {
-    final currentHeight = MediaQuery.of(context).size.height;
-    final provider = context.read<ProductProvider>();
-    final displayImages = widget.images.where((img) => img.isNotEmpty).toList();
-    final effectiveHeight = widget.height ?? currentHeight * 0.35;
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    // Remove empty image paths from the list
+    final displayImages = widget.images.where((img) => img.isNotEmpty).toList();
+    final effectiveHeight =
+        widget.height ?? MediaQuery.of(context).size.height * 0.35;
     return Container(
       height: effectiveHeight,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
       child: Stack(
         children: [
+          /// IMAGE CAROUSEL
           displayImages.isNotEmpty
               ? PageView.builder(
                   controller: _pageController,
+                  // Total number of images
                   itemCount: displayImages.length,
+                  // Update the current index when page changes
                   onPageChanged: (index) {
                     setState(() => _localIndex = index);
-                    provider.updateCarouselIndex(index);
                   },
                   itemBuilder: (context, index) {
                     return Image.file(
                       File(displayImages[index]),
                       fit: BoxFit.cover,
+                      // If image fails to load, show placeholder
                       errorBuilder: (context, error, stackTrace) =>
-                          const ProductimagePlaceholder(),
+                          const ProductImagePlaceholder(),
                     );
                   },
                 )
-              : const ProductimagePlaceholder(),
+              // Show placeholder when there are no images
+              : const ProductImagePlaceholder(),
+          // NAVIGATION ARROWS (only if multiple images exist)
           if (displayImages.length > 1) ...[
+            // Left arrow (shown only if not on first image)
             if (_localIndex > 0)
               _buildArrow(
                 alignment: Alignment.centerLeft,
@@ -66,6 +78,8 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
                   curve: Curves.easeInOut,
                 ),
               ),
+
+            // Right arrow (shown only if not on last image)
             if (_localIndex < displayImages.length - 1)
               _buildArrow(
                 alignment: Alignment.centerRight,
@@ -76,6 +90,8 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
                 ),
               ),
           ],
+          // PAGE INDICATOR DOTS
+          // Shows which image is currently active
           if (displayImages.length > 1)
             Positioned(
               bottom: 16,
@@ -83,15 +99,18 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
               right: 0,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                // Create dots equal to number of images
                 children: List.generate(
                   displayImages.length,
                   (index) => AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     margin: const EdgeInsets.symmetric(horizontal: 4),
+                    // Active dot is larger
                     width: _localIndex == index ? 12 : 8,
                     height: 8,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
+                      // Active dot uses primary color
                       color: _localIndex == index
                           ? ColourStyles.primaryColor
                           : ColourStyles.colorGrey,
@@ -105,6 +124,7 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
     );
   }
 
+  // Small helper widget used for carousel navigation arrows
   Widget _buildArrow({
     required Alignment alignment,
     required IconData icon,
@@ -113,7 +133,7 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
     return Align(
       alignment: alignment,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: CircleAvatar(
           backgroundColor: Colors.black26,
           child: IconButton(

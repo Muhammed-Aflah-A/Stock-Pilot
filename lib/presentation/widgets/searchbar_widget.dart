@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 
+// Reusable search bar widget
 class SearchbarWidget extends StatelessWidget {
+  // Controller used to read and control the text field value
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final VoidCallback onClear;
@@ -18,45 +20,45 @@ class SearchbarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final height = (size.height * 0.06).clamp(44.0, 56.0);
+    // Border style reused for enabled and focused states
+    final border = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(
+        color: ColourStyles.primaryColor_2,
+        width: 1.5,
+      ),
+    );
     return SizedBox(
-      height: height,
+      height: 45,
       child: ValueListenableBuilder<TextEditingValue>(
         valueListenable: controller,
         builder: (context, value, _) {
           return TextField(
             controller: controller,
             onChanged: onChanged,
+            // Vertically center the text
             textAlignVertical: TextAlignVertical.center,
+            // Text style for user input
             style: TextStyles.formHint(
               context,
             ).copyWith(color: ColourStyles.primaryColor_2),
             decoration: InputDecoration(
               hintText: hintText,
+              // Hint text style
               hintStyle: TextStyles.formHint(context),
-              prefixIcon: const Icon(Icons.search),
+              // Search icon on the left side
+              prefixIcon: Icon(Icons.search),
+              // Show clear button only when text is not empty
               suffixIcon: value.text.isNotEmpty
                   ? IconButton(
                       icon: const Icon(Icons.close),
+                      // Clears the search text when pressed
                       onPressed: onClear,
                     )
                   : null,
               contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(
-                  color: ColourStyles.primaryColor_2,
-                  width: 1.5,
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(
-                  color: ColourStyles.primaryColor_2,
-                  width: 1.5,
-                ),
-              ),
+              enabledBorder: border,
+              focusedBorder: border,
               filled: true,
               fillColor: ColourStyles.primaryColor,
             ),

@@ -2,46 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 
+// Utility class used to show SnackBars across the app
 class SnackbarUtil {
-  static double _scale(BuildContext context, double size) {
-    final screenWidth = MediaQuery.sizeOf(context).width;
-    if (screenWidth < 360) return size * 0.9;
-    if (screenWidth < 600) return size * 1.0;
-    if (screenWidth < 900) return size * 1.1;
-    return size * 1.2;
-  }
-
   static void showSnackBar(BuildContext context, String message, bool isError) {
+    // Remove any snackbar that is currently visible
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
-
+    // Show a new snackbar
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
+        // Red → error message
+        // Green → success message
         backgroundColor: isError
             ? ColourStyles.colorRed
             : ColourStyles.colorGreen,
+        // Makes snackbar float above the UI instead of sticking to bottom
         behavior: SnackBarBehavior.floating,
+        // Snackbar display duration
         duration: const Duration(seconds: 3),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(_scale(context, 12)),
-        ),
-        margin: EdgeInsets.all(_scale(context, 15)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        margin: const EdgeInsets.all(15),
+        // Content inside snackbar
         content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Icon indicating success or error
             Icon(
               isError ? Icons.error_outline : Icons.check_circle_outline,
               color: ColourStyles.primaryColor,
-              size: _scale(context, 20),
             ),
-            SizedBox(width: _scale(context, 12)),
+            const SizedBox(width: 12),
             Expanded(
               child: Text(
                 message,
-                style: TextStyles.primaryText(context).copyWith(
-                  color: ColourStyles.primaryColor,
-                  fontSize: _scale(context, 14),
-                ),
-                textAlign: TextAlign.start,
+                // Base text style from app theme
+                style: TextStyles.primaryText(
+                  context,
+                ).copyWith(color: ColourStyles.primaryColor),
+                // Limit message to two lines
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),

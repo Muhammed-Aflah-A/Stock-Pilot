@@ -5,58 +5,45 @@ import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/core/utils/select_validator_util.dart';
 import 'package:stock_pilot/core/utils/snackbar_util.dart';
-import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
 import 'package:stock_pilot/presentation/widgets/form_widget.dart';
 import 'package:stock_pilot/presentation/product/widgets/image_adding_widget.dart';
-import 'package:stock_pilot/presentation/widgets/nextbutton_widget.dart';
+import 'package:stock_pilot/presentation/widgets/next_button_widget.dart';
 
-class ProductAddingPage1 extends StatefulWidget {
-  final ProductModel? product;
-  final int? productIndex;
+// Page for entering basic product info
+class ProductAddingPage1 extends StatelessWidget {
+  const ProductAddingPage1({super.key});
 
-  const ProductAddingPage1({super.key, this.product, this.productIndex});
-
-  @override
-  State<ProductAddingPage1> createState() => _ProductAddingState();
-}
-
-class _ProductAddingState extends State<ProductAddingPage1> {
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final horizontalPadding = (size.width * 0.05).clamp(16.0, 40.0);
-    final verticalPadding = (size.height * 0.02).clamp(12.0, 24.0);
-    final spacing = (size.height * 0.02).clamp(12.0, 24.0);
     final provider = context.read<ProductProvider>();
-    final isEditing = widget.product != null;
+
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
-      resizeToAvoidBottomInset: true,
-      appBar: AppBarWidget(
-        showleading: true,
-        title: isEditing ? "Edit Basic Info" : "Basic Info",
+      // Custom AppBar
+      appBar: const AppBarWidget(
+        showLeading: true,
+        title: "Basic Info",
         centeredTitle: true,
         showAvatar: false,
       ),
       body: SafeArea(
         child: GestureDetector(
+          // Close keyboard when tapping outside fields
           onTap: () => FocusScope.of(context).unfocus(),
-          behavior: HitTestBehavior.opaque,
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 900),
               child: SingleChildScrollView(
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
-                padding: EdgeInsets.symmetric(
-                  horizontal: horizontalPadding,
-                  vertical: verticalPadding,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // PRODUCT IMAGE SECTION
                     Center(
                       child: Text(
                         "Product Image",
@@ -65,19 +52,20 @@ class _ProductAddingState extends State<ProductAddingPage1> {
                         ).copyWith(color: ColourStyles.primaryColor_2),
                       ),
                     ),
-                    SizedBox(height: spacing),
+                    const SizedBox(height: 16),
+                    // Widget that handles image selection
                     const ImageAddingWidget(),
+                    // IMAGE VALIDATION MESSAGE
                     Selector<ProductProvider, bool>(
                       selector: (_, p) => p.hasImage,
-                      builder: (context, hasImage, _) {
+                      builder: (_, hasImage, _) {
                         if (hasImage) return const SizedBox.shrink();
-
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 8),
+                        return const Padding(
+                          padding: EdgeInsets.only(top: 8),
                           child: Center(
                             child: Text(
                               "Please add at least one product image",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: ColourStyles.colorRed,
                                 fontSize: 14,
                               ),
@@ -86,12 +74,14 @@ class _ProductAddingState extends State<ProductAddingPage1> {
                         );
                       },
                     ),
-                    SizedBox(height: spacing),
+                    const SizedBox(height: 20),
+                    // PRODUCT DETAILS FORM
                     Form(
                       key: provider.firstFormKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // PRODUCT NAME
                           Text(
                             "Product Name",
                             style: TextStyles.sectionHeading(
@@ -107,9 +97,8 @@ class _ProductAddingState extends State<ProductAddingPage1> {
                               value,
                               "product name",
                             ),
-                            onSaved: (newValue) {
-                              provider.productName = newValue!.trim();
-                            },
+                            onSaved: (value) =>
+                                provider.productName = value!.trim(),
                             action: TextInputAction.next,
                             onFieldSubmitted: (_) {
                               FocusScope.of(
@@ -117,7 +106,8 @@ class _ProductAddingState extends State<ProductAddingPage1> {
                               ).requestFocus(provider.productDescriptionFocus);
                             },
                           ),
-                          SizedBox(height: spacing),
+                          const SizedBox(height: 20),
+                          // PRODUCT DESCRIPTION
                           Text(
                             "Product Description",
                             style: TextStyles.sectionHeading(
@@ -127,7 +117,7 @@ class _ProductAddingState extends State<ProductAddingPage1> {
                           const SizedBox(height: 8),
                           FormWidget(
                             maxlength: 500,
-                            maxline: size.height < 700 ? 4 : 6,
+                            maxlines: 5,
                             initialValue: provider.productDescription,
                             focus: provider.productDescriptionFocus,
                             keyboard: TextInputType.multiline,
@@ -135,24 +125,24 @@ class _ProductAddingState extends State<ProductAddingPage1> {
                               value,
                               "product description",
                             ),
-                            onSaved: (newValue) {
-                              provider.productDescription = newValue!.trim();
-                            },
+                            onSaved: (value) =>
+                                provider.productDescription = value!.trim(),
                             action: TextInputAction.done,
-                            onFieldSubmitted: (_) {
-                              FocusScope.of(context).unfocus();
-                            },
+                            onFieldSubmitted: (_) =>
+                                FocusScope.of(context).unfocus(),
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(height: spacing * 2),
+                    const SizedBox(height: 30),
+                    // NEXT BUTTON
                     Center(
                       child: NextbuttonWidget(
                         text: "Next",
                         onPressed: () {
                           final formValid = provider.firstFormKey.currentState!
                               .validate();
+                          // Check both form and image
                           if (!provider.hasImage || !formValid) {
                             SnackbarUtil.showSnackBar(
                               context,
@@ -165,10 +155,6 @@ class _ProductAddingState extends State<ProductAddingPage1> {
                           Navigator.pushNamed(
                             context,
                             AppRoutes.productAddingPage2,
-                            arguments: {
-                              'product': widget.product,
-                              'productIndex': widget.productIndex,
-                            },
                           );
                         },
                       ),

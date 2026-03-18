@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 
-class FloatingactionbuttonWidget extends StatelessWidget {
+// Reusable Floating Action Button widget
+class FloatingActionButtonWidget extends StatelessWidget {
+
   final VoidCallback onPressed;
-  const FloatingactionbuttonWidget({super.key, required this.onPressed});
+
+  const FloatingActionButtonWidget({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
+      // Executes the callback passed from the parent screen
       onPressed: onPressed,
       foregroundColor: ColourStyles.primaryColor,
       backgroundColor: ColourStyles.primaryColor_2,
-      child: Icon(Icons.add),
+      // Add icon inside the button
+      child: const Icon(Icons.add),
     );
   }
 }

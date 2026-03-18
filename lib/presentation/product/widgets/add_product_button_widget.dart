@@ -8,23 +8,23 @@ import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
 
-class AddproductButtonWidget extends StatelessWidget {
-  final ProductModel? product;
-  final int? productIndex;
-
-  const AddproductButtonWidget({super.key, this.product, this.productIndex});
+// Button used for both adding and updating a product
+class AddProductButtonWidget extends StatelessWidget {
+  const AddProductButtonWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final productForm = context.watch<ProductProvider>();
-    final isEditing = product != null;
+    final productForm = context.read<ProductProvider>();
+    final dashboardProvider = context.read<DashboardProvider>();
+    final isEditing = productForm.isEditing;
 
     return ElevatedButton(
       onPressed: () async {
-        if (productForm.secondFormKey.currentState!.validate()) {
-          productForm.secondFormKey.currentState!.save();
-          final dashProvider = context.read<DashboardProvider>();
+        final form = productForm.secondFormKey.currentState;
+        if (form != null && form.validate()) {
+          form.save();
           final newProduct = ProductModel(
+            // Convert selected image files into image paths
             productImages: productForm.productImages
                 .where((img) => img != null)
                 .map((img) => img!.path)
@@ -38,49 +38,51 @@ class AddproductButtonWidget extends StatelessWidget {
             itemCount: productForm.itemCount!,
             lowStockCount: productForm.lowStockCount!,
           );
-
-          if (isEditing && productIndex != null) {
+          // UPDATE EXISTING PRODUCT
+          if (isEditing) {
             await productForm.updateProduct(
-              productIndex!,
+              productForm.editingIndex!,
               newProduct,
-              dashProvider,
+              dashboardProvider,
             );
+            // Show success message
             if (context.mounted) {
               SnackbarUtil.showSnackBar(
                 context,
-                "Product Updated successfully",
-                false,
-              );
-            }
-          } else {
-            await productForm.addproduct(newProduct, dashProvider);
-            if (context.mounted) {
-              SnackbarUtil.showSnackBar(
-                context,
-                "Poduct added successfully",
+                "Product updated successfully",
                 false,
               );
             }
           }
-          productForm.firstFormKey.currentState?.reset();
-          productForm.secondFormKey.currentState?.reset();
-          productForm.resetForm();
-          await productForm.loadProducts();
-          if (context.mounted) {
+          // ADD NEW PRODUCT
+          else {
+            await productForm.addProduct(newProduct, dashboardProvider);
+            // Show success message
             if (context.mounted) {
-              if (isEditing) {
-                Navigator.popUntil(
-                  context,
-                  ModalRoute.withName(AppRoutes.productDetailsPage),
-                );
-              } else {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  AppRoutes.productListPage,
-                  (route) => false,
-                );
-              }
+              SnackbarUtil.showSnackBar(
+                context,
+                "Product added successfully",
+                false,
+              );
             }
+          }
+          productForm.resetForm();
+          productForm.clearEditing();
+          if (!context.mounted) return;
+          // If editing → go back to product details page
+          if (isEditing) {
+            Navigator.popUntil(
+              context,
+              ModalRoute.withName(AppRoutes.productDetailsPage),
+            );
+          }
+          // If adding → go to product list page
+          else {
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              AppRoutes.productListPage,
+              (route) => false,
+            );
           }
         }
       },
@@ -88,7 +90,6 @@ class AddproductButtonWidget extends StatelessWidget {
       child: Text(
         isEditing ? "Update Product" : "Add Product",
         style: TextStyles.buttonTextWhite(context),
-        textAlign: TextAlign.center,
       ),
     );
   }

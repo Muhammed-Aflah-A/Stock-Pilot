@@ -4,13 +4,14 @@ import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/utils/snackbar_util.dart';
 import 'package:stock_pilot/data/models/category_model.dart';
 import 'package:stock_pilot/presentation/category/viewmodel/category_provider.dart';
+import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
 import 'package:stock_pilot/presentation/widgets/app_drawer_widget.dart';
 import 'package:stock_pilot/presentation/widgets/delete_confirmation_widget.dart';
 import 'package:stock_pilot/presentation/widgets/edit_details_widget.dart';
 import 'package:stock_pilot/presentation/widgets/emptypage_message_widget.dart';
-import 'package:stock_pilot/presentation/widgets/filterlist_tile_widget.dart';
-import 'package:stock_pilot/presentation/widgets/floatingactionbutton_widget.dart';
+import 'package:stock_pilot/presentation/widgets/filter_list_tile_widget.dart';
+import 'package:stock_pilot/presentation/widgets/floating_action_button_widget.dart';
 import 'package:stock_pilot/presentation/widgets/searchbar_widget.dart';
 
 class CategoryListPage extends StatefulWidget {
@@ -21,6 +22,7 @@ class CategoryListPage extends StatefulWidget {
 }
 
 class _CategoryListPageState extends State<CategoryListPage> {
+  // Controller used for the search field
   final TextEditingController controller = TextEditingController();
 
   @override
@@ -31,37 +33,33 @@ class _CategoryListPageState extends State<CategoryListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
-    final horizontalPadding = (size.width * 0.04).clamp(16.0, 40.0);
-    final verticalPadding = (size.height * 0.02).clamp(12.0, 24.0);
-    final spacing = (size.height * 0.02).clamp(12.0, 20.0);
-    final itemSpacing = (size.height * 0.015).clamp(8.0, 16.0);
-
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
       appBar: const AppBarWidget(
-        showleading: false,
+        showLeading: false,
         title: "Category",
         centeredTitle: false,
         showAvatar: true,
       ),
+      // Drawer menu
       drawer: const AppDrawer(),
-      floatingActionButton: FloatingactionbuttonWidget(
+      // Floating button used to add a new category
+      floatingActionButton: FloatingActionButtonWidget(
         onPressed: () {
           showDialog(
             context: context,
             builder: (context) {
               return EditDetailsWidget(
-                maxlength: 30,
+                maxLength: 30,
                 title: "Category",
-                fieldtype: "category",
-                screenWidth: size.width,
+                fieldType: "category",
                 isEditing: false,
+                // Save new category
                 onSave: (value) async {
                   final newCategory = CategoryModel(category: value);
                   await context.read<CategoryProvider>().addCategory(
                     newCategory,
+                    context.read<DashboardProvider>(),
                   );
                 },
               );
@@ -77,29 +75,33 @@ class _CategoryListPageState extends State<CategoryListPage> {
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 1400),
               child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: horizontalPadding,
-                  vertical: verticalPadding,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 16,
                 ),
                 child: Column(
                   children: [
+                    // Search bar for categories
                     SearchbarWidget(
                       controller: controller,
                       hintText: "Search categories",
+                      // Filter categories when typing
                       onChanged: (value) {
                         context.read<CategoryProvider>().searchCategories(
                           value,
                         );
                       },
+                      // Clear search
                       onClear: () {
                         controller.clear();
                         context.read<CategoryProvider>().clearSearch();
                       },
                     ),
-                    SizedBox(height: spacing),
+                    const SizedBox(height: 16),
                     Expanded(
                       child: Consumer<CategoryProvider>(
                         builder: (context, provider, child) {
+                          // If there are no categories
                           if (provider.categories.isEmpty) {
                             return const Center(
                               child: EmptypageMessageWidget(
@@ -108,7 +110,7 @@ class _CategoryListPageState extends State<CategoryListPage> {
                               ),
                             );
                           }
-
+                          // If search returns no results
                           if (provider.filteredCategory.isEmpty) {
                             return const Center(
                               child: EmptypageMessageWidget(
@@ -118,28 +120,27 @@ class _CategoryListPageState extends State<CategoryListPage> {
                               ),
                             );
                           }
-
                           return ListView.separated(
                             keyboardDismissBehavior:
                                 ScrollViewKeyboardDismissBehavior.onDrag,
                             itemCount: provider.filteredCategory.length,
-                            separatorBuilder: (_, __) =>
-                                SizedBox(height: itemSpacing),
+                            separatorBuilder: (_, _) =>
+                                const SizedBox(height: 10),
                             itemBuilder: (context, index) {
                               final categoryItem =
                                   provider.filteredCategory[index];
-
-                              return FilterlistTileWidget(
-                                title: categoryItem.category!,
+                              return FilterListTileWidget(
+                                // Category name
+                                title: categoryItem.category ?? "",
+                                // Edit category
                                 onEdit: () {
                                   showDialog(
                                     context: context,
                                     builder: (context) => EditDetailsWidget(
-                                      maxlength: 30,
+                                      maxLength: 30,
                                       title: "Category",
-                                      fieldtype: "category",
+                                      fieldType: "category",
                                       initialValue: categoryItem.category,
-                                      screenWidth: size.width,
                                       isEditing: true,
                                       onSave: (value) async {
                                         final updatedCategory = CategoryModel(
@@ -150,22 +151,24 @@ class _CategoryListPageState extends State<CategoryListPage> {
                                             .updateCategory(
                                               index,
                                               updatedCategory,
+                                              context.read<DashboardProvider>(),
                                             );
                                       },
                                     ),
                                   );
                                 },
+                                // Delete category
                                 onDelete: () {
                                   showDialog(
                                     context: context,
                                     builder: (context) => DeleteConfirmationWidget(
                                       title: "Remove Category",
-                                      displayName: categoryItem.category!,
+                                      displayName: categoryItem.category ?? "",
                                       onDelete: () async {
                                         final canDelete = await context
                                             .read<CategoryProvider>()
                                             .canDeleteCategory(
-                                              categoryItem.category!,
+                                              categoryItem.category ?? "",
                                             );
                                         if (!context.mounted) return false;
                                         if (!canDelete) {
@@ -179,7 +182,10 @@ class _CategoryListPageState extends State<CategoryListPage> {
                                         }
                                         await context
                                             .read<CategoryProvider>()
-                                            .deleteCategory(index);
+                                            .deleteCategory(
+                                              index,
+                                              context.read<DashboardProvider>(),
+                                            );
                                         return true;
                                       },
                                     ),

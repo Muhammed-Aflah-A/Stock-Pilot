@@ -2,31 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
-import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
-import 'package:stock_pilot/presentation/product/widgets/addcart_button_widget.dart';
+import 'package:stock_pilot/presentation/product/widgets/add_cart_button_widget.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
-import 'package:stock_pilot/presentation/product/widgets/editproduct_button_widget.dart';
+import 'package:stock_pilot/presentation/product/widgets/edit_product_button_widget.dart';
 import 'package:stock_pilot/presentation/product/widgets/product_image_widget.dart';
-import 'package:stock_pilot/presentation/product/widgets/product_detailrow_widget.dart';
-import 'package:stock_pilot/presentation/product/widgets/removeproduct_button_widget.dart';
+import 'package:stock_pilot/presentation/product/widgets/product_detail_row_widget.dart';
+import 'package:stock_pilot/presentation/product/widgets/remove_product_button_widget.dart';
 
 class ProductDetailsPage extends StatefulWidget {
-  final ProductModel product;
   final int productIndex;
 
-  const ProductDetailsPage({
-    super.key,
-    required this.product,
-    required this.productIndex,
-  });
+  const ProductDetailsPage({super.key, required this.productIndex});
 
   @override
   State<ProductDetailsPage> createState() => _ProductDetailsPageState();
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
+  // Controls whether description section is expanded
   final ValueNotifier<bool> _isDescriptionExpanded = ValueNotifier(true);
 
   @override
@@ -42,18 +37,18 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     final verticalPadding = (size.height * 0.02).clamp(16.0, 28.0);
     final spacing = (size.height * 0.025).clamp(16.0, 28.0);
     final provider = context.watch<ProductProvider>();
-
+    // Safety check for invalid index
     if (widget.productIndex < 0 ||
         widget.productIndex >= provider.products.length) {
       return const Scaffold(body: Center(child: Text("Product not found")));
     }
-
+    // Current product
     final product = provider.products[widget.productIndex];
-
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
+      // APP BAR
       appBar: const AppBarWidget(
-        showleading: true,
+        showLeading: true,
         title: "Product Details",
         centeredTitle: true,
         showAvatar: false,
@@ -69,16 +64,18 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               ),
               child: Column(
                 children: [
+                  // PRODUCT IMAGE CAROUSEL
                   ProductImageWidget(
                     images: product.productImages,
                     height: (size.height * 0.35).clamp(220.0, 400.0),
                   ),
                   SizedBox(height: spacing),
+                  // PRODUCT INFO CARD
                   Container(
                     width: double.infinity,
                     padding: EdgeInsets.all(horizontalPadding),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: ColourStyles.primaryColor,
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
@@ -91,26 +88,31 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // PRODUCT NAME
                         Text(
                           product.productName!,
                           style: TextStyles.dialogueHeading(context),
                         ),
                         const SizedBox(height: 6),
+                        // CATEGORY
                         Text(
                           product.category!,
                           style: TextStyles.caption(context),
                         ),
                         SizedBox(height: spacing),
+                        // BRAND
                         DetailRowWidget(
                           label: 'Brand',
                           value: product.brand!,
                           showDivider: true,
                         ),
+                        // PRICE
                         DetailRowWidget(
                           label: 'Price',
                           value: '\$${product.salesRate}',
                           showDivider: true,
                         ),
+                        // STOCK STATUS
                         DetailRowWidget(
                           label: 'Stock Quantity',
                           value: provider.getStockText(product),
@@ -122,6 +124,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     ),
                   ),
                   SizedBox(height: spacing),
+                  // DESCRIPTION CARD
                   Container(
                     width: double.infinity,
                     padding: EdgeInsets.all(horizontalPadding),
@@ -142,6 +145,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            // DESCRIPTION HEADER (TOGGLE)
                             InkWell(
                               onTap: () {
                                 _isDescriptionExpanded.value = !expanded;
@@ -163,6 +167,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 ],
                               ),
                             ),
+                            // DESCRIPTION TEXT
                             if (expanded) ...[
                               const SizedBox(height: 14),
                               Text(
@@ -180,17 +185,18 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     ),
                   ),
                   SizedBox(height: spacing),
+                  // EDIT + REMOVE BUTTONS
                   Row(
                     children: [
                       Expanded(
-                        child: EditproductButtonWidget(
+                        child: EditProductButtonWidget(
                           product: product,
                           productIndex: widget.productIndex,
                         ),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
-                        child: RemoveproductButtonWidget(
+                        child: RemoveProductButtonWidget(
                           label: 'Remove Product',
                           dialogTitle: 'Delete Product',
                           itemName: product.productName!,
@@ -214,10 +220,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     ],
                   ),
                   SizedBox(height: spacing),
-                  AddcartButtonWidget(
-                    product: product,
-                    productIndex: widget.productIndex,
-                  ),
+                  // ADD TO CART BUTTON
+                  AddCartButtonWidget(),
                   SizedBox(height: spacing),
                 ],
               ),

@@ -1,7 +1,7 @@
 import 'package:hive_flutter/adapters.dart';
 part 'product_model.g.dart';
 
-@HiveType(typeId: 6)
+@HiveType(typeId: 5)
 class ProductModel {
   @HiveField(0)
   List<String> productImages;

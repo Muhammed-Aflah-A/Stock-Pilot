@@ -3,51 +3,45 @@ import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/presentation/widgets/user_avatar_widget.dart';
 
+// AppBar widget for all screen
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
-  final bool showleading;
+  final bool showLeading;
   final String title;
   final bool centeredTitle;
   final bool showAvatar;
 
   const AppBarWidget({
     super.key,
-    required this.showleading,
+    required this.showLeading,
     required this.title,
     required this.centeredTitle,
     required this.showAvatar,
   });
-
-  double _scale(BuildContext context, double size) {
-    final screenWidth = MediaQuery.sizeOf(context).width;
-    if (screenWidth < 360) return size * 0.9;
-    if (screenWidth < 600) return size * 1.0;
-    return size * 1.2;
-  }
-
+  // fixed height for AppBar
   @override
-  Size get preferredSize => const Size.fromHeight(100);
+  Size get preferredSize => Size.fromHeight(80);
 
   @override
   Widget build(BuildContext context) {
-    final currentWidth = MediaQuery.sizeOf(context).width;
-
     return AppBar(
       backgroundColor: ColourStyles.primaryColor,
-      toolbarHeight: _scale(context, 80),
       scrolledUnderElevation: 0,
-      leading: showleading
+      // show back button only if needed
+      leading: showLeading
           ? IconButton(
               onPressed: () => Navigator.pop(context),
-              icon: Icon(Icons.arrow_back_ios, size: _scale(context, 20)),
+              icon: Icon(Icons.arrow_back_ios),
             )
           : null,
+      // title text
       title: Text(title, style: TextStyles.appBarHeading(context)),
       centerTitle: centeredTitle,
+      // avatar on right side
       actions: showAvatar
-          ? [
+          ? const [
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: currentWidth * 0.05),
-                child: const UserAvatarWidget(),
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: UserAvatarWidget(),
               ),
             ]
           : null,

@@ -1,31 +1,45 @@
 import 'dart:io';
-
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:stock_pilot/core/assets/app_images.dart';
 
 class ImageUtil {
+  // Returns image for profile picture
   static ImageProvider getProfileImage(String? path) {
     if (path == null || path.isEmpty) {
       return const AssetImage(AppImages.profilePicture);
     }
     if (kIsWeb) {
-      try {
-        return NetworkImage(path);
-      } catch (e) {
-        debugPrint("Error loading web image: $e");
-        return const AssetImage(AppImages.profilePicture);
-      }
-    } else {
-      return _getMobileImage(path);
+      return NetworkImage(path);
     }
+    final file = File(path);
+    if (!file.existsSync()) {
+      return const AssetImage(AppImages.profilePicture);
+    }
+    return FileImage(file);
   }
 
-  static ImageProvider _getMobileImage(String path) {
-    final file = File(path);
-    if (file.existsSync()) {
-      return FileImage(file);
+  // Returns image for product picture
+  static ImageProvider getProductImage(String? path) {
+    if (path == null || path.isEmpty) {
+      return const AssetImage(AppImages.productImage1);
     }
-    return const AssetImage(AppImages.profilePicture);
+    if (kIsWeb) {
+      return NetworkImage(path);
+    }
+    final file = File(path);
+    if (!file.existsSync()) {
+      return const AssetImage(AppImages.productImage1);
+    }
+    return FileImage(file);
+  }
+
+   static Future<String> saveImage(File image) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final fileName = image.path.split('/').last;
+    final newPath = '${directory.path}/$fileName';
+    final newImage = await image.copy(newPath);
+    return newImage.path;
   }
 }

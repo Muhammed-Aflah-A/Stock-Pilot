@@ -8,7 +8,7 @@ part of 'dasboard_model.dart';
 
 class DashboardCardsAdapter extends TypeAdapter<DashboardCards> {
   @override
-  final int typeId = 2;
+  final int typeId = 3;
 
   @override
   DashboardCards read(BinaryReader reader) {
@@ -45,7 +45,7 @@ class DashboardCardsAdapter extends TypeAdapter<DashboardCards> {
 
 class DasboardActivityAdapter extends TypeAdapter<DasboardActivity> {
   @override
-  final int typeId = 3;
+  final int typeId = 4;
 
   @override
   DasboardActivity read(BinaryReader reader) {

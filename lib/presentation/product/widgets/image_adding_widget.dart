@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
-import 'package:stock_pilot/presentation/widgets/permission_dialog.dart';
+import 'package:stock_pilot/presentation/widgets/permission_dialog_widget.dart';
 
+// Widget used to add and preview product images
 class ImageAddingWidget extends StatelessWidget {
   const ImageAddingWidget({super.key});
 
@@ -16,19 +17,24 @@ class ImageAddingWidget extends StatelessWidget {
       builder: (context, images, _) {
         return LayoutBuilder(
           builder: (context, constraints) {
-            final maxWidth = constraints.maxWidth;
-            final tileSize = (maxWidth / 2 - 12).clamp(120.0, 200.0);
+            final tileSize = (constraints.maxWidth / 2 - 12).clamp(
+              120.0,
+              200.0,
+            );
             final itemCount = images.length < 4 ? images.length + 1 : 4;
             return Center(
               child: Wrap(
                 spacing: 12,
                 runSpacing: 12,
                 alignment: WrapAlignment.center,
+                // Generate tiles for images and add button
                 children: List.generate(itemCount, (index) {
+                  // Get image if it exists, otherwise null
                   final File? image = index < images.length
                       ? images[index]
                       : null;
                   return GestureDetector(
+                    // When tile is tapped, open permission dialog
                     onTap: () {
                       showDialog(
                         context: context,
@@ -49,17 +55,23 @@ class ImageAddingWidget extends StatelessWidget {
                           width: 2,
                         ),
                       ),
+                      // If image is null → show "Add Photo"
                       child: image == null
                           ? Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: const [
-                                Icon(Icons.add_photo_alternate_rounded, size: 30),
+                                Icon(
+                                  Icons.add_photo_alternate_rounded,
+                                  size: 30,
+                                ),
                                 SizedBox(height: 6),
                                 Text("Add Photo"),
                               ],
                             )
+                          // If image exists → show image preview
                           : Stack(
                               children: [
+                                // Display selected image
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: Image.file(
@@ -69,13 +81,18 @@ class ImageAddingWidget extends StatelessWidget {
                                     fit: BoxFit.cover,
                                   ),
                                 ),
+                                // Delete image button
                                 Positioned(
                                   top: 6,
                                   right: 6,
                                   child: GestureDetector(
-                                    onTap: () => context
-                                        .read<ProductProvider>()
-                                        .removeImage(index),
+                                    behavior: HitTestBehavior.opaque,
+                                    // Remove image from provider
+                                    onTap: () {
+                                      context
+                                          .read<ProductProvider>()
+                                          .removeImage(index);
+                                    },
                                     child: Container(
                                       padding: const EdgeInsets.all(4),
                                       decoration: const BoxDecoration(

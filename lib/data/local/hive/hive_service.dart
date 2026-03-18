@@ -10,10 +10,10 @@ import 'package:stock_pilot/data/service%20layer/hive_service_layer.dart';
 class HiveService implements HiveServiceLayer {
   static Future<void> init() async {
     await Hive.openBox<UserProfile>(HiveBoxes.userProfile);
+    await Hive.openBox<DasboardActivity>(HiveBoxes.dashBoardActivity);
     await Hive.openBox<ProductModel>(HiveBoxes.productList);
     await Hive.openBox<CategoryModel>(HiveBoxes.categories);
     await Hive.openBox<BrandModel>(HiveBoxes.brands);
-    await Hive.openBox<DasboardActivity>(HiveBoxes.dashBoardActivity);
   }
 
   @override
@@ -23,27 +23,21 @@ class HiveService implements HiveServiceLayer {
   }
 
   @override
-  Future<UserProfile?> getUser() async {
-    final box = Hive.box<UserProfile>(HiveBoxes.userProfile);
-    return box.get('user');
-  }
-
-  @override
   Future<void> updateUser(UserProfile user) async {
     final box = Hive.box<UserProfile>(HiveBoxes.userProfile);
     await box.put('user', user);
   }
 
   @override
-  Future<void> addProduct(ProductModel product) async {
-    final box = Hive.box<ProductModel>(HiveBoxes.productList);
-    await box.add(product);
+  Future<UserProfile?> getUser() async {
+    final box = Hive.box<UserProfile>(HiveBoxes.userProfile);
+    return box.get('user');
   }
 
   @override
-  Future<List<ProductModel>> getAllProducts() async {
+  Future<void> addProduct(ProductModel product) async {
     final box = Hive.box<ProductModel>(HiveBoxes.productList);
-    return box.values.toList();
+    await box.add(product);
   }
 
   @override
@@ -59,15 +53,9 @@ class HiveService implements HiveServiceLayer {
   }
 
   @override
-  Future<void> addActivity(DasboardActivity activity) async {
-    final box = Hive.box<DasboardActivity>(HiveBoxes.dashBoardActivity);
-    await box.add(activity);
-  }
-
-  @override
-  Future<List<DasboardActivity>> getAllActivities() async {
-    final box = Hive.box<DasboardActivity>(HiveBoxes.dashBoardActivity);
-    return box.values.toList().reversed.toList();
+  Future<List<ProductModel>> getAllProducts() async {
+    final box = Hive.box<ProductModel>(HiveBoxes.productList);
+    return box.values.toList();
   }
 
   @override
@@ -116,5 +104,17 @@ class HiveService implements HiveServiceLayer {
   Future<void> deleteBrand(int index) async {
     final box = Hive.box<BrandModel>(HiveBoxes.brands);
     await box.deleteAt(index);
+  }
+
+  @override
+  Future<void> addActivity(DasboardActivity activity) async {
+    final box = Hive.box<DasboardActivity>(HiveBoxes.dashBoardActivity);
+    await box.add(activity);
+  }
+
+  @override
+  Future<List<DasboardActivity>> getAllActivities() async {
+    final box = Hive.box<DasboardActivity>(HiveBoxes.dashBoardActivity);
+    return box.values.toList().reversed.toList();
   }
 }

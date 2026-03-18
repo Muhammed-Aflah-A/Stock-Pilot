@@ -8,9 +8,9 @@ import 'package:stock_pilot/presentation/product/widgets/product_list_tile_widge
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
 import 'package:stock_pilot/presentation/widgets/app_drawer_widget.dart';
 import 'package:stock_pilot/presentation/widgets/emptypage_message_widget.dart';
-import 'package:stock_pilot/presentation/widgets/filterbutton_widget.dart';
+import 'package:stock_pilot/presentation/widgets/filter_button_widget.dart';
 import 'package:stock_pilot/presentation/widgets/searchbar_widget.dart';
-import 'package:stock_pilot/presentation/widgets/sortbutton_widget.dart';
+import 'package:stock_pilot/presentation/widgets/sort_button_widget.dart';
 
 class OutOfStockListPage extends StatefulWidget {
   const OutOfStockListPage({super.key});
@@ -20,6 +20,7 @@ class OutOfStockListPage extends StatefulWidget {
 }
 
 class _OutOfStockListPageState extends State<OutOfStockListPage> {
+  // Controller for search field
   final TextEditingController controller = TextEditingController();
 
   @override
@@ -31,15 +32,15 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    // Responsive spacing
     final horizontalPadding = (size.width * 0.04).clamp(16.0, 40.0);
     final verticalPadding = (size.height * 0.02).clamp(12.0, 24.0);
     final spacing = (size.height * 0.02).clamp(12.0, 20.0);
     final itemSpacing = (size.height * 0.015).clamp(8.0, 16.0);
-
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
       appBar: const AppBarWidget(
-        showleading: false,
+        showLeading: false,
         title: "Out of Stock",
         centeredTitle: false,
         showAvatar: true,
@@ -49,108 +50,106 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () => FocusScope.of(context).unfocus(),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 1400),
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: horizontalPadding,
-                  vertical: verticalPadding,
-                ),
-                child: Column(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: horizontalPadding,
+              vertical: verticalPadding,
+            ),
+            child: Column(
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: SearchbarWidget(
-                            controller: controller,
-                            hintText: "Search out of stock products",
-                            onChanged: (value) {
-                              context
-                                  .read<OutofstockProvider>()
-                                  .searchOutOfStock(value);
-                            },
-                            onClear: () {
-                              controller.clear();
-                              context.read<OutofstockProvider>().clearSearch();
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Consumer<OutofstockProvider>(
-                          builder: (context, provider, _) {
-                            return FilterbuttonWidget(provider: provider);
-                          },
-                        ),
-                        const SizedBox(width: 10),
-                        Consumer<OutofstockProvider>(
-                          builder: (context, provider, _) {
-                            return SortbuttonWidget<OutOfStockSortOption>(
-                              options: const {
-                                OutOfStockSortOption.priceLowToHigh:
-                                    'Price : Low to High',
-                                OutOfStockSortOption.priceHighToLow:
-                                    'Price : High to Low',
-                                OutOfStockSortOption.alphabeticalAZ:
-                                    'Alphabetical ( A – Z )',
-                                OutOfStockSortOption.alphabeticalZA:
-                                    'Alphabetical ( Z – A )',
-                              },
-                              currentValue: provider.currentSort,
-                              defaultValue: OutOfStockSortOption.priceLowToHigh,
-                              onSelected: (value) =>
-                                  provider.sortProducts(value),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: spacing),
+                    // Search bar
                     Expanded(
-                      child: Consumer<OutofstockProvider>(
-                        builder: (context, outProvider, _) {
-                          final displayList = outProvider.filteredOutOfStock;
-                          if (displayList.isEmpty) {
-                            return const Center(
-                              child: EmptypageMessageWidget(
-                                heading: "No Out of Stock Products",
-                                label: "Everything is currently in stock",
-                              ),
-                            );
-                          }
-                          return ListView.separated(
-                            keyboardDismissBehavior:
-                                ScrollViewKeyboardDismissBehavior.onDrag,
-                            itemCount: displayList.length,
-                            separatorBuilder: (_, __) =>
-                                SizedBox(height: itemSpacing),
-                            itemBuilder: (context, index) {
-                              final product = displayList[index];
-                              return ProductListTileWidget(
-                                product: product,
-                                onTap: () {
-                                  final mainProvider = context
-                                      .read<ProductProvider>();
-                                  Navigator.pushNamed(
-                                    context,
-                                    AppRoutes.productDetailsPage,
-                                    arguments: {
-                                      'product': product,
-                                      'index': mainProvider.products.indexOf(
-                                        product,
-                                      ),
-                                    },
-                                  );
+                      child: SearchbarWidget(
+                        controller: controller,
+                        hintText: "Search out of stock products",
+                        onChanged: (value) {
+                          context.read<OutofstockProvider>().searchOutOfStock(
+                            value,
+                          );
+                        },
+                        onClear: () {
+                          controller.clear();
+                          context.read<OutofstockProvider>().clearSearch();
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    // Filter button
+                    Consumer<OutofstockProvider>(
+                      builder: (_, provider, _) =>
+                          FilterButtonWidget(provider: provider),
+                    ),
+                    const SizedBox(width: 10),
+                    // Sort button
+                    Consumer<OutofstockProvider>(
+                      builder: (_, provider, _) =>
+                          SortButtonWidget<OutOfStockSortOption>(
+                            options: const {
+                              OutOfStockSortOption.priceLowToHigh:
+                                  'Price : Low to High',
+                              OutOfStockSortOption.priceHighToLow:
+                                  'Price : High to Low',
+                              OutOfStockSortOption.alphabeticalAZ:
+                                  'Alphabetical ( A – Z )',
+                              OutOfStockSortOption.alphabeticalZA:
+                                  'Alphabetical ( Z – A )',
+                            },
+                            currentValue: provider.currentSort,
+                            defaultValue: OutOfStockSortOption.priceLowToHigh,
+                            onSelected: provider.sortProducts,
+                          ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: spacing),
+                // List section
+                Expanded(
+                  child: Consumer<OutofstockProvider>(
+                    builder: (context, provider, _) {
+                      final displayList = provider.filteredOutOfStock;
+                      // Empty state
+                      if (displayList.isEmpty) {
+                        return const Center(
+                          child: EmptypageMessageWidget(
+                            heading: "No Out of Stock Products",
+                            label: "Everything is currently in stock",
+                          ),
+                        );
+                      }
+                      // Product list
+                      return ListView.separated(
+                        keyboardDismissBehavior:
+                            ScrollViewKeyboardDismissBehavior.onDrag,
+                        itemCount: displayList.length,
+                        separatorBuilder: (_, _) =>
+                            SizedBox(height: itemSpacing),
+                        itemBuilder: (context, index) {
+                          final product = displayList[index];
+                          return ProductListTileWidget(
+                            product: product,
+                            onTap: () {
+                              final mainProvider = context
+                                  .read<ProductProvider>();
+                              Navigator.pushNamed(
+                                context,
+                                AppRoutes.productDetailsPage,
+                                arguments: {
+                                  'product': product,
+                                  'index': mainProvider.products.indexOf(
+                                    product,
+                                  ),
                                 },
                               );
                             },
                           );
                         },
-                      ),
-                    ),
-                  ],
+                      );
+                    },
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ),

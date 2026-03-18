@@ -5,6 +5,7 @@ import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/core/utils/value_style_util.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 
+// Widget that displays dashboard cards in a grid layout
 class DashboardCardWidget extends StatelessWidget {
   const DashboardCardWidget({super.key});
 
@@ -12,37 +13,44 @@ class DashboardCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final width = size.width;
-
-    final dashboardProvider = context.watch<DashboardProvider>();
-    final crossAxisCount = width >= 900
-        ? 4
-        : width >= 600
-        ? 3
-        : 2;
-    final crossSpacing = (width * 0.04).clamp(12.0, 24.0);
-    final mainSpacing = (size.height * 0.02).clamp(12.0, 20.0);
-    final borderRadius = 14.0;
+    // Listen to provider so UI updates when dashboard data changes
+    final dashboard = context.watch<DashboardProvider>();
+    // Default grid columns for small screens
+    int columns = 2;
+    // Increase columns based on screen width (responsive layout)
+    if (width >= 900) {
+      columns = 4;
+    } else if (width >= 600) {
+      columns = 3;
+    }
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: dashboardProvider.dashboardCards.length,
+      // Number of cards to display
+      itemCount: dashboard.dashboardCards.length,
+      // Grid layout configuration
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        crossAxisSpacing: crossSpacing,
-        mainAxisSpacing: mainSpacing,
+        // Number of columns
+        crossAxisCount: columns,
+        // Horizontal space between cards
+        crossAxisSpacing: 16,
+        // Vertical space between cards
+        mainAxisSpacing: 16,
+        // Card shape ratio
         childAspectRatio: width >= 900 ? 1.6 : 1.35,
       ),
+      // Builds each card
       itemBuilder: (context, index) {
-        final item = dashboardProvider.dashboardCards[index];
+        // Get card data from provider
+        final item = dashboard.dashboardCards[index];
         return Card(
+          // Shadow depth
           elevation: 3,
           color: ColourStyles.primaryColor_3,
+          // Card border and shape
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius),
-            side: const BorderSide(
-              color: ColourStyles.cardborderColor,
-              width: 1,
-            ),
+            borderRadius: BorderRadius.circular(14),
+            side: BorderSide(color: ColourStyles.borderColor, width: 1),
           ),
           child: Padding(
             padding: const EdgeInsets.all(16),
@@ -50,13 +58,15 @@ class DashboardCardWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                // Dashboard card title
                 Text(
                   item.title ?? "",
                   style: TextStyles.titleText(context),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
+                // Dashboard card value
                 Text(
                   item.value ?? "",
                   style: ValueStyleUtil.getValueStyle(

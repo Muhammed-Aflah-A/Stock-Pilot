@@ -3,12 +3,14 @@ import 'package:stock_pilot/core/theme/button_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/presentation/widgets/delete_confirmation_widget.dart';
 
-class RemoveproductButtonWidget extends StatelessWidget {
+// Reusable button used to remove a product.
+class RemoveProductButtonWidget extends StatelessWidget {
   final String label;
   final String dialogTitle;
   final String itemName;
   final Future<bool> Function() onDeleteAction;
-  const RemoveproductButtonWidget({
+
+  const RemoveProductButtonWidget({
     super.key,
     required this.label,
     required this.dialogTitle,
@@ -19,10 +21,11 @@ class RemoveproductButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-        showDialog(
+      onPressed: () async {
+        await showDialog(
           context: context,
-          builder: (_) => DeleteConfirmationWidget(
+          // Dialog widget asking user to confirm deletion
+          builder: (dialogContext) => DeleteConfirmationWidget(
             title: dialogTitle,
             displayName: itemName,
             onDelete: onDeleteAction,
@@ -30,9 +33,10 @@ class RemoveproductButtonWidget extends StatelessWidget {
         );
       },
       style: ButtonStyles.detailPageRemoveButton(context),
+      // Button label
       child: Text(
-        'Remove Product',
-        style: TextStyles.primaryTextWhite,
+        label,
+        style: TextStyles.primaryTextWhite(context),
         textAlign: TextAlign.center,
       ),
     );
