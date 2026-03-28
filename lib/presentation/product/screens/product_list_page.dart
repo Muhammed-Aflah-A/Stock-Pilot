@@ -44,19 +44,11 @@ class _ProductListPageState extends State<ProductListPage> {
       ),
       // Navigation drawer
       drawer: const AppDrawer(),
-      // Floating button used to add a new product
-      floatingActionButton: FloatingActionButtonWidget(
-        onPressed: () {
-          // Reset product form before opening add product page
-          context.read<ProductProvider>().resetForm();
-          // Navigate to product adding page
-          Navigator.pushNamed(context, AppRoutes.productAddingPage1);
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SafeArea(
-        child: ConstrainedBox(
-          // Prevent page from stretching too wide on large screens
+        child: Stack(
+          children: [
+            ConstrainedBox(
+              // Prevent page from stretching too wide on large screens
           constraints: const BoxConstraints(maxWidth: 1400),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -119,6 +111,7 @@ class _ProductListPageState extends State<ProductListPage> {
                       }
                       // Display product list
                       return ListView.separated(
+                        padding: const EdgeInsets.only(bottom: 80), // Prevent FAB overlap
                         keyboardDismissBehavior:
                             ScrollViewKeyboardDismissBehavior.onDrag,
                         // Number of products
@@ -131,13 +124,10 @@ class _ProductListPageState extends State<ProductListPage> {
                             product: product,
                             // Open product details page
                             onTap: () {
+                              provider.setActiveProductIndex(realIndex);
                               Navigator.pushNamed(
                                 context,
                                 AppRoutes.productDetailsPage,
-                                arguments: {
-                                  'product': product,
-                                  'index': realIndex,
-                                },
                               );
                             },
                           );
@@ -150,7 +140,22 @@ class _ProductListPageState extends State<ProductListPage> {
             ),
           ),
         ),
-      ),
-    );
+        // Floating button decoupled from Scaffold to allow Snackbar to flow under it
+        Positioned(
+          bottom: 16,
+          right: 16,
+          child: FloatingActionButtonWidget(
+            onPressed: () {
+              // Reset product form before opening add product page
+              context.read<ProductProvider>().resetForm();
+              // Navigate to product adding page
+              Navigator.pushNamed(context, AppRoutes.productAddingPage1);
+            },
+          ),
+        ),
+      ],
+    ),
+  ),
+);
   }
 }

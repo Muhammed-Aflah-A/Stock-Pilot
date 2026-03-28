@@ -9,14 +9,15 @@ class KeyboardTypeUtil {
         return TextInputType.name;
       case "email":
         return TextInputType.emailAddress;
+      case 'phone number':
       case 'personal number':
+      case 'shop number':
         return TextInputType.phone;
       case 'shop name':
         return TextInputType.text;
       case 'shop address':
-        return TextInputType.multiline;
-      case 'shop number':
-        return TextInputType.phone;
+      case 'address':
+        return TextInputType.streetAddress;
       // Default keyboard if type does not match anything
       default:
         return TextInputType.text;

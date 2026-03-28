@@ -50,7 +50,7 @@ class FormValidatorUtil {
     // International phone format
     final phoneRegex = RegExp(r"^\+[1-9]\d{6,14}$");
     if (!phoneRegex.hasMatch(val)) {
-      return "Format: +[CountryCode][Number] (e.g. +919876543210)";
+      return "Format: (e.g. +919876543210)";
     }
     return null;
   }
@@ -177,6 +177,25 @@ class FormValidatorUtil {
     if (RegExp(r'\s{2,}').hasMatch(val)) {
       return "Remove extra spaces from $fieldName";
     }
+    return null;
+  }
+
+  // Date validator.
+  static String? validateDate(String? value, String? fieldName) {
+    // Empty check
+    final val = value?.trim() ?? '';
+    if (val.isEmpty) {
+      return "Please select a $fieldName";
+    }
+    return null;
+  }
+
+  static String? validateItemQty(String? value, String? fieldName) {
+    final val = value?.trim() ?? '';
+    if (val.isEmpty) return "Required";
+    if (!RegExp(r'^\d+$').hasMatch(val)) return "Invalid";
+    final qty = int.parse(val);
+    if (qty <= 0) return "Invalid";
     return null;
   }
 }

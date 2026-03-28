@@ -12,9 +12,7 @@ import 'package:stock_pilot/presentation/product/widgets/product_detail_row_widg
 import 'package:stock_pilot/presentation/product/widgets/remove_product_button_widget.dart';
 
 class ProductDetailsPage extends StatefulWidget {
-  final int productIndex;
-
-  const ProductDetailsPage({super.key, required this.productIndex});
+  const ProductDetailsPage({super.key});
 
   @override
   State<ProductDetailsPage> createState() => _ProductDetailsPageState();
@@ -37,13 +35,16 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     final verticalPadding = (size.height * 0.02).clamp(16.0, 28.0);
     final spacing = (size.height * 0.025).clamp(16.0, 28.0);
     final provider = context.watch<ProductProvider>();
+    final productIndex = provider.activeProductIndex;
+
     // Safety check for invalid index
-    if (widget.productIndex < 0 ||
-        widget.productIndex >= provider.products.length) {
+    if (productIndex == null ||
+        productIndex < 0 ||
+        productIndex >= provider.products.length) {
       return const Scaffold(body: Center(child: Text("Product not found")));
     }
     // Current product
-    final product = provider.products[widget.productIndex];
+    final product = provider.products[productIndex];
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
       // APP BAR
@@ -191,28 +192,22 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       Expanded(
                         child: EditProductButtonWidget(
                           product: product,
-                          productIndex: widget.productIndex,
+                          productIndex: productIndex,
                         ),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
                         child: RemoveProductButtonWidget(
-                          label: 'Remove Product',
+                          label: 'Delete Product',
                           dialogTitle: 'Delete Product',
                           itemName: product.productName!,
                           onDeleteAction: () async {
                             final dashProvider = context
                                 .read<DashboardProvider>();
                             await provider.deleteProduct(
-                              widget.productIndex,
+                              productIndex,
                               dashProvider,
                             );
-                            if (context.mounted) {
-                              Navigator.pop(
-                                context,
-                                "Product deleted successfully",
-                              );
-                            }
                             return true;
                           },
                         ),
@@ -221,7 +216,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   ),
                   SizedBox(height: spacing),
                   // ADD TO CART BUTTON
-                  AddCartButtonWidget(),
+                  AddCartButtonWidget(product: product),
                   SizedBox(height: spacing),
                 ],
               ),

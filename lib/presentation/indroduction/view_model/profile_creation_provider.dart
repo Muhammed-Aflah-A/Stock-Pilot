@@ -1,9 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/interfaces/image_permission_handler_interface.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
+import 'package:stock_pilot/core/utils/crop_image_util.dart';
 import 'package:stock_pilot/core/utils/image_selector_util.dart';
 import 'package:stock_pilot/core/utils/image_util.dart';
 import 'package:stock_pilot/core/utils/permission_util.dart';
@@ -55,21 +55,23 @@ class ProfileCreationProvider
   // Opens camera and stores the selected image path
   Future<void> openCamera() async {
     final path = await ImageSelectorUtil.openCamera();
-    if (path != null) {
-      final savedPath = await ImageUtil.saveImage(File(path));
-      profileImage = savedPath;
-      notifyListeners();
-    }
+    if (path == null) return;
+    final cropped = await ImageCropUtil.cropImage(File(path));
+    if (cropped == null) return;
+    final savedPath = await ImageUtil.saveImage(cropped);
+    profileImage = savedPath;
+    notifyListeners();
   }
 
   // Opens gallery and stores the selected image path
   Future<void> openLibrary() async {
     final path = await ImageSelectorUtil.openLibrary();
-    if (path != null) {
-      final savedPath = await ImageUtil.saveImage(File(path));
-      profileImage = savedPath;
-      notifyListeners();
-    }
+    if (path == null) return;
+    final cropped = await ImageCropUtil.cropImage(File(path));
+    if (cropped == null) return;
+    final savedPath = await ImageUtil.saveImage(cropped);
+    profileImage = savedPath;
+    notifyListeners();
   }
 
   // Setter for full name
@@ -123,8 +125,17 @@ class ProfileCreationProvider
       shopNumber: shopNumber,
       gmail: gmail,
     );
-    // Save user to Hive database
-    await addUser(user);
+    // Save user to Hive database with error handling
+    try {
+      await addUser(user);
+    } catch (e) {
+      if (!context.mounted) return;
+      SnackbarUtil.showSnackBar(context, "Failed to save profile: $e", true);
+      return;
+    }
+    formKey.currentState?.reset();
+    profileImage = null; // Clear image state to prevent state leaking
+    notifyListeners();
     if (!context.mounted) return;
     // Load saved user data into profile page
     context.read<ProfilePageProvider>().loadUser();
@@ -139,5 +150,16 @@ class ProfileCreationProvider
     Navigator.of(
       context,
     ).pushNamedAndRemoveUntil(AppRoutes.dashboard, (route) => false);
+  }
+
+  @override
+  void dispose() {
+    // Prevent memory leaks by disposing of manual focus nodes
+    personalNumberFocus.dispose();
+    shopNameFocus.dispose();
+    shopAddressFocus.dispose();
+    shopNumberFocus.dispose();
+    emailFocus.dispose();
+    super.dispose();
   }
 }

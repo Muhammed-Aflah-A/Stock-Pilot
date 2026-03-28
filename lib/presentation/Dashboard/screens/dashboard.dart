@@ -32,7 +32,6 @@ class Dashboard extends StatelessWidget {
         child: SingleChildScrollView(
           // Dismiss keyboard when user drags the screen
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          physics: const AlwaysScrollableScrollPhysics(),
           child: Padding(
             padding: EdgeInsets.symmetric(
               horizontal: horizontalPadding,

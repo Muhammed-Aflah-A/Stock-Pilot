@@ -9,6 +9,11 @@ import 'package:stock_pilot/data/local/hive/hive_adapters.dart';
 import 'package:stock_pilot/data/local/hive/hive_service.dart';
 import 'package:stock_pilot/presentation/brand/screens/brand_list_page.dart';
 import 'package:stock_pilot/presentation/brand/viewmodel/brand_provider.dart';
+import 'package:stock_pilot/presentation/cart/screen/billing_page.dart';
+import 'package:stock_pilot/presentation/cart/screen/cart_list_page.dart';
+import 'package:stock_pilot/presentation/cart/screen/confirmation_page.dart';
+import 'package:stock_pilot/presentation/cart/viewmodel/cart_provider.dart';
+import 'package:stock_pilot/presentation/cart/viewmodel/sales_provider.dart';
 import 'package:stock_pilot/presentation/category/screens/category_list_page.dart';
 import 'package:stock_pilot/presentation/category/viewmodel/category_provider.dart';
 import 'package:stock_pilot/presentation/dashboard/screens/dashboard.dart';
@@ -45,33 +50,40 @@ void main() async {
   await Hive.initFlutter();
   HiveAdapters.register();
   await HiveService.init();
+  final hiveService = HiveService();
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => SplashScreenProvider()),
         ChangeNotifierProvider(create: (_) => OnboardingScreenProvider()),
         ChangeNotifierProvider(
-          create: (_) => ProfileCreationProvider(hiveService: HiveService()),
+          create: (_) => ProfileCreationProvider(hiveService: hiveService),
         ),
         ChangeNotifierProvider(create: (_) => DrawerProvider()),
         ChangeNotifierProvider(
-          create: (_) => ProfilePageProvider(hiveService: HiveService()),
+          create: (_) => ProfilePageProvider(hiveService: hiveService),
         ),
         ChangeNotifierProvider(
-          create: (_) => DashboardProvider(hiveService: HiveService()),
+          create: (_) => DashboardProvider(hiveService: hiveService),
         ),
         ChangeNotifierProvider(
-          create: (_) => CategoryProvider(hiveService: HiveService()),
+          create: (_) => CategoryProvider(hiveService: hiveService),
         ),
         ChangeNotifierProvider(
-          create: (_) => BrandProvider(hiveService: HiveService()),
+          create: (_) => BrandProvider(hiveService: hiveService),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => CartProvider(hiveService: hiveService),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => SalesProvider(hiveService: hiveService),
         ),
         ChangeNotifierProxyProvider2<
           CategoryProvider,
           BrandProvider,
           ProductProvider
         >(
-          create: (context) => ProductProvider(hiveService: HiveService()),
+          create: (context) => ProductProvider(hiveService: hiveService),
           update: (context, categoryProvider, brandProvider, productProvider) {
             final provider = productProvider!;
             provider.setCategories(categoryProvider.categories);
@@ -99,12 +111,22 @@ void main() async {
   );
 }
 
+// Custom scroll behavior to remove Android stretch overscroll effect
+class NoStretchScrollBehavior extends ScrollBehavior {
+  @override
+  Widget buildOverscrollIndicator(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    return child;
+  }
+}
+
 class StockPilot extends StatelessWidget {
   const StockPilot({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scrollBehavior: NoStretchScrollBehavior(),
       debugShowCheckedModeBanner: false,
       title: "StockPilot",
       initialRoute: AppRoutes.splashScreen,
@@ -133,6 +155,10 @@ class StockPilot extends StatelessWidget {
             return TransitionAnimations.fadeRoute(const LowstockListPage());
           case AppRoutes.outOfStockPage:
             return TransitionAnimations.fadeRoute(const OutOfStockListPage());
+          case AppRoutes.cartListPage:
+            return TransitionAnimations.fadeRoute(const CartListPage());
+          case AppRoutes.conformationPage:
+            return TransitionAnimations.fadeRoute(const ConfirmationPage());
 
           //Slide animation
           case AppRoutes.onBoardingScreen_2:
@@ -142,11 +168,11 @@ class StockPilot extends StatelessWidget {
           case AppRoutes.productAddingPage2:
             return TransitionAnimations.slideRoute(ProductAddingPage2());
           case AppRoutes.productDetailsPage:
-            final args = settings.arguments as Map<String, dynamic>;
             return TransitionAnimations.slideRoute(
-              ProductDetailsPage(productIndex: args['index'] as int),
-              settings: settings,
+              const ProductDetailsPage(),
             );
+          case AppRoutes.billingPage:
+            return TransitionAnimations.slideRoute(BillingPage());
         }
         return null;
       },

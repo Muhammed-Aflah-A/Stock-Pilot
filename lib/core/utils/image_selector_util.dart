@@ -24,4 +24,18 @@ class ImageSelectorUtil {
     // Return the image path if selection was successful
     return image?.path;
   }
+
+  // Opens the device gallery to select multiple images.
+  static Future<List<String>?> openLibraryMulti() async {
+    final List<XFile> images = await picker.pickMultiImage(
+      // Resize image to reduce memory usage
+      maxWidth: 1024,
+      maxHeight: 1024,
+      // Compress image to reduce file size
+      imageQuality: 85,
+    );
+    if (images.isEmpty) return null;
+    // Return all selected image paths
+    return images.map((image) => image.path).toList();
+  }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
+import 'package:stock_pilot/presentation/widgets/image_preview_screen.dart';
 import 'package:stock_pilot/presentation/widgets/permission_dialog_widget.dart';
 
 // Widget used to add and preview product images
@@ -34,15 +35,28 @@ class ImageAddingWidget extends StatelessWidget {
                       ? images[index]
                       : null;
                   return GestureDetector(
-                    // When tile is tapped, open permission dialog
+                    // When tile is tapped, decide between adding image or previewing
                     onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (_) => PermissionDialog(
-                          provider: context.read<ProductProvider>(),
-                          index: index,
-                        ),
-                      );
+                      if (image == null) {
+                        showDialog(
+                          context: context,
+                          builder: (_) => PermissionDialog(
+                            provider: context.read<ProductProvider>(),
+                            index: index,
+                          ),
+                        );
+                      } else {
+                        // Launch full-screen image preview
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ImagePreviewScreen(
+                              imagePath: image.path,
+                              title: "Product Image",
+                            ),
+                          ),
+                        );
+                      }
                     },
                     child: Container(
                       width: tileSize,
@@ -71,14 +85,19 @@ class ImageAddingWidget extends StatelessWidget {
                           // If image exists → show image preview
                           : Stack(
                               children: [
-                                // Display selected image
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.file(
-                                    image,
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                    fit: BoxFit.cover,
+                                // Display selected image with Hero animation
+                                Positioned.fill(
+                                  child: Hero(
+                                    tag: image.path,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.file(
+                                        image,
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 // Delete image button

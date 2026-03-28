@@ -1,0 +1,47 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:stock_pilot/core/theme/text_styles.dart';
+import 'package:stock_pilot/presentation/cart/viewmodel/cart_provider.dart';
+
+class OrderTotalWidget extends StatelessWidget {
+  const OrderTotalWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = context.watch<CartProvider>();
+    if (provider.cartItems.isEmpty) {
+      return const SizedBox();
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Header
+        Text("Order Total", style: TextStyles.cardHeading(context)),
+        const SizedBox(height: 10),
+        // Total items
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Total Items", style: TextStyles.titleText(context)),
+            Text(
+              provider.totalItems.toString(),
+              style: TextStyles.productPriceText(context),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        // Total price
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Total Price", style: TextStyles.titleText(context)),
+            Text(
+              '\$ ${provider.totalPrice.toStringAsFixed(2)}',
+              style: TextStyles.productPriceText(context),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}

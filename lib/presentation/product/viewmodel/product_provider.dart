@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/assets/app_images.dart';
 import 'package:stock_pilot/core/interfaces/filter_provider_interface.dart';
 import 'package:stock_pilot/core/interfaces/image_permission_handler_interface.dart';
+import 'package:stock_pilot/core/utils/crop_image_util.dart';
 import 'package:stock_pilot/core/utils/image_selector_util.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/utils/image_util.dart';
@@ -60,6 +61,15 @@ class ProductProvider extends FilterProviderInterface
   ProductModel? editingProduct;
   // Index of editing product
   int? editingIndex;
+  // Index of the currently viewed product in ProductDetailsPage
+  int? activeProductIndex;
+  
+  // Set the active product for detailed viewing
+  void setActiveProductIndex(int index) {
+    activeProductIndex = index;
+    notifyListeners();
+  }
+  
   // Returns true when editing an existing product
   bool get isEditing => editingProduct != null;
   // List of brands used in filter and dropdown
@@ -120,33 +130,54 @@ class ProductProvider extends FilterProviderInterface
   // Open camera and save captured image
   Future<void> openCamera([int? index]) async {
     final path = await ImageSelectorUtil.openCamera();
-    if (path != null && index != null) {
-      final savedPath = await ImageUtil.saveImage(File(path));
-      productImages[index] = File(savedPath);
-      notifyListeners();
-    }
+    if (path == null) return;
+    final cropped = await ImageCropUtil.cropImage(File(path));
+    if (cropped == null) return;
+    final savedPath = await ImageUtil.saveImage(cropped);
+    if (index == null || index >= productImages.length) return;
+    productImages[index] = File(savedPath);
+    notifyListeners();
   }
 
-  // Open gallery and save selected image
+  // Open gallery and save selected multiple images
   Future<void> openLibrary([int? index]) async {
-    final path = await ImageSelectorUtil.openLibrary();
-    if (path != null && index != null) {
-      final savedPath = await ImageUtil.saveImage(File(path));
-      productImages[index] = File(savedPath);
-      notifyListeners();
+    // Fetch multiple images from picker
+    final paths = await ImageSelectorUtil.openLibraryMulti();
+    if (paths == null || paths.isEmpty) return;
+    
+    int pathIndex = 0;
+    // Iterate until we run out of selected images or fill the array
+    while (pathIndex < paths.length && productImages.contains(null)) {
+      // Find the left-most empty slot linearly
+      final emptyIndex = productImages.indexOf(null);
+      if (emptyIndex == -1) break; // Safety break if board is full
+      
+      // Request user to crop the image
+      final cropped = await ImageCropUtil.cropImage(File(paths[pathIndex]));
+      
+      // If user cropped successfully, fill the slot
+      if (cropped != null) {
+        final savedPath = await ImageUtil.saveImage(cropped);
+        productImages[emptyIndex] = File(savedPath);
+      }
+      
+      // Always advance to the next selected image (handles both crop & cancel)
+      pathIndex++;
     }
+    notifyListeners();
   }
 
   // Remove selected image from form
   void removeImage(int index) {
-    productImages[index] = null;
+    productImages.removeAt(index);
+    productImages.add(null);
     notifyListeners();
   }
 
-  /// Returns true if at least one image exists
+  // Returns true if at least one image exists
   bool get hasImage => productImages.any((img) => img != null);
 
-  /// Add new product to Hive database
+  // Add new product to Hive database
   Future<void> addProduct(
     ProductModel product,
     DashboardProvider dashboard,
@@ -164,7 +195,7 @@ class ProductProvider extends FilterProviderInterface
     );
     dashboard.addNewActivity(activity);
 
-    /// Reload product list
+    // Reload product list
     await loadProducts();
   }
 
@@ -177,9 +208,14 @@ class ProductProvider extends FilterProviderInterface
         .toList();
     if (prices.isNotEmpty) {
       final newMaxPrice = prices.reduce((a, b) => a > b ? a : b);
+      final newMinPrice = prices.reduce((a, b) => a < b ? a : b);
       maxPrice = newMaxPrice;
+      minPrice = newMinPrice;
+      // Initialize if bounds haven't shifted incorrectly or if we want to reset
       selectedMaxPrice = maxPrice;
+      selectedMinPrice = minPrice;
       tempMaxPrice = maxPrice;
+      tempMinPrice = minPrice;
     }
     _applyFilters();
     notifyListeners();
@@ -198,12 +234,12 @@ class ProductProvider extends FilterProviderInterface
     // Add dashboard activity if stock quantity changed
     if (oldCount != newCount) {
       final int difference = (newCount - oldCount).abs();
-      final bool isAddition = newCount > oldCount;
+      final bool isAddition = newCount >= oldCount;
       final activity = DasboardActivity(
         image: newProduct.productImages.isNotEmpty
             ? newProduct.productImages[0]
             : AppImages.productImage1,
-        title: isAddition ? 'Stock Increased' : 'Stock Decreased',
+        title: 'Stock Updated',
         product: newProduct.productName,
         category: newProduct.category,
         unit: difference,
@@ -233,6 +269,38 @@ class ProductProvider extends FilterProviderInterface
     );
     dashboard.addNewActivity(activity);
     await loadProducts();
+  }
+
+  // Validates form and saves new or updated product
+  Future<bool> saveProductData(DashboardProvider dashboard) async {
+    final form = secondFormKey.currentState;
+    if (form == null || !form.validate()) return false;
+    form.save();
+    
+    final newProduct = ProductModel(
+      productImages: productImages
+          .where((img) => img != null)
+          .map((img) => img!.path)
+          .toList(),
+      productName: productName!,
+      productDescription: productDescription!,
+      brand: brand!,
+      category: category!,
+      purchaseRate: purchaseRate!,
+      salesRate: salesRate!,
+      itemCount: itemCount!,
+      lowStockCount: lowStockCount!,
+    );
+    
+    if (isEditing) {
+      await updateProduct(editingIndex!, newProduct, dashboard);
+    } else {
+      await addProduct(newProduct, dashboard);
+    }
+    
+    resetForm();
+    clearEditing();
+    return true;
   }
 
   // Current sorting option
@@ -272,11 +340,16 @@ class ProductProvider extends FilterProviderInterface
   // Selected filter values currently applied to product list
   Set<String> selectedCategories = {};
   Set<String> selectedBrands = {};
-  // Maximum price found in products (used for price slider)
+  
+  // Price boundaries found in products (used for price slider limits)
   @override
   double maxPrice = 100000;
-  // Currently selected price filter value
+  @override
+  double minPrice = 0;
+  
+  // Currently applied price filter selection
   double selectedMaxPrice = 100000;
+  double selectedMinPrice = 0;
   // Selected stock status filter
   String stockStatus = 'All';
   // Temporary filters used inside filter bottom sheet
@@ -288,6 +361,8 @@ class ProductProvider extends FilterProviderInterface
   @override
   double tempMaxPrice = 100000;
   @override
+  double tempMinPrice = 0;
+  @override
   String tempStockStatus = 'All';
   // Returns true if any filter is currently active
   @override
@@ -295,6 +370,7 @@ class ProductProvider extends FilterProviderInterface
       selectedCategories.isNotEmpty ||
       selectedBrands.isNotEmpty ||
       selectedMaxPrice < maxPrice ||
+      selectedMinPrice > minPrice ||
       stockStatus != 'All';
   // Main filter pipeline
   // Applies search, category, brand, price, and stock filters
@@ -336,11 +412,11 @@ class ProductProvider extends FilterProviderInterface
     }).toList();
   }
 
-  // Filter products based on maximum selected price
+  // Filter products based on selected price range
   List<ProductModel> _applyPriceFilter(List<ProductModel> list) {
     return list.where((n) {
       final price = double.tryParse(n.salesRate ?? '0') ?? 0;
-      return price <= selectedMaxPrice;
+      return price >= selectedMinPrice && price <= selectedMaxPrice;
     }).toList();
   }
 
@@ -370,6 +446,7 @@ class ProductProvider extends FilterProviderInterface
     tempCategories = Set.from(selectedCategories);
     tempBrands = Set.from(selectedBrands);
     tempMaxPrice = selectedMaxPrice;
+    tempMinPrice = selectedMinPrice;
     tempStockStatus = stockStatus;
     notifyListeners();
   }
@@ -394,10 +471,11 @@ class ProductProvider extends FilterProviderInterface
     notifyListeners();
   }
 
-  // Update temporary max price from slider
+  // Update temporary price range from slider
   @override
-  void setTempMaxPrice(double value) {
-    tempMaxPrice = value;
+  void setTempPriceRange(double min, double max) {
+    tempMinPrice = min;
+    tempMaxPrice = max;
     notifyListeners();
   }
 
@@ -414,6 +492,7 @@ class ProductProvider extends FilterProviderInterface
     selectedCategories = Set.from(tempCategories);
     selectedBrands = Set.from(tempBrands);
     selectedMaxPrice = tempMaxPrice;
+    selectedMinPrice = tempMinPrice;
     stockStatus = tempStockStatus;
     _applyFilters();
     notifyListeners();
@@ -425,10 +504,12 @@ class ProductProvider extends FilterProviderInterface
     selectedCategories = {};
     selectedBrands = {};
     selectedMaxPrice = maxPrice;
+    selectedMinPrice = minPrice;
     stockStatus = 'All';
     tempCategories = {};
     tempBrands = {};
     tempMaxPrice = maxPrice;
+    tempMinPrice = minPrice;
     tempStockStatus = 'All';
     _applyFilters();
     notifyListeners();

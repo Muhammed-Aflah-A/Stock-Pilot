@@ -7,7 +7,7 @@ import 'package:stock_pilot/presentation/category/viewmodel/category_provider.da
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
 import 'package:stock_pilot/presentation/widgets/app_drawer_widget.dart';
-import 'package:stock_pilot/presentation/widgets/delete_confirmation_widget.dart';
+import 'package:stock_pilot/presentation/widgets/action_confirmation_widget.dart';
 import 'package:stock_pilot/presentation/widgets/edit_details_widget.dart';
 import 'package:stock_pilot/presentation/widgets/emptypage_message_widget.dart';
 import 'package:stock_pilot/presentation/widgets/filter_list_tile_widget.dart';
@@ -43,35 +43,13 @@ class _CategoryListPageState extends State<CategoryListPage> {
       ),
       // Drawer menu
       drawer: const AppDrawer(),
-      // Floating button used to add a new category
-      floatingActionButton: FloatingActionButtonWidget(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return EditDetailsWidget(
-                maxLength: 30,
-                title: "Category",
-                fieldType: "category",
-                isEditing: false,
-                // Save new category
-                onSave: (value) async {
-                  final newCategory = CategoryModel(category: value);
-                  await context.read<CategoryProvider>().addCategory(
-                    newCategory,
-                    context.read<DashboardProvider>(),
-                  );
-                },
-              );
-            },
-          );
-        },
-      ),
       body: SafeArea(
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () => FocusScope.of(context).unfocus(),
-          child: Center(
+          child: Stack(
+            children: [
+              Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 1400),
               child: Padding(
@@ -121,6 +99,7 @@ class _CategoryListPageState extends State<CategoryListPage> {
                             );
                           }
                           return ListView.separated(
+                            padding: const EdgeInsets.only(bottom: 80), // Prevent FAB overlap
                             keyboardDismissBehavior:
                                 ScrollViewKeyboardDismissBehavior.onDrag,
                             itemCount: provider.filteredCategory.length,
@@ -142,17 +121,28 @@ class _CategoryListPageState extends State<CategoryListPage> {
                                       fieldType: "category",
                                       initialValue: categoryItem.category,
                                       isEditing: true,
+                                      // Duplicate validation
+                                      duplicateValidator: (value) {
+                                        if (value.trim().toLowerCase() == categoryItem.category?.toLowerCase()) return null;
+                                        final exists = context.read<CategoryProvider>().categories.any(
+                                              (c) => c.category?.toLowerCase() == value.trim().toLowerCase(),
+                                            );
+                                        return exists ? "Category already exists" : null;
+                                      },
                                       onSave: (value) async {
                                         final updatedCategory = CategoryModel(
                                           category: value,
                                         );
-                                        await context
-                                            .read<CategoryProvider>()
-                                            .updateCategory(
-                                              index,
-                                              updatedCategory,
-                                              context.read<DashboardProvider>(),
-                                            );
+                                        final realIndex = context.read<CategoryProvider>().categories.indexOf(categoryItem);
+                                        if (realIndex != -1) {
+                                          await context
+                                              .read<CategoryProvider>()
+                                              .updateCategory(
+                                                realIndex,
+                                                updatedCategory,
+                                                context.read<DashboardProvider>(),
+                                              );
+                                        }
                                       },
                                     ),
                                   );
@@ -161,10 +151,12 @@ class _CategoryListPageState extends State<CategoryListPage> {
                                 onDelete: () {
                                   showDialog(
                                     context: context,
-                                    builder: (context) => DeleteConfirmationWidget(
+                                    builder: (context) => ActionConfirmationWidget(
                                       title: "Remove Category",
                                       displayName: categoryItem.category ?? "",
-                                      onDelete: () async {
+                                      actionText: "Remove",
+                                      actionColor: ColourStyles.colorRed,
+                                      onConfirm: () async {
                                         final canDelete = await context
                                             .read<CategoryProvider>()
                                             .canDeleteCategory(
@@ -180,12 +172,15 @@ class _CategoryListPageState extends State<CategoryListPage> {
                                           );
                                           return false;
                                         }
-                                        await context
-                                            .read<CategoryProvider>()
-                                            .deleteCategory(
-                                              index,
-                                              context.read<DashboardProvider>(),
-                                            );
+                                        final realIndex = context.read<CategoryProvider>().categories.indexOf(categoryItem);
+                                        if (realIndex != -1) {
+                                          await context
+                                              .read<CategoryProvider>()
+                                              .deleteCategory(
+                                                realIndex,
+                                                context.read<DashboardProvider>(),
+                                              );
+                                        }
                                         return true;
                                       },
                                     ),
@@ -201,6 +196,43 @@ class _CategoryListPageState extends State<CategoryListPage> {
                 ),
               ),
             ),
+            ),
+              // Floating action button manually positioned over list
+              Positioned(
+                bottom: 16,
+                right: 16,
+                child: FloatingActionButtonWidget(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return EditDetailsWidget(
+                          maxLength: 30,
+                          title: "Category",
+                          fieldType: "category",
+                          isEditing: false,
+                          // Duplicate Validation
+                          duplicateValidator: (value) {
+                            final exists = context.read<CategoryProvider>().categories.any(
+                                  (c) => c.category?.toLowerCase() == value.trim().toLowerCase(),
+                                );
+                            return exists ? "Category already exists" : null;
+                          },
+                          // Save new category
+                          onSave: (value) async {
+                            final newCategory = CategoryModel(category: value);
+                            await context.read<CategoryProvider>().addCategory(
+                              newCategory,
+                              context.read<DashboardProvider>(),
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),

@@ -15,9 +15,11 @@ class HeroImageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     // Get current screen size for responsive scaling
     final size = MediaQuery.sizeOf(context);
-    return SizedBox(
-      height: size.height * heightFactor,
-      width: size.width * 0.8,
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxHeight: size.height * heightFactor,
+        maxWidth: size.width * 0.8,
+      ),
       child: Image.asset(
         imagePath,
         fit: BoxFit.contain,

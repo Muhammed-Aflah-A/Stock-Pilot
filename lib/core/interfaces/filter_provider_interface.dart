@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 abstract class FilterProviderInterface extends ChangeNotifier {
   bool get hasActiveFilters;
   double get maxPrice;
+  double get minPrice;
   double get tempMaxPrice;
+  double get tempMinPrice;
   String get tempStockStatus;
   Set<String> get tempCategories;
   Set<String> get tempBrands;
@@ -16,7 +18,7 @@ abstract class FilterProviderInterface extends ChangeNotifier {
   void initTempFilters();
   void toggleTempCategory(String cat);
   void toggleTempBrand(String brand);
-  void setTempMaxPrice(double value);
+  void setTempPriceRange(double min, double max);
   void setTempStockStatus(String status);
   void applyFilters();
   void clearFilters();

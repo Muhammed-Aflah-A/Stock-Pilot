@@ -9,7 +9,7 @@ class SelectValidatorUtil {
       case 'name':
         return FormValidatorUtil.validateName(value, "Full Name");
       // Personal phone number validation
-      case 'personal number':
+      case 'phone number':
         return FormValidatorUtil.validatePhone(value, "Phone Number");
       // Email validation
       case 'email':
@@ -20,9 +20,6 @@ class SelectValidatorUtil {
       // Address validation
       case 'address':
         return FormValidatorUtil.validateAddress(value, "Address");
-      // Shop phone number validation
-      case 'shop number':
-        return FormValidatorUtil.validatePhone(value, "Phone Number");
       // Product name validation
       case 'product name':
         return FormValidatorUtil.validateProductName(value, "Product Name");
@@ -59,6 +56,10 @@ class SelectValidatorUtil {
       // Brand filter validation
       case 'brand':
         return FormValidatorUtil.validatefilter(value, "Brand");
+      case 'date':
+        return FormValidatorUtil.validateDate(value, "Date");
+      case 'quantity':
+        return FormValidatorUtil.validateItemQty(value, "Quantity");
       // Default case when no validator matches
       default:
         return null;

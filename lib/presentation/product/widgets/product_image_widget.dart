@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/presentation/product/widgets/product_image_placeholder.dart';
+import 'package:stock_pilot/presentation/widgets/image_preview_screen.dart';
+import 'package:stock_pilot/presentation/product/widgets/carousel_navigation_arrow_widget.dart';
 
 // Widget that displays product images in a carousel
 class ProductImageWidget extends StatefulWidget {
@@ -55,12 +57,29 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
                     setState(() => _localIndex = index);
                   },
                   itemBuilder: (context, index) {
-                    return Image.file(
-                      File(displayImages[index]),
-                      fit: BoxFit.cover,
-                      // If image fails to load, show placeholder
-                      errorBuilder: (context, error, stackTrace) =>
-                          const ProductImagePlaceholder(),
+                    final String imagePath = displayImages[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ImagePreviewScreen(
+                              imagePath: imagePath,
+                              title: "Product Image",
+                            ),
+                          ),
+                        );
+                      },
+                      child: Hero(
+                        tag: imagePath,
+                        child: Image.file(
+                          File(imagePath),
+                          fit: BoxFit.cover,
+                          // If image fails to load, show placeholder
+                          errorBuilder: (context, error, stackTrace) =>
+                              const ProductImagePlaceholder(),
+                        ),
+                      ),
                     );
                   },
                 )
@@ -70,7 +89,7 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
           if (displayImages.length > 1) ...[
             // Left arrow (shown only if not on first image)
             if (_localIndex > 0)
-              _buildArrow(
+              CarouselNavigationArrowWidget(
                 alignment: Alignment.centerLeft,
                 icon: Icons.arrow_back_ios_new,
                 onPressed: () => _pageController.previousPage(
@@ -81,7 +100,7 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
 
             // Right arrow (shown only if not on last image)
             if (_localIndex < displayImages.length - 1)
-              _buildArrow(
+              CarouselNavigationArrowWidget(
                 alignment: Alignment.centerRight,
                 icon: Icons.arrow_forward_ios,
                 onPressed: () => _pageController.nextPage(
@@ -120,27 +139,6 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
               ),
             ),
         ],
-      ),
-    );
-  }
-
-  // Small helper widget used for carousel navigation arrows
-  Widget _buildArrow({
-    required Alignment alignment,
-    required IconData icon,
-    required VoidCallback onPressed,
-  }) {
-    return Align(
-      alignment: alignment,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: CircleAvatar(
-          backgroundColor: Colors.black26,
-          child: IconButton(
-            icon: Icon(icon, color: Colors.white, size: 16),
-            onPressed: onPressed,
-          ),
-        ),
       ),
     );
   }

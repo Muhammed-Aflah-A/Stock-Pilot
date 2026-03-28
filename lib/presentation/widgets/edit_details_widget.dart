@@ -5,6 +5,7 @@ import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/core/utils/keyboard_type_util.dart';
 import 'package:stock_pilot/core/utils/select_validator_util.dart';
 import 'package:stock_pilot/core/utils/snackbar_util.dart';
+import 'package:stock_pilot/presentation/widgets/action_confirmation_widget.dart';
 
 // Dialog widget used to add or edit profile details
 class EditDetailsWidget extends StatefulWidget {
@@ -14,6 +15,7 @@ class EditDetailsWidget extends StatefulWidget {
   final int? maxLength;
   final bool isEditing;
   final Future<void> Function(String value) onSave;
+  final String? Function(String value)? duplicateValidator;
 
   const EditDetailsWidget({
     super.key,
@@ -23,6 +25,7 @@ class EditDetailsWidget extends StatefulWidget {
     this.maxLength,
     required this.onSave,
     this.isEditing = false,
+    this.duplicateValidator,
   });
 
   @override
@@ -88,8 +91,16 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
               focusedErrorBorder: _border(ColourStyles.colorRed),
             ),
             // Field validation
-            validator: (value) =>
-                SelectValidatorUtil.validate(value, widget.fieldType),
+            validator: (value) {
+              // Basic formatting string validation
+              final error = SelectValidatorUtil.validate(value, widget.fieldType);
+              if (error != null) return error;
+              // Custom duplicate check logic
+              if (widget.duplicateValidator != null && value != null) {
+                return widget.duplicateValidator!(value);
+              }
+              return null;
+            },
           ),
         ),
       ),
@@ -118,18 +129,35 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
                 onPressed: () async {
                   // Validate form
                   if (!formKey.currentState!.validate()) return;
-                  // Call save function
-                  await widget.onSave(controller.text.trim());
+                  // Show confirmation dialog before saving
+                  bool wasConfirmed = false;
+                  await showDialog(
+                    context: context,
+                    builder: (_) => ActionConfirmationWidget(
+                      title: widget.isEditing ? "Confirm Update" : "Confirm Addition",
+                      actionText: widget.isEditing ? "Update" : "Add",
+                      displayName: controller.text.trim(),
+                      actionColor: ColourStyles.colorGreen,
+                      showSnackbar: false, // Handled manually below for better grammar
+                      onConfirm: () async {
+                        await widget.onSave(controller.text.trim());
+                        wasConfirmed = true;
+                        return true;
+                      },
+                    ),
+                  );
+                  // If user closed dialog or pressed cancel, stop here
+                  if (!wasConfirmed) return;
                   if (!context.mounted) return;
                   final message = widget.isEditing
                       ? "${widget.title} updated successfully"
                       : "${widget.title} added successfully";
                   SnackbarUtil.showSnackBar(context, message, false);
-                  Navigator.pop(context);
+                  Navigator.pop(context); // Close the edit dialog
                 },
                 // Button label
                 child: Text(
-                  "Save",
+                  widget.isEditing ? "Update" : "Add",
                   style: TextStyles.smallButtonTextWhite(context),
                 ),
               ),

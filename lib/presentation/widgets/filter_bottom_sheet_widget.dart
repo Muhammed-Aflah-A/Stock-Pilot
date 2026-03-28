@@ -117,23 +117,41 @@ class FilterBottomSheet extends StatelessWidget {
                         ],
                         // PRICE RANGE FILTER
                         const SectionTitleWidget(title: "Price Range"),
-                        // Slider used to select max price
-                        Slider(
-                          min: 0,
+                        // RangeSlider used to select min/max price
+                        RangeSlider(
+                          min: provider.minPrice,
                           max: effectiveMax,
-                          value: provider.tempMaxPrice.clamp(0, effectiveMax),
+                          values: RangeValues(
+                            provider.tempMinPrice.clamp(provider.minPrice, effectiveMax),
+                            provider.tempMaxPrice.clamp(provider.minPrice, effectiveMax),
+                          ),
                           activeColor: ColourStyles.primaryColor_2,
                           inactiveColor: ColourStyles.borderColor,
-                          onChanged: provider.setTempMaxPrice,
+                          onChanged: (RangeValues values) {
+                            provider.setTempPriceRange(values.start, values.end);
+                          },
                         ),
-                        // Display selected price
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Text(
-                            "\$${provider.tempMaxPrice.toStringAsFixed(0)}",
-                            style: const TextStyle(
-                              color: ColourStyles.primaryColor_2,
-                            ),
+                        // Display selected price range
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "\$${provider.tempMinPrice.toStringAsFixed(0)}",
+                                style: const TextStyle(
+                                  color: ColourStyles.primaryColor_2,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                "\$${provider.tempMaxPrice.toStringAsFixed(0)}",
+                                style: const TextStyle(
+                                  color: ColourStyles.primaryColor_2,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(height: 20),

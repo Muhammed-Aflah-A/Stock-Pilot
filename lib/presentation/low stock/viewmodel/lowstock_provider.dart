@@ -24,7 +24,12 @@ class LowstockProvider extends FilterProviderInterface {
   Set<String> selectedBrands = {};
   @override
   double maxPrice = 10000;
+  @override
+  double minPrice = 0;
+  
   double selectedMaxPrice = 10000;
+  double selectedMinPrice = 0;
+  
   String stockStatus = 'All';
   // Temp values (bottom sheet)
   @override
@@ -34,6 +39,8 @@ class LowstockProvider extends FilterProviderInterface {
   @override
   double tempMaxPrice = 10000;
   @override
+  double tempMinPrice = 0;
+  @override
   String tempStockStatus = 'All';
   @override
   bool get showStockFilter => false;
@@ -42,7 +49,8 @@ class LowstockProvider extends FilterProviderInterface {
   bool get hasActiveFilters =>
       selectedCategories.isNotEmpty ||
       selectedBrands.isNotEmpty ||
-      selectedMaxPrice < maxPrice;
+      selectedMaxPrice < maxPrice ||
+      selectedMinPrice > minPrice;
   // Lists from product provider
   @override
   List<String> get categoryList =>
@@ -56,6 +64,7 @@ class LowstockProvider extends FilterProviderInterface {
     tempCategories = {...selectedCategories};
     tempBrands = {...selectedBrands};
     tempMaxPrice = selectedMaxPrice;
+    tempMinPrice = selectedMinPrice;
     tempStockStatus = stockStatus;
     notifyListeners();
   }
@@ -79,8 +88,9 @@ class LowstockProvider extends FilterProviderInterface {
   }
 
   @override
-  void setTempMaxPrice(double value) {
-    tempMaxPrice = value;
+  void setTempPriceRange(double min, double max) {
+    tempMinPrice = min;
+    tempMaxPrice = max;
     notifyListeners();
   }
 
@@ -96,6 +106,7 @@ class LowstockProvider extends FilterProviderInterface {
     selectedCategories = {...tempCategories};
     selectedBrands = {...tempBrands};
     selectedMaxPrice = tempMaxPrice;
+    selectedMinPrice = tempMinPrice;
     stockStatus = tempStockStatus;
     _applyLowStockSearch();
   }
@@ -106,10 +117,12 @@ class LowstockProvider extends FilterProviderInterface {
     selectedCategories.clear();
     selectedBrands.clear();
     selectedMaxPrice = maxPrice;
+    selectedMinPrice = minPrice;
     stockStatus = 'All';
     tempCategories.clear();
     tempBrands.clear();
     tempMaxPrice = maxPrice;
+    tempMinPrice = minPrice;
     tempStockStatus = 'All';
     _applyLowStockSearch();
   }
@@ -121,11 +134,15 @@ class LowstockProvider extends FilterProviderInterface {
     }
     _productProvider = provider;
     _isProviderSet = true;
-    // Sync max price safely
+    // Sync price bounds safely
     final newMax = provider.maxPrice > 0 ? provider.maxPrice : maxPrice;
+    final newMin = provider.minPrice;
     maxPrice = newMax;
+    minPrice = newMin;
     selectedMaxPrice = newMax;
+    selectedMinPrice = newMin;
     tempMaxPrice = newMax;
+    tempMinPrice = newMin;
     _productProvider.addListener(_onProductProviderChanged);
     _applyLowStockSearch();
   }
@@ -135,19 +152,22 @@ class LowstockProvider extends FilterProviderInterface {
     final newMax = _productProvider.maxPrice > 0
         ? _productProvider.maxPrice
         : maxPrice;
+    final newMin = _productProvider.minPrice;
+    
     // If no change → just refresh list
-    if (newMax == maxPrice) {
+    if (newMax == maxPrice && newMin == minPrice) {
       _applyLowStockSearch();
       return;
     }
     maxPrice = newMax;
+    minPrice = newMin;
+    
     // Clamp only if needed (prevents unwanted resets)
-    if (selectedMaxPrice > maxPrice) {
-      selectedMaxPrice = maxPrice;
-    }
-    if (tempMaxPrice > maxPrice) {
-      tempMaxPrice = maxPrice;
-    }
+    if (selectedMaxPrice > maxPrice) selectedMaxPrice = maxPrice;
+    if (selectedMinPrice < minPrice) selectedMinPrice = minPrice;
+    if (tempMaxPrice > maxPrice) tempMaxPrice = maxPrice;
+    if (tempMinPrice < minPrice) tempMinPrice = minPrice;
+    
     _applyLowStockSearch();
   }
 
@@ -204,7 +224,7 @@ class LowstockProvider extends FilterProviderInterface {
     // Price filter
     result = result.where((p) {
       final price = double.tryParse(p.salesRate ?? '0') ?? 0;
-      return price <= selectedMaxPrice;
+      return price >= selectedMinPrice && price <= selectedMaxPrice;
     }).toList();
     filteredLowStock = result;
     _applySorting();

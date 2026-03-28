@@ -73,6 +73,8 @@ class DashboardCardWidget extends StatelessWidget {
                     context,
                     item.title ?? "",
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),

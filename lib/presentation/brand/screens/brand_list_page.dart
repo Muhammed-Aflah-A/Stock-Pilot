@@ -7,7 +7,7 @@ import 'package:stock_pilot/presentation/brand/viewmodel/brand_provider.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
 import 'package:stock_pilot/presentation/widgets/app_drawer_widget.dart';
-import 'package:stock_pilot/presentation/widgets/delete_confirmation_widget.dart';
+import 'package:stock_pilot/presentation/widgets/action_confirmation_widget.dart';
 import 'package:stock_pilot/presentation/widgets/edit_details_widget.dart';
 import 'package:stock_pilot/presentation/widgets/emptypage_message_widget.dart';
 import 'package:stock_pilot/presentation/widgets/filter_list_tile_widget.dart';
@@ -44,36 +44,14 @@ class _BrandListPageState extends State<BrandListPage> {
       ),
       // Drawer menu
       drawer: const AppDrawer(),
-      // Floating button used to add a new category
-      floatingActionButton: FloatingActionButtonWidget(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return EditDetailsWidget(
-                maxLength: 30,
-                title: "Brand",
-                fieldType: "brand",
-                isEditing: false,
-                // Save new brand
-                onSave: (value) async {
-                  final newBrand = BrandModel(brand: value);
-                  await context.read<BrandProvider>().addBrand(
-                    newBrand,
-                    dashboard,
-                  );
-                },
-              );
-            },
-          );
-        },
-      ),
       body: SafeArea(
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           // Close keyboard when tapping outside
           onTap: () => FocusScope.of(context).unfocus(),
-          child: Center(
+          child: Stack(
+            children: [
+              Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 1400),
               child: Padding(
@@ -121,6 +99,7 @@ class _BrandListPageState extends State<BrandListPage> {
                             );
                           }
                           return ListView.separated(
+                            padding: const EdgeInsets.only(bottom: 80), // Prevent FAB overlap
                             keyboardDismissBehavior:
                                 ScrollViewKeyboardDismissBehavior.onDrag,
                             itemCount: provider.filteredBrands.length,
@@ -141,17 +120,29 @@ class _BrandListPageState extends State<BrandListPage> {
                                       fieldType: "brand",
                                       initialValue: brandItem.brand,
                                       isEditing: true,
+                                      // Duplicate Validation
+                                      duplicateValidator: (value) {
+                                        // Ignore self
+                                        if (value.trim().toLowerCase() == brandItem.brand?.toLowerCase()) return null;
+                                        final exists = context.read<BrandProvider>().brands.any(
+                                              (b) => b.brand?.toLowerCase() == value.trim().toLowerCase(),
+                                            );
+                                        return exists ? "Brand already exists" : null;
+                                      },
                                       onSave: (value) async {
                                         final updatedBrand = BrandModel(
                                           brand: value,
                                         );
-                                        await context
-                                            .read<BrandProvider>()
-                                            .updateBrand(
-                                              index,
-                                              updatedBrand,
-                                              dashboard,
-                                            );
+                                        final realIndex = context.read<BrandProvider>().brands.indexOf(brandItem);
+                                        if (realIndex != -1) {
+                                          await context
+                                              .read<BrandProvider>()
+                                              .updateBrand(
+                                                realIndex,
+                                                updatedBrand,
+                                                dashboard,
+                                              );
+                                        }
                                       },
                                     ),
                                   );
@@ -160,10 +151,12 @@ class _BrandListPageState extends State<BrandListPage> {
                                 onDelete: () {
                                   showDialog(
                                     context: context,
-                                    builder: (context) => DeleteConfirmationWidget(
+                                    builder: (context) => ActionConfirmationWidget(
                                       title: "Remove Brand",
                                       displayName: brandItem.brand ?? "",
-                                      onDelete: () async {
+                                      actionText: "Remove",
+                                      actionColor: ColourStyles.colorRed,
+                                      onConfirm: () async {
                                         final canDelete = await context
                                             .read<BrandProvider>()
                                             .canDeleteBrand(
@@ -179,9 +172,12 @@ class _BrandListPageState extends State<BrandListPage> {
                                           );
                                           return false;
                                         }
-                                        await context
-                                            .read<BrandProvider>()
-                                            .deleteBrand(index, dashboard);
+                                        final realIndex = context.read<BrandProvider>().brands.indexOf(brandItem);
+                                        if (realIndex != -1) {
+                                          await context
+                                              .read<BrandProvider>()
+                                              .deleteBrand(realIndex, dashboard);
+                                        }
                                         return true;
                                       },
                                     ),
@@ -197,6 +193,43 @@ class _BrandListPageState extends State<BrandListPage> {
                 ),
               ),
             ),
+            ),
+              // Floating action button manually positioned over list
+              Positioned(
+                bottom: 16,
+                right: 16,
+                child: FloatingActionButtonWidget(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return EditDetailsWidget(
+                          maxLength: 30,
+                          title: "Brand",
+                          fieldType: "brand",
+                          isEditing: false,
+                          // Duplicate Validation
+                          duplicateValidator: (value) {
+                            final exists = context.read<BrandProvider>().brands.any(
+                                  (b) => b.brand?.toLowerCase() == value.trim().toLowerCase(),
+                                );
+                            return exists ? "Brand already exists" : null;
+                          },
+                          // Save new brand
+                          onSave: (value) async {
+                            final newBrand = BrandModel(brand: value);
+                            await context.read<BrandProvider>().addBrand(
+                              newBrand,
+                              dashboard,
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),

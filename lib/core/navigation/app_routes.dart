@@ -29,4 +29,10 @@ class AppRoutes {
       'package:stock_pilot/presentation/low stock/screens/lowstock_list_page.dart';
   static const outOfStockPage =
       'package:stock_pilot/presentation/out of stock/screens/out_of_stock_list_page.dart';
+  static const cartListPage =
+      'package:stock_pilot/presentation/cart/screen/cart_list_page.dart';
+  static const billingPage =
+      'package:stock_pilot/presentation/cart/screen/billing_page.dart';
+  static const conformationPage =
+      'package:stock_pilot/presentation/cart/screen/conformation_page.dart';
 }

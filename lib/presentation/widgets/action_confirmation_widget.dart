@@ -4,24 +4,28 @@ import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/core/utils/snackbar_util.dart';
 
-// Confirmation dialog shown before deleting an item
-class DeleteConfirmationWidget extends StatelessWidget {
+class ActionConfirmationWidget extends StatelessWidget {
   final String title;
+  final String actionText;
   final String displayName;
-  final Future<bool> Function()
-  onDelete;
+  final Color actionColor;
+  final Future<bool> Function() onConfirm;
+  final bool showSnackbar;
 
-  const DeleteConfirmationWidget({
+  const ActionConfirmationWidget({
     super.key,
     required this.title,
+    required this.actionText,
     required this.displayName,
-    required this.onDelete,
+    required this.actionColor,
+    required this.onConfirm,
+    this.showSnackbar = true,
   });
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
+    final isRemove = actionText.toLowerCase() == "remove" || actionText.toLowerCase() == "delete";
     return AlertDialog(
       backgroundColor: ColourStyles.primaryColor,
       surfaceTintColor: Colors.transparent,
@@ -33,26 +37,25 @@ class DeleteConfirmationWidget extends StatelessWidget {
         style: TextStyles.dialogueHeading(context),
         textAlign: TextAlign.center,
       ),
-      // CONTENT MESSAGE
+      // CONTENT
       contentPadding: EdgeInsets.symmetric(
         horizontal: size.width * 0.06,
         vertical: size.height * 0.02,
       ),
       content: Text(
-        'Are you sure you want to remove "$displayName"? '
-        'This action cannot be undone.',
+        'Are you sure you want to $actionText "$displayName"?',
         style: TextStyles.primaryText(
           context,
-        ).copyWith(color: ColourStyles.colorRed, fontSize: size.width * 0.035),
+        ).copyWith(color: actionColor, fontSize: size.width * 0.035),
         textAlign: TextAlign.center,
       ),
-      // ACTION BUTTONS
+      // ACTIONS
       actionsPadding: EdgeInsets.only(bottom: size.height * 0.02),
       actions: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // CANCEL BUTTON
+            // CANCEL
             SizedBox(
               width: size.width * 0.3,
               child: ElevatedButton(
@@ -62,16 +65,29 @@ class DeleteConfirmationWidget extends StatelessWidget {
               ),
             ),
             SizedBox(width: size.width * 0.03),
-            // REMOVE BUTTON
+            // CONFIRM
             SizedBox(
               width: size.width * 0.3,
               child: ElevatedButton(
                 onPressed: () async {
-                  await _handleDelete(context);
+                  final success = await onConfirm();
+                  if (!context.mounted) return;
+                  if (success) {
+                    Navigator.pop(context);
+                    if (showSnackbar) {
+                      SnackbarUtil.showSnackBar(
+                        context,
+                        '$displayName $actionText successfully',
+                        false,
+                      );
+                    }
+                  }
                 },
-                style: ButtonStyles.dialogueRemoveButton(context),
+                style: isRemove
+                    ? ButtonStyles.dialogueRemoveButton(context)
+                    : ButtonStyles.dialogueAddButton(context),
                 child: Text(
-                  'Remove',
+                  actionText,
                   style: TextStyles.primaryText(
                     context,
                   ).copyWith(color: ColourStyles.primaryColor),
@@ -82,19 +98,5 @@ class DeleteConfirmationWidget extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  // Handles delete logic and success message
-  Future<void> _handleDelete(BuildContext context) async {
-    final success = await onDelete();
-    if (!context.mounted) return;
-    if (success) {
-      Navigator.pop(context);
-      SnackbarUtil.showSnackBar(
-        context,
-        '$displayName removed successfully',
-        false,
-      );
-    }
   }
 }

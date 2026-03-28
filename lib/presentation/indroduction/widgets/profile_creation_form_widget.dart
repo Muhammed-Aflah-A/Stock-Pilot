@@ -46,11 +46,11 @@ class ProfileCreationFormWidget extends StatelessWidget {
             labelText: "Phone Number",
             hintText: "+[CountryCode][Number]",
             maxlength: 15,
-            keyboard: KeyboardTypeUtil.getKeyboardType("personal number"),
+            keyboard: KeyboardTypeUtil.getKeyboardType("phone number"),
             action: TextInputAction.next,
             // Validation handled by external validator utility
             validator: (value) =>
-                SelectValidatorUtil.validate(value, "personal number"),
+                SelectValidatorUtil.validate(value, "phone number"),
             // Save value to provider
             onSaved: (value) {
               profileForm.setPersonalNumber(value);
@@ -86,7 +86,7 @@ class ProfileCreationFormWidget extends StatelessWidget {
             labelText: "Shop Address",
             maxlength: 250,
             keyboard: KeyboardTypeUtil.getKeyboardType("shop address"),
-            action: TextInputAction.newline,
+            action: TextInputAction.next,
             // Validation handled by external validator utilityne,
             validator: (value) =>
                 SelectValidatorUtil.validate(value, "shop address"),
@@ -106,11 +106,11 @@ class ProfileCreationFormWidget extends StatelessWidget {
             labelText: "Shop's Phone Number",
             hintText: "+[CountryCode][Number]",
             maxlength: 15,
-            keyboard: KeyboardTypeUtil.getKeyboardType("shop number"),
+            keyboard: KeyboardTypeUtil.getKeyboardType("phone number"),
             action: TextInputAction.next,
             // Validation handled by external validator utility
             validator: (value) =>
-                SelectValidatorUtil.validate(value, "shop number"),
+                SelectValidatorUtil.validate(value, "phone number"),
             // Save value to provider
             onSaved: (value) {
               profileForm.setShopNumber(value);

@@ -40,7 +40,7 @@ class DrawerProvider with ChangeNotifier {
     DrawerItems(
       icon: Icons.shopping_cart,
       title: 'Cart',
-      navigation: AppRoutes.dashboard,
+      navigation: AppRoutes.cartListPage,
     ),
     DrawerItems(
       icon: Icons.history,

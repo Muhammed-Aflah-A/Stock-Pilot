@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/utils/image_util.dart';
+import 'package:stock_pilot/presentation/widgets/image_preview_screen.dart';
 
 // Widget that shows the user's profile image with an edit button
 class UserAvatarEditWidget extends StatelessWidget {
@@ -20,11 +21,29 @@ class UserAvatarEditWidget extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         // Profile image
-        CircleAvatar(
-          radius: 50,
-          backgroundColor: ColourStyles.primaryColor_2,
-          // Loads image using utility function
-          backgroundImage: ImageUtil.getProfileImage(imagePath),
+        GestureDetector(
+          onTap: () {
+            if (imagePath != null && imagePath!.isNotEmpty) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ImagePreviewScreen(
+                    imagePath: imagePath!,
+                    title: "Profile Image",
+                  ),
+                ),
+              );
+            }
+          },
+          child: Hero(
+            tag: imagePath ?? "avatar_hero_placeholder",
+            child: CircleAvatar(
+              radius: 50,
+              backgroundColor: ColourStyles.primaryColor_2,
+              // Loads image using utility function
+              backgroundImage: ImageUtil.getProfileImage(imagePath),
+            ),
+          ),
         ),
         Positioned(
           bottom: -2,

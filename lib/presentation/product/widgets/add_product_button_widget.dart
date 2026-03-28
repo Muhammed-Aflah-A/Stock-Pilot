@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stock_pilot/presentation/widgets/action_confirmation_widget.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/button_styles.dart';
+import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/core/utils/snackbar_util.dart';
-import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
 
@@ -22,68 +23,44 @@ class AddProductButtonWidget extends StatelessWidget {
       onPressed: () async {
         final form = productForm.secondFormKey.currentState;
         if (form != null && form.validate()) {
-          form.save();
-          final newProduct = ProductModel(
-            // Convert selected image files into image paths
-            productImages: productForm.productImages
-                .where((img) => img != null)
-                .map((img) => img!.path)
-                .toList(),
-            productName: productForm.productName!,
-            productDescription: productForm.productDescription!,
-            brand: productForm.brand!,
-            category: productForm.category!,
-            purchaseRate: productForm.purchaseRate!,
-            salesRate: productForm.salesRate!,
-            itemCount: productForm.itemCount!,
-            lowStockCount: productForm.lowStockCount!,
+          // Prompt user for confirmation before acting
+          showDialog(
+            context: context,
+            builder: (dialogCtx) => ActionConfirmationWidget(
+              title: isEditing ? "Update Product" : "Add Product",
+              actionText: isEditing ? "Update" : "Add",
+              displayName: productForm.productName ?? "Product",
+              actionColor: ColourStyles.colorGreen,
+              showSnackbar: false, // We handle our own snackbar explicitly
+              onConfirm: () async {
+                final success = await productForm.saveProductData(dashboardProvider);
+                if (!context.mounted) return false;
+                if (success) {
+                  SnackbarUtil.showSnackBar(
+                    context,
+                    isEditing ? "Product updated successfully" : "Product added successfully",
+                    false,
+                  );
+                  // If editing → blow away stack back to details page
+                  if (isEditing) {
+                    Navigator.popUntil(
+                      context,
+                      ModalRoute.withName(AppRoutes.productDetailsPage),
+                    );
+                  }
+                  // If adding → blow away stack back to product list
+                  else {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      AppRoutes.productListPage,
+                      (route) => false,
+                    );
+                  }
+                }
+                return false; // Dialog falls out of tree natively, safely preventing UI crashes
+              },
+            ),
           );
-          // UPDATE EXISTING PRODUCT
-          if (isEditing) {
-            await productForm.updateProduct(
-              productForm.editingIndex!,
-              newProduct,
-              dashboardProvider,
-            );
-            // Show success message
-            if (context.mounted) {
-              SnackbarUtil.showSnackBar(
-                context,
-                "Product updated successfully",
-                false,
-              );
-            }
-          }
-          // ADD NEW PRODUCT
-          else {
-            await productForm.addProduct(newProduct, dashboardProvider);
-            // Show success message
-            if (context.mounted) {
-              SnackbarUtil.showSnackBar(
-                context,
-                "Product added successfully",
-                false,
-              );
-            }
-          }
-          productForm.resetForm();
-          productForm.clearEditing();
-          if (!context.mounted) return;
-          // If editing → go back to product details page
-          if (isEditing) {
-            Navigator.popUntil(
-              context,
-              ModalRoute.withName(AppRoutes.productDetailsPage),
-            );
-          }
-          // If adding → go to product list page
-          else {
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              AppRoutes.productListPage,
-              (route) => false,
-            );
-          }
         }
       },
       style: ButtonStyles.nextButton(context),

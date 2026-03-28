@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/interfaces/image_permission_handler_interface.dart';
+import 'package:stock_pilot/core/utils/crop_image_util.dart';
 import 'package:stock_pilot/core/utils/image_selector_util.dart';
 import 'package:stock_pilot/core/utils/image_util.dart';
 import 'package:stock_pilot/core/utils/permission_util.dart';
@@ -43,21 +44,23 @@ class ProfilePageProvider
   // Opens camera and selects an image
   Future<void> openCamera() async {
     final path = await ImageSelectorUtil.openCamera();
-    // Updates profile image if a path is returned
-    if (path != null) {
-      final savedPath = await ImageUtil.saveImage(File(path));
-      await updateProfileImage(savedPath);
-    }
+    if (path == null) return;
+    final cropped = await ImageCropUtil.cropImage(File(path));
+    if (cropped == null) return;
+    final savedPath = await ImageUtil.saveImage(cropped);
+    await updateProfileImage(savedPath);
+    notifyListeners();
   }
 
   // Opens gallery to select an image
   Future<void> openLibrary() async {
     final path = await ImageSelectorUtil.openLibrary();
     // Updates profile image if a path is returned
-    if (path != null) {
-      final savedPath = await ImageUtil.saveImage(File(path));
-      await updateProfileImage(savedPath);
-    }
+    if (path == null) return;
+    final cropped = await ImageCropUtil.cropImage(File(path));
+    if (cropped == null) return;
+    final savedPath = await ImageUtil.saveImage(cropped);
+    await updateProfileImage(savedPath);
   }
 
   // Personal information list used by UI to build profile section
@@ -73,14 +76,14 @@ class ProfilePageProvider
       UserProfileDetailsModel(
         leadingIcon: Icons.mail_outline,
         title: "Email",
-        subtitle: user!.gmail ?? "",
+        subtitle: user?.gmail ?? "",
         trailingIcon: Icons.mode_edit_outlined,
         feildtype: 'email',
       ),
       UserProfileDetailsModel(
         leadingIcon: Icons.phone_android_outlined,
         title: "Phone number",
-        subtitle: user!.personalNumber ?? "",
+        subtitle: user?.personalNumber ?? "",
         trailingIcon: Icons.mode_edit_outlined,
         feildtype: 'personal number',
       ),
@@ -93,21 +96,21 @@ class ProfilePageProvider
       UserProfileDetailsModel(
         leadingIcon: Icons.store_outlined,
         title: "Shop Name",
-        subtitle: user!.shopName ?? "",
+        subtitle: user?.shopName ?? "",
         trailingIcon: Icons.mode_edit_outlined,
         feildtype: 'shop name',
       ),
       UserProfileDetailsModel(
         leadingIcon: Icons.location_on_outlined,
         title: "Shop Address",
-        subtitle: user!.shopAddress ?? "",
+        subtitle: user?.shopAddress ?? "",
         trailingIcon: Icons.mode_edit_outlined,
         feildtype: 'address',
       ),
       UserProfileDetailsModel(
         leadingIcon: Icons.phone_outlined,
         title: "Shop Number",
-        subtitle: user!.shopNumber ?? "",
+        subtitle: user?.shopNumber ?? "",
         trailingIcon: Icons.mode_edit_outlined,
         feildtype: 'shop number',
       ),
@@ -149,6 +152,7 @@ class ProfilePageProvider
 
   // Saves the updated user data to Hive
   Future<void> updateUser() async {
+    if (user == null) return;
     await hiveService.updateUser(user!);
     notifyListeners();
   }

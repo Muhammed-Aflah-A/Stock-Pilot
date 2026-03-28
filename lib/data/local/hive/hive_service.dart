@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:stock_pilot/data/local/hive/hive_boxes.dart';
 import 'package:stock_pilot/data/models/brand_model.dart';
+import 'package:stock_pilot/data/models/cart_model.dart';
 import 'package:stock_pilot/data/models/category_model.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
@@ -14,6 +15,8 @@ class HiveService implements HiveServiceLayer {
     await Hive.openBox<ProductModel>(HiveBoxes.productList);
     await Hive.openBox<CategoryModel>(HiveBoxes.categories);
     await Hive.openBox<BrandModel>(HiveBoxes.brands);
+    await Hive.openBox<CartItems>(HiveBoxes.cart);
+    await Hive.openBox<SalesItems>(HiveBoxes.sales);
   }
 
   @override
@@ -115,6 +118,48 @@ class HiveService implements HiveServiceLayer {
   @override
   Future<List<DasboardActivity>> getAllActivities() async {
     final box = Hive.box<DasboardActivity>(HiveBoxes.dashBoardActivity);
+    return box.values.toList().reversed.toList();
+  }
+
+  @override
+  Future<void> addToCart(CartItems item) async {
+    final box = Hive.box<CartItems>(HiveBoxes.cart);
+    await box.add(item);
+  }
+
+  @override
+  Future<void> updateCartItem(int index, CartItems item) async {
+    final box = Hive.box<CartItems>(HiveBoxes.cart);
+    await box.putAt(index, item);
+  }
+
+  @override
+  Future<void> removeFromCart(int index) async {
+    final box = Hive.box<CartItems>(HiveBoxes.cart);
+    await box.deleteAt(index);
+  }
+
+  @override
+  Future<List<CartItems>> getCartItems() async {
+    final box = Hive.box<CartItems>(HiveBoxes.cart);
+    return box.values.toList();
+  }
+
+  @override
+  Future<void> clearCart() async {
+    final box = Hive.box<CartItems>(HiveBoxes.cart);
+    await box.clear();
+  }
+
+  @override
+  Future<void> addSale(SalesItems sale) async {
+    final box = Hive.box<SalesItems>(HiveBoxes.sales);
+    await box.add(sale);
+  }
+
+  @override
+  Future<List<SalesItems>> getAllSales() async {
+    final box = Hive.box<SalesItems>(HiveBoxes.sales);
     return box.values.toList().reversed.toList();
   }
 }

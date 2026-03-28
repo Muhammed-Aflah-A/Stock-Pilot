@@ -24,41 +24,43 @@ class OnboardingScreen2 extends StatelessWidget {
             child: Column(
               children: [
                 Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        // Button to skip onboarding pages
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: SkipButtonWidget(),
-                        ),
-                        // App name as heading
-                        AppnameWidget(),
-                        SizedBox(height: 30),
-                        // Illustration image goes here
-                        HeroImageWidget(
+                  child: Column(
+                    children: [
+                      // Button to skip onboarding pages
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: SkipButtonWidget(),
+                      ),
+                      // App name as heading
+                      AppnameWidget(),
+                      Spacer(flex: 3),
+                      // Illustration image goes here
+                      Flexible(
+                        flex: 6,
+                        child: HeroImageWidget(
                           heightFactor: 0.3,
                           imagePath: AppImages.onboardingScreen2,
                         ),
-                        SizedBox(height: 30),
-                        // Main headline
-                        Text(
-                          "Never Run Out Again",
-                          style: TextStyles.tagLine(context),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 12),
-                        // Supporting description
-                        Text(
-                          "Get alerts for low-stock items and restock at the right time",
-                          style: TextStyles.tagLineCaption(context),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 10),
-                        // Progress indicator
-                        Text("2/3", style: TextStyles.tagLineCaption(context)),
-                      ],
-                    ),
+                      ),
+                      Spacer(flex: 3),
+                      // Main headline
+                      Text(
+                        "Never Run Out Again",
+                        style: TextStyles.tagLine(context),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 12),
+                      // Supporting description
+                      Text(
+                        "Get alerts for low-stock items and restock at the right time",
+                        style: TextStyles.tagLineCaption(context),
+                        textAlign: TextAlign.center,
+                      ),
+                      Spacer(flex: 1),
+                      // Progress indicator
+                      Text("2/3", style: TextStyles.tagLineCaption(context)),
+                      Spacer(flex: 1),
+                    ],
                   ),
                 ),
                 SizedBox(height: 8),

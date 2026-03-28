@@ -22,7 +22,6 @@ class ButtonStyles {
   static ButtonStyle skipButton(BuildContext context) =>
       TextButton.styleFrom(foregroundColor: ColourStyles.primaryColor_2);
 
-  // Largest next button used in onboarding/profile creation/product detail
   static ButtonStyle nextButton(BuildContext context) =>
       ElevatedButton.styleFrom(
         backgroundColor: ColourStyles.primaryColor_2,
@@ -30,7 +29,7 @@ class ButtonStyles {
         minimumSize: _responsiveSize(context, 280, 60),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       );
-  // Largest cancel button used in onboarding/profile creation/product detail
+
   static ButtonStyle backButton(BuildContext context) =>
       ElevatedButton.styleFrom(
         backgroundColor: ColourStyles.primaryColor,
@@ -102,11 +101,29 @@ class ButtonStyles {
         side: BorderSide(color: ColourStyles.colorRed, width: 2),
       );
 
-  static final detailPageButton_2 = ElevatedButton.styleFrom(
-    backgroundColor: ColourStyles.primaryColor_2,
-    foregroundColor: ColourStyles.primaryColor,
-    minimumSize: Size(400, 60),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-    side: BorderSide(color: ColourStyles.primaryColor_2, width: 2),
-  );
+  static ButtonStyle dialogueAddButton(BuildContext context) =>
+      ElevatedButton.styleFrom(
+        backgroundColor: ColourStyles.colorGreen,
+        foregroundColor: ColourStyles.primaryColor,
+        minimumSize: Size(120, 50),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        side: BorderSide(color: ColourStyles.colorGreen, width: 2),
+      );
+
+  static ButtonStyle detailPageButton_2(BuildContext context) =>
+      ElevatedButton.styleFrom(
+        backgroundColor: ColourStyles.primaryColor_2,
+        foregroundColor: ColourStyles.primaryColor,
+        minimumSize: Size(400, 60),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        side: BorderSide(color: ColourStyles.primaryColor_2, width: 2),
+      );
+
+  static ButtonStyle billingButton(BuildContext context) =>
+      ElevatedButton.styleFrom(
+        backgroundColor: ColourStyles.primaryColor_2,
+        foregroundColor: ColourStyles.primaryColor,
+        minimumSize: _responsiveSize(context, 100, 45),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      );
 }

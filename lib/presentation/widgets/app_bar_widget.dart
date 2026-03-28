@@ -9,6 +9,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool centeredTitle;
   final bool showAvatar;
+  final VoidCallback? onLeadingTap;
 
   const AppBarWidget({
     super.key,
@@ -16,6 +17,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     required this.title,
     required this.centeredTitle,
     required this.showAvatar,
+    this.onLeadingTap,
   });
   // fixed height for AppBar
   @override
@@ -29,7 +31,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       // show back button only if needed
       leading: showLeading
           ? IconButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: onLeadingTap ?? () => Navigator.pop(context),
               icon: Icon(Icons.arrow_back_ios),
             )
           : null,
