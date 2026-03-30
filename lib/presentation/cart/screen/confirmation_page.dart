@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
-import 'package:stock_pilot/presentation/cart/viewmodel/sales_provider.dart';
+import 'package:stock_pilot/presentation/history/viewmodel/history_provider.dart';
 import 'package:stock_pilot/presentation/cart/widgets/purchase_summary_card_widget.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/drawer_provider.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
@@ -13,7 +13,7 @@ class ConfirmationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sale = context.watch<SalesProvider>().latestSale;
+    final sale = context.watch<HistoryProvider>().latestSale;
     final drawerProvider = context.read<DrawerProvider>();
     if (sale == null) {
       return const Scaffold(body: Center(child: Text("No sale data")));

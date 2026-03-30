@@ -13,7 +13,7 @@ import 'package:stock_pilot/presentation/cart/screen/billing_page.dart';
 import 'package:stock_pilot/presentation/cart/screen/cart_list_page.dart';
 import 'package:stock_pilot/presentation/cart/screen/confirmation_page.dart';
 import 'package:stock_pilot/presentation/cart/viewmodel/cart_provider.dart';
-import 'package:stock_pilot/presentation/cart/viewmodel/sales_provider.dart';
+import 'package:stock_pilot/presentation/history/viewmodel/history_provider.dart';
 import 'package:stock_pilot/presentation/category/screens/category_list_page.dart';
 import 'package:stock_pilot/presentation/category/viewmodel/category_provider.dart';
 import 'package:stock_pilot/presentation/dashboard/screens/dashboard.dart';
@@ -77,7 +77,7 @@ void main() async {
           create: (_) => CartProvider(hiveService: hiveService),
         ),
         ChangeNotifierProvider(
-          create: (_) => SalesProvider(hiveService: hiveService),
+          create: (_) => HistoryProvider(hiveService: hiveService),
         ),
         ChangeNotifierProxyProvider2<
           CategoryProvider,

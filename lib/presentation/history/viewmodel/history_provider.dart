@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:stock_pilot/data/local/hive/hive_service.dart';
 import 'package:stock_pilot/data/models/cart_model.dart';
 
-class SalesProvider with ChangeNotifier {
+class HistoryProvider with ChangeNotifier {
   final HiveService hiveService;
 
-  SalesProvider({required this.hiveService}) {
+  HistoryProvider({required this.hiveService}) {
     loadSales();
   }
 

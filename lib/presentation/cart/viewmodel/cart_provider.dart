@@ -4,7 +4,7 @@ import 'package:stock_pilot/data/models/cart_model.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/data/service%20layer/hive_service_layer.dart';
-import 'package:stock_pilot/presentation/cart/viewmodel/sales_provider.dart';
+import 'package:stock_pilot/presentation/history/viewmodel/history_provider.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
 
@@ -154,7 +154,7 @@ class CartProvider with ChangeNotifier {
   Future<SalesItems?> completeSale({
     required ProductProvider productProvider,
     required DashboardProvider dashboardProvider,
-    required SalesProvider salesProvider,
+    required HistoryProvider historyProvider,
   }) async {
     // Validate form
     if (!(formKey.currentState?.validate() ?? false)) {
@@ -203,7 +203,7 @@ class CartProvider with ChangeNotifier {
       }
     }
     // Save sales
-    await salesProvider.addSale(sale);
+    await historyProvider.addSale(sale);
     formKey.currentState?.reset();
     // Clear cart
     await clearCart();

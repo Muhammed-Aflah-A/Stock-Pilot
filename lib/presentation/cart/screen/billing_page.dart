@@ -5,7 +5,7 @@ import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/core/utils/snackbar_util.dart';
 import 'package:stock_pilot/presentation/cart/viewmodel/cart_provider.dart';
-import 'package:stock_pilot/presentation/cart/viewmodel/sales_provider.dart';
+import 'package:stock_pilot/presentation/history/viewmodel/history_provider.dart';
 import 'package:stock_pilot/presentation/cart/widgets/billing_button_widget.dart';
 import 'package:stock_pilot/presentation/cart/widgets/billing_form_widget.dart';
 import 'package:stock_pilot/presentation/cart/widgets/order_details_widget.dart';
@@ -94,7 +94,7 @@ class _BillingScreenState extends State<BillingPage> {
                         final cart = context.read<CartProvider>();
                         final product = context.read<ProductProvider>();
                         final dashboard = context.read<DashboardProvider>();
-                        final sales = context.read<SalesProvider>();
+                        final sales = context.read<HistoryProvider>();
 
                         // Pre-validate form so we don't pop up if it's empty
                         if (!cart.isFormValid) {
@@ -118,7 +118,7 @@ class _BillingScreenState extends State<BillingPage> {
                               final sale = await cart.completeSale(
                                 productProvider: product,
                                 dashboardProvider: dashboard,
-                                salesProvider: sales,
+                                historyProvider: sales,
                               );
                               if (!dialogCtx.mounted) return false;
                               
