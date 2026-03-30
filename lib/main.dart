@@ -134,45 +134,46 @@ class StockPilot extends StatelessWidget {
         switch (settings.name) {
           //Fade animation
           case AppRoutes.splashScreen:
-            return TransitionAnimations.fadeRoute(const SplashScreen());
+            return TransitionAnimations.fadeRoute(const SplashScreen(), settings: settings);
           case AppRoutes.onBoardingScreen_1:
-            return TransitionAnimations.fadeRoute(const OnboardingScreen1());
+            return TransitionAnimations.fadeRoute(const OnboardingScreen1(), settings: settings);
           case AppRoutes.profileCreation:
-            return TransitionAnimations.fadeRoute(const ProfileCreation());
+            return TransitionAnimations.fadeRoute(const ProfileCreation(), settings: settings);
           case AppRoutes.dashboard:
-            return TransitionAnimations.fadeRoute(const Dashboard());
+            return TransitionAnimations.fadeRoute(const Dashboard(), settings: settings);
           case AppRoutes.profilePage:
-            return TransitionAnimations.fadeRoute(const ProfilePage());
+            return TransitionAnimations.fadeRoute(const ProfilePage(), settings: settings);
           case AppRoutes.productListPage:
-            return TransitionAnimations.fadeRoute(const ProductListPage());
+            return TransitionAnimations.fadeRoute(const ProductListPage(), settings: settings);
           case AppRoutes.productAddingPage1:
-            return TransitionAnimations.fadeRoute(ProductAddingPage1());
+            return TransitionAnimations.fadeRoute(ProductAddingPage1(), settings: settings);
           case AppRoutes.category:
-            return TransitionAnimations.fadeRoute(const CategoryListPage());
+            return TransitionAnimations.fadeRoute(const CategoryListPage(), settings: settings);
           case AppRoutes.brand:
-            return TransitionAnimations.fadeRoute(const BrandListPage());
+            return TransitionAnimations.fadeRoute(const BrandListPage(), settings: settings);
           case AppRoutes.lowStockPage:
-            return TransitionAnimations.fadeRoute(const LowstockListPage());
+            return TransitionAnimations.fadeRoute(const LowstockListPage(), settings: settings);
           case AppRoutes.outOfStockPage:
-            return TransitionAnimations.fadeRoute(const OutOfStockListPage());
+            return TransitionAnimations.fadeRoute(const OutOfStockListPage(), settings: settings);
           case AppRoutes.cartListPage:
-            return TransitionAnimations.fadeRoute(const CartListPage());
+            return TransitionAnimations.fadeRoute(const CartListPage(), settings: settings);
           case AppRoutes.conformationPage:
-            return TransitionAnimations.fadeRoute(const ConfirmationPage());
+            return TransitionAnimations.fadeRoute(const ConfirmationPage(), settings: settings);
 
           //Slide animation
           case AppRoutes.onBoardingScreen_2:
-            return TransitionAnimations.slideRoute(const OnboardingScreen2());
+            return TransitionAnimations.slideRoute(const OnboardingScreen2(), settings: settings);
           case AppRoutes.onBoardingScreen_3:
-            return TransitionAnimations.slideRoute(const OnboardingScreen3());
+            return TransitionAnimations.slideRoute(const OnboardingScreen3(), settings: settings);
           case AppRoutes.productAddingPage2:
-            return TransitionAnimations.slideRoute(ProductAddingPage2());
+            return TransitionAnimations.slideRoute(ProductAddingPage2(), settings: settings);
           case AppRoutes.productDetailsPage:
             return TransitionAnimations.slideRoute(
               const ProductDetailsPage(),
+              settings: settings,
             );
           case AppRoutes.billingPage:
-            return TransitionAnimations.slideRoute(BillingPage());
+            return TransitionAnimations.slideRoute(BillingPage(), settings: settings);
         }
         return null;
       },
