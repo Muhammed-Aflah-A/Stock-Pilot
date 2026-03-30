@@ -197,6 +197,7 @@ class CartProvider with ChangeNotifier {
             unit: item.quantity,
             label: 'units sold',
             isPositive: false,
+            date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
           ),
         );
       }

@@ -91,7 +91,7 @@ class DashboardActivityWidget extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                             Text(
-                              activity.category ?? "",
+                              activity.date ?? "",
                               style: TextStyles.activityCardText(context),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,

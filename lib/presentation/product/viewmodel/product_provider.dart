@@ -13,7 +13,9 @@ import 'package:stock_pilot/data/models/category_model.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/data/service%20layer/hive_service_layer.dart';
+import 'package:intl/intl.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
+
 
 // Sorting options available for product list
 enum SortOption {
@@ -226,6 +228,7 @@ class ProductProvider extends FilterProviderInterface
       unit: int.tryParse(product.itemCount ?? '0') ?? 0,
       label: 'units added',
       isPositive: true,
+      date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
     );
     dashboard.addNewActivity(activity);
 
@@ -292,6 +295,7 @@ class ProductProvider extends FilterProviderInterface
         unit: difference,
         label: isAddition ? 'units added' : 'units removed',
         isPositive: isAddition,
+        date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
       );
       dashboard.addNewActivity(activity);
     }
@@ -313,6 +317,7 @@ class ProductProvider extends FilterProviderInterface
       unit: int.tryParse(product.itemCount ?? '0') ?? 0,
       label: 'units removed',
       isPositive: false,
+      date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
     );
     dashboard.addNewActivity(activity);
     await loadProducts();

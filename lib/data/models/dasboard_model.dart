@@ -29,6 +29,8 @@ class DasboardActivity {
   String? label;
   @HiveField(6)
   bool? isPositive;
+  @HiveField(7)
+  String? date;
   DasboardActivity({
     required this.image,
     required this.title,
@@ -37,5 +39,6 @@ class DasboardActivity {
     required this.unit,
     required this.label,
     required this.isPositive,
+    this.date,
   });
 }
