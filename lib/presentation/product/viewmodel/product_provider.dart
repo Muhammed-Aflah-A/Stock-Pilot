@@ -72,30 +72,64 @@ class ProductProvider extends FilterProviderInterface
   
   // Returns true when editing an existing product
   bool get isEditing => editingProduct != null;
-  // List of brands used in filter and dropdown
-  @override
-  List<String> brandsList = [];
+  // List of brands used in dropdown
+  List<String> fullBrandsList = [];
   // Update brand list when dashboard brands change
   void setBrands(List<BrandModel> newBrands) {
-    brandsList = newBrands.map((n) => n.brand ?? 'Unknown').toList();
+    fullBrandsList = newBrands.map((n) => n.brand ?? 'Unknown').toList();
     // Reset selected brand if it no longer exists
-    if (brand != null && !brandsList.contains(brand)) {
+    if (brand != null && !fullBrandsList.contains(brand)) {
       brand = null;
     }
     notifyListeners();
   }
 
-  // List of categories used in filter and dropdown
-  @override
-  List<String> categoryList = [];
+  // List of categories used in dropdown
+  List<String> fullCategoryList = [];
   // Update category list when dashboard categories change
   void setCategories(List<CategoryModel> newCategories) {
-    categoryList = newCategories.map((n) => n.category ?? 'Unknown').toList();
+    fullCategoryList = newCategories.map((n) => n.category ?? 'Unknown').toList();
     // Reset selected category if it no longer exists
-    if (category != null && !categoryList.contains(category)) {
+    if (category != null && !fullCategoryList.contains(category)) {
       category = null;
     }
     notifyListeners();
+  }
+
+  // Filtering getters (interface overrides)
+  @override
+  List<String> get categoryList =>
+      products.map((p) => p.category).whereType<String>().toSet().toList();
+
+  @override
+  List<String> get brandsList =>
+      products.map((p) => p.brand).whereType<String>().toSet().toList();
+
+  @override
+  bool get showCategoryFilter => categoryList.length > 1;
+
+  @override
+  bool get showBrandFilter => brandsList.length > 1;
+
+  @override
+  bool get showPriceFilter => products.isNotEmpty && maxPrice > minPrice;
+
+  @override
+  List<String> get availableStockStatuses {
+    final statuses = ['All'];
+    final counts = products.map((p) {
+      final c = int.tryParse(p.itemCount ?? '0') ?? 0;
+      final l = int.tryParse(p.lowStockCount ?? '0') ?? 0;
+      if (c == 0) return 'Out of Stock';
+      if (c <= l) return 'Low Stock';
+      return 'In Stock';
+    }).toSet();
+    
+    if (counts.contains('In Stock')) statuses.add('In Stock');
+    if (counts.contains('Low Stock')) statuses.add('Low Stock');
+    if (counts.contains('Out of Stock')) statuses.add('Out of Stock');
+    
+    return statuses;
   }
 
   // Search products by product name
@@ -199,7 +233,6 @@ class ProductProvider extends FilterProviderInterface
     await loadProducts();
   }
 
-  // Load all products from Hive
   Future<void> loadProducts() async {
     products = await hiveService.getAllProducts();
     // Calculate maximum price for price filter slider
@@ -209,13 +242,27 @@ class ProductProvider extends FilterProviderInterface
     if (prices.isNotEmpty) {
       final newMaxPrice = prices.reduce((a, b) => a > b ? a : b);
       final newMinPrice = prices.reduce((a, b) => a < b ? a : b);
+      
+      // If bounds changed, we might need to reset selections
+      final boundsChanged = newMaxPrice != maxPrice || newMinPrice != minPrice;
+      
       maxPrice = newMaxPrice;
       minPrice = newMinPrice;
-      // Initialize if bounds haven't shifted incorrectly or if we want to reset
-      selectedMaxPrice = maxPrice;
-      selectedMinPrice = minPrice;
-      tempMaxPrice = maxPrice;
-      tempMinPrice = minPrice;
+      
+      if (boundsChanged) {
+        selectedMaxPrice = maxPrice;
+        selectedMinPrice = minPrice;
+        tempMaxPrice = maxPrice;
+        tempMinPrice = minPrice;
+      }
+    } else {
+      // Default reset if empty
+      maxPrice = 0;
+      minPrice = 0;
+      selectedMaxPrice = 0;
+      selectedMinPrice = 0;
+      tempMaxPrice = 0;
+      tempMinPrice = 0;
     }
     _applyFilters();
     notifyListeners();

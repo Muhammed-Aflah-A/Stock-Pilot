@@ -51,13 +51,24 @@ class OutofstockProvider extends FilterProviderInterface {
       selectedBrands.isNotEmpty ||
       selectedMaxPrice < maxPrice ||
       selectedMinPrice > minPrice;
-  // Get category and brand lists
+  // Lists from out-of-stock subset
   @override
-  List<String> get categoryList =>
-      _isProviderSet ? _productProvider.categoryList : [];
+  List<String> categoryList = [];
   @override
-  List<String> get brandsList =>
-      _isProviderSet ? _productProvider.brandsList : [];
+  List<String> brandsList = [];
+
+  @override
+  bool get showCategoryFilter => categoryList.length > 1;
+
+  @override
+  bool get showBrandFilter => brandsList.length > 1;
+
+  @override
+  bool get showPriceFilter =>
+      _isProviderSet && categoryList.isNotEmpty && maxPrice > minPrice;
+
+  @override
+  List<String> get availableStockStatuses => ['Out of Stock'];
   // Initialize temp filters
   @override
   void initTempFilters() {
@@ -134,34 +145,67 @@ class OutofstockProvider extends FilterProviderInterface {
     }
     _productProvider = provider;
     _isProviderSet = true;
-    final newMax = provider.maxPrice > 0 ? provider.maxPrice : maxPrice;
-    final newMin = provider.minPrice;
-    maxPrice = newMax;
-    minPrice = newMin;
-    selectedMaxPrice = newMax;
-    selectedMinPrice = newMin;
-    tempMaxPrice = newMax;
-    tempMinPrice = newMin;
     _productProvider.addListener(_onProductProviderChanged);
+    _updateFilterBounds();
     _applyOutOfStockLogic();
+  }
+
+  // Update filter bounds based on current out-of-stock items
+  void _updateFilterBounds() {
+    if (!_isProviderSet) return;
+
+    // Get base list of out-of-stock products
+    final baseList = _productProvider.products.where((product) {
+      final count = int.tryParse(product.itemCount ?? '0') ?? 0;
+      return count == 0;
+    }).toList();
+
+    // Update categories and brands
+    categoryList = baseList
+        .map((p) => p.category)
+        .whereType<String>()
+        .toSet()
+        .toList();
+    brandsList = baseList
+        .map((p) => p.brand)
+        .whereType<String>()
+        .toSet()
+        .toList();
+
+    // Update price bounds
+    final prices = baseList
+        .map((p) => double.tryParse(p.salesRate ?? '0') ?? 0)
+        .toList();
+
+    if (prices.isNotEmpty) {
+      final newMax = prices.reduce((a, b) => a > b ? a : b);
+      final newMin = prices.reduce((a, b) => a < b ? a : b);
+
+      final boundsChanged = newMax != maxPrice || newMin != minPrice;
+
+      maxPrice = newMax;
+      minPrice = newMin;
+
+      if (boundsChanged) {
+        selectedMaxPrice = maxPrice;
+        selectedMinPrice = minPrice;
+        tempMaxPrice = maxPrice;
+        tempMinPrice = minPrice;
+      }
+    } else {
+      maxPrice = 0;
+      minPrice = 0;
+      selectedMaxPrice = 0;
+      selectedMinPrice = 0;
+      tempMaxPrice = 0;
+      tempMinPrice = 0;
+    }
+    notifyListeners();
   }
 
   // Listen to product changes
   void _onProductProviderChanged() {
-    final newMax = _productProvider.maxPrice > 0
-        ? _productProvider.maxPrice
-        : maxPrice;
-    final newMin = _productProvider.minPrice;
-    if (newMax == maxPrice && newMin == minPrice) {
-      _applyOutOfStockLogic();
-      return;
-    }
-    maxPrice = newMax;
-    minPrice = newMin;
-    if (selectedMaxPrice > maxPrice) selectedMaxPrice = maxPrice;
-    if (selectedMinPrice < minPrice) selectedMinPrice = minPrice;
-    if (tempMaxPrice > maxPrice) tempMaxPrice = maxPrice;
-    if (tempMinPrice < minPrice) tempMinPrice = minPrice;
+    _updateFilterBounds();
     _applyOutOfStockLogic();
   }
 

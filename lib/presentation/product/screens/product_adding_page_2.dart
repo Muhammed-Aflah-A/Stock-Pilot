@@ -50,7 +50,7 @@ class ProductAddingPage2 extends StatelessWidget {
                       const SizedBox(height: 8),
                       DropdownFieldWidget(
                         value: provider.category,
-                        items: provider.categoryList,
+                        items: provider.fullCategoryList,
                         onChanged: (value) {
                           provider.category = value;
                         },
@@ -65,7 +65,7 @@ class ProductAddingPage2 extends StatelessWidget {
                       const SizedBox(height: 8),
                       DropdownFieldWidget(
                         value: provider.brand,
-                        items: provider.brandsList,
+                        items: provider.fullBrandsList,
                         onChanged: (value) {
                           provider.brand = value;
                         },

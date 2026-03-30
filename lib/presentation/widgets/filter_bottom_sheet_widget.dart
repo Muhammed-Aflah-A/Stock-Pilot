@@ -13,13 +13,6 @@ class FilterBottomSheet extends StatelessWidget {
   final FilterProviderInterface provider;
   const FilterBottomSheet({super.key, required this.provider});
 
-  /// Static stock status options
-  static const List<String> _stockOptions = [
-    'All',
-    'In Stock',
-    'Low Stock',
-    'Out of Stock',
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +84,7 @@ class FilterBottomSheet extends StatelessWidget {
                       ),
                       children: [
                         // CATEGORY FILTER
-                        if (provider.categoryList.isNotEmpty) ...[
+                        if (provider.showCategoryFilter && provider.categoryList.isNotEmpty) ...[
                           const SizedBox(height: 8),
                           // Section title
                           const SectionTitleWidget(title: "Category"),
@@ -116,47 +109,49 @@ class FilterBottomSheet extends StatelessWidget {
                           const SizedBox(height: 20),
                         ],
                         // PRICE RANGE FILTER
-                        const SectionTitleWidget(title: "Price Range"),
-                        // RangeSlider used to select min/max price
-                        RangeSlider(
-                          min: provider.minPrice,
-                          max: effectiveMax,
-                          values: RangeValues(
-                            provider.tempMinPrice.clamp(provider.minPrice, effectiveMax),
-                            provider.tempMaxPrice.clamp(provider.minPrice, effectiveMax),
+                        if (provider.showPriceFilter) ...[
+                          const SectionTitleWidget(title: "Price Range"),
+                          // RangeSlider used to select min/max price
+                          RangeSlider(
+                            min: provider.minPrice,
+                            max: effectiveMax,
+                            values: RangeValues(
+                              provider.tempMinPrice.clamp(provider.minPrice, effectiveMax),
+                              provider.tempMaxPrice.clamp(provider.minPrice, effectiveMax),
+                            ),
+                            activeColor: ColourStyles.primaryColor_2,
+                            inactiveColor: ColourStyles.borderColor,
+                            onChanged: (RangeValues values) {
+                              provider.setTempPriceRange(values.start, values.end);
+                            },
                           ),
-                          activeColor: ColourStyles.primaryColor_2,
-                          inactiveColor: ColourStyles.borderColor,
-                          onChanged: (RangeValues values) {
-                            provider.setTempPriceRange(values.start, values.end);
-                          },
-                        ),
-                        // Display selected price range
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "\$${provider.tempMinPrice.toStringAsFixed(0)}",
-                                style: const TextStyle(
-                                  color: ColourStyles.primaryColor_2,
-                                  fontWeight: FontWeight.bold,
+                          // Display selected price range
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "\$${provider.tempMinPrice.toStringAsFixed(0)}",
+                                  style: const TextStyle(
+                                    color: ColourStyles.primaryColor_2,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                "\$${provider.tempMaxPrice.toStringAsFixed(0)}",
-                                style: const TextStyle(
-                                  color: ColourStyles.primaryColor_2,
-                                  fontWeight: FontWeight.bold,
+                                Text(
+                                  "\$${provider.tempMaxPrice.toStringAsFixed(0)}",
+                                  style: const TextStyle(
+                                    color: ColourStyles.primaryColor_2,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 20),
+                          const SizedBox(height: 20),
+                        ],
                         // BRAND FILTER
-                        if (provider.brandsList.isNotEmpty) ...[
+                        if (provider.showBrandFilter && provider.brandsList.isNotEmpty) ...[
                           const SectionTitleWidget(title: "Brand"),
                           const SizedBox(height: 10),
                           ...provider.brandsList.map((brand) {
@@ -174,18 +169,22 @@ class FilterBottomSheet extends StatelessWidget {
                           const SizedBox(height: 20),
                         ],
                         // STOCK STATUS FILTER
-                        if (provider.showStockFilter) ...[
+                        if (provider.showStockFilter && provider.availableStockStatuses.length > 1) ...[
                           const SectionTitleWidget(title: "Stock Status"),
                           const SizedBox(height: 10),
                           // Grid layout for stock options
-                          GridView.count(
-                            crossAxisCount: 2,
+                          GridView.builder(
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 8,
+                              crossAxisSpacing: 8,
+                              childAspectRatio: 3,
+                            ),
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            mainAxisSpacing: 8,
-                            crossAxisSpacing: 8,
-                            childAspectRatio: 3,
-                            children: _stockOptions.map((stockStatus) {
+                            itemCount: provider.availableStockStatuses.length,
+                            itemBuilder: (context, index) {
+                              final stockStatus = provider.availableStockStatuses[index];
                               // Check if selected
                               final selected =
                                   provider.tempStockStatus == stockStatus;
@@ -195,7 +194,7 @@ class FilterBottomSheet extends StatelessWidget {
                                 onTap: () =>
                                     provider.setTempStockStatus(stockStatus),
                               );
-                            }).toList(),
+                            },
                           ),
                           const SizedBox(height: 24),
                         ],

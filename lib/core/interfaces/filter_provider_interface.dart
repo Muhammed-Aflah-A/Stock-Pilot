@@ -14,6 +14,10 @@ abstract class FilterProviderInterface extends ChangeNotifier {
   List<String> get categoryList;
   List<String> get brandsList;
   bool get showStockFilter => true;
+  List<String> get availableStockStatuses;
+  bool get showPriceFilter;
+  bool get showCategoryFilter;
+  bool get showBrandFilter;
 
   void initTempFilters();
   void toggleTempCategory(String cat);

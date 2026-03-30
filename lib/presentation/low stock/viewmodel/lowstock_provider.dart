@@ -51,13 +51,24 @@ class LowstockProvider extends FilterProviderInterface {
       selectedBrands.isNotEmpty ||
       selectedMaxPrice < maxPrice ||
       selectedMinPrice > minPrice;
-  // Lists from product provider
+  // Lists from low stock subset
   @override
-  List<String> get categoryList =>
-      _isProviderSet ? _productProvider.categoryList : [];
+  List<String> categoryList = [];
   @override
-  List<String> get brandsList =>
-      _isProviderSet ? _productProvider.brandsList : [];
+  List<String> brandsList = [];
+
+  @override
+  bool get showCategoryFilter => categoryList.length > 1;
+
+  @override
+  bool get showBrandFilter => brandsList.length > 1;
+
+  @override
+  bool get showPriceFilter =>
+      _isProviderSet && categoryList.isNotEmpty && maxPrice > minPrice;
+
+  @override
+  List<String> get availableStockStatuses => ['Low Stock'];
   // Init temp filters
   @override
   void initTempFilters() {
@@ -134,40 +145,60 @@ class LowstockProvider extends FilterProviderInterface {
     }
     _productProvider = provider;
     _isProviderSet = true;
-    // Sync price bounds safely
-    final newMax = provider.maxPrice > 0 ? provider.maxPrice : maxPrice;
-    final newMin = provider.minPrice;
-    maxPrice = newMax;
-    minPrice = newMin;
-    selectedMaxPrice = newMax;
-    selectedMinPrice = newMin;
-    tempMaxPrice = newMax;
-    tempMinPrice = newMin;
     _productProvider.addListener(_onProductProviderChanged);
+    _updateFilterBounds();
     _applyLowStockSearch();
+  }
+
+  // Update filter bounds based on current low stock items
+  void _updateFilterBounds() {
+    if (!_isProviderSet) return;
+    
+    // Get the base list of low stock items (no filters applied yet)
+    final baseList = _productProvider.products.where((product) {
+      final count = int.tryParse(product.itemCount ?? '0') ?? 0;
+      final lowStock = int.tryParse(product.lowStockCount ?? '0') ?? 0;
+      return count <= lowStock && count > 0;
+    }).toList();
+
+    // Update categories and brands
+    categoryList = baseList.map((p) => p.category).whereType<String>().toSet().toList();
+    brandsList = baseList.map((p) => p.brand).whereType<String>().toSet().toList();
+
+    // Update price bounds
+    final prices = baseList
+        .map((p) => double.tryParse(p.salesRate ?? '0') ?? 0)
+        .toList();
+        
+    if (prices.isNotEmpty) {
+      final newMax = prices.reduce((a, b) => a > b ? a : b);
+      final newMin = prices.reduce((a, b) => a < b ? a : b);
+      
+      final boundsChanged = newMax != maxPrice || newMin != minPrice;
+      
+      maxPrice = newMax;
+      minPrice = newMin;
+      
+      if (boundsChanged) {
+        selectedMaxPrice = maxPrice;
+        selectedMinPrice = minPrice;
+        tempMaxPrice = maxPrice;
+        tempMinPrice = minPrice;
+      }
+    } else {
+      maxPrice = 0;
+      minPrice = 0;
+      selectedMaxPrice = 0;
+      selectedMinPrice = 0;
+      tempMaxPrice = 0;
+      tempMinPrice = 0;
+    }
+    notifyListeners();
   }
 
   // Listen for product changes (FIXED)
   void _onProductProviderChanged() {
-    final newMax = _productProvider.maxPrice > 0
-        ? _productProvider.maxPrice
-        : maxPrice;
-    final newMin = _productProvider.minPrice;
-    
-    // If no change → just refresh list
-    if (newMax == maxPrice && newMin == minPrice) {
-      _applyLowStockSearch();
-      return;
-    }
-    maxPrice = newMax;
-    minPrice = newMin;
-    
-    // Clamp only if needed (prevents unwanted resets)
-    if (selectedMaxPrice > maxPrice) selectedMaxPrice = maxPrice;
-    if (selectedMinPrice < minPrice) selectedMinPrice = minPrice;
-    if (tempMaxPrice > maxPrice) tempMaxPrice = maxPrice;
-    if (tempMinPrice < minPrice) tempMinPrice = minPrice;
-    
+    _updateFilterBounds();
     _applyLowStockSearch();
   }
 
