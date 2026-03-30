@@ -129,24 +129,33 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
                 onPressed: () async {
                   // Validate form
                   if (!formKey.currentState!.validate()) return;
-                  // Show confirmation dialog before saving
+                  
                   bool wasConfirmed = false;
-                  await showDialog(
-                    context: context,
-                    builder: (_) => ActionConfirmationWidget(
-                      title: widget.isEditing ? "Confirm Update" : "Confirm Addition",
-                      actionText: widget.isEditing ? "Update" : "Add",
-                      displayName: controller.text.trim(),
-                      actionColor: ColourStyles.colorGreen,
-                      showSnackbar: false, // Handled manually below for better grammar
-                      onConfirm: () async {
-                        await widget.onSave(controller.text.trim());
-                        wasConfirmed = true;
-                        return true;
-                      },
-                    ),
-                  );
-                  // If user closed dialog or pressed cancel, stop here
+                  
+                  if (widget.isEditing) {
+                    // Show confirmation dialog ONLY when editing
+                    await showDialog(
+                      context: context,
+                      builder: (_) => ActionConfirmationWidget(
+                        title: "Confirm Update",
+                        actionText: "Update",
+                        displayName: controller.text.trim(),
+                        actionColor: ColourStyles.colorGreen,
+                        showSnackbar: false, // Handled manually below
+                        onConfirm: () async {
+                          await widget.onSave(controller.text.trim());
+                          wasConfirmed = true;
+                          return true;
+                        },
+                      ),
+                    );
+                  } else {
+                    // Addition: save immediately without confirmation
+                    await widget.onSave(controller.text.trim());
+                    wasConfirmed = true;
+                  }
+
+                  // If user closed dialog or pressed cancel (for editing), stop here
                   if (!wasConfirmed) return;
                   if (!context.mounted) return;
                   final message = widget.isEditing

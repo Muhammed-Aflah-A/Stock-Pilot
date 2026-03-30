@@ -107,7 +107,8 @@ class DashboardActivityWidget extends StatelessWidget {
                             '$sign${activity.unit}',
                             style: TextStyles.activityCardUnit(context)
                                 .copyWith(
-                                  color: activity.isPositive == true
+                                  color: (activity.isPositive == true ||
+                                          activity.title == 'Item Sold')
                                       ? ColourStyles.colorGreen
                                       : ColourStyles.colorRed,
                                 ),

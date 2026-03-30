@@ -23,44 +23,53 @@ class AddProductButtonWidget extends StatelessWidget {
       onPressed: () async {
         final form = productForm.secondFormKey.currentState;
         if (form != null && form.validate()) {
-          // Prompt user for confirmation before acting
-          showDialog(
-            context: context,
-            builder: (dialogCtx) => ActionConfirmationWidget(
-              title: isEditing ? "Update Product" : "Add Product",
-              actionText: isEditing ? "Update" : "Add",
-              displayName: productForm.productName ?? "Product",
-              actionColor: ColourStyles.colorGreen,
-              showSnackbar: false, // We handle our own snackbar explicitly
-              onConfirm: () async {
-                final success = await productForm.saveProductData(dashboardProvider);
-                if (!context.mounted) return false;
-                if (success) {
-                  SnackbarUtil.showSnackBar(
-                    context,
-                    isEditing ? "Product updated successfully" : "Product added successfully",
-                    false,
-                  );
-                  // If editing → blow away stack back to details page
-                  if (isEditing) {
+          if (isEditing) {
+            // Prompt user for confirmation ONLY when updating
+            showDialog(
+              context: context,
+              builder: (dialogCtx) => ActionConfirmationWidget(
+                title: "Update Product",
+                actionText: "Update",
+                displayName: productForm.productName ?? "Product",
+                actionColor: ColourStyles.colorGreen,
+                showSnackbar: false, // We handle our own snackbar explicitly
+                onConfirm: () async {
+                  final success = await productForm.saveProductData(dashboardProvider);
+                  if (!context.mounted) return false;
+                  if (success) {
+                    SnackbarUtil.showSnackBar(
+                      context,
+                      "Product updated successfully",
+                      false,
+                    );
+                    // If editing → blow away stack back to details page
                     Navigator.popUntil(
                       context,
                       ModalRoute.withName(AppRoutes.productDetailsPage),
                     );
                   }
-                  // If adding → blow away stack back to product list
-                  else {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      AppRoutes.productListPage,
-                      (route) => false,
-                    );
-                  }
-                }
-                return false; // Dialog falls out of tree natively, safely preventing UI crashes
-              },
-            ),
-          );
+                  return false; // Dialog falls out of tree natively
+                },
+              ),
+            );
+          } else {
+            // Addition: save immediately without confirmation
+            final success = await productForm.saveProductData(dashboardProvider);
+            if (!context.mounted) return;
+            if (success) {
+              SnackbarUtil.showSnackBar(
+                context,
+                "Product added successfully",
+                false,
+              );
+              // If adding → blow away stack back to product list
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                AppRoutes.productListPage,
+                (route) => false,
+              );
+            }
+          }
         }
       },
       style: ButtonStyles.nextButton(context),

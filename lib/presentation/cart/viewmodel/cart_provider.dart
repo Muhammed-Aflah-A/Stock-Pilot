@@ -171,7 +171,7 @@ class CartProvider with ChangeNotifier {
     final sale = SalesItems(
       customerName: customerName,
       customerNumber: customerNumber,
-      date: DateFormat('dd/MM/yyyy HH:mm:ss').format(DateTime.now()),
+      date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
       items: List.from(cartItems),
       totalAmount: totalPrice,
     );
