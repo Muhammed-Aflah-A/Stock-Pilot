@@ -45,7 +45,7 @@ class DrawerProvider with ChangeNotifier {
     DrawerItems(
       icon: Icons.history,
       title: 'History',
-      navigation: AppRoutes.dashboard,
+      navigation: AppRoutes.historyListPage,
     ),
     DrawerItems(
       icon: Icons.trending_up,

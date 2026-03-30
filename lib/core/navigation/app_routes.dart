@@ -35,4 +35,6 @@ class AppRoutes {
       'package:stock_pilot/presentation/cart/screen/billing_page.dart';
   static const conformationPage =
       'package:stock_pilot/presentation/cart/screen/conformation_page.dart';
+  static const historyListPage =
+      'package:stock_pilot/presentation/history/screens/history_list_page.dart';
 }
