@@ -112,6 +112,8 @@ class _HistoryListPageState extends State<HistoryListPage> {
                   }
 
                   return ListView.builder(
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
                     itemCount: activities.length,
                     itemBuilder: (context, index) {
                       return ActivityCardWidget(activity: activities[index]);

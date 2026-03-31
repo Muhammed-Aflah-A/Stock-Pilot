@@ -134,6 +134,15 @@ class StockPilot extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "StockPilot",
       initialRoute: AppRoutes.splashScreen,
+      builder: (context, child) {
+        return GestureDetector(
+          onTap: () {
+            // Dismiss keyboard when tapping anywhere outside text fields
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
+          child: child,
+        );
+      },
       onGenerateRoute: (settings) {
         switch (settings.name) {
           //Fade animation
