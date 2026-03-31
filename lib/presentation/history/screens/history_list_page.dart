@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/presentation/history/viewmodel/history_provider.dart';
 import 'package:stock_pilot/presentation/widgets/activity_card_widget.dart';
@@ -116,7 +117,17 @@ class _HistoryListPageState extends State<HistoryListPage> {
                         ScrollViewKeyboardDismissBehavior.onDrag,
                     itemCount: activities.length,
                     itemBuilder: (context, index) {
-                      return ActivityCardWidget(activity: activities[index]);
+                      final activity = activities[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.historyDetailsPage,
+                            arguments: activity,
+                          );
+                        },
+                        child: ActivityCardWidget(activity: activity),
+                      );
                     },
                   );
                 },

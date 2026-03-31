@@ -62,13 +62,16 @@ class DasboardActivityAdapter extends TypeAdapter<DasboardActivity> {
       label: fields[5] as String?,
       isPositive: fields[6] as bool?,
       date: fields[7] as String?,
+      customerName: fields[8] as String?,
+      customerNumber: fields[9] as String?,
+      brand: fields[10] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, DasboardActivity obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.image)
       ..writeByte(1)
@@ -84,7 +87,13 @@ class DasboardActivityAdapter extends TypeAdapter<DasboardActivity> {
       ..writeByte(6)
       ..write(obj.isPositive)
       ..writeByte(7)
-      ..write(obj.date);
+      ..write(obj.date)
+      ..writeByte(8)
+      ..write(obj.customerName)
+      ..writeByte(9)
+      ..write(obj.customerNumber)
+      ..writeByte(10)
+      ..write(obj.brand);
   }
 
   @override

@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
 import 'package:stock_pilot/core/interfaces/filter_provider_interface.dart';
+import 'package:stock_pilot/data/local/hive/hive_boxes.dart';
 import 'package:stock_pilot/data/local/hive/hive_service.dart';
 import 'package:stock_pilot/data/models/cart_model.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
@@ -15,6 +17,10 @@ class HistoryProvider extends FilterProviderInterface {
 
   HistoryProvider({required this.hiveService}) {
     loadData();
+    // Listen for changes in the activity box to update history dynamically
+    Hive.box<DasboardActivity>(HiveBoxes.dashBoardActivity)
+        .listenable()
+        .addListener(() => loadData());
   }
 
   List<SalesItems> sales = [];

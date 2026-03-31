@@ -198,6 +198,9 @@ class CartProvider with ChangeNotifier {
             label: 'units sold',
             isPositive: false,
             date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+            customerName: customerName,
+            customerNumber: customerNumber,
+            brand: product.brand,
           ),
         );
       }

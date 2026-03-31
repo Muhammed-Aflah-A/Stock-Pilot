@@ -229,6 +229,7 @@ class ProductProvider extends FilterProviderInterface
       label: 'units added',
       isPositive: true,
       date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+      brand: product.brand,
     );
     dashboard.addNewActivity(activity);
 
@@ -296,6 +297,7 @@ class ProductProvider extends FilterProviderInterface
         label: isAddition ? 'units added' : 'units removed',
         isPositive: isAddition,
         date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+        brand: newProduct.brand,
       );
       dashboard.addNewActivity(activity);
     }
@@ -318,6 +320,7 @@ class ProductProvider extends FilterProviderInterface
       label: 'units removed',
       isPositive: false,
       date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+      brand: product.brand,
     );
     dashboard.addNewActivity(activity);
     await loadProducts();

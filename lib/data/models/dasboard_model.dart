@@ -31,6 +31,12 @@ class DasboardActivity {
   bool? isPositive;
   @HiveField(7)
   String? date;
+  @HiveField(8)
+  String? customerName;
+  @HiveField(9)
+  String? customerNumber;
+  @HiveField(10)
+  String? brand;
   DasboardActivity({
     required this.image,
     required this.title,
@@ -40,5 +46,8 @@ class DasboardActivity {
     required this.label,
     required this.isPositive,
     this.date,
+    this.customerName,
+    this.customerNumber,
+    this.brand,
   });
 }

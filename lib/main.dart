@@ -15,11 +15,13 @@ import 'package:stock_pilot/presentation/cart/screen/confirmation_page.dart';
 import 'package:stock_pilot/presentation/cart/viewmodel/cart_provider.dart';
 import 'package:stock_pilot/presentation/history/viewmodel/history_provider.dart';
 import 'package:stock_pilot/presentation/category/screens/category_list_page.dart';
+import 'package:stock_pilot/presentation/dashboard/viewmodel/drawer_provider.dart';
+import 'package:stock_pilot/presentation/history/screens/history_detail_page.dart';
+import 'package:stock_pilot/presentation/history/screens/history_list_page.dart';
 import 'package:stock_pilot/presentation/category/viewmodel/category_provider.dart';
 import 'package:stock_pilot/presentation/dashboard/screens/dashboard.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
-import 'package:stock_pilot/presentation/dashboard/viewmodel/drawer_provider.dart';
-import 'package:stock_pilot/presentation/history/screens/history_list_page.dart';
+import 'package:stock_pilot/data/models/dasboard_model.dart';
 import 'package:stock_pilot/presentation/indroduction/screens/onboarding_screen_1.dart';
 import 'package:stock_pilot/presentation/indroduction/screens/splash_screen.dart';
 import 'package:stock_pilot/presentation/indroduction/screens/onboarding_screen_2.dart';
@@ -236,6 +238,12 @@ class StockPilot extends StatelessWidget {
           case AppRoutes.productDetailsPage:
             return TransitionAnimations.slideRoute(
               const ProductDetailsPage(),
+              settings: settings,
+            );
+          case AppRoutes.historyDetailsPage:
+            final activity = settings.arguments as DasboardActivity;
+            return TransitionAnimations.slideRoute(
+              HistoryDetailPage(activity: activity),
               settings: settings,
             );
           case AppRoutes.billingPage:
