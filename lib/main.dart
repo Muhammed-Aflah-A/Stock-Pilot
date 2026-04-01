@@ -43,6 +43,8 @@ import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider
 import 'package:stock_pilot/presentation/product/screens/product_list_page.dart';
 import 'package:stock_pilot/presentation/revenue/screens/revenue_page.dart';
 
+import 'package:stock_pilot/presentation/revenue/viewmodel/revenue_provider.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
@@ -81,6 +83,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => HistoryProvider(hiveService: hiveService),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => RevenueProvider(hiveService: hiveService),
         ),
         ChangeNotifierProxyProvider2<
           CategoryProvider,

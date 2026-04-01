@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:stock_pilot/data/local/hive/hive_boxes.dart';
+import 'package:stock_pilot/data/models/cart_model.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/data/service%20layer/hive_service_layer.dart';
+import 'package:hive_flutter/adapters.dart';
 
 // Provider responsible for handling dashboard data and calculations
-class DashboardProvider with ChangeNotifier {
+class DashboardProvider extends ChangeNotifier {
   // Hive service used to read data from local database
   final HiveServiceLayer hiveService;
   DashboardProvider({required this.hiveService}) {
     loadActivities();
+    // Listen for changes in the sales box to update dashboard dynamically
+    Hive.box<SalesItems>(HiveBoxes.sales)
+        .listenable()
+        .addListener(() => loadActivities());
   }
   // Stores all dashboard activities
   List<DasboardActivity> allActivities = [];
@@ -18,8 +26,7 @@ class DashboardProvider with ChangeNotifier {
   List<DasboardActivity> get recentActivities => allActivities.take(5).toList();
   // Returns the full activity history
   List<DasboardActivity> get fullHistory => allActivities;
-  // Placeholder for monthly turnover (currently static)
-  final double monthlyTurnover = 0.0;
+
   // Loads activities and dashboard data from Hive
   Future<void> loadActivities() async {
     // Fetch stored activities
@@ -30,16 +37,41 @@ class DashboardProvider with ChangeNotifier {
     final brands = await hiveService.getAllBrands();
     // Fetch category list
     final categories = await hiveService.getAllCategories();
+    // Fetch all sales for turnover calculation
+    final sales = await hiveService.getAllSales();
+
     // Update activity list
     allActivities = activities;
+    // Calculate turnover
+    final turnover = _calculateMonthlyTurnover(sales);
+
     // Build dashboard summary cards
     dashboardCards = buildDashboardCards(
       products,
       brands.length,
       categories.length,
+      turnover,
     );
     // Notify UI to rebuild
     notifyListeners();
+  }
+
+  // Helper method to calculate monthly turnover from sales records
+  double _calculateMonthlyTurnover(List<SalesItems> sales) {
+    if (sales.isEmpty) return 0.0;
+    
+    final now = DateTime.now();
+    final currentMonth = now.month;
+    final currentYear = now.year;
+
+    return sales.where((sale) {
+      try {
+        final saleDate = DateFormat('dd/MM/yyyy').parse(sale.date);
+        return saleDate.month == currentMonth && saleDate.year == currentYear;
+      } catch (e) {
+        return false;
+      }
+    }).fold(0.0, (sum, sale) => sum + sale.totalAmount);
   }
 
   // Builds all dashboard summary cards
@@ -47,6 +79,7 @@ class DashboardProvider with ChangeNotifier {
     List<ProductModel> products,
     int brandCount,
     int categoryCount,
+    double turnover,
   ) {
     // Calculate different dashboard values
     final totalItems = calculateTotalItems(products);
@@ -69,7 +102,7 @@ class DashboardProvider with ChangeNotifier {
       ),
       DashboardCards(
         title: "Monthly Turnover",
-        value: formatCurrency(monthlyTurnover),
+        value: formatCurrency(turnover),
       ),
       DashboardCards(title: "Low Stock", value: lowStock.toString()),
       DashboardCards(title: "Out of Stock", value: outOfStock.toString()),
