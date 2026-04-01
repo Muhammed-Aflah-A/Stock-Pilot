@@ -50,7 +50,7 @@ class DrawerProvider with ChangeNotifier {
     DrawerItems(
       icon: Icons.trending_up,
       title: 'Revenue',
-      navigation: AppRoutes.dashboard,
+      navigation: AppRoutes.revenuePage,
     ),
   ];
   // Stores currently selected drawer index

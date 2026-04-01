@@ -39,4 +39,6 @@ class AppRoutes {
       'package:stock_pilot/presentation/history/screens/history_list_page.dart';
   static const historyDetailsPage =
       'package:stock_pilot/presentation/history/screens/history_detail_page.dart';
+  static const revenuePage =
+      'package:stock_pilot/presentation/revenue/screens/revenue_page.dart';
 }

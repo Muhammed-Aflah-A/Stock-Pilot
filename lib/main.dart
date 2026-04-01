@@ -41,6 +41,7 @@ import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart
 import 'package:stock_pilot/presentation/profile/screens/profile_page.dart';
 import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
 import 'package:stock_pilot/presentation/product/screens/product_list_page.dart';
+import 'package:stock_pilot/presentation/revenue/screens/revenue_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -218,6 +219,11 @@ class StockPilot extends StatelessWidget {
               const HistoryListPage(),
               settings: settings,
             );
+          case AppRoutes.revenuePage:
+            return TransitionAnimations.fadeRoute(
+              const RevenuePage(),
+              settings: settings,
+            );
 
           //Slide animation
           case AppRoutes.onBoardingScreen_2:
@@ -240,15 +246,15 @@ class StockPilot extends StatelessWidget {
               const ProductDetailsPage(),
               settings: settings,
             );
+          case AppRoutes.billingPage:
+            return TransitionAnimations.slideRoute(
+              BillingPage(),
+              settings: settings,
+            );
           case AppRoutes.historyDetailsPage:
             final activity = settings.arguments as DasboardActivity;
             return TransitionAnimations.slideRoute(
               HistoryDetailPage(activity: activity),
-              settings: settings,
-            );
-          case AppRoutes.billingPage:
-            return TransitionAnimations.slideRoute(
-              BillingPage(),
               settings: settings,
             );
         }
