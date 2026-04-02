@@ -5,6 +5,7 @@ import 'package:stock_pilot/presentation/widgets/app_drawer_widget.dart';
 
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/presentation/revenue/viewmodel/revenue_provider.dart';
+import 'package:stock_pilot/presentation/revenue/widgets/most_sold_items_widget.dart';
 import 'package:stock_pilot/presentation/revenue/widgets/revenue_card_widget.dart';
 import 'package:stock_pilot/presentation/revenue/widgets/sales_trends_widget.dart';
 
@@ -49,6 +50,8 @@ class _RevenuePageState extends State<RevenuePage> {
                 ),
                 const SizedBox(height: 8),
                 const SalesTrendsWidget(),
+                const SizedBox(height: 20),
+                const MostSoldItemsWidget(),
               ],
             ),
           );

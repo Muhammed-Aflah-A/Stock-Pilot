@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:stock_pilot/data/local/hive/hive_boxes.dart';
 import 'package:stock_pilot/data/local/hive/hive_service.dart';
 import 'package:stock_pilot/data/models/cart_model.dart';
+import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:hive_flutter/adapters.dart';
 
 enum TrendPeriod { day, week, month, sixMonths, year }
@@ -165,6 +166,29 @@ class RevenueProvider extends ChangeNotifier {
         break;
     }
     return spots;
+  }
+
+  // --- Most Sold Items (All-Time) ---
+
+  List<MapEntry<ProductModel, int>> get mostSoldItems {
+    final Map<String, int> productCounts = {};
+    final Map<String, ProductModel> productMap = {};
+
+    for (var sale in _sales) {
+      for (var item in sale.items) {
+        final productName = item.product.productName ?? "Unknown";
+        productCounts[productName] = (productCounts[productName] ?? 0) + item.quantity;
+        productMap[productName] = item.product;
+      }
+    }
+
+    final sortedEntries = productCounts.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+
+    return sortedEntries
+        .take(5)
+        .map((e) => MapEntry(productMap[e.key]!, e.value))
+        .toList();
   }
 
   // --- Helper Methods ---
