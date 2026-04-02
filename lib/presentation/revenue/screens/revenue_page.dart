@@ -6,6 +6,7 @@ import 'package:stock_pilot/presentation/widgets/app_drawer_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/presentation/revenue/viewmodel/revenue_provider.dart';
 import 'package:stock_pilot/presentation/revenue/widgets/revenue_card_widget.dart';
+import 'package:stock_pilot/presentation/revenue/widgets/sales_trends_widget.dart';
 
 class RevenuePage extends StatefulWidget {
   const RevenuePage({super.key});
@@ -18,7 +19,7 @@ class _RevenuePageState extends State<RevenuePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColourStyles.primaryColor,
+      backgroundColor: ColourStyles.primaryColor_3,
       // APP BAR
       appBar: const AppBarWidget(
         showLeading: false,
@@ -46,6 +47,8 @@ class _RevenuePageState extends State<RevenuePage> {
                   title: "Yearly Revenue",
                   amount: provider.yearlyRevenue,
                 ),
+                const SizedBox(height: 8),
+                const SalesTrendsWidget(),
               ],
             ),
           );
