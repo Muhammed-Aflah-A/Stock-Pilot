@@ -51,6 +51,7 @@ class DashboardProvider extends ChangeNotifier {
       brands.length,
       categories.length,
       turnover,
+      sales,
     );
     // Notify UI to rebuild
     notifyListeners();
@@ -80,11 +81,12 @@ class DashboardProvider extends ChangeNotifier {
     int brandCount,
     int categoryCount,
     double turnover,
+    List<SalesItems> allSales,
   ) {
     // Calculate different dashboard values
     final totalItems = calculateTotalItems(products);
     final inventoryValue = calculateInventoryValue(products);
-    final purchaseCost = calculatePurchaseCost(products);
+    final purchaseCost = calculatePurchaseCost(products, allSales);
     final lowStock = calculateLowStock(products);
     final outOfStock = calculateOutOfStock(products);
     // Create dashboard card models
@@ -130,13 +132,25 @@ class DashboardProvider extends ChangeNotifier {
     return total;
   }
 
-  // Calculates total purchase cost of all products
-  double calculatePurchaseCost(List<ProductModel> products) {
+  // Calculates total purchase cost of all active products (Stock + Sold)
+  double calculatePurchaseCost(List<ProductModel> products, List<SalesItems> allSales) {
+    // 1. Create a map of total units sold per product name
+    final Map<String, int> soldCounts = {};
+    for (var sale in allSales) {
+      for (var item in sale.items) {
+        final name = item.product.productName ?? "Unknown";
+        soldCounts[name] = (soldCounts[name] ?? 0) + item.quantity;
+      }
+    }
+
+    // 2. Sum (current stock + sold units) * purchase rate for each product
     double total = 0;
     for (var product in products) {
-      final count = int.tryParse(product.itemCount ?? '0') ?? 0;
+      final currentStock = int.tryParse(product.itemCount ?? '0') ?? 0;
+      final soldUnits = soldCounts[product.productName] ?? 0;
       final rate = double.tryParse(product.purchaseRate ?? '0') ?? 0;
-      total += count * rate;
+      
+      total += (currentStock + soldUnits) * rate;
     }
     return total;
   }
