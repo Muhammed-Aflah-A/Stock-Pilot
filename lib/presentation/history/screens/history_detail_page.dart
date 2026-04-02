@@ -96,20 +96,12 @@ class HistoryDetailPage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // ACTIVITY TITLE (STATUS)
-                        Text(
-                          activity.title ?? "Activity",
-                          style: TextStyles.dialogueHeading(
-                            context,
-                          ).copyWith(color: _getStatusColor(activity.title)),
-                        ),
-                        const SizedBox(height: 6),
-                        // PRODUCT NAME
+                        // PRODUCT NAME (BIG TITLE)
                         Text(
                           activity.product ?? "Unknown Product",
-                          style: TextStyles.cardHeading(context),
+                          style: TextStyles.dialogueHeading(context),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 8),
                         // CATEGORY
                         Text(
                           activity.category ?? "General",
@@ -194,20 +186,6 @@ class HistoryDetailPage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Color _getStatusColor(String? status) {
-    if (status == null) return ColourStyles.colorGrey;
-    if (status.contains('Deleted')) {
-      return ColourStyles.colorRed;
-    }
-    if (status.contains('Added') || status.contains('Sold')) {
-      return ColourStyles.colorGreen;
-    }
-    if (status.contains('Updated')) {
-      return Colors.blue;
-    }
-    return ColourStyles.colorGrey;
   }
 
   void _showImagePreview(BuildContext context) {
