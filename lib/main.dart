@@ -22,14 +22,14 @@ import 'package:stock_pilot/presentation/category/viewmodel/category_provider.da
 import 'package:stock_pilot/presentation/dashboard/screens/dashboard.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
-import 'package:stock_pilot/presentation/indroduction/screens/onboarding_screen_1.dart';
-import 'package:stock_pilot/presentation/indroduction/screens/splash_screen.dart';
-import 'package:stock_pilot/presentation/indroduction/screens/onboarding_screen_2.dart';
-import 'package:stock_pilot/presentation/indroduction/screens/onboarding_screen_3.dart';
-import 'package:stock_pilot/presentation/indroduction/screens/profile_creation.dart';
-import 'package:stock_pilot/presentation/indroduction/view_model/onboarding_screen_provider.dart';
-import 'package:stock_pilot/presentation/indroduction/view_model/profile_creation_provider.dart';
-import 'package:stock_pilot/presentation/indroduction/view_model/splash_screen_provider.dart';
+import 'package:stock_pilot/presentation/introduction/screens/onboarding_screen_1.dart';
+import 'package:stock_pilot/presentation/introduction/screens/splash_screen.dart';
+import 'package:stock_pilot/presentation/introduction/screens/onboarding_screen_2.dart';
+import 'package:stock_pilot/presentation/introduction/screens/onboarding_screen_3.dart';
+import 'package:stock_pilot/presentation/introduction/screens/profile_creation.dart';
+import 'package:stock_pilot/presentation/introduction/view_model/onboarding_screen_provider.dart';
+import 'package:stock_pilot/presentation/introduction/view_model/profile_creation_provider.dart';
+import 'package:stock_pilot/presentation/introduction/view_model/splash_screen_provider.dart';
 import 'package:stock_pilot/presentation/low%20stock/screens/lowstock_list_page.dart';
 import 'package:stock_pilot/presentation/low%20stock/viewmodel/lowStock_provider.dart';
 import 'package:stock_pilot/presentation/out%20of%20stock/screens/out_of_stock_list_page.dart';
@@ -151,7 +151,13 @@ class StockPilot extends StatelessWidget {
           child: child,
         );
       },
+      // Added global keyboard dismissal on every navigation transition
+      navigatorObservers: [
+        RouteObserver<ModalRoute<void>>(),
+      ],
       onGenerateRoute: (settings) {
+        // Ensure keyboard is dismissed before any navigation starts
+        FocusManager.instance.primaryFocus?.unfocus();
         switch (settings.name) {
           //Fade animation
           case AppRoutes.splashScreen:

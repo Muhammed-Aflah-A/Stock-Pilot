@@ -3,15 +3,14 @@ import 'package:stock_pilot/core/assets/app_images.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
-import 'package:stock_pilot/presentation/indroduction/widgets/appname_widget.dart';
-import 'package:stock_pilot/presentation/indroduction/widgets/hero_image_widget.dart';
-import 'package:stock_pilot/presentation/indroduction/widgets/skip_button_widget.dart';
-import 'package:stock_pilot/presentation/widgets/back_button_widget.dart';
+import 'package:stock_pilot/presentation/introduction/widgets/appname_widget.dart';
+import 'package:stock_pilot/presentation/introduction/widgets/hero_image_widget.dart';
+import 'package:stock_pilot/presentation/introduction/widgets/skip_button_widget.dart';
 import 'package:stock_pilot/presentation/widgets/next_button_widget.dart';
 
-// Second onboarding screen.
-class OnboardingScreen2 extends StatelessWidget {
-  const OnboardingScreen2({super.key});
+// First onboarding screen.
+class OnboardingScreen1 extends StatelessWidget {
+  const OnboardingScreen1({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,39 +38,36 @@ class OnboardingScreen2 extends StatelessWidget {
                         flex: 6,
                         child: HeroImageWidget(
                           heightFactor: 0.3,
-                          imagePath: AppImages.onboardingScreen2,
+                          imagePath: AppImages.onboardingScreen1,
                         ),
                       ),
                       Spacer(flex: 3),
                       // Main headline
                       Text(
-                        "Never Run Out Again",
+                        "Track Your Stock Effortlessly",
                         style: TextStyles.tagLine(context),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 12),
                       // Supporting description
                       Text(
-                        "Get alerts for low-stock items and restock at the right time",
+                        "Stay updated with real-time item counts and accurate stock levels",
                         style: TextStyles.tagLineCaption(context),
                         textAlign: TextAlign.center,
                       ),
                       Spacer(flex: 1),
                       // Progress indicator
-                      Text("2/3", style: TextStyles.tagLineCaption(context)),
+                      Text("1/3", style: TextStyles.tagLineCaption(context)),
                       Spacer(flex: 1),
                     ],
                   ),
                 ),
                 SizedBox(height: 8),
-                // Navigate back to previous onbvoarding screen
-                BackbuttonWidget(),
-                SizedBox(height: 12),
                 // Navigate to next onboarding screen
                 NextbuttonWidget(
                   text: "Next",
                   onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.onBoardingScreen_3);
+                    Navigator.pushNamed(context, AppRoutes.onBoardingScreen_2);
                   },
                 ),
               ],

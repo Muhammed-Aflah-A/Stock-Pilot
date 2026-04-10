@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/assets/app_images.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
-import 'package:stock_pilot/presentation/indroduction/view_model/splash_screen_provider.dart';
-import 'package:stock_pilot/presentation/indroduction/widgets/animated_text_widget.dart';
-import 'package:stock_pilot/presentation/indroduction/widgets/hero_image_widget.dart';
+import 'package:stock_pilot/presentation/introduction/view_model/splash_screen_provider.dart';
+import 'package:stock_pilot/presentation/introduction/widgets/animated_text_widget.dart';
+import 'package:stock_pilot/presentation/introduction/widgets/hero_image_widget.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

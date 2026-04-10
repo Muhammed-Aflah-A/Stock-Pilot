@@ -83,7 +83,7 @@ class TextStyles {
     ),
   );
 
-  static TextStyle indroductionHeading(BuildContext context) => _responsive(
+  static TextStyle introductionHeading(BuildContext context) => _responsive(
     context,
     const TextStyle(
       fontSize: 40,
@@ -92,7 +92,7 @@ class TextStyles {
     ),
   );
 
-  static TextStyle indroductionCaption(BuildContext context) => _responsive(
+  static TextStyle introductionCaption(BuildContext context) => _responsive(
     context,
     const TextStyle(
       fontSize: 16,

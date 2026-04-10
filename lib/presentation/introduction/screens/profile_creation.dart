@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
-import 'package:stock_pilot/presentation/indroduction/view_model/profile_creation_provider.dart';
-import 'package:stock_pilot/presentation/indroduction/widgets/create_profile_button_widget.dart';
-import 'package:stock_pilot/presentation/indroduction/widgets/profile_creation_form_widget.dart';
+import 'package:stock_pilot/presentation/introduction/view_model/profile_creation_provider.dart';
+import 'package:stock_pilot/presentation/introduction/widgets/create_profile_button_widget.dart';
+import 'package:stock_pilot/presentation/introduction/widgets/profile_creation_form_widget.dart';
 import 'package:stock_pilot/presentation/widgets/permission_dialog_widget.dart';
 import 'package:stock_pilot/presentation/widgets/user_avatar_edit_widget.dart';
 
@@ -41,13 +41,13 @@ class ProfileCreation extends StatelessWidget {
                       // Screen heading
                       Text(
                         "Get Started!",
-                        style: TextStyles.indroductionHeading(context),
+                        style: TextStyles.introductionHeading(context),
                       ),
                       SizedBox(height: 6),
                       // Short description below heading
                       Text(
                         "Create a profile to manage inventory",
-                        style: TextStyles.indroductionCaption(context),
+                        style: TextStyles.introductionCaption(context),
                       ),
                       SizedBox(height: size.height * 0.05),
                       Center(

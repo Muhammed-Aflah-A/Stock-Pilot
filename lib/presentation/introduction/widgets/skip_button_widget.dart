@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/button_styles.dart';
-import 'package:stock_pilot/presentation/indroduction/view_model/onboarding_screen_provider.dart';
+import 'package:stock_pilot/presentation/introduction/view_model/onboarding_screen_provider.dart';
 
 // Button created to skip onboarding screens
 class SkipButtonWidget extends StatelessWidget {

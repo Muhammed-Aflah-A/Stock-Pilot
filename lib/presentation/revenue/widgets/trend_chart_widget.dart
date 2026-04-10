@@ -64,8 +64,8 @@ class TrendChartWidget extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  ColourStyles.colorBlue.withOpacity(0.2),
-                  ColourStyles.colorBlue.withOpacity(0.0),
+                  ColourStyles.colorBlue.withValues(alpha: 0.2),
+                  ColourStyles.colorBlue.withValues(alpha: 0.0),
                 ],
               ),
             ),

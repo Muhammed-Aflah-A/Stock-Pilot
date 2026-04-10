@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/utils/keyboard_type_util.dart';
 import 'package:stock_pilot/core/utils/select_validator_util.dart';
-import 'package:stock_pilot/presentation/indroduction/view_model/profile_creation_provider.dart';
+import 'package:stock_pilot/presentation/introduction/view_model/profile_creation_provider.dart';
 import 'package:stock_pilot/presentation/widgets/form_widget.dart';
 
 // Widget responsible for rendering the profile creation form.

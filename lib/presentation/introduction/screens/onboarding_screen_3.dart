@@ -4,10 +4,10 @@ import 'package:stock_pilot/core/assets/app_images.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
-import 'package:stock_pilot/presentation/indroduction/view_model/onboarding_screen_provider.dart';
-import 'package:stock_pilot/presentation/indroduction/widgets/appname_widget.dart';
-import 'package:stock_pilot/presentation/indroduction/widgets/hero_image_widget.dart';
-import 'package:stock_pilot/presentation/indroduction/widgets/skip_button_widget.dart';
+import 'package:stock_pilot/presentation/introduction/view_model/onboarding_screen_provider.dart';
+import 'package:stock_pilot/presentation/introduction/widgets/appname_widget.dart';
+import 'package:stock_pilot/presentation/introduction/widgets/hero_image_widget.dart';
+import 'package:stock_pilot/presentation/introduction/widgets/skip_button_widget.dart';
 import 'package:stock_pilot/presentation/widgets/back_button_widget.dart';
 import 'package:stock_pilot/presentation/widgets/next_button_widget.dart';
 
