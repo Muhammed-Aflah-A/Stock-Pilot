@@ -18,6 +18,8 @@ class SortButtonWidget<T> extends StatelessWidget {
   bool get _isActive => currentValue != defaultValue;
   // Opens the sort bottom sheet modal
   void _openSortSheet(BuildContext context) {
+    // Dismiss keyboard if any text field is focused
+    FocusManager.instance.primaryFocus?.unfocus();
     showModalBottomSheet(
       context: context,
       // Transparent background allows custom modal styling

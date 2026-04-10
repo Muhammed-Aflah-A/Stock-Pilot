@@ -9,6 +9,8 @@ class FilterButtonWidget extends StatelessWidget {
   const FilterButtonWidget({super.key, required this.provider});
   // Opens the filter bottom sheet
   void _openSheet(BuildContext context) {
+    // Dismiss keyboard if any text field is focused
+    FocusManager.instance.primaryFocus?.unfocus();
     // Initialize temporary filters before showing the sheet
     provider.initTempFilters();
     showModalBottomSheet(
