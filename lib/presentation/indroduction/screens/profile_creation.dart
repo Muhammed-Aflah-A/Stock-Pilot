@@ -16,6 +16,7 @@ class ProfileCreation extends StatelessWidget {
   Widget build(BuildContext context) {
     // Get screen size for responsive spacing
     final size = MediaQuery.of(context).size;
+    final bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
       // Allows UI to adjust when keyboard appears
@@ -74,15 +75,17 @@ class ProfileCreation extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 12),
-              // Button that triggers profile creation
-              CreateProfileButtonWidget(),
-              SizedBox(height: 8),
-              // Small caption under the button
-              Text(
-                "Manage your inventory",
-                style: TextStyles.buttonCaption(context),
-              ),
+              if (!isKeyboardVisible) ...[
+                const SizedBox(height: 12),
+                // Button that triggers profile creation
+                const CreateProfileButtonWidget(),
+                const SizedBox(height: 8),
+                // Small caption under the button
+                Text(
+                  "Manage your inventory",
+                  style: TextStyles.buttonCaption(context),
+                ),
+              ],
             ],
           ),
         ),
