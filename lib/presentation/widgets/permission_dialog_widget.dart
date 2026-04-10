@@ -3,6 +3,7 @@ import 'package:stock_pilot/core/interfaces/image_permission_handler_interface.d
 import 'package:stock_pilot/core/theme/button_styles.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
+import 'package:stock_pilot/core/utils/dialog_util.dart';
 import 'package:stock_pilot/presentation/widgets/action_confirmation_widget.dart';
 import 'package:stock_pilot/presentation/widgets/option_tile_widget.dart';
 
@@ -24,9 +25,8 @@ class PermissionDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     // Get screen size
     final size = MediaQuery.sizeOf(context);
-    // Dialog width = 85% of screen width
-    // clamp keeps it between 280 and 420 for better layout
-    final dialogWidth = (size.width * 0.85).clamp(280.0, 420.0);
+    // Dialog width calculated using standard utility
+    final dialogWidth = DialogUtil.getDialogWidth(context);
     // Spacing between widgets depending on screen height
     final spacing = (size.height * 0.02).clamp(12.0, 20.0);
 

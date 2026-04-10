@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/button_styles.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
+import 'package:stock_pilot/core/utils/dialog_util.dart';
 import 'package:stock_pilot/core/utils/keyboard_type_util.dart';
 import 'package:stock_pilot/core/utils/select_validator_util.dart';
 import 'package:stock_pilot/core/utils/snackbar_util.dart';
@@ -60,12 +61,11 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // Get screen width directly from context
-    final screenWidth = MediaQuery.sizeOf(context).width;
-    final dialogWidth = (screenWidth * 0.85).clamp(280.0, 500.0);
+    final dialogWidth = DialogUtil.getDialogWidth(context);
     return AlertDialog(
       backgroundColor: ColourStyles.primaryColor,
       // Dialog title
+      titlePadding: const EdgeInsets.only(top: 24, bottom: 8),
       title: Center(
         child: Text(
           "${widget.isEditing ? 'Edit' : 'Add'} ${widget.title}",
@@ -74,6 +74,7 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
         ),
       ),
       // Input field
+      contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       content: SizedBox(
         width: dialogWidth,
         child: Form(
@@ -81,6 +82,7 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
           child: TextFormField(
             controller: controller,
             maxLength: widget.maxLength,
+            textAlign: TextAlign.center,
             // Keyboard type based on field
             keyboardType: KeyboardTypeUtil.getKeyboardType(widget.fieldType),
             decoration: InputDecoration(
@@ -105,7 +107,7 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
         ),
       ),
       // Action buttons
-      actionsPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       actions: [
         Row(
           children: [

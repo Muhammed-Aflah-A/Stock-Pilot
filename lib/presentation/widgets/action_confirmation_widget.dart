@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/button_styles.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
+import 'package:stock_pilot/core/utils/dialog_util.dart';
 import 'package:stock_pilot/core/utils/snackbar_util.dart';
 
 class ActionConfirmationWidget extends StatelessWidget {
@@ -31,43 +32,48 @@ class ActionConfirmationWidget extends StatelessWidget {
       surfaceTintColor: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       // TITLE
-      titlePadding: EdgeInsets.only(top: size.height * 0.03),
-      title: Text(
-        title,
-        style: TextStyles.dialogueHeading(context),
-        textAlign: TextAlign.center,
+      titlePadding: const EdgeInsets.only(top: 24, bottom: 8),
+      title: Center(
+        child: Text(
+          title,
+          style: TextStyles.dialogueHeading(context),
+          textAlign: TextAlign.center,
+        ),
       ),
       // CONTENT
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: size.width * 0.06,
-        vertical: size.height * 0.02,
-      ),
-      content: Text(
-        'Are you sure you want to $actionText "$displayName"?',
-        style: TextStyles.primaryText(
-          context,
-        ).copyWith(color: actionColor, fontSize: size.width * 0.035),
-        textAlign: TextAlign.center,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      content: SizedBox(
+        width: DialogUtil.getDialogWidth(context),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Are you sure you want to $actionText "$displayName"?',
+              style: TextStyles.primaryText(
+                context,
+              ).copyWith(color: actionColor, fontSize: size.width * 0.035),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 12), // Visual compensation forFormField height
+          ],
+        ),
       ),
       // ACTIONS
-      actionsPadding: EdgeInsets.only(bottom: size.height * 0.02),
+      actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       actions: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // CANCEL
-            SizedBox(
-              width: size.width * 0.3,
+            Expanded(
               child: ElevatedButton(
                 onPressed: () => Navigator.pop(context),
                 style: ButtonStyles.smallDialogBackButton(context),
                 child: Text('Cancel', style: TextStyles.primaryText(context)),
               ),
             ),
-            SizedBox(width: size.width * 0.03),
+            SizedBox(width: DialogUtil.getDialogWidth(context) * 0.05),
             // CONFIRM
-            SizedBox(
-              width: size.width * 0.3,
+            Expanded(
               child: ElevatedButton(
                 onPressed: () async {
                   final success = await onConfirm();
