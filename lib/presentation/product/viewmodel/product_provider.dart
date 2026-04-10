@@ -204,7 +204,9 @@ class ProductProvider extends FilterProviderInterface
   }
 
   // Remove selected image from form
-  void removeImage(int index) {
+  @override
+  void removeImage({int? index}) {
+    if (index == null || index >= productImages.length) return;
     productImages.removeAt(index);
     productImages.add(null);
     notifyListeners();

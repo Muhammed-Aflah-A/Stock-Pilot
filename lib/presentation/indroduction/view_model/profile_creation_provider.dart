@@ -63,6 +63,13 @@ class ProfileCreationProvider
     notifyListeners();
   }
 
+  // Removes the selected profile image
+  @override
+  void removeImage({int? index}) {
+    profileImage = null;
+    notifyListeners();
+  }
+
   // Opens gallery and stores the selected image path
   Future<void> openLibrary() async {
     final path = await ImageSelectorUtil.openLibrary();

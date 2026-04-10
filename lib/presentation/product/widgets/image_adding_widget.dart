@@ -110,7 +110,7 @@ class ImageAddingWidget extends StatelessWidget {
                                     onTap: () {
                                       context
                                           .read<ProductProvider>()
-                                          .removeImage(index);
+                                          .removeImage(index: index);
                                     },
                                     child: Container(
                                       padding: const EdgeInsets.all(4),

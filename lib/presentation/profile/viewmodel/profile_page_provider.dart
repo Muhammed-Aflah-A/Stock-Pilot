@@ -52,6 +52,15 @@ class ProfilePageProvider
     notifyListeners();
   }
 
+  // Removes the user's profile image
+  @override
+  void removeImage({int? index}) {
+    if (user != null) {
+      user!.profileImage = null;
+      updateUser();
+    }
+  }
+
   // Opens gallery to select an image
   Future<void> openLibrary() async {
     final path = await ImageSelectorUtil.openLibrary();

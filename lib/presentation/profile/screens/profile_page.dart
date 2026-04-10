@@ -57,6 +57,7 @@ class ProfilePage extends StatelessWidget {
                             context: context,
                             builder: (_) => PermissionDialog(
                               provider: context.read<ProfilePageProvider>(),
+                              showRemoveOption: user?.profileImage != null,
                             ),
                           );
                         },

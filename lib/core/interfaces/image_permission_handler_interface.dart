@@ -8,4 +8,6 @@ abstract class ImagePermissionHandler {
     required bool isCamera,
     int? index,
   });
+
+  void removeImage({int? index});
 }

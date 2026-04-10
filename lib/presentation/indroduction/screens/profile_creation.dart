@@ -58,11 +58,13 @@ class ProfileCreation extends StatelessWidget {
                               imagePath: provider.profileImage,
                               onPressed: () {
                                 // Dialog used to choose camera or gallery
-                                showDialog(
-                                  context: context,
-                                  builder: (_) =>
-                                      PermissionDialog(provider: provider),
-                                );
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) => PermissionDialog(
+                                      provider: provider,
+                                      showRemoveOption: provider.profileImage != null,
+                                    ),
+                                  );
                               },
                             );
                           },

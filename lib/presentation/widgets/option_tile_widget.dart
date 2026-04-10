@@ -8,11 +8,14 @@ class OptionTileWidget extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
 
+  final Color? color;
+
   const OptionTileWidget({
     super.key,
     required this.icon,
     required this.title,
     required this.onTap,
+    this.color,
   });
 
   @override
@@ -26,11 +29,18 @@ class OptionTileWidget extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Row(
             children: [
-              Icon(icon, size: 24, color: ColourStyles.primaryColor_2),
+              Icon(
+                icon,
+                size: 24,
+                color: color ?? ColourStyles.primaryColor_2,
+              ),
               SizedBox(width: 16),
               Expanded(
                 // Title label
-                child: Text(title, style: TextStyles.primaryText(context)),
+                child: Text(
+                  title,
+                  style: TextStyles.primaryText(context).copyWith(color: color),
+                ),
               ),
             ],
           ),
