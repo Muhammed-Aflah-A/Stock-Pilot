@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
+import 'package:stock_pilot/core/utils/number_formatter_util.dart';
 
 class RevenueCardWidget extends StatelessWidget {
   final String title;
@@ -15,8 +16,6 @@ class RevenueCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currencyFormat = NumberFormat.simpleCurrency();
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Container(
@@ -42,7 +41,7 @@ class RevenueCardWidget extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              currencyFormat.format(amount),
+              NumberFormatterUtil.formatCurrency(amount),
               style: TextStyles.valueText(
                 context,
               ).copyWith(color: ColourStyles.primaryColor_2),

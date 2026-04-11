@@ -3,15 +3,13 @@ import 'package:stock_pilot/core/assets/app_images.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/core/utils/image_util.dart';
+import 'package:stock_pilot/core/utils/number_formatter_util.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
 
 class ActivityCardWidget extends StatelessWidget {
   final DasboardActivity activity;
 
-  const ActivityCardWidget({
-    super.key,
-    required this.activity,
-  });
+  const ActivityCardWidget({super.key, required this.activity});
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +24,7 @@ class ActivityCardWidget extends StatelessWidget {
       child: Card(
         elevation: 2,
         shape: RoundedRectangleBorder(
-          side: const BorderSide(
-            color: ColourStyles.borderColor,
-            width: 1,
-          ),
+          side: const BorderSide(color: ColourStyles.borderColor, width: 1),
           borderRadius: borderRadius,
         ),
         color: ColourStyles.primaryColor_3,
@@ -86,9 +81,10 @@ class ActivityCardWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    '$sign${activity.unit}',
+                    '$sign${NumberFormatterUtil.format(activity.unit ?? 0)}',
                     style: TextStyles.activityCardUnit(context).copyWith(
-                      color: (activity.isPositive == true ||
+                      color:
+                          (activity.isPositive == true ||
                               activity.title == 'Item Sold')
                           ? ColourStyles.colorGreen
                           : ColourStyles.colorRed,

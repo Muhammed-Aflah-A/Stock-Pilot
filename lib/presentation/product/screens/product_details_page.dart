@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
+import 'package:stock_pilot/core/utils/number_formatter_util.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
 import 'package:stock_pilot/presentation/product/widgets/add_cart_button_widget.dart';
@@ -110,7 +111,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         // PRICE
                         DetailRowWidget(
                           label: 'Price',
-                          value: '\$${product.salesRate}',
+                          value: NumberFormatterUtil.formatCurrency(
+                            double.tryParse(product.salesRate ?? '0') ?? 0,
+                          ),
                           showDivider: true,
                         ),
                         // STOCK STATUS

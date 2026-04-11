@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/core/utils/image_util.dart';
+import 'package:stock_pilot/core/utils/number_formatter_util.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
 import 'package:stock_pilot/presentation/widgets/image_preview_screen.dart';
@@ -57,7 +58,8 @@ class HistoryDetailPage extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: Hero(
-                          tag: activity.image ??
+                          tag:
+                              activity.image ??
                               'history_image_${activity.date}_${activity.product}',
                           child: Image(
                             image: ImageUtil.getProductImage(activity.image),
@@ -122,7 +124,7 @@ class HistoryDetailPage extends StatelessWidget {
                         DetailRowWidget(
                           label: 'Quantity Change',
                           value:
-                              '${activity.isPositive == true ? "+" : "-"}${activity.unit} ${activity.label}',
+                              '${activity.isPositive == true ? "+" : "-"}${NumberFormatterUtil.format(activity.unit ?? 0)} ${activity.label}',
                           showDivider: true,
                           valueColor:
                               (activity.isPositive == true ||

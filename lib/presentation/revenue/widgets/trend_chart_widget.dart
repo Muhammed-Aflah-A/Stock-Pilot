@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
+import 'package:stock_pilot/core/utils/number_formatter_util.dart';
 import 'package:stock_pilot/presentation/revenue/viewmodel/revenue_provider.dart';
 
 class TrendChartWidget extends StatelessWidget {
@@ -24,9 +25,15 @@ class TrendChartWidget extends StatelessWidget {
       LineChartData(
         gridData: const FlGridData(show: false),
         titlesData: FlTitlesData(
-          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          topTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          leftTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
@@ -77,7 +84,7 @@ class TrendChartWidget extends StatelessWidget {
             getTooltipItems: (touchedSpots) {
               return touchedSpots.map((spot) {
                 return LineTooltipItem(
-                  "\$${spot.y.toStringAsFixed(2)}",
+                  NumberFormatterUtil.formatCurrency(spot.y),
                   const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -107,7 +114,8 @@ class TrendChartWidget extends StatelessWidget {
   }
 
   String _getTitle(double value) {
-    if (value < 0 || value >= spots.length && period != TrendPeriod.month) return "";
+    if (value < 0 || value >= spots.length && period != TrendPeriod.month)
+      return "";
     final now = DateTime.now();
     final index = value.toInt();
 

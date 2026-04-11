@@ -6,6 +6,7 @@ import 'package:stock_pilot/data/models/dasboard_model.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/data/service%20layer/hive_service_layer.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:stock_pilot/core/utils/number_formatter_util.dart';
 
 // Provider responsible for handling dashboard data and calculations
 class DashboardProvider extends ChangeNotifier {
@@ -198,10 +199,7 @@ class DashboardProvider extends ChangeNotifier {
 
   // Formats currency values for dashboard display
   String formatCurrency(double value) {
-    if (value >= 1000) {
-      return "\$${(value / 1000).toStringAsFixed(1)}k";
-    }
-    return "\$${value.toStringAsFixed(0)}";
+    return NumberFormatterUtil.formatCurrency(value);
   }
 
   // Adds a new activity to Hive and refreshes dashboard

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
+import 'package:stock_pilot/core/utils/number_formatter_util.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
 
 class ProductListTileWidget extends StatelessWidget {
@@ -77,6 +78,7 @@ class ProductListTileWidget extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
+
                     /// Stock Status
                     Row(
                       children: [
@@ -102,7 +104,9 @@ class ProductListTileWidget extends StatelessWidget {
               ),
               // Price
               Text(
-                '\$ ${product.salesRate}',
+                NumberFormatterUtil.formatCurrency(
+                  double.tryParse(product.salesRate ?? '0') ?? 0,
+                ),
                 style: TextStyles.productPriceText(context),
               ),
             ],

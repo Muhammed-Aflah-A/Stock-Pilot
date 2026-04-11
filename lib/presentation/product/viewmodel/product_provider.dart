@@ -14,6 +14,7 @@ import 'package:stock_pilot/data/models/dasboard_model.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/data/service%20layer/hive_service_layer.dart';
 import 'package:intl/intl.dart';
+import 'package:stock_pilot/core/utils/number_formatter_util.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 
 // Sorting options available for product list
@@ -638,11 +639,11 @@ class ProductProvider extends FilterProviderInterface
     final count = int.tryParse(product.itemCount ?? '0') ?? 0;
     final lowStock = int.tryParse(product.lowStockCount ?? '0') ?? 0;
     if (count == 0) {
-      return 'Out of stock : $count';
+      return 'Out of stock : ${NumberFormatterUtil.format(count)}';
     } else if (count <= lowStock) {
-      return 'Low stock : $count';
+      return 'Low stock : ${NumberFormatterUtil.format(count)}';
     } else {
-      return 'In stock : $count';
+      return 'In stock : ${NumberFormatterUtil.format(count)}';
     }
   }
 }
