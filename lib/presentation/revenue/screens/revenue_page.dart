@@ -32,24 +32,33 @@ class _RevenuePageState extends State<RevenuePage> {
       drawer: const AppDrawer(),
       body: Consumer<RevenueProvider>(
         builder: (context, provider, child) {
+          final isCustom = provider.selectedPeriod == TrendPeriod.custom;
+          
           return SingleChildScrollView(
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                RevenueCardWidget(
-                  title: "Daily Revenue",
-                  amount: provider.dailyRevenue,
-                ),
-                RevenueCardWidget(
-                  title: "Monthly Revenue",
-                  amount: provider.monthlyRevenue,
-                ),
-                RevenueCardWidget(
-                  title: "Yearly Revenue",
-                  amount: provider.yearlyRevenue,
-                ),
-                const SizedBox(height: 8),
                 const SalesTrendsWidget(),
+                const SizedBox(height: 20),
+                if (isCustom)
+                  RevenueCardWidget(
+                    title: "Custom Range Revenue",
+                    amount: provider.totalForSelectedPeriod,
+                  )
+                else ...[
+                  RevenueCardWidget(
+                    title: "Daily Revenue",
+                    amount: provider.dailyRevenue,
+                  ),
+                  RevenueCardWidget(
+                    title: "Monthly Revenue",
+                    amount: provider.monthlyRevenue,
+                  ),
+                  RevenueCardWidget(
+                    title: "Yearly Revenue",
+                    amount: provider.yearlyRevenue,
+                  ),
+                ],
                 const SizedBox(height: 20),
                 const MostSoldItemsWidget(),
               ],

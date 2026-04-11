@@ -7,12 +7,14 @@ import 'package:stock_pilot/data/models/cart_model.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:hive_flutter/adapters.dart';
 
-enum TrendPeriod { day, week, month, sixMonths, year }
+enum TrendPeriod { day, week, month, sixMonths, year, custom }
 
 class RevenueProvider extends ChangeNotifier {
   final HiveService hiveService;
   List<SalesItems> _sales = [];
   TrendPeriod _selectedPeriod = TrendPeriod.month;
+  DateTime? _customStartDate;
+  DateTime? _customEndDate;
 
   RevenueProvider({required this.hiveService}) {
     loadSales();
@@ -23,9 +25,18 @@ class RevenueProvider extends ChangeNotifier {
   }
 
   TrendPeriod get selectedPeriod => _selectedPeriod;
+  DateTime? get customStartDate => _customStartDate;
+  DateTime? get customEndDate => _customEndDate;
 
   void setPeriod(TrendPeriod period) {
     _selectedPeriod = period;
+    notifyListeners();
+  }
+
+  void setCustomRange(DateTime start, DateTime end) {
+    _customStartDate = start;
+    _customEndDate = end;
+    _selectedPeriod = TrendPeriod.custom;
     notifyListeners();
   }
 
@@ -73,10 +84,16 @@ class RevenueProvider extends ChangeNotifier {
         );
       case TrendPeriod.year:
         return yearlyRevenue;
+      case TrendPeriod.custom:
+        if (_customStartDate != null && _customEndDate != null) {
+          return _calculateTotalForRange(_customStartDate!, _customEndDate!);
+        }
+        return 0;
     }
   }
 
   double get percentageChange {
+    if (_selectedPeriod == TrendPeriod.custom) return 0; // Skip for custom
     final now = DateTime.now();
     double current = 0;
     double previous = 0;
@@ -116,6 +133,8 @@ class RevenueProvider extends ChangeNotifier {
           DateTime(now.year - 1, 12, 31),
         );
         break;
+      case TrendPeriod.custom:
+        return 0;
     }
 
     if (previous == 0) return current > 0 ? 100 : 0;
@@ -167,6 +186,25 @@ class RevenueProvider extends ChangeNotifier {
           spots.add(
             FlSpot(i.toDouble(), _calculateTotalForRange(monthStart, monthEnd)),
           );
+        }
+        break;
+      case TrendPeriod.custom:
+        if (_customStartDate != null && _customEndDate != null) {
+          final days = _customEndDate!.difference(_customStartDate!).inDays + 1;
+          if (days <= 60) {
+            // Show daily spots
+            for (int i = 0; i < days; i++) {
+              final date = _customStartDate!.add(Duration(days: i));
+              spots.add(FlSpot(i.toDouble(), _calculateTotalForDate(date)));
+            }
+          } else {
+            // Too many days for daily chart, group by month? 
+            // For now, let's just show daily and see.
+             for (int i = 0; i < days; i++) {
+              final date = _customStartDate!.add(Duration(days: i));
+              spots.add(FlSpot(i.toDouble(), _calculateTotalForDate(date)));
+            }
+          }
         }
         break;
     }

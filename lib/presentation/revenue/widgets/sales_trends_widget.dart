@@ -85,9 +85,60 @@ class SalesTrendsWidget extends StatelessWidget {
                     _buildPeriodButton(context, provider, TrendPeriod.month, "M"),
                     _buildPeriodButton(context, provider, TrendPeriod.sixMonths, "6M"),
                     _buildPeriodButton(context, provider, TrendPeriod.year, "Y"),
+                    _buildPeriodButton(context, provider, TrendPeriod.custom, "C"),
                   ],
                 ),
               ),
+              if (provider.selectedPeriod == TrendPeriod.custom) ...[
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildDateBox(
+                        context,
+                        "Start Date",
+                        provider.customStartDate,
+                        () async {
+                          final date = await showDatePicker(
+                            context: context,
+                            initialDate: provider.customStartDate ?? DateTime.now(),
+                            firstDate: DateTime(2020),
+                            lastDate: DateTime.now(),
+                          );
+                          if (date != null) {
+                            provider.setCustomRange(
+                              date,
+                              provider.customEndDate ?? DateTime.now(),
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _buildDateBox(
+                        context,
+                        "End Date",
+                        provider.customEndDate,
+                        () async {
+                          final date = await showDatePicker(
+                            context: context,
+                            initialDate: provider.customEndDate ?? DateTime.now(),
+                            firstDate: provider.customStartDate ?? DateTime(2020),
+                            lastDate: DateTime.now(),
+                          );
+                          if (date != null) {
+                            provider.setCustomRange(
+                              provider.customStartDate ?? DateTime.now(),
+                              date,
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
               const SizedBox(height: 30),
               // Chart
               SizedBox(
@@ -97,6 +148,7 @@ class SalesTrendsWidget extends StatelessWidget {
                   child: TrendChartWidget(
                     spots: provider.chartSpots,
                     period: provider.selectedPeriod,
+                    customStartDate: provider.customStartDate,
                   ),
                 ),
               ),
@@ -104,6 +156,47 @@ class SalesTrendsWidget extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildDateBox(
+    BuildContext context,
+    String label,
+    DateTime? date,
+    VoidCallback onTap,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        decoration: BoxDecoration(
+          color: ColourStyles.borderColor.withOpacity(0.5),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: ColourStyles.borderColor),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 10,
+                color: ColourStyles.captionColor,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              date != null
+                  ? DateFormat('dd - MMM - yyyy').format(date)
+                  : "Select",
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -117,7 +210,15 @@ class SalesTrendsWidget extends StatelessWidget {
 
     return Expanded(
       child: GestureDetector(
-        onTap: () => provider.setPeriod(period),
+        onTap: () {
+          if (period == TrendPeriod.custom) {
+            // If custom selected, just update state to show boxes if not already custom
+            // Actually, setPeriod is enough to trigger build
+            provider.setPeriod(period);
+          } else {
+            provider.setPeriod(period);
+          }
+        },
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
@@ -150,6 +251,8 @@ class SalesTrendsWidget extends StatelessWidget {
         return "Last 6 Months";
       case TrendPeriod.year:
         return "This Year";
+      case TrendPeriod.custom:
+        return "Custom Range";
     }
   }
 }
