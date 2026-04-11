@@ -141,7 +141,7 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
                       builder: (_) => ActionConfirmationWidget(
                         title: "Confirm Update",
                         actionText: "Update",
-                        displayName: controller.text.trim(),
+                        displayName: widget.title,
                         actionColor: ColourStyles.colorGreen,
                         showSnackbar: false, // Handled manually below
                         onConfirm: () async {

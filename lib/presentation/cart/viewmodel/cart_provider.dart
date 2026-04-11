@@ -210,6 +210,8 @@ class CartProvider with ChangeNotifier {
     formKey.currentState?.reset();
     // Clear cart
     await clearCart();
+    // Refresh global product state to update stock status lists (Low/Out of Stock)
+    await productProvider.loadProducts();
     return sale;
   }
 
