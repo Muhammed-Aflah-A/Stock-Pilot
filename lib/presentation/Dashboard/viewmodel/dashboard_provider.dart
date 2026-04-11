@@ -14,9 +14,9 @@ class DashboardProvider extends ChangeNotifier {
   DashboardProvider({required this.hiveService}) {
     loadActivities();
     // Listen for changes in the sales box to update dashboard dynamically
-    Hive.box<SalesItems>(HiveBoxes.sales)
-        .listenable()
-        .addListener(() => loadActivities());
+    Hive.box<SalesItems>(
+      HiveBoxes.sales,
+    ).listenable().addListener(() => loadActivities());
   }
   // Stores all dashboard activities
   List<DasboardActivity> allActivities = [];
@@ -60,19 +60,32 @@ class DashboardProvider extends ChangeNotifier {
   // Helper method to calculate monthly turnover from sales records
   double _calculateMonthlyTurnover(List<SalesItems> sales) {
     if (sales.isEmpty) return 0.0;
-    
+
     final now = DateTime.now();
     final currentMonth = now.month;
     final currentYear = now.year;
 
-    return sales.where((sale) {
-      try {
-        final saleDate = DateFormat('dd/MM/yyyy').parse(sale.date);
-        return saleDate.month == currentMonth && saleDate.year == currentYear;
-      } catch (e) {
-        return false;
-      }
-    }).fold(0.0, (sum, sale) => sum + sale.totalAmount);
+    return sales
+        .where((sale) {
+          DateTime? saleDate;
+          try {
+            if (sale.date.contains('/')) {
+              saleDate = DateFormat('dd/MM/yyyy', 'en_US').parse(sale.date);
+            } else {
+              saleDate = DateFormat(
+                'dd - MMM - yyyy',
+                'en_US',
+              ).parse(sale.date);
+            }
+          } catch (e) {
+            saleDate = null;
+          }
+
+          if (saleDate == null) return false;
+
+          return saleDate.month == currentMonth && saleDate.year == currentYear;
+        })
+        .fold(0.0, (sum, sale) => sum + sale.totalAmount);
   }
 
   // Builds all dashboard summary cards
@@ -133,7 +146,10 @@ class DashboardProvider extends ChangeNotifier {
   }
 
   // Calculates total purchase cost of all active products (Stock + Sold)
-  double calculatePurchaseCost(List<ProductModel> products, List<SalesItems> allSales) {
+  double calculatePurchaseCost(
+    List<ProductModel> products,
+    List<SalesItems> allSales,
+  ) {
     // 1. Create a map of total units sold per product name
     final Map<String, int> soldCounts = {};
     for (var sale in allSales) {
@@ -149,7 +165,7 @@ class DashboardProvider extends ChangeNotifier {
       final currentStock = int.tryParse(product.itemCount ?? '0') ?? 0;
       final soldUnits = soldCounts[product.productName] ?? 0;
       final rate = double.tryParse(product.purchaseRate ?? '0') ?? 0;
-      
+
       total += (currentStock + soldUnits) * rate;
     }
     return total;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/navigation/transition_animation.dart';
@@ -47,6 +48,7 @@ import 'package:stock_pilot/presentation/revenue/viewmodel/revenue_provider.dart
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('en_US', null);
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       statusBarColor: ColourStyles.primaryColor,
@@ -152,9 +154,7 @@ class StockPilot extends StatelessWidget {
         );
       },
       // Added global keyboard dismissal on every navigation transition
-      navigatorObservers: [
-        RouteObserver<ModalRoute<void>>(),
-      ],
+      navigatorObservers: [RouteObserver<ModalRoute<void>>()],
       onGenerateRoute: (settings) {
         // Ensure keyboard is dismissed before any navigation starts
         FocusManager.instance.primaryFocus?.unfocus();

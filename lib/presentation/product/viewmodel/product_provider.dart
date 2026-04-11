@@ -16,7 +16,6 @@ import 'package:stock_pilot/data/service%20layer/hive_service_layer.dart';
 import 'package:intl/intl.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 
-
 // Sorting options available for product list
 enum SortOption {
   priceLowToHigh,
@@ -65,13 +64,13 @@ class ProductProvider extends FilterProviderInterface
   int? editingIndex;
   // Index of the currently viewed product in ProductDetailsPage
   int? activeProductIndex;
-  
+
   // Set the active product for detailed viewing
   void setActiveProductIndex(int index) {
     activeProductIndex = index;
     notifyListeners();
   }
-  
+
   // Returns true when editing an existing product
   bool get isEditing => editingProduct != null;
   // List of brands used in dropdown
@@ -90,7 +89,9 @@ class ProductProvider extends FilterProviderInterface
   List<String> fullCategoryList = [];
   // Update category list when dashboard categories change
   void setCategories(List<CategoryModel> newCategories) {
-    fullCategoryList = newCategories.map((n) => n.category ?? 'Unknown').toList();
+    fullCategoryList = newCategories
+        .map((n) => n.category ?? 'Unknown')
+        .toList();
     // Reset selected category if it no longer exists
     if (category != null && !fullCategoryList.contains(category)) {
       category = null;
@@ -126,11 +127,11 @@ class ProductProvider extends FilterProviderInterface
       if (c <= l) return 'Low Stock';
       return 'In Stock';
     }).toSet();
-    
+
     if (counts.contains('In Stock')) statuses.add('In Stock');
     if (counts.contains('Low Stock')) statuses.add('Low Stock');
     if (counts.contains('Out of Stock')) statuses.add('Out of Stock');
-    
+
     return statuses;
   }
 
@@ -180,23 +181,23 @@ class ProductProvider extends FilterProviderInterface
     // Fetch multiple images from picker
     final paths = await ImageSelectorUtil.openLibraryMulti();
     if (paths == null || paths.isEmpty) return;
-    
+
     int pathIndex = 0;
     // Iterate until we run out of selected images or fill the array
     while (pathIndex < paths.length && productImages.contains(null)) {
       // Find the left-most empty slot linearly
       final emptyIndex = productImages.indexOf(null);
       if (emptyIndex == -1) break; // Safety break if board is full
-      
+
       // Request user to crop the image
       final cropped = await ImageCropUtil.cropImage(File(paths[pathIndex]));
-      
+
       // If user cropped successfully, fill the slot
       if (cropped != null) {
         final savedPath = await ImageUtil.saveImage(cropped);
         productImages[emptyIndex] = File(savedPath);
       }
-      
+
       // Always advance to the next selected image (handles both crop & cancel)
       pathIndex++;
     }
@@ -248,13 +249,13 @@ class ProductProvider extends FilterProviderInterface
     if (prices.isNotEmpty) {
       final newMaxPrice = prices.reduce((a, b) => a > b ? a : b);
       final newMinPrice = prices.reduce((a, b) => a < b ? a : b);
-      
+
       // If bounds changed, we might need to reset selections
       final boundsChanged = newMaxPrice != maxPrice || newMinPrice != minPrice;
-      
+
       maxPrice = newMaxPrice;
       minPrice = newMinPrice;
-      
+
       if (boundsChanged) {
         selectedMaxPrice = maxPrice;
         selectedMinPrice = minPrice;
@@ -298,7 +299,7 @@ class ProductProvider extends FilterProviderInterface
         unit: difference,
         label: isAddition ? 'units added' : 'units removed',
         isPositive: isAddition,
-        date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+        date: DateFormat('dd - MMM - yyyy', 'en_US').format(DateTime.now()),
         brand: newProduct.brand,
       );
       dashboard.addNewActivity(activity);
@@ -333,7 +334,7 @@ class ProductProvider extends FilterProviderInterface
     final form = secondFormKey.currentState;
     if (form == null || !form.validate()) return false;
     form.save();
-    
+
     final newProduct = ProductModel(
       productImages: productImages
           .where((img) => img != null)
@@ -348,13 +349,13 @@ class ProductProvider extends FilterProviderInterface
       itemCount: itemCount!,
       lowStockCount: lowStockCount!,
     );
-    
+
     if (isEditing) {
       await updateProduct(editingIndex!, newProduct, dashboard);
     } else {
       await addProduct(newProduct, dashboard);
     }
-    
+
     resetForm();
     clearEditing();
     return true;
@@ -397,13 +398,13 @@ class ProductProvider extends FilterProviderInterface
   // Selected filter values currently applied to product list
   Set<String> selectedCategories = {};
   Set<String> selectedBrands = {};
-  
+
   // Price boundaries found in products (used for price slider limits)
   @override
   double maxPrice = 100000;
   @override
   double minPrice = 0;
-  
+
   // Currently applied price filter selection
   double selectedMaxPrice = 100000;
   double selectedMinPrice = 0;

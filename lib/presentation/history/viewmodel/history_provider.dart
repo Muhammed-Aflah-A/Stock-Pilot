@@ -7,10 +7,7 @@ import 'package:stock_pilot/data/local/hive/hive_service.dart';
 import 'package:stock_pilot/data/models/cart_model.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
 
-enum HistorySortOption {
-  latest,
-  oldest,
-}
+enum HistorySortOption { latest, oldest }
 
 class HistoryProvider extends FilterProviderInterface {
   final HiveService hiveService;
@@ -18,9 +15,9 @@ class HistoryProvider extends FilterProviderInterface {
   HistoryProvider({required this.hiveService}) {
     loadData();
     // Listen for changes in the activity box to update history dynamically
-    Hive.box<DasboardActivity>(HiveBoxes.dashBoardActivity)
-        .listenable()
-        .addListener(() => loadData());
+    Hive.box<DasboardActivity>(
+      HiveBoxes.dashBoardActivity,
+    ).listenable().addListener(() => loadData());
   }
 
   List<SalesItems> sales = [];
@@ -122,7 +119,11 @@ class HistoryProvider extends FilterProviderInterface {
   DateTime? _tryParseDate(String? date) {
     if (date == null || date.isEmpty) return null;
     try {
-      return DateFormat('dd/MM/yyyy').parse(date);
+      if (date.contains('/')) {
+        return DateFormat('dd/MM/yyyy', 'en_US').parse(date);
+      } else {
+        return DateFormat('dd - MMM - yyyy', 'en_US').parse(date);
+      }
     } catch (e) {
       return null;
     }

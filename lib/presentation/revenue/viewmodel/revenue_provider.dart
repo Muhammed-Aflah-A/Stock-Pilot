@@ -17,9 +17,9 @@ class RevenueProvider extends ChangeNotifier {
   RevenueProvider({required this.hiveService}) {
     loadSales();
     // Listen for changes in the sales box to update revenue dynamically
-    Hive.box<SalesItems>(HiveBoxes.sales)
-        .listenable()
-        .addListener(() => loadSales());
+    Hive.box<SalesItems>(
+      HiveBoxes.sales,
+    ).listenable().addListener(() => loadSales());
   }
 
   TrendPeriod get selectedPeriod => _selectedPeriod;
@@ -44,18 +44,12 @@ class RevenueProvider extends ChangeNotifier {
 
   double get monthlyRevenue {
     final now = DateTime.now();
-    return _calculateTotalForRange(
-      DateTime(now.year, now.month, 1),
-      now,
-    );
+    return _calculateTotalForRange(DateTime(now.year, now.month, 1), now);
   }
 
   double get yearlyRevenue {
     final now = DateTime.now();
-    return _calculateTotalForRange(
-      DateTime(now.year, 1, 1),
-      now,
-    );
+    return _calculateTotalForRange(DateTime(now.year, 1, 1), now);
   }
 
   // --- Trend Metrics ---
@@ -90,7 +84,9 @@ class RevenueProvider extends ChangeNotifier {
     switch (_selectedPeriod) {
       case TrendPeriod.day:
         current = dailyRevenue;
-        previous = _calculateTotalForDate(now.subtract(const Duration(days: 1)));
+        previous = _calculateTotalForDate(
+          now.subtract(const Duration(days: 1)),
+        );
         break;
       case TrendPeriod.week:
         current = totalForSelectedPeriod;
@@ -135,7 +131,12 @@ class RevenueProvider extends ChangeNotifier {
     switch (_selectedPeriod) {
       case TrendPeriod.day:
         // Showing last 2 days to show a trend line
-        spots.add(FlSpot(0, _calculateTotalForDate(now.subtract(const Duration(days: 1)))));
+        spots.add(
+          FlSpot(
+            0,
+            _calculateTotalForDate(now.subtract(const Duration(days: 1))),
+          ),
+        );
         spots.add(FlSpot(1, dailyRevenue));
         break;
       case TrendPeriod.week:
@@ -154,14 +155,18 @@ class RevenueProvider extends ChangeNotifier {
         for (int i = 0; i < 6; i++) {
           final monthStart = DateTime(now.year, now.month - (5 - i), 1);
           final monthEnd = DateTime(now.year, now.month - (5 - i) + 1, 0);
-          spots.add(FlSpot(i.toDouble(), _calculateTotalForRange(monthStart, monthEnd)));
+          spots.add(
+            FlSpot(i.toDouble(), _calculateTotalForRange(monthStart, monthEnd)),
+          );
         }
         break;
       case TrendPeriod.year:
         for (int i = 0; i < 12; i++) {
           final monthStart = DateTime(now.year, i + 1, 1);
           final monthEnd = DateTime(now.year, i + 2, 0);
-          spots.add(FlSpot(i.toDouble(), _calculateTotalForRange(monthStart, monthEnd)));
+          spots.add(
+            FlSpot(i.toDouble(), _calculateTotalForRange(monthStart, monthEnd)),
+          );
         }
         break;
     }
@@ -177,7 +182,8 @@ class RevenueProvider extends ChangeNotifier {
     for (var sale in _sales) {
       for (var item in sale.items) {
         final productName = item.product.productName ?? "Unknown";
-        productCounts[productName] = (productCounts[productName] ?? 0) + item.quantity;
+        productCounts[productName] =
+            (productCounts[productName] ?? 0) + item.quantity;
         productMap[productName] = item.product;
       }
     }
@@ -194,24 +200,31 @@ class RevenueProvider extends ChangeNotifier {
   // --- Helper Methods ---
 
   double _calculateTotalForDate(DateTime date) {
-    final dateStr = DateFormat('dd/MM/yyyy').format(date);
+    final dateStrNew = DateFormat('dd - MMM - yyyy', 'en_US').format(date);
+    final dateStrOld = DateFormat('dd/MM/yyyy', 'en_US').format(date);
     return _sales
-        .where((sale) => sale.date == dateStr)
+        .where((sale) => sale.date == dateStrNew || sale.date == dateStrOld)
         .fold(0.0, (sum, sale) => sum + sale.totalAmount);
   }
 
   double _calculateTotalForRange(DateTime start, DateTime end) {
-    return _sales.where((sale) {
-      final saleDate = _parseDate(sale.date);
-      return saleDate != null && 
-             saleDate.isAfter(start.subtract(const Duration(seconds: 1))) && 
-             saleDate.isBefore(end.add(const Duration(seconds: 1)));
-    }).fold(0.0, (sum, sale) => sum + sale.totalAmount);
+    return _sales
+        .where((sale) {
+          final saleDate = _parseDate(sale.date);
+          return saleDate != null &&
+              saleDate.isAfter(start.subtract(const Duration(seconds: 1))) &&
+              saleDate.isBefore(end.add(const Duration(seconds: 1)));
+        })
+        .fold(0.0, (sum, sale) => sum + sale.totalAmount);
   }
 
   DateTime? _parseDate(String dateStr) {
     try {
-      return DateFormat('dd/MM/yyyy').parse(dateStr);
+      if (dateStr.contains('/')) {
+        return DateFormat('dd/MM/yyyy', 'en_US').parse(dateStr);
+      } else {
+        return DateFormat('dd - MMM - yyyy', 'en_US').parse(dateStr);
+      }
     } catch (e) {
       return null;
     }

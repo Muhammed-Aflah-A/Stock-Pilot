@@ -171,7 +171,7 @@ class CartProvider with ChangeNotifier {
     final sale = SalesItems(
       customerName: customerName,
       customerNumber: customerNumber,
-      date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+      date: DateFormat('dd - MMM - yyyy', 'en_US').format(DateTime.now()),
       items: List.from(cartItems),
       totalAmount: totalPrice,
     );
@@ -197,7 +197,7 @@ class CartProvider with ChangeNotifier {
             unit: item.quantity,
             label: 'units sold',
             isPositive: false,
-            date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+            date: DateFormat('dd - MMM - yyyy', 'en_US').format(DateTime.now()),
             customerName: customerName,
             customerNumber: customerNumber,
             brand: product.brand,

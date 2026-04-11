@@ -94,7 +94,7 @@ class _BillingFormWidgetState extends State<BillingFormWidget> {
               );
               if (pickedDate != null) {
                 final formatted = DateFormat(
-                  'dd/MM/yyyy',
+                  'dd - MMM - yyyy',
                 ).format(pickedDate);
                 _dateController.text = formatted;
               }
