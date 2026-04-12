@@ -28,6 +28,16 @@ class RevenueProvider extends ChangeNotifier {
   DateTime? get customStartDate => _customStartDate;
   DateTime? get customEndDate => _customEndDate;
 
+  bool get isCustomRangeMonthly {
+    if (_selectedPeriod != TrendPeriod.custom ||
+        _customStartDate == null ||
+        _customEndDate == null) {
+      return false;
+    }
+    final days = _customEndDate!.difference(_customStartDate!).inDays + 1;
+    return days > 365;
+  }
+
   void setPeriod(TrendPeriod period) {
     _selectedPeriod = period;
     notifyListeners();
@@ -159,14 +169,18 @@ class RevenueProvider extends ChangeNotifier {
         spots.add(FlSpot(1, dailyRevenue));
         break;
       case TrendPeriod.week:
+        // Showing current calendar week (Monday to Sunday)
+        final monday = now.subtract(Duration(days: now.weekday - 1));
         for (int i = 0; i < 7; i++) {
-          final date = now.subtract(Duration(days: 6 - i));
+          final date = monday.add(Duration(days: i));
           spots.add(FlSpot(i.toDouble(), _calculateTotalForDate(date)));
         }
         break;
       case TrendPeriod.month:
-        for (int i = 0; i < 30; i++) {
-          final date = now.subtract(Duration(days: 29 - i));
+        // Showing current calendar month (1st to Last Day)
+        final lastDay = DateTime(now.year, now.month + 1, 0).day;
+        for (int i = 0; i < lastDay; i++) {
+          final date = DateTime(now.year, now.month, i + 1);
           spots.add(FlSpot(i.toDouble(), _calculateTotalForDate(date)));
         }
         break;
@@ -191,18 +205,26 @@ class RevenueProvider extends ChangeNotifier {
       case TrendPeriod.custom:
         if (_customStartDate != null && _customEndDate != null) {
           final days = _customEndDate!.difference(_customStartDate!).inDays + 1;
-          if (days <= 60) {
-            // Show daily spots
+          if (days <= 365) {
+            // Show daily spots for up to a year
             for (int i = 0; i < days; i++) {
               final date = _customStartDate!.add(Duration(days: i));
               spots.add(FlSpot(i.toDouble(), _calculateTotalForDate(date)));
             }
           } else {
-            // Too many days for daily chart, group by month? 
-            // For now, let's just show daily and see.
-             for (int i = 0; i < days; i++) {
-              final date = _customStartDate!.add(Duration(days: i));
-              spots.add(FlSpot(i.toDouble(), _calculateTotalForDate(date)));
+            // Monthly grouping for ranges longer than a year
+            final months = ((_customEndDate!.year - _customStartDate!.year) * 12) +
+                _customEndDate!.month -
+                _customStartDate!.month +
+                1;
+            for (int i = 0; i < months; i++) {
+              final monthStart =
+                  DateTime(_customStartDate!.year, _customStartDate!.month + i, 1);
+              final monthEnd =
+                  DateTime(_customStartDate!.year, _customStartDate!.month + i + 1, 0);
+              spots.add(
+                FlSpot(i.toDouble(), _calculateTotalForRange(monthStart, monthEnd)),
+              );
             }
           }
         }

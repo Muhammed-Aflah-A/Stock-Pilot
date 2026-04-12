@@ -102,7 +102,7 @@ class SalesTrendsWidget extends StatelessWidget {
                           final date = await showDatePicker(
                             context: context,
                             initialDate: provider.customStartDate ?? DateTime.now(),
-                            firstDate: DateTime(2020),
+                            firstDate: DateTime(1900),
                             lastDate: DateTime.now(),
                           );
                           if (date != null) {
@@ -124,7 +124,7 @@ class SalesTrendsWidget extends StatelessWidget {
                           final date = await showDatePicker(
                             context: context,
                             initialDate: provider.customEndDate ?? DateTime.now(),
-                            firstDate: provider.customStartDate ?? DateTime(2020),
+                            firstDate: provider.customStartDate ?? DateTime(1900),
                             lastDate: DateTime.now(),
                           );
                           if (date != null) {
@@ -149,6 +149,7 @@ class SalesTrendsWidget extends StatelessWidget {
                     spots: provider.chartSpots,
                     period: provider.selectedPeriod,
                     customStartDate: provider.customStartDate,
+                    isMonthly: provider.isCustomRangeMonthly,
                   ),
                 ),
               ),
@@ -170,7 +171,7 @@ class SalesTrendsWidget extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
-          color: ColourStyles.borderColor.withOpacity(0.5),
+          color: ColourStyles.borderColor,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: ColourStyles.borderColor),
         ),
