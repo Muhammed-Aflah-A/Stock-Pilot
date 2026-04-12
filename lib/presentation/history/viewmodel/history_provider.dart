@@ -8,6 +8,7 @@ import 'package:stock_pilot/data/models/cart_model.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
 
 enum HistorySortOption { latest, oldest }
+enum HistoryTab { purchase, updates, sales }
 
 class HistoryProvider extends FilterProviderInterface {
   final HiveService hiveService;
@@ -25,9 +26,9 @@ class HistoryProvider extends FilterProviderInterface {
   List<DasboardActivity> filteredActivities = [];
   String searchQuery = "";
   HistorySortOption currentSort = HistorySortOption.latest;
+  HistoryTab currentTab = HistoryTab.purchase;
 
   // Filter state
-  String appliedStockStatus = 'All';
   @override
   String tempStockStatus = 'All';
 
@@ -65,8 +66,27 @@ class HistoryProvider extends FilterProviderInterface {
     notifyListeners();
   }
 
+  void setTab(HistoryTab tab) {
+    currentTab = tab;
+    _applyFilters();
+    notifyListeners();
+  }
+
   void _applyFilters() {
     List<DasboardActivity> result = List.from(allActivities);
+
+    // Filter by Tab Category
+    result = result.where((activity) {
+      final title = activity.title ?? '';
+      switch (currentTab) {
+        case HistoryTab.purchase:
+          return title == 'Stock Added';
+        case HistoryTab.updates:
+          return title == 'Stock Updated' || title == 'Stock Deleted';
+        case HistoryTab.sales:
+          return title == 'Item Sold';
+      }
+    }).toList();
 
     // Filter by search query (Product name or Date)
     if (searchQuery.isNotEmpty) {
@@ -75,25 +95,6 @@ class HistoryProvider extends FilterProviderInterface {
         final date = (activity.date ?? '').toLowerCase();
         final query = searchQuery.toLowerCase();
         return productName.contains(query) || date.contains(query);
-      }).toList();
-    }
-
-    // Filter by Activity Type (mapped as Added, Updated, Deleted, Sold)
-    if (appliedStockStatus != 'All') {
-      result = result.where((activity) {
-        final title = activity.title ?? '';
-        switch (appliedStockStatus) {
-          case 'Added':
-            return title == 'Stock Added';
-          case 'Updated':
-            return title == 'Stock Updated';
-          case 'Deleted':
-            return title == 'Stock Deleted';
-          case 'Sold':
-            return title == 'Item Sold';
-          default:
-            return true;
-        }
       }).toList();
     }
 
@@ -138,7 +139,7 @@ class HistoryProvider extends FilterProviderInterface {
   // FilterProviderInterface Implementation
 
   @override
-  bool get hasActiveFilters => appliedStockStatus != 'All';
+  bool get hasActiveFilters => false; // No longer using external filters
 
   @override
   List<String> get availableStockStatuses {
@@ -155,14 +156,13 @@ class HistoryProvider extends FilterProviderInterface {
 
   @override
   void applyFilters() {
-    appliedStockStatus = tempStockStatus;
     _applyFilters();
     notifyListeners();
   }
 
   @override
   void clearFilters() {
-    appliedStockStatus = 'All';
+    searchQuery = "";
     tempStockStatus = 'All';
     _applyFilters();
     notifyListeners();
@@ -170,7 +170,6 @@ class HistoryProvider extends FilterProviderInterface {
 
   @override
   void initTempFilters() {
-    tempStockStatus = appliedStockStatus;
     notifyListeners();
   }
 
