@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/assets/app_images.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -9,7 +9,6 @@ import 'package:stock_pilot/presentation/introduction/widgets/skip_button_widget
 import 'package:stock_pilot/presentation/widgets/back_button_widget.dart';
 import 'package:stock_pilot/presentation/widgets/next_button_widget.dart';
 
-// Second onboarding screen.
 class OnboardingScreen2 extends StatelessWidget {
   const OnboardingScreen2({super.key});
 
@@ -26,15 +25,12 @@ class OnboardingScreen2 extends StatelessWidget {
                 Expanded(
                   child: Column(
                     children: [
-                      // Button to skip onboarding pages
                       Align(
                         alignment: Alignment.topRight,
                         child: SkipButtonWidget(),
                       ),
-                      // App name as heading
                       AppnameWidget(),
                       Spacer(flex: 3),
-                      // Illustration image goes here
                       Flexible(
                         flex: 6,
                         child: HeroImageWidget(
@@ -43,31 +39,26 @@ class OnboardingScreen2 extends StatelessWidget {
                         ),
                       ),
                       Spacer(flex: 3),
-                      // Main headline
                       Text(
                         "Never Run Out Again",
                         style: TextStyles.tagLine(context),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 12),
-                      // Supporting description
                       Text(
                         "Get alerts for low-stock items and restock at the right time",
                         style: TextStyles.tagLineCaption(context),
                         textAlign: TextAlign.center,
                       ),
                       Spacer(flex: 1),
-                      // Progress indicator
                       Text("2/3", style: TextStyles.tagLineCaption(context)),
                       Spacer(flex: 1),
                     ],
                   ),
                 ),
                 SizedBox(height: 8),
-                // Navigate back to previous onbvoarding screen
                 BackbuttonWidget(),
                 SizedBox(height: 12),
-                // Navigate to next onboarding screen
                 NextbuttonWidget(
                   text: "Next",
                   onPressed: () {
@@ -82,3 +73,4 @@ class OnboardingScreen2 extends StatelessWidget {
     );
   }
 }
+

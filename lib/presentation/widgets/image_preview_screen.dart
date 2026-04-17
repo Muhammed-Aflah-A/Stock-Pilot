@@ -1,8 +1,7 @@
-import 'dart:io';
+﻿import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 
-// Screen used to view full size images like profile picture or product images in a zoomable view
 class ImagePreviewScreen extends StatelessWidget {
   final String imagePath;
   final String? title;
@@ -30,9 +29,9 @@ class ImagePreviewScreen extends StatelessWidget {
         child: Hero(
           tag: imagePath,
           child: InteractiveViewer(
-            panEnabled: true, // Allow user to pan image when zoomed
+            panEnabled: true,
             minScale: 1.0,
-            maxScale: 4.0, // Allow 4x zoom
+            maxScale: 4.0,
             child: Image.file(
               File(imagePath),
               fit: BoxFit.contain,
@@ -48,3 +47,4 @@ class ImagePreviewScreen extends StatelessWidget {
     );
   }
 }
+

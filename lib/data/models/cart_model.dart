@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+﻿import 'package:hive/hive.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
 part 'cart_model.g.dart';
 
@@ -31,3 +31,4 @@ class SalesItems {
     required this.totalAmount,
   });
 }
+

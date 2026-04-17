@@ -1,10 +1,6 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
+﻿
 part of 'brand_model.dart';
 
-// **************************************************************************
-// TypeAdapterGenerator
-// **************************************************************************
 
 class BrandModelAdapter extends TypeAdapter<BrandModel> {
   @override
@@ -39,3 +35,4 @@ class BrandModelAdapter extends TypeAdapter<BrandModel> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+

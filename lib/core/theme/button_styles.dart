@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 
 class ButtonStyles {
   static double _scale(BuildContext context, double size) {
     final screenWidth = MediaQuery.of(context).size.width;
-    if (screenWidth < 360) return size * 0.9; // Small phones
-    if (screenWidth < 600) return size * 1.0; // Normal phones
-    if (screenWidth < 900) return size * 1.1; // Tablets
-    return size * 1.2; // Desktop
+    if (screenWidth < 360) return size * 0.9;
+    if (screenWidth < 600) return size * 1.0;
+    if (screenWidth < 900) return size * 1.1;
+    return size * 1.2;
   }
 
   static Size _responsiveSize(
@@ -18,7 +18,6 @@ class ButtonStyles {
     return Size(_scale(context, width), _scale(context, height));
   }
 
-  // Skip button used in onboarding screen
   static ButtonStyle skipButton(BuildContext context) =>
       TextButton.styleFrom(foregroundColor: ColourStyles.primaryColor_2);
 
@@ -127,3 +126,4 @@ class ButtonStyles {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       );
 }
+

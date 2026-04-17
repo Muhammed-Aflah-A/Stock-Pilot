@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/button_styles.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
@@ -31,7 +31,6 @@ class ActionConfirmationWidget extends StatelessWidget {
       backgroundColor: ColourStyles.primaryColor,
       surfaceTintColor: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      // TITLE
       titlePadding: const EdgeInsets.only(top: 24, bottom: 8),
       title: Center(
         child: Text(
@@ -40,7 +39,6 @@ class ActionConfirmationWidget extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
       ),
-      // CONTENT
       contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       content: SizedBox(
         width: DialogUtil.getDialogWidth(context),
@@ -54,16 +52,14 @@ class ActionConfirmationWidget extends StatelessWidget {
               ).copyWith(color: actionColor, fontSize: size.width * 0.035),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 12), // Visual compensation forFormField height
+            const SizedBox(height: 12),
           ],
         ),
       ),
-      // ACTIONS
       actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       actions: [
         Row(
           children: [
-            // CANCEL
             Expanded(
               child: ElevatedButton(
                 onPressed: () => Navigator.pop(context),
@@ -72,7 +68,6 @@ class ActionConfirmationWidget extends StatelessWidget {
               ),
             ),
             SizedBox(width: DialogUtil.getDialogWidth(context) * 0.05),
-            // CONFIRM
             Expanded(
               child: ElevatedButton(
                 onPressed: () async {
@@ -106,3 +101,4 @@ class ActionConfirmationWidget extends StatelessWidget {
     );
   }
 }
+

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -20,7 +20,6 @@ class LowstockListPage extends StatefulWidget {
 }
 
 class _LowstockListPageState extends State<LowstockListPage> {
-  // Controller for search input
   final TextEditingController controller = TextEditingController();
 
   @override
@@ -39,19 +38,16 @@ class _LowstockListPageState extends State<LowstockListPage> {
 
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
-      // Custom app bar
       appBar: const AppBarWidget(
         showLeading: false,
         title: "Low Stock",
         centeredTitle: false,
         showAvatar: true,
       ),
-      // Side drawer
       drawer: const AppDrawer(),
       body: SafeArea(
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
-          // Close keyboard when tapping outside
           onTap: () => FocusScope.of(context).unfocus(),
           child: Padding(
             padding: EdgeInsets.symmetric(
@@ -62,7 +58,6 @@ class _LowstockListPageState extends State<LowstockListPage> {
               children: [
                 Row(
                   children: [
-                    // Search bar
                     Expanded(
                       child: SearchbarWidget(
                         controller: controller,
@@ -72,7 +67,6 @@ class _LowstockListPageState extends State<LowstockListPage> {
                             value,
                           );
                         },
-                        // Clear search
                         onClear: () {
                           controller.clear();
                           context.read<LowstockProvider>().clearSearch();
@@ -80,13 +74,11 @@ class _LowstockListPageState extends State<LowstockListPage> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    // Filter button
                     Consumer<LowstockProvider>(
                       builder: (_, provider, _) =>
                           FilterButtonWidget(provider: provider),
                     ),
                     const SizedBox(width: 10),
-                    // Sort button
                     Consumer<LowstockProvider>(
                       builder: (_, provider, _) =>
                           SortButtonWidget<LowStockSortOption>(
@@ -96,27 +88,22 @@ class _LowstockListPageState extends State<LowstockListPage> {
                               LowStockSortOption.priceHighToLow:
                                   'Price : High to Low',
                               LowStockSortOption.alphabeticalAZ:
-                                  'Alphabetical ( A – Z )',
+                                  'Alphabetical ( A â€“ Z )',
                               LowStockSortOption.alphabeticalZA:
-                                  'Alphabetical ( Z – A )',
+                                  'Alphabetical ( Z â€“ A )',
                             },
-                            // Current selected sort
                             currentValue: provider.currentSort,
-                            // Default sort
                             defaultValue: LowStockSortOption.priceLowToHigh,
-                            // Apply sorting
                             onSelected: provider.sortProducts,
                           ),
                     ),
                   ],
                 ),
                 SizedBox(height: spacing),
-                // Product list
                 Expanded(
                   child: Consumer<LowstockProvider>(
                     builder: (context, provider, _) {
                       final displayList = provider.filteredLowStock;
-                      // Empty state
                       if (displayList.isEmpty) {
                         return const Center(
                           child: EmptypageMessageWidget(
@@ -125,7 +112,6 @@ class _LowstockListPageState extends State<LowstockListPage> {
                           ),
                         );
                       }
-                      // Product list
                       return ListView.separated(
                         keyboardDismissBehavior:
                             ScrollViewKeyboardDismissBehavior.onDrag,
@@ -136,7 +122,6 @@ class _LowstockListPageState extends State<LowstockListPage> {
                           final product = displayList[index];
                           return ProductListTileWidget(
                             product: product,
-                            // Navigate to details page
                             onTap: () {
                               final mainProvider = context
                                   .read<ProductProvider>();
@@ -165,3 +150,4 @@ class _LowstockListPageState extends State<LowstockListPage> {
     );
   }
 }
+

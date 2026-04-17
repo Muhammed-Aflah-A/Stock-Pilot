@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/data/models/drawer_model.dart';
 
-// Provider responsible for managing drawer state
 class DrawerProvider with ChangeNotifier {
-  // List of drawer menu items
   final List<DrawerItems> drawerItems = [
     DrawerItems(
       icon: Icons.person,
@@ -53,12 +51,10 @@ class DrawerProvider with ChangeNotifier {
       navigation: AppRoutes.revenuePage,
     ),
   ];
-  // Stores currently selected drawer index
   int selectedIndex = 0;
-  // Updates selected drawer item
   void selectedDrawerItem(int index) {
     selectedIndex = index;
-    // Notify UI widgets (Consumer/Provider) to rebuild
     notifyListeners();
   }
 }
+

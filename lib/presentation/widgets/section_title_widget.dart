@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 
-// A reusable widget used to display section titles
 class SectionTitleWidget extends StatelessWidget {
   final String title;
 
@@ -11,7 +10,6 @@ class SectionTitleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
-    // section heading
     Text(
       title,
       style: TextStyles.sectionHeading(
@@ -20,3 +18,4 @@ class SectionTitleWidget extends StatelessWidget {
     );
   }
 }
+

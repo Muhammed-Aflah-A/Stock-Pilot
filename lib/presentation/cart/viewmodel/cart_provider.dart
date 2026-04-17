@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stock_pilot/data/models/cart_model.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
@@ -15,25 +15,18 @@ class CartProvider with ChangeNotifier {
     loadCart();
   }
 
-  // Cart items
   List<CartItems> cartItems = [];
-  // Variable used to store data
   String? customerName;
   String? customerNumber;
   String? billingDate;
-  // Global key used to manage and validate the form
   final formKey = GlobalKey<FormState>();
-  // Exposes current form validity safely
   bool get isFormValid => formKey.currentState?.validate() ?? false;
-  // Focus node for moving focus from one form to another
   final customerNumberFocus = FocusNode();
-  // Load Cart items
   Future<void> loadCart() async {
     cartItems = await hiveService.getCartItems();
     notifyListeners();
   }
 
-  // Add items to the cart
   Future<bool> addItem(ProductModel product) async {
     final stock = int.tryParse(product.itemCount ?? '0') ?? 0;
     if (stock <= 0) {
@@ -60,7 +53,6 @@ class CartProvider with ChangeNotifier {
     return true;
   }
 
-  // Remove items from the cart
   Future<void> removeItem(CartItems item) async {
     final index = cartItems.indexOf(item);
     if (index != -1) {
@@ -69,7 +61,6 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  // Quantity control
   Future<bool> increaseQty(CartItems item) async {
     final index = cartItems.indexOf(item);
     if (index == -1) return false;
@@ -102,7 +93,6 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  // Setting quantity
   Future<bool> setQuantity(CartItems item, int newQty) async {
     final index = cartItems.indexOf(item);
     if (index == -1) return false;
@@ -117,7 +107,6 @@ class CartProvider with ChangeNotifier {
 
   int getQuantity(CartItems item) => item.quantity;
 
-  // Total checking
   int get totalItems {
     int total = 0;
     for (var item in cartItems) {
@@ -135,28 +124,23 @@ class CartProvider with ChangeNotifier {
     return total;
   }
 
-  // Setter for customer name name
   void setCustomerName(String? value) {
     customerName = value?.trim();
   }
 
-  // Setter for customer number
   void setCustomerNumber(String? value) {
     customerNumber = value?.trim();
   }
 
-  // Setter for billing date
   void setBillingDate(String? value) {
     billingDate = value;
   }
 
-  // Adding sales
   Future<SalesItems?> completeSale({
     required ProductProvider productProvider,
     required DashboardProvider dashboardProvider,
     required HistoryProvider historyProvider,
   }) async {
-    // Validate form
     if (!(formKey.currentState?.validate() ?? false)) {
       return null;
     }
@@ -167,7 +151,6 @@ class CartProvider with ChangeNotifier {
         return null;
       }
     }
-    // Create sale object
     final sale = SalesItems(
       customerName: customerName,
       customerNumber: customerNumber,
@@ -175,7 +158,6 @@ class CartProvider with ChangeNotifier {
       items: List.from(cartItems),
       totalAmount: totalPrice,
     );
-    // Reduce stock + activity
     for (var item in cartItems) {
       final index = productProvider.products.indexWhere(
         (p) => p.productName == item.product.productName,
@@ -205,19 +187,16 @@ class CartProvider with ChangeNotifier {
         );
       }
     }
-    // Save sales
     await historyProvider.addSale(sale);
     formKey.currentState?.reset();
-    // Clear cart
     await clearCart();
-    // Refresh global product state to update stock status lists (Low/Out of Stock)
     await productProvider.loadProducts();
     return sale;
   }
 
-  // Clearing from cart
   Future<void> clearCart() async {
     await hiveService.clearCart();
     await loadCart();
   }
 }
+

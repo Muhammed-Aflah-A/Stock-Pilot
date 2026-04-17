@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -59,7 +59,6 @@ class MostSoldItemsWidget extends StatelessWidget {
 
                     return Row(
                       children: [
-                        // Product Image
                         Container(
                           width: 48,
                           height: 48,
@@ -80,7 +79,6 @@ class MostSoldItemsWidget extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 16),
-                        // Product Name & Info
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,14 +94,13 @@ class MostSoldItemsWidget extends StatelessWidget {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                "${product.category ?? 'Uncategorized'} • ${product.brand ?? 'Generic'}",
+                                "${product.category ?? 'Uncategorized'} â€¢ ${product.brand ?? 'Generic'}",
                                 style: TextStyles.caption2(context),
                               ),
                             ],
                           ),
                         ),
                         const SizedBox(width: 8),
-                        // Quantity Sold
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
@@ -135,3 +132,4 @@ class MostSoldItemsWidget extends StatelessWidget {
     );
   }
 }
+

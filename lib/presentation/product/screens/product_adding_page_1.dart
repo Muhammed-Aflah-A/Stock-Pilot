@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -11,7 +11,6 @@ import 'package:stock_pilot/presentation/widgets/form_widget.dart';
 import 'package:stock_pilot/presentation/product/widgets/image_adding_widget.dart';
 import 'package:stock_pilot/presentation/widgets/next_button_widget.dart';
 
-// Page for entering basic product info
 class ProductAddingPage1 extends StatelessWidget {
   const ProductAddingPage1({super.key});
 
@@ -21,7 +20,6 @@ class ProductAddingPage1 extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
-      // Custom AppBar
       appBar: const AppBarWidget(
         showLeading: true,
         title: "Basic Info",
@@ -30,7 +28,6 @@ class ProductAddingPage1 extends StatelessWidget {
       ),
       body: SafeArea(
         child: GestureDetector(
-          // Close keyboard when tapping outside fields
           onTap: () => FocusScope.of(context).unfocus(),
           child: Center(
             child: ConstrainedBox(
@@ -45,7 +42,6 @@ class ProductAddingPage1 extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // PRODUCT IMAGE SECTION
                     Center(
                       child: Text(
                         "Product Image",
@@ -55,9 +51,7 @@ class ProductAddingPage1 extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    // Widget that handles image selection
                     const ImageAddingWidget(),
-                    // IMAGE VALIDATION MESSAGE
                     Selector<ProductProvider, bool>(
                       selector: (_, p) => p.hasImage,
                       builder: (_, hasImage, _) {
@@ -77,13 +71,11 @@ class ProductAddingPage1 extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 20),
-                    // PRODUCT DETAILS FORM
                     Form(
                       key: provider.firstFormKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // PRODUCT NAME
                           Text(
                             "Product Name",
                             style: TextStyles.sectionHeading(
@@ -109,7 +101,6 @@ class ProductAddingPage1 extends StatelessWidget {
                             },
                           ),
                           const SizedBox(height: 20),
-                          // PRODUCT DESCRIPTION
                           Text(
                             "Product Description",
                             style: TextStyles.sectionHeading(
@@ -137,14 +128,12 @@ class ProductAddingPage1 extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    // NEXT BUTTON
                     Center(
                       child: NextbuttonWidget(
                         text: "Next",
                         onPressed: () {
                           final formValid = provider.firstFormKey.currentState!
                               .validate();
-                          // Check both form and image
                           if (!provider.hasImage || !formValid) {
                             SnackbarUtil.showSnackBar(
                               context,
@@ -171,3 +160,4 @@ class ProductAddingPage1 extends StatelessWidget {
     );
   }
 }
+

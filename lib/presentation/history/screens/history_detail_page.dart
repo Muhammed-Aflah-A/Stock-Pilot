@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/core/utils/image_util.dart';
@@ -39,7 +39,6 @@ class HistoryDetailPage extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  // PRODUCT IMAGE
                   GestureDetector(
                     onTap: () => _showImagePreview(context),
                     child: Container(
@@ -80,7 +79,6 @@ class HistoryDetailPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: spacing),
-                  // ACTIVITY INFO CARD
                   Container(
                     width: double.infinity,
                     padding: EdgeInsets.all(horizontalPadding),
@@ -98,19 +96,16 @@ class HistoryDetailPage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // PRODUCT NAME (BIG TITLE)
                         Text(
                           activity.product ?? "Unknown Product",
                           style: TextStyles.dialogueHeading(context),
                         ),
                         const SizedBox(height: 8),
-                        // CATEGORY
                         Text(
                           activity.category ?? "General",
                           style: TextStyles.caption(context),
                         ),
 
-                        // DETAILS
                         DetailRowWidget(
                           label: 'Brand',
                           value: activity.brand ?? "Unknown",
@@ -140,7 +135,6 @@ class HistoryDetailPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  // CUSTOMER DETAILS CARD (Conditional for Sales)
                   if (activity.title == 'Item Sold' &&
                       activity.customerName != null) ...[
                     SizedBox(height: spacing),
@@ -204,3 +198,4 @@ class HistoryDetailPage extends StatelessWidget {
     }
   }
 }
+

@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 
 
 
-// Standalone widget used for carousel navigation arrows
 class CarouselNavigationArrowWidget extends StatelessWidget {
   final Alignment alignment;
   final IconData icon;
@@ -33,3 +32,4 @@ class CarouselNavigationArrowWidget extends StatelessWidget {
     );
   }
 }
+

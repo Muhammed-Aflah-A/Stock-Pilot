@@ -1,11 +1,10 @@
-import 'dart:io';
+﻿import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:stock_pilot/core/assets/app_images.dart';
 
 class ImageUtil {
-  // Returns image for profile picture
   static ImageProvider getProfileImage(String? path) {
     if (path == null || path.isEmpty) {
       return const AssetImage(AppImages.profilePicture);
@@ -20,7 +19,6 @@ class ImageUtil {
     return FileImage(file);
   }
 
-  // Returns image for product picture
   static ImageProvider getProductImage(String? path) {
     if (path == null || path.isEmpty) {
       return const AssetImage(AppImages.productImage1);
@@ -43,3 +41,4 @@ class ImageUtil {
     return newImage.path;
   }
 }
+

@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -34,7 +34,6 @@ class ProductListTileWidget extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              /// Product Image
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Container(
@@ -52,26 +51,22 @@ class ProductListTileWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 16),
-              // Product Information
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Product Name
                     Text(
                       product.productName ?? "",
                       style: TextStyles.titleText(context),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    // Category
                     Text(
                       product.category ?? "",
                       style: TextStyles.activityCardLabel(context),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    // Brand
                     Text(
                       product.brand ?? "",
                       style: TextStyles.activityCardText(context),
@@ -79,7 +74,6 @@ class ProductListTileWidget extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
 
-                    /// Stock Status
                     Row(
                       children: [
                         Container(
@@ -102,7 +96,6 @@ class ProductListTileWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              // Price
               Text(
                 NumberFormatterUtil.formatCurrency(
                   double.tryParse(product.salesRate ?? '0') ?? 0,
@@ -116,3 +109,4 @@ class ProductListTileWidget extends StatelessWidget {
     );
   }
 }
+

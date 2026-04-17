@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+﻿import 'package:hive/hive.dart';
 part 'user_profle_model.g.dart';
 
 @HiveType(typeId: 0)
@@ -27,3 +27,4 @@ class UserProfile {
     required this.gmail,
   });
 }
+

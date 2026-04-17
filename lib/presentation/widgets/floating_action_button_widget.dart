@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 
-// Reusable Floating Action Button widget
 class FloatingActionButtonWidget extends StatelessWidget {
 
   final VoidCallback onPressed;
@@ -11,15 +10,14 @@ class FloatingActionButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      // Executes the callback passed from the parent screen and dismisses keyboard
       onPressed: () {
         FocusManager.instance.primaryFocus?.unfocus();
         onPressed();
       },
       foregroundColor: ColourStyles.primaryColor,
       backgroundColor: ColourStyles.primaryColor_2,
-      // Add icon inside the button
       child: const Icon(Icons.add),
     );
   }
 }
+

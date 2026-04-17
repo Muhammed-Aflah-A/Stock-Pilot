@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/button_styles.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/presentation/widgets/sort_option_tile_widget.dart';
 
-// Bottom sheet widget used to display sorting options.
 class SortBottomSheetWidget<T> extends StatelessWidget {
   const SortBottomSheetWidget({
     super.key,
@@ -25,12 +24,10 @@ class SortBottomSheetWidget<T> extends StatelessWidget {
     return StatefulBuilder(
       builder: (context, setModalState) {
         return Container(
-          // Background overlay color behind the modal
           color: ColourStyles.shadowColor,
           child: Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              // Main modal card
               child: Material(
                 color: ColourStyles.primaryColor,
                 borderRadius: BorderRadius.circular(20),
@@ -42,11 +39,9 @@ class SortBottomSheetWidget<T> extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Header section
                       Stack(
                         alignment: Alignment.center,
                         children: [
-                          // Close button aligned to the left
                           Align(
                             alignment: Alignment.centerLeft,
                             child: GestureDetector(
@@ -54,7 +49,6 @@ class SortBottomSheetWidget<T> extends StatelessWidget {
                               child: const Icon(Icons.close, size: 22),
                             ),
                           ),
-                          // Modal title
                           Text(
                             'Sort Options',
                             style: TextStyles.sectionTitle(context),
@@ -62,19 +56,15 @@ class SortBottomSheetWidget<T> extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 16),
-                      // Sort options container
                       Container(
                         decoration: BoxDecoration(
                           border: Border.all(color: ColourStyles.shadowColor),
                           borderRadius: BorderRadius.circular(14),
                         ),
-                        // List of sort options
                         child: Column(
                           children: options.entries.map((entry) {
-                            // Check if this option is selected
                             final isSelected = tempValue == entry.key;
                             return SortOptionTileWidget(
-                              // Display label
                               label: entry.value,
                               selected: isSelected,
                               onTap: () {
@@ -89,7 +79,6 @@ class SortBottomSheetWidget<T> extends StatelessWidget {
                       const SizedBox(height: 16),
                       Row(
                         children: [
-                          // Clear sort button
                           Expanded(
                             child: ElevatedButton(
                               onPressed: () {
@@ -103,7 +92,6 @@ class SortBottomSheetWidget<T> extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 12),
-                          // Apply sort button
                           Expanded(
                             child: ElevatedButton(
                               onPressed: () {
@@ -129,3 +117,4 @@ class SortBottomSheetWidget<T> extends StatelessWidget {
     );
   }
 }
+

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -34,14 +34,12 @@ class _HistoryListPageState extends State<HistoryListPage> {
       length: 3,
       child: Scaffold(
         backgroundColor: ColourStyles.primaryColor,
-        // APP BAR
         appBar: const AppBarWidget(
           showLeading: false,
           title: "History",
           centeredTitle: false,
           showAvatar: true,
         ),
-        // DRAWER
         drawer: const AppDrawer(),
         body: Material(
           color: Colors.transparent,
@@ -49,7 +47,6 @@ class _HistoryListPageState extends State<HistoryListPage> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                // SEARCH & SORT BAR
                 Row(
                   children: [
                     Expanded(
@@ -84,7 +81,6 @@ class _HistoryListPageState extends State<HistoryListPage> {
                   ],
                 ),
                 SizedBox(height: height * 0.02),
-                // TABS
                 Consumer<HistoryProvider>(
                   builder: (context, provider, _) {
                     return TabBar(
@@ -114,13 +110,11 @@ class _HistoryListPageState extends State<HistoryListPage> {
                   },
                 ),
                 SizedBox(height: height * 0.02),
-                // HISTORY LIST
                 Expanded(
                   child: Consumer<HistoryProvider>(
                     builder: (context, provider, _) {
                       final activities = provider.filteredActivities;
 
-                      // If the database is entirely empty
                       if (provider.allActivities.isEmpty) {
                         return const EmptypageMessageWidget(
                           heading: "History is empty",
@@ -128,7 +122,6 @@ class _HistoryListPageState extends State<HistoryListPage> {
                         );
                       }
 
-                      // If search or filter returns no results
                       if (activities.isEmpty) {
                         return const EmptypageMessageWidget(
                           icon: Icons.search_off_rounded,
@@ -166,3 +159,4 @@ class _HistoryListPageState extends State<HistoryListPage> {
     );
   }
 }
+

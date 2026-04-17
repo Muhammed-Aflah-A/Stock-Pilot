@@ -1,10 +1,6 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
+﻿
 part of 'dasboard_model.dart';
 
-// **************************************************************************
-// TypeAdapterGenerator
-// **************************************************************************
 
 class DashboardCardsAdapter extends TypeAdapter<DashboardCards> {
   @override
@@ -106,3 +102,4 @@ class DasboardActivityAdapter extends TypeAdapter<DasboardActivity> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+

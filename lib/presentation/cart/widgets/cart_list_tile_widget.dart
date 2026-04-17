@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -8,7 +8,6 @@ import 'package:stock_pilot/data/models/cart_model.dart';
 import 'package:stock_pilot/presentation/cart/viewmodel/cart_provider.dart';
 import 'package:stock_pilot/presentation/widgets/action_confirmation_widget.dart';
 
-// Widget to display each cart item
 class CartListTileWidget extends StatefulWidget {
   final CartItems item;
 
@@ -31,7 +30,6 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
   void didUpdateWidget(covariant CartListTileWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.item.quantity != widget.item.quantity) {
-      // Only forcibly update the text editor if the physical value differs from the screen
       if (controller.text != widget.item.quantity.toString()) {
         controller.text = widget.item.quantity.toString();
       }
@@ -40,7 +38,6 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // Access provider without rebuilding whole widget
     final provider = context.read<CartProvider>();
     final quantity = context.select<CartProvider, int>((p) {
       final found = p.cartItems.firstWhere(
@@ -52,7 +49,6 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
 
     final product = widget.item.product;
     final stock = int.tryParse(product.itemCount ?? '0') ?? 0;
-    // Check if max stock reached
     final isMaxReached = quantity >= stock;
     final isInvalid = quantity <= 0 || quantity > stock;
     return Card(
@@ -65,7 +61,6 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
           children: [
             Row(
               children: [
-                // Product Image
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Container(
@@ -83,24 +78,20 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
                   ),
                 ),
                 const SizedBox(width: 16),
-                // Product Details
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // name
                       Text(
                         product.productName ?? "",
                         style: TextStyles.titleText(context),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      // Category
                       Text(
                         product.category ?? "",
                         style: TextStyles.activityCardLabel(context),
                       ),
-                      // Brand
                       Text(
                         product.brand ?? "",
                         style: TextStyles.activityCardText(context),
@@ -108,7 +99,6 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
                     ],
                   ),
                 ),
-                // Price
                 Text(
                   '\$ ${product.salesRate}',
                   style: TextStyles.productPriceText(context),
@@ -120,7 +110,6 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
               children: [
                 Row(
                   children: [
-                    // Decrease quantity
                     IconButton(
                       onPressed: () async {
                         if (quantity == 1) {
@@ -145,7 +134,6 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
                       },
                       icon: const Icon(Icons.remove),
                     ),
-                    // Quantity input field
                     SizedBox(
                       width: 50,
                       child: TextFormField(
@@ -175,7 +163,7 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
                             await provider.setQuantity(
                               widget.item,
                               0,
-                            ); // mark invalid
+                            );
                             return;
                           }
                           final newQty = int.tryParse(value);
@@ -184,9 +172,7 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
                         },
                       ),
                     ),
-                    // Increase quantity
                     IconButton(
-                      // Disable if stock limit reached
                       onPressed: isMaxReached
                           ? null
                           : () async {
@@ -194,7 +180,6 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
                                 widget.item,
                               );
                               if (!context.mounted) return;
-                              // Show message if max reached
                               if (!success) {
                                 SnackbarUtil.showSnackBar(
                                   context,
@@ -207,7 +192,6 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
                     ),
                   ],
                 ),
-                // Remove item from cart
                 TextButton(
                   onPressed: () {
                     showDialog(
@@ -237,3 +221,4 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
     );
   }
 }
+

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -122,7 +122,6 @@ void main() async {
   );
 }
 
-// Custom scroll behavior to remove Android stretch overscroll effect
 class NoStretchScrollBehavior extends ScrollBehavior {
   @override
   Widget buildOverscrollIndicator(
@@ -147,19 +146,15 @@ class StockPilot extends StatelessWidget {
       builder: (context, child) {
         return GestureDetector(
           onTap: () {
-            // Dismiss keyboard when tapping anywhere outside text fields
             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: child,
         );
       },
-      // Added global keyboard dismissal on every navigation transition
       navigatorObservers: [RouteObserver<ModalRoute<void>>()],
       onGenerateRoute: (settings) {
-        // Ensure keyboard is dismissed before any navigation starts
         FocusManager.instance.primaryFocus?.unfocus();
         switch (settings.name) {
-          //Fade animation
           case AppRoutes.splashScreen:
             return TransitionAnimations.fadeRoute(
               const SplashScreen(),
@@ -236,7 +231,6 @@ class StockPilot extends StatelessWidget {
               settings: settings,
             );
 
-          //Slide animation
           case AppRoutes.onBoardingScreen_2:
             return TransitionAnimations.slideRoute(
               const OnboardingScreen2(),
@@ -274,3 +268,4 @@ class StockPilot extends StatelessWidget {
     );
   }
 }
+

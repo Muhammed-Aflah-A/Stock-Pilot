@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/button_styles.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
@@ -8,7 +8,6 @@ import 'package:stock_pilot/core/utils/select_validator_util.dart';
 import 'package:stock_pilot/core/utils/snackbar_util.dart';
 import 'package:stock_pilot/presentation/widgets/action_confirmation_widget.dart';
 
-// Dialog widget used to add or edit profile details
 class EditDetailsWidget extends StatefulWidget {
   final String title;
   final String? initialValue;
@@ -40,18 +39,15 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
   @override
   void initState() {
     super.initState();
-    // Initialize text field with existing value
     controller = TextEditingController(text: widget.initialValue ?? "");
   }
 
   @override
   void dispose() {
-    // Dispose controller to prevent memory leaks
     controller.dispose();
     super.dispose();
   }
 
-  // Reusable border style for text field
   OutlineInputBorder _border(Color color) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
@@ -64,7 +60,6 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
     final dialogWidth = DialogUtil.getDialogWidth(context);
     return AlertDialog(
       backgroundColor: ColourStyles.primaryColor,
-      // Dialog title
       titlePadding: const EdgeInsets.only(top: 24, bottom: 8),
       title: Center(
         child: Text(
@@ -73,7 +68,6 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
           textAlign: TextAlign.center,
         ),
       ),
-      // Input field
       contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       content: SizedBox(
         width: dialogWidth,
@@ -83,7 +77,6 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
             controller: controller,
             maxLength: widget.maxLength,
             textAlign: TextAlign.center,
-            // Keyboard type based on field
             keyboardType: KeyboardTypeUtil.getKeyboardType(widget.fieldType),
             decoration: InputDecoration(
               counterText: "",
@@ -92,12 +85,9 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
               errorBorder: _border(ColourStyles.colorRed),
               focusedErrorBorder: _border(ColourStyles.colorRed),
             ),
-            // Field validation
             validator: (value) {
-              // Basic formatting string validation
               final error = SelectValidatorUtil.validate(value, widget.fieldType);
               if (error != null) return error;
-              // Custom duplicate check logic
               if (widget.duplicateValidator != null && value != null) {
                 return widget.duplicateValidator!(value);
               }
@@ -106,17 +96,14 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
           ),
         ),
       ),
-      // Action buttons
       actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       actions: [
         Row(
           children: [
-            // Cancel button
             Expanded(
               child: ElevatedButton(
                 style: ButtonStyles.smallDialogBackButton(context),
                 onPressed: () => Navigator.pop(context),
-                // Button label
                 child: Text(
                   "Cancel",
                   style: TextStyles.smallButtonTextBlack(context),
@@ -124,18 +111,15 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
               ),
             ),
             SizedBox(width: dialogWidth * 0.05),
-            // Save button
             Expanded(
               child: ElevatedButton(
                 style: ButtonStyles.smallDialogNextButton(context),
                 onPressed: () async {
-                  // Validate form
                   if (!formKey.currentState!.validate()) return;
                   
                   bool wasConfirmed = false;
                   
                   if (widget.isEditing) {
-                    // Show confirmation dialog ONLY when editing
                     await showDialog(
                       context: context,
                       builder: (_) => ActionConfirmationWidget(
@@ -143,7 +127,7 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
                         actionText: "Update",
                         displayName: widget.title,
                         actionColor: ColourStyles.colorGreen,
-                        showSnackbar: false, // Handled manually below
+                        showSnackbar: false,
                         onConfirm: () async {
                           await widget.onSave(controller.text.trim());
                           wasConfirmed = true;
@@ -152,21 +136,18 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
                       ),
                     );
                   } else {
-                    // Addition: save immediately without confirmation
                     await widget.onSave(controller.text.trim());
                     wasConfirmed = true;
                   }
 
-                  // If user closed dialog or pressed cancel (for editing), stop here
                   if (!wasConfirmed) return;
                   if (!context.mounted) return;
                   final message = widget.isEditing
                       ? "${widget.title} updated successfully"
                       : "${widget.title} added successfully";
                   SnackbarUtil.showSnackBar(context, message, false);
-                  Navigator.pop(context); // Close the edit dialog
+                  Navigator.pop(context);
                 },
-                // Button label
                 child: Text(
                   widget.isEditing ? "Update" : "Add",
                   style: TextStyles.smallButtonTextWhite(context),
@@ -179,3 +160,4 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
     );
   }
 }
+

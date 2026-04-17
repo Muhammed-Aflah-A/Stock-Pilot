@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/assets/app_images.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -17,8 +17,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // Run navigation logic after the first frame is built
-    // This prevents context-related errors during widget initialization
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<SplashScreenProvider>().checkFlow(context);
     });
@@ -27,7 +25,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // App primary splash background
       backgroundColor: ColourStyles.primaryColor,
       body: SafeArea(
         child: Center(
@@ -36,13 +33,11 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // This widget is used to display the image on the splash screen
                 HeroImageWidget(
                   heightFactor: 0.3,
                   imagePath: AppImages.appLogo,
                 ),
                 SizedBox(height: 20),
-                // This widget is used to animate the text on the splash screen
                 AnimatedTextWidget(),
               ],
             ),
@@ -52,3 +47,4 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
+

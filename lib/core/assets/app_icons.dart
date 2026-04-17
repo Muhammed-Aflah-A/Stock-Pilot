@@ -1,4 +1,4 @@
-class AppIcons {
+﻿class AppIcons {
   static const userAvatar = "lib/assets/images/user-avatar.png";
   static const dashboard = "lib/assets/images/dashboard.png";
   static const product = "lib/assets/images/product.png";
@@ -10,3 +10,4 @@ class AppIcons {
   static const history = "lib/assets/images/history.png";
   static const revenue = "lib/assets/images/revenue.png";
 }
+

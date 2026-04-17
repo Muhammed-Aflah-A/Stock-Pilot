@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 
-/// Reusable dropdown form field widget
 class DropdownFieldWidget extends StatelessWidget {
   final String? value;
   final List<String> items;
@@ -18,17 +17,13 @@ class DropdownFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Ensure selected value exists in items list
     final String? effectiveValue =
         items.contains(value) ? value : null;
     return DropdownButtonFormField<String>(
       initialValue: effectiveValue,
-      // Allows dropdown to fill available width
       isExpanded: true,
       dropdownColor: ColourStyles.primaryColor,
-      // Placeholder text
       hint: const Text("Select from menu"),
-      // Input field styling
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -59,9 +54,7 @@ class DropdownFieldWidget extends StatelessWidget {
           ),
         ),
       ),
-      // Dropdown arrow icon
       icon: const Icon(Icons.keyboard_arrow_down_sharp),
-      // Generate dropdown items
       items: items.map((String item) {
         return DropdownMenuItem<String>(
           value: item,
@@ -73,3 +66,4 @@ class DropdownFieldWidget extends StatelessWidget {
     );
   }
 }
+

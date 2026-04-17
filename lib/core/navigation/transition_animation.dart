@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 class TransitionAnimations {
-  //------------------------------ (FADE Animation Code)------------------------
   static PageRouteBuilder fadeRoute(Widget page, {RouteSettings? settings}) {
     return PageRouteBuilder(
       settings: settings,
@@ -13,7 +12,6 @@ class TransitionAnimations {
     );
   }
 
-  //------------------------------ (SLIDE Animation Code)------------------------
   static PageRouteBuilder slideRoute(Widget page, {RouteSettings? settings}) {
     return PageRouteBuilder(
       settings: settings,
@@ -30,3 +28,4 @@ class TransitionAnimations {
     );
   }
 }
+

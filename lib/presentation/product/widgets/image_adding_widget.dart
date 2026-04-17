@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -6,7 +6,6 @@ import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart
 import 'package:stock_pilot/presentation/widgets/image_preview_screen.dart';
 import 'package:stock_pilot/presentation/widgets/permission_dialog_widget.dart';
 
-// Widget used to add and preview product images
 class ImageAddingWidget extends StatelessWidget {
   const ImageAddingWidget({super.key});
 
@@ -28,14 +27,11 @@ class ImageAddingWidget extends StatelessWidget {
                 spacing: 12,
                 runSpacing: 12,
                 alignment: WrapAlignment.center,
-                // Generate tiles for images and add button
                 children: List.generate(itemCount, (index) {
-                  // Get image if it exists, otherwise null
                   final File? image = index < images.length
                       ? images[index]
                       : null;
                   return GestureDetector(
-                    // When tile is tapped, decide between adding image or previewing
                     onTap: () {
                       if (image == null) {
                         showDialog(
@@ -46,7 +42,6 @@ class ImageAddingWidget extends StatelessWidget {
                           ),
                         );
                       } else {
-                        // Launch full-screen image preview
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -69,7 +64,6 @@ class ImageAddingWidget extends StatelessWidget {
                           width: 2,
                         ),
                       ),
-                      // If image is null → show "Add Photo"
                       child: image == null
                           ? Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -82,10 +76,8 @@ class ImageAddingWidget extends StatelessWidget {
                                 Text("Add Photo"),
                               ],
                             )
-                          // If image exists → show image preview
                           : Stack(
                               children: [
-                                // Display selected image with Hero animation
                                 Positioned.fill(
                                   child: Hero(
                                     tag: image.path,
@@ -100,13 +92,11 @@ class ImageAddingWidget extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                // Delete image button
                                 Positioned(
                                   top: 6,
                                   right: 6,
                                   child: GestureDetector(
                                     behavior: HitTestBehavior.opaque,
-                                    // Remove image from provider
                                     onTap: () {
                                       context
                                           .read<ProductProvider>()
@@ -139,3 +129,4 @@ class ImageAddingWidget extends StatelessWidget {
     );
   }
 }
+

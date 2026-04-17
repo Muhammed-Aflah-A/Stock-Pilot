@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/data/models/cart_model.dart';
 
-// Widget used to show purchase summary
 class PurchaseSummaryCardWidget extends StatelessWidget {
   final String? name;
   final String? phone;
@@ -22,7 +21,6 @@ class PurchaseSummaryCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Calculate total quantity
     final totalItems = items.fold(0, (sum, item) => sum + item.quantity);
     return Card(
       color: ColourStyles.primaryColor,
@@ -32,7 +30,6 @@ class PurchaseSummaryCardWidget extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            // Customer Name
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -41,7 +38,6 @@ class PurchaseSummaryCardWidget extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            // Phone Number
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -50,7 +46,6 @@ class PurchaseSummaryCardWidget extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            // Date
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -61,13 +56,11 @@ class PurchaseSummaryCardWidget extends StatelessWidget {
             const SizedBox(height: 16),
             const Divider(),
             const SizedBox(height: 10),
-            // Products Title
             Align(
               alignment: Alignment.centerLeft,
               child: Text("Products", style: TextStyles.cardHeading(context)),
             ),
             const SizedBox(height: 8),
-            // Product List
             Column(
               children: items.map((item) {
                 return Padding(
@@ -88,7 +81,6 @@ class PurchaseSummaryCardWidget extends StatelessWidget {
             const SizedBox(height: 16),
             const Divider(),
             const SizedBox(height: 10),
-            // Total Items
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -100,13 +92,12 @@ class PurchaseSummaryCardWidget extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            // Total Amount
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Total Amount"),
                 Text(
-                  "₹ $totalAmount",
+                  "â‚¹ $totalAmount",
                   style: TextStyles.productPriceText(context),
                 ),
               ],
@@ -117,3 +108,4 @@ class PurchaseSummaryCardWidget extends StatelessWidget {
     );
   }
 }
+

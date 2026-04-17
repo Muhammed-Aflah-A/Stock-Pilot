@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 
-// Reusable tile widget used for options like Camera / Library
 class OptionTileWidget extends StatelessWidget {
   final IconData icon;
   final String title;
@@ -36,7 +35,6 @@ class OptionTileWidget extends StatelessWidget {
               ),
               SizedBox(width: 16),
               Expanded(
-                // Title label
                 child: Text(
                   title,
                   style: TextStyles.primaryText(context).copyWith(color: color),
@@ -49,3 +47,4 @@ class OptionTileWidget extends StatelessWidget {
     );
   }
 }
+

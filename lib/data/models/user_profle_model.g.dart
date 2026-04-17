@@ -1,10 +1,6 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
+﻿
 part of 'user_profle_model.dart';
 
-// **************************************************************************
-// TypeAdapterGenerator
-// **************************************************************************
 
 class UserProfileAdapter extends TypeAdapter<UserProfile> {
   @override
@@ -57,3 +53,4 @@ class UserProfileAdapter extends TypeAdapter<UserProfile> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+

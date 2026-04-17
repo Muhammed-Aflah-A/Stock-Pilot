@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 
-// Reusable search bar widget
 class SearchbarWidget extends StatelessWidget {
-  // Controller used to read and control the text field value
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final VoidCallback onClear;
@@ -20,7 +18,6 @@ class SearchbarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Border style reused for enabled and focused states
     final border = OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
       borderSide: const BorderSide(
@@ -36,23 +33,17 @@ class SearchbarWidget extends StatelessWidget {
           return TextField(
             controller: controller,
             onChanged: onChanged,
-            // Vertically center the text
             textAlignVertical: TextAlignVertical.center,
-            // Text style for user input
             style: TextStyles.formHint(
               context,
             ).copyWith(color: ColourStyles.primaryColor_2),
             decoration: InputDecoration(
               hintText: hintText,
-              // Hint text style
               hintStyle: TextStyles.formHint(context),
-              // Search icon on the left side
               prefixIcon: Icon(Icons.search),
-              // Show clear button only when text is not empty
               suffixIcon: value.text.isNotEmpty
                   ? IconButton(
                       icon: const Icon(Icons.close),
-                      // Clears the search text when pressed
                       onPressed: onClear,
                     )
                   : null,
@@ -68,3 +59,4 @@ class SearchbarWidget extends StatelessWidget {
     );
   }
 }
+

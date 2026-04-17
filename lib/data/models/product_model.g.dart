@@ -1,10 +1,6 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
+﻿
 part of 'product_model.dart';
 
-// **************************************************************************
-// TypeAdapterGenerator
-// **************************************************************************
 
 class ProductModelAdapter extends TypeAdapter<ProductModel> {
   @override
@@ -63,3 +59,4 @@ class ProductModelAdapter extends TypeAdapter<ProductModel> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+

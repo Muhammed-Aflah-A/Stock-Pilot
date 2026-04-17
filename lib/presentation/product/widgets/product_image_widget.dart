@@ -1,11 +1,10 @@
-import 'dart:io';
+﻿import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/presentation/product/widgets/product_image_placeholder.dart';
 import 'package:stock_pilot/presentation/widgets/image_preview_screen.dart';
 import 'package:stock_pilot/presentation/product/widgets/carousel_navigation_arrow_widget.dart';
 
-// Widget that displays product images in a carousel
 class ProductImageWidget extends StatefulWidget {
   final List<String> images;
   final double? height;
@@ -17,14 +16,12 @@ class ProductImageWidget extends StatefulWidget {
 }
 
 class _ProductImageWidgetState extends State<ProductImageWidget> {
-  // Controller used to control the PageView (carousel)
   late final PageController _pageController;
   int _localIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    // Initialize PageController when widget is created
     _pageController = PageController();
   }
 
@@ -36,7 +33,6 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // Remove empty image paths from the list
     final displayImages = widget.images.where((img) => img.isNotEmpty).toList();
     final effectiveHeight =
         widget.height ?? MediaQuery.of(context).size.height * 0.35;
@@ -46,13 +42,10 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
       child: Stack(
         children: [
-          /// IMAGE CAROUSEL
           displayImages.isNotEmpty
               ? PageView.builder(
                   controller: _pageController,
-                  // Total number of images
                   itemCount: displayImages.length,
-                  // Update the current index when page changes
                   onPageChanged: (index) {
                     setState(() => _localIndex = index);
                   },
@@ -75,7 +68,6 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
                         child: Image.file(
                           File(imagePath),
                           fit: BoxFit.cover,
-                          // If image fails to load, show placeholder
                           errorBuilder: (context, error, stackTrace) =>
                               const ProductImagePlaceholder(),
                         ),
@@ -83,11 +75,8 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
                     );
                   },
                 )
-              // Show placeholder when there are no images
               : const ProductImagePlaceholder(),
-          // NAVIGATION ARROWS (only if multiple images exist)
           if (displayImages.length > 1) ...[
-            // Left arrow (shown only if not on first image)
             if (_localIndex > 0)
               CarouselNavigationArrowWidget(
                 alignment: Alignment.centerLeft,
@@ -98,7 +87,6 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
                 ),
               ),
 
-            // Right arrow (shown only if not on last image)
             if (_localIndex < displayImages.length - 1)
               CarouselNavigationArrowWidget(
                 alignment: Alignment.centerRight,
@@ -109,8 +97,6 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
                 ),
               ),
           ],
-          // PAGE INDICATOR DOTS
-          // Shows which image is currently active
           if (displayImages.length > 1)
             Positioned(
               bottom: 16,
@@ -118,18 +104,15 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
               right: 0,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                // Create dots equal to number of images
                 children: List.generate(
                   displayImages.length,
                   (index) => AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     margin: const EdgeInsets.symmetric(horizontal: 4),
-                    // Active dot is larger
                     width: _localIndex == index ? 12 : 8,
                     height: 8,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
-                      // Active dot uses primary color
                       color: _localIndex == index
                           ? ColourStyles.primaryColor
                           : ColourStyles.colorGrey,
@@ -143,3 +126,4 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
     );
   }
 }
+

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
@@ -9,7 +9,6 @@ import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
 import 'package:stock_pilot/presentation/product/widgets/dropdown_feild_widget.dart';
 import 'package:stock_pilot/presentation/widgets/form_widget.dart';
 
-// Second step: pricing and inventory
 class ProductAddingPage2 extends StatelessWidget {
   const ProductAddingPage2({super.key});
 
@@ -45,7 +44,6 @@ class ProductAddingPage2 extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      /// CATEGORY
                       Text("Product category", style: headingStyle),
                       const SizedBox(height: 8),
                       DropdownFieldWidget(
@@ -60,7 +58,6 @@ class ProductAddingPage2 extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      // BRAND
                       Text("Product brand", style: headingStyle),
                       const SizedBox(height: 8),
                       DropdownFieldWidget(
@@ -75,7 +72,6 @@ class ProductAddingPage2 extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      // PURCHASE RATE
                       Text("Purchase Rate", style: headingStyle),
                       const SizedBox(height: 8),
                       FormWidget(
@@ -95,7 +91,6 @@ class ProductAddingPage2 extends StatelessWidget {
                         },
                       ),
                       const SizedBox(height: 20),
-                      // SALES RATE
                       Text("Sales Rate", style: headingStyle),
                       const SizedBox(height: 8),
                       FormWidget(
@@ -113,7 +108,6 @@ class ProductAddingPage2 extends StatelessWidget {
                         },
                       ),
                       const SizedBox(height: 20),
-                      // ITEM COUNT
                       Text("Item count", style: headingStyle),
                       const SizedBox(height: 8),
                       FormWidget(
@@ -131,7 +125,6 @@ class ProductAddingPage2 extends StatelessWidget {
                         },
                       ),
                       const SizedBox(height: 20),
-                      // LOW STOCK COUNT
                       Text("Low stock count", style: headingStyle),
                       const SizedBox(height: 8),
                       FormWidget(
@@ -149,7 +142,6 @@ class ProductAddingPage2 extends StatelessWidget {
                             FocusScope.of(context).unfocus(),
                       ),
                       const SizedBox(height: 40),
-                      // ADD PRODUCT BUTTON
                       const Center(child: AddProductButtonWidget()),
                     ],
                   ),
@@ -162,3 +154,4 @@ class ProductAddingPage2 extends StatelessWidget {
     );
   }
 }
+

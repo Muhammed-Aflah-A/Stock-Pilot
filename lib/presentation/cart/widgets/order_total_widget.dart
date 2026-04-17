@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/presentation/cart/viewmodel/cart_provider.dart';
@@ -15,10 +15,8 @@ class OrderTotalWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Header
         Text("Order Total", style: TextStyles.cardHeading(context)),
         const SizedBox(height: 10),
-        // Total items
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -30,7 +28,6 @@ class OrderTotalWidget extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 8),
-        // Total price
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -45,3 +42,4 @@ class OrderTotalWidget extends StatelessWidget {
     );
   }
 }
+

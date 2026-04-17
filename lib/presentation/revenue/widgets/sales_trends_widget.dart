@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -70,7 +70,6 @@ class SalesTrendsWidget extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              // Period Selector
               Container(
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
@@ -140,7 +139,6 @@ class SalesTrendsWidget extends StatelessWidget {
                 ),
               ],
               const SizedBox(height: 30),
-              // Chart
               SizedBox(
                 height: 150,
                 child: Padding(
@@ -213,8 +211,6 @@ class SalesTrendsWidget extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           if (period == TrendPeriod.custom) {
-            // If custom selected, just update state to show boxes if not already custom
-            // Actually, setPeriod is enough to trigger build
             provider.setPeriod(period);
           } else {
             provider.setPeriod(period);
@@ -257,3 +253,4 @@ class SalesTrendsWidget extends StatelessWidget {
     }
   }
 }
+

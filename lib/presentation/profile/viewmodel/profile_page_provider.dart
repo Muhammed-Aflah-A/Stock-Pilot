@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/interfaces/image_permission_handler_interface.dart';
@@ -10,17 +10,14 @@ import 'package:stock_pilot/data/models/user_profile_details_model.dart';
 import 'package:stock_pilot/data/models/user_profle_model.dart';
 import 'package:stock_pilot/data/service%20layer/hive_service_layer.dart';
 
-// Provider responsible for handling profile page state and logic
 class ProfilePageProvider
     with ChangeNotifier
     implements ImagePermissionHandler {
-  // Hive service used to read and update user data
   final HiveServiceLayer hiveService;
   ProfilePageProvider({required this.hiveService}) {
     loadUser();
   }
   UserProfile? user;
-  // Handles permission logic for camera or gallery
   @override
   Future<void> handleImagePermission({
     required BuildContext context,
@@ -35,13 +32,11 @@ class ProfilePageProvider
     );
   }
 
-  // Loads the user profile from Hive database
   Future<void> loadUser() async {
     user = await hiveService.getUser();
     notifyListeners();
   }
 
-  // Opens camera and selects an image
   Future<void> openCamera() async {
     final path = await ImageSelectorUtil.openCamera();
     if (path == null) return;
@@ -52,7 +47,6 @@ class ProfilePageProvider
     notifyListeners();
   }
 
-  // Removes the user's profile image
   @override
   void removeImage({int? index}) {
     if (user != null) {
@@ -61,10 +55,8 @@ class ProfilePageProvider
     }
   }
 
-  // Opens gallery to select an image
   Future<void> openLibrary() async {
     final path = await ImageSelectorUtil.openLibrary();
-    // Updates profile image if a path is returned
     if (path == null) return;
     final cropped = await ImageCropUtil.cropImage(File(path));
     if (cropped == null) return;
@@ -72,7 +64,6 @@ class ProfilePageProvider
     await updateProfileImage(savedPath);
   }
 
-  // Personal information list used by UI to build profile section
   List<UserProfileDetailsModel> get personalInfo {
     return [
       UserProfileDetailsModel(
@@ -99,7 +90,6 @@ class ProfilePageProvider
     ];
   }
 
-  // Shop information list used by UI
   List<UserProfileDetailsModel> get shopInfo {
     return [
       UserProfileDetailsModel(
@@ -126,7 +116,6 @@ class ProfilePageProvider
     ];
   }
 
-  // Updates a specific field of the user profile
   Future<void> updateProfile(String feildType, String value) async {
     switch (feildType) {
       case 'name':
@@ -151,7 +140,6 @@ class ProfilePageProvider
     await updateUser();
   }
 
-  // Updates only the profile image
   Future<void> updateProfileImage(String? path) async {
     if (path == null) return;
     user?.profileImage = path;
@@ -159,10 +147,10 @@ class ProfilePageProvider
     notifyListeners();
   }
 
-  // Saves the updated user data to Hive
   Future<void> updateUser() async {
     if (user == null) return;
     await hiveService.updateUser(user!);
     notifyListeners();
   }
 }
+

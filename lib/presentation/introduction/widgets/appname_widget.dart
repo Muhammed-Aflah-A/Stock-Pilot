@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 
 class AppnameWidget extends StatelessWidget {
@@ -10,7 +10,6 @@ class AppnameWidget extends StatelessWidget {
 
     return Stack(
       children: [
-        // Stroke Outline layer
         RichText(
           text: TextSpan(
             children: [
@@ -20,7 +19,6 @@ class AppnameWidget extends StatelessWidget {
             ],
           ),
         ),
-        // Filled text
         RichText(
           text: TextSpan(
             children: [
@@ -34,3 +32,4 @@ class AppnameWidget extends StatelessWidget {
     );
   }
 }
+

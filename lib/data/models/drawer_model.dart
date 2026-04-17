@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 part 'drawer_model.g.dart';
 
@@ -16,3 +16,4 @@ class DrawerItems {
     required this.navigation,
   });
 }
+

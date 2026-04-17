@@ -1,10 +1,6 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
+﻿
 part of 'drawer_model.dart';
 
-// **************************************************************************
-// TypeAdapterGenerator
-// **************************************************************************
 
 class DrawerItemsAdapter extends TypeAdapter<DrawerItems> {
   @override
@@ -45,3 +41,4 @@ class DrawerItemsAdapter extends TypeAdapter<DrawerItems> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+

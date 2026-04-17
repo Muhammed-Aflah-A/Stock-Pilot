@@ -1,4 +1,4 @@
-import 'package:fl_chart/fl_chart.dart';
+﻿import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:stock_pilot/data/local/hive/hive_boxes.dart';
@@ -18,7 +18,6 @@ class RevenueProvider extends ChangeNotifier {
 
   RevenueProvider({required this.hiveService}) {
     loadSales();
-    // Listen for changes in the sales box to update revenue dynamically
     Hive.box<SalesItems>(
       HiveBoxes.sales,
     ).listenable().addListener(() => loadSales());
@@ -59,7 +58,6 @@ class RevenueProvider extends ChangeNotifier {
     }
   }
 
-  // --- Summary Metrics ---
 
   double get dailyRevenue => _calculateTotalForDate(DateTime.now());
 
@@ -73,7 +71,6 @@ class RevenueProvider extends ChangeNotifier {
     return _calculateTotalForRange(DateTime(now.year, 1, 1), now);
   }
 
-  // --- Trend Metrics ---
 
   double get totalForSelectedPeriod {
     final now = DateTime.now();
@@ -103,7 +100,7 @@ class RevenueProvider extends ChangeNotifier {
   }
 
   double get percentageChange {
-    if (_selectedPeriod == TrendPeriod.custom) return 0; // Skip for custom
+    if (_selectedPeriod == TrendPeriod.custom) return 0;
     final now = DateTime.now();
     double current = 0;
     double previous = 0;
@@ -151,7 +148,6 @@ class RevenueProvider extends ChangeNotifier {
     return ((current - previous) / previous) * 100;
   }
 
-  // --- Chart Data ---
 
   List<FlSpot> get chartSpots {
     final spots = <FlSpot>[];
@@ -159,7 +155,6 @@ class RevenueProvider extends ChangeNotifier {
 
     switch (_selectedPeriod) {
       case TrendPeriod.day:
-        // Showing last 2 days to show a trend line
         spots.add(
           FlSpot(
             0,
@@ -169,7 +164,6 @@ class RevenueProvider extends ChangeNotifier {
         spots.add(FlSpot(1, dailyRevenue));
         break;
       case TrendPeriod.week:
-        // Showing current calendar week (Monday to Sunday)
         final monday = now.subtract(Duration(days: now.weekday - 1));
         for (int i = 0; i < 7; i++) {
           final date = monday.add(Duration(days: i));
@@ -177,7 +171,6 @@ class RevenueProvider extends ChangeNotifier {
         }
         break;
       case TrendPeriod.month:
-        // Showing current calendar month (1st to Last Day)
         final lastDay = DateTime(now.year, now.month + 1, 0).day;
         for (int i = 0; i < lastDay; i++) {
           final date = DateTime(now.year, now.month, i + 1);
@@ -206,13 +199,11 @@ class RevenueProvider extends ChangeNotifier {
         if (_customStartDate != null && _customEndDate != null) {
           final days = _customEndDate!.difference(_customStartDate!).inDays + 1;
           if (days <= 365) {
-            // Show daily spots for up to a year
             for (int i = 0; i < days; i++) {
               final date = _customStartDate!.add(Duration(days: i));
               spots.add(FlSpot(i.toDouble(), _calculateTotalForDate(date)));
             }
           } else {
-            // Monthly grouping for ranges longer than a year
             final months = ((_customEndDate!.year - _customStartDate!.year) * 12) +
                 _customEndDate!.month -
                 _customStartDate!.month +
@@ -233,7 +224,6 @@ class RevenueProvider extends ChangeNotifier {
     return spots;
   }
 
-  // --- Most Sold Items (All-Time) ---
 
   List<MapEntry<ProductModel, int>> get mostSoldItems {
     final Map<String, int> productCounts = {};
@@ -257,7 +247,6 @@ class RevenueProvider extends ChangeNotifier {
         .toList();
   }
 
-  // --- Helper Methods ---
 
   double _calculateTotalForDate(DateTime date) {
     final dateStrNew = DateFormat('dd - MMM - yyyy', 'en_US').format(date);
@@ -290,3 +279,4 @@ class RevenueProvider extends ChangeNotifier {
     }
   }
 }
+

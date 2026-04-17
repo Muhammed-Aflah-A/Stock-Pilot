@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 
@@ -21,3 +21,4 @@ class ImageCropUtil {
     return File(cropped.path);
   }
 }
+

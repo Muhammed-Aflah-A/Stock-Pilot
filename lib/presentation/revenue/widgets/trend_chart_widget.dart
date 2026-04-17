@@ -1,4 +1,4 @@
-import 'package:fl_chart/fl_chart.dart';
+﻿import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -28,7 +28,7 @@ class TrendChartWidget extends StatelessWidget {
     return LineChart(
       LineChartData(
         minX: 0,
-        maxX: spots.isEmpty ? 0 : (spots.length - 1).toDouble(), // Explicitly set boundaries
+        maxX: spots.isEmpty ? 0 : (spots.length - 1).toDouble(),
         gridData: const FlGridData(show: false),
         titlesData: FlTitlesData(
           rightTitles: const AxisTitles(
@@ -47,23 +47,17 @@ class TrendChartWidget extends StatelessWidget {
               interval: _getInterval(),
               getTitlesWidget: (value, meta) {
                 final index = value.round();
-                // Return empty if value is out of bounds or not near an integer
                 if (value < -0.1 || index >= spots.length) {
                   return const SizedBox.shrink();
                 }
 
-                // Precision filtering for labels
                 bool shouldShow = false;
                 if (period == TrendPeriod.month) {
-                  // Show every 5 days OR the very last day of the month
                   shouldShow = (index % 5 == 0) || (index == spots.length - 1);
                 } else if (period == TrendPeriod.year) {
-                  // Final requested month list: Jan, Mar, May, Jun, Aug, Oct, Dec
                   final showIndices = [0, 2, 4, 5, 7, 9, 11];
                   shouldShow = showIndices.contains(index);
                 } else {
-                  // For other periods, the interval is already set to show all points
-                  // or handled by the calculated interval for custom ranges.
                   shouldShow = true;
                 }
 
@@ -147,13 +141,11 @@ class TrendChartWidget extends StatelessWidget {
         return 1;
       case TrendPeriod.custom:
         final calculatedInterval = (spots.length - 1) / 4;
-        // Ensure interval is at least 1 to prevent multiple labels for the same data point
         return calculatedInterval < 1 ? 1 : calculatedInterval;
     }
   }
 
   String _getTitle(double value) {
-    // Use rounding to pick the nearest data point for the calculated interval
     final index = value.round();
     
     if (value < -0.1 || index >= spots.length) {
@@ -166,12 +158,10 @@ class TrendChartWidget extends StatelessWidget {
       case TrendPeriod.day:
         return index == 0 ? "Yest" : "Today";
       case TrendPeriod.week:
-        // Align labels with current calendar week (Monday start)
         final monday = now.subtract(Duration(days: now.weekday - 1));
         final date = monday.add(Duration(days: index));
         return DateFormat('E').format(date);
       case TrendPeriod.month:
-        // Calendar month days start from 1 instead of 0
         return (index + 1).toString();
       case TrendPeriod.sixMonths:
         final date = DateTime(now.year, now.month - (5 - index), 1);
@@ -182,12 +172,10 @@ class TrendChartWidget extends StatelessWidget {
       case TrendPeriod.custom:
         if (customStartDate != null) {
           if (isMonthly) {
-            // If monthly, index refers to months
             final date =
                 DateTime(customStartDate!.year, customStartDate!.month + index, 1);
             return DateFormat('MMM yyyy').format(date);
           } else {
-            // If daily, index refers to days
             final date = customStartDate!.add(Duration(days: index));
             return DateFormat('dd MMM').format(date);
           }
@@ -196,3 +184,4 @@ class TrendChartWidget extends StatelessWidget {
     }
   }
 }
+

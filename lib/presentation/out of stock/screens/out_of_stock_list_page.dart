@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -20,7 +20,6 @@ class OutOfStockListPage extends StatefulWidget {
 }
 
 class _OutOfStockListPageState extends State<OutOfStockListPage> {
-  // Controller for search field
   final TextEditingController controller = TextEditingController();
 
   @override
@@ -32,7 +31,6 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    // Responsive spacing
     final horizontalPadding = (size.width * 0.04).clamp(16.0, 40.0);
     final verticalPadding = (size.height * 0.02).clamp(12.0, 24.0);
     final spacing = (size.height * 0.02).clamp(12.0, 20.0);
@@ -59,7 +57,6 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
               children: [
                 Row(
                   children: [
-                    // Search bar
                     Expanded(
                       child: SearchbarWidget(
                         controller: controller,
@@ -76,13 +73,11 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    // Filter button
                     Consumer<OutofstockProvider>(
                       builder: (_, provider, _) =>
                           FilterButtonWidget(provider: provider),
                     ),
                     const SizedBox(width: 10),
-                    // Sort button
                     Consumer<OutofstockProvider>(
                       builder: (_, provider, _) =>
                           SortButtonWidget<OutOfStockSortOption>(
@@ -92,9 +87,9 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
                               OutOfStockSortOption.priceHighToLow:
                                   'Price : High to Low',
                               OutOfStockSortOption.alphabeticalAZ:
-                                  'Alphabetical ( A – Z )',
+                                  'Alphabetical ( A â€“ Z )',
                               OutOfStockSortOption.alphabeticalZA:
-                                  'Alphabetical ( Z – A )',
+                                  'Alphabetical ( Z â€“ A )',
                             },
                             currentValue: provider.currentSort,
                             defaultValue: OutOfStockSortOption.priceLowToHigh,
@@ -104,12 +99,10 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
                   ],
                 ),
                 SizedBox(height: spacing),
-                // List section
                 Expanded(
                   child: Consumer<OutofstockProvider>(
                     builder: (context, provider, _) {
                       final displayList = provider.filteredOutOfStock;
-                      // Empty state
                       if (displayList.isEmpty) {
                         return const Center(
                           child: EmptypageMessageWidget(
@@ -118,7 +111,6 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
                           ),
                         );
                       }
-                      // Product list
                       return ListView.separated(
                         keyboardDismissBehavior:
                             ScrollViewKeyboardDismissBehavior.onDrag,
@@ -157,3 +149,4 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
     );
   }
 }
+

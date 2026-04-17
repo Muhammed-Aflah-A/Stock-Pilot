@@ -1,17 +1,13 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/interfaces/filter_provider_interface.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/presentation/widgets/filter_bottom_sheet_widget.dart';
 
-// A button widget that opens the filter bottom sheet
 class FilterButtonWidget extends StatelessWidget {
   final FilterProviderInterface provider;
   const FilterButtonWidget({super.key, required this.provider});
-  // Opens the filter bottom sheet
   void _openSheet(BuildContext context) {
-    // Dismiss keyboard if any text field is focused
     FocusManager.instance.primaryFocus?.unfocus();
-    // Initialize temporary filters before showing the sheet
     provider.initTempFilters();
     showModalBottomSheet(
       context: context,
@@ -28,7 +24,6 @@ class FilterButtonWidget extends StatelessWidget {
     return ListenableBuilder(
       listenable: provider,
       builder: (context, _) {
-        // Check if any filters are currently active
         final active = provider.hasActiveFilters;
         return SizedBox(
           width: buttonSize,
@@ -43,7 +38,6 @@ class FilterButtonWidget extends StatelessWidget {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      // Change background when filters are active
                       color: active
                           ? ColourStyles.primaryColor_2
                           : ColourStyles.primaryColor,
@@ -56,13 +50,11 @@ class FilterButtonWidget extends StatelessWidget {
                     child: Icon(
                       Icons.filter_alt_outlined,
                       size: (buttonSize * 0.45).clamp(18.0, 24.0),
-                      // Change icon color depending on filter state
                       color: active
                           ? ColourStyles.primaryColor
                           : ColourStyles.primaryColor_2,
                     ),
                   ),
-                  // Small red indicator dot when filters are active
                   if (active)
                     const Positioned(
                       right: 5,
@@ -87,3 +79,4 @@ class FilterButtonWidget extends StatelessWidget {
     );
   }
 }
+

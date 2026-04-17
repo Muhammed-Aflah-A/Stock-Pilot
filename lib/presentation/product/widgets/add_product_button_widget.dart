@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/presentation/widgets/action_confirmation_widget.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
@@ -9,7 +9,6 @@ import 'package:stock_pilot/core/utils/snackbar_util.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
 
-// Button used for both adding and updating a product
 class AddProductButtonWidget extends StatelessWidget {
   const AddProductButtonWidget({super.key});
 
@@ -24,7 +23,6 @@ class AddProductButtonWidget extends StatelessWidget {
         final form = productForm.secondFormKey.currentState;
         if (form != null && form.validate()) {
           if (isEditing) {
-            // Prompt user for confirmation ONLY when updating
             showDialog(
               context: context,
               builder: (dialogCtx) => ActionConfirmationWidget(
@@ -32,7 +30,7 @@ class AddProductButtonWidget extends StatelessWidget {
                 actionText: "Update",
                 displayName: productForm.productName ?? "Product",
                 actionColor: ColourStyles.colorGreen,
-                showSnackbar: false, // We handle our own snackbar explicitly
+                showSnackbar: false,
                 onConfirm: () async {
                   final success = await productForm.saveProductData(dashboardProvider);
                   if (!context.mounted) return false;
@@ -42,18 +40,16 @@ class AddProductButtonWidget extends StatelessWidget {
                       "Product updated successfully",
                       false,
                     );
-                    // If editing → blow away stack back to details page
                     Navigator.popUntil(
                       context,
                       ModalRoute.withName(AppRoutes.productDetailsPage),
                     );
                   }
-                  return false; // Dialog falls out of tree natively
+                  return false;
                 },
               ),
             );
           } else {
-            // Addition: save immediately without confirmation
             final success = await productForm.saveProductData(dashboardProvider);
             if (!context.mounted) return;
             if (success) {
@@ -62,7 +58,6 @@ class AddProductButtonWidget extends StatelessWidget {
                 "Product added successfully",
                 false,
               );
-              // If adding → blow away stack back to product list
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 AppRoutes.productListPage,
@@ -80,3 +75,4 @@ class AddProductButtonWidget extends StatelessWidget {
     );
   }
 }
+

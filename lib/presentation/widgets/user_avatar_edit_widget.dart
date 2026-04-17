@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/utils/image_util.dart';
 import 'package:stock_pilot/presentation/widgets/image_preview_screen.dart';
 
-// Widget that shows the user's profile image with an edit button
 class UserAvatarEditWidget extends StatelessWidget {
   final String? imagePath;
   final VoidCallback onPressed;
@@ -17,10 +16,8 @@ class UserAvatarEditWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      // Allows the edit button to slightly overflow the avatar
       clipBehavior: Clip.none,
       children: [
-        // Profile image
         GestureDetector(
           onTap: () {
             if (imagePath != null && imagePath!.isNotEmpty) {
@@ -40,7 +37,6 @@ class UserAvatarEditWidget extends StatelessWidget {
             child: CircleAvatar(
               radius: 50,
               backgroundColor: ColourStyles.primaryColor_2,
-              // Loads image using utility function
               backgroundImage: ImageUtil.getProfileImage(imagePath),
             ),
           ),
@@ -71,3 +67,4 @@ class UserAvatarEditWidget extends StatelessWidget {
     );
   }
 }
+

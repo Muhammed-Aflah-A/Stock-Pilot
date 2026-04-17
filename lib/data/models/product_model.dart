@@ -1,4 +1,4 @@
-import 'package:hive_flutter/adapters.dart';
+﻿import 'package:hive_flutter/adapters.dart';
 part 'product_model.g.dart';
 
 @HiveType(typeId: 5)
@@ -34,3 +34,4 @@ class ProductModel {
     required this.lowStockCount,
   });
 }
+

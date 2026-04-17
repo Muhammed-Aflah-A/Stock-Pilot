@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/interfaces/filter_provider_interface.dart';
 import 'package:stock_pilot/core/theme/button_styles.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -8,7 +8,6 @@ import 'package:stock_pilot/presentation/widgets/category_choice_widget.dart';
 import 'package:stock_pilot/presentation/widgets/section_title_widget.dart';
 import 'package:stock_pilot/presentation/widgets/stock_status_choice_widget.dart';
 
-// Bottom sheet widget used for filtering products
 class FilterBottomSheet extends StatelessWidget {
   final FilterProviderInterface provider;
   const FilterBottomSheet({super.key, required this.provider});
@@ -19,11 +18,8 @@ class FilterBottomSheet extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final horizontalPadding = (size.width * 0.05).clamp(16.0, 28.0);
     return DraggableScrollableSheet(
-      // Initial height of bottom sheet
       initialChildSize: 0.85,
-      // Maximum height user can drag
       maxChildSize: 0.95,
-      // Minimum height when dragged down
       minChildSize: 0.4,
       builder: (_, scrollController) {
         return Container(
@@ -33,7 +29,6 @@ class FilterBottomSheet extends StatelessWidget {
           ),
           child: Column(
             children: [
-              // Drag handle indicator
               Padding(
                 padding: const EdgeInsets.only(top: 12, bottom: 4),
                 child: Center(
@@ -47,7 +42,6 @@ class FilterBottomSheet extends StatelessWidget {
                   ),
                 ),
               ),
-              // Title and close button row
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: horizontalPadding,
@@ -56,9 +50,7 @@ class FilterBottomSheet extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Filter title
                     Text('Filter', style: TextStyles.sectionTitle(context)),
-                    // Close button
                     InkWell(
                       onTap: () => Navigator.pop(context),
                       child: const Icon(Icons.close),
@@ -67,12 +59,10 @@ class FilterBottomSheet extends StatelessWidget {
                 ),
               ),
               const Divider(thickness: 1),
-              // Main filter content
               Expanded(
                 child: ListenableBuilder(
                   listenable: provider,
                   builder: (context, _) {
-                    // Determine max price for slider
                     final effectiveMax = provider.maxPrice > 0
                         ? provider.maxPrice
                         : 5000.0;
@@ -83,18 +73,14 @@ class FilterBottomSheet extends StatelessWidget {
                         vertical: 16,
                       ),
                       children: [
-                        // CATEGORY FILTER
                         if (provider.showCategoryFilter && provider.categoryList.isNotEmpty) ...[
                           const SizedBox(height: 8),
-                          // Section title
                           const SectionTitleWidget(title: "Category"),
                           const SizedBox(height: 10),
-                          // Category options displayed as chips
                           Wrap(
                             spacing: 8,
                             runSpacing: 8,
                             children: provider.categoryList.map((category) {
-                              // Check if category is selected
                               final selected = provider.tempCategories.contains(
                                 category,
                               );
@@ -108,10 +94,8 @@ class FilterBottomSheet extends StatelessWidget {
                           ),
                           const SizedBox(height: 20),
                         ],
-                        // PRICE RANGE FILTER
                         if (provider.showPriceFilter) ...[
                           const SectionTitleWidget(title: "Price Range"),
-                          // RangeSlider used to select min/max price
                           RangeSlider(
                             min: provider.minPrice,
                             max: effectiveMax,
@@ -125,7 +109,6 @@ class FilterBottomSheet extends StatelessWidget {
                               provider.setTempPriceRange(values.start, values.end);
                             },
                           ),
-                          // Display selected price range
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Row(
@@ -150,16 +133,13 @@ class FilterBottomSheet extends StatelessWidget {
                           ),
                           const SizedBox(height: 20),
                         ],
-                        // BRAND FILTER
                         if (provider.showBrandFilter && provider.brandsList.isNotEmpty) ...[
                           const SectionTitleWidget(title: "Brand"),
                           const SizedBox(height: 10),
                           ...provider.brandsList.map((brand) {
-                            /// Check if brand is selected
                             final selected = provider.tempBrands.contains(
                               brand,
                             );
-                            // Brand options displayed
                             return BrandChoiceWidget(
                               label: brand,
                               selected: selected,
@@ -168,11 +148,9 @@ class FilterBottomSheet extends StatelessWidget {
                           }),
                           const SizedBox(height: 20),
                         ],
-                        // STOCK STATUS FILTER
                         if (provider.showStockFilter && provider.availableStockStatuses.length > 1) ...[
                           const SectionTitleWidget(title: "Stock Status"),
                           const SizedBox(height: 10),
-                          // Grid layout for stock options
                           GridView.builder(
                             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
@@ -185,7 +163,6 @@ class FilterBottomSheet extends StatelessWidget {
                             itemCount: provider.availableStockStatuses.length,
                             itemBuilder: (context, index) {
                               final stockStatus = provider.availableStockStatuses[index];
-                              // Check if selected
                               final selected =
                                   provider.tempStockStatus == stockStatus;
                               return StockStatusChoiceWidget(
@@ -204,12 +181,10 @@ class FilterBottomSheet extends StatelessWidget {
                 ),
               ),
               const Divider(thickness: 1),
-              // ACTION BUTTONS (Clear & Apply)
               Padding(
                 padding: EdgeInsets.all(horizontalPadding),
                 child: Row(
                   children: [
-                    // Clear all filters
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
@@ -221,7 +196,6 @@ class FilterBottomSheet extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 12),
-                    // Apply filters
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
@@ -242,3 +216,4 @@ class FilterBottomSheet extends StatelessWidget {
     );
   }
 }
+

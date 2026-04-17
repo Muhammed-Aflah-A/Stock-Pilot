@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/utils/snackbar_util.dart';
@@ -22,7 +22,6 @@ class CategoryListPage extends StatefulWidget {
 }
 
 class _CategoryListPageState extends State<CategoryListPage> {
-  // Controller used for the search field
   final TextEditingController controller = TextEditingController();
 
   @override
@@ -41,7 +40,6 @@ class _CategoryListPageState extends State<CategoryListPage> {
         centeredTitle: false,
         showAvatar: true,
       ),
-      // Drawer menu
       drawer: const AppDrawer(),
       body: SafeArea(
         child: GestureDetector(
@@ -59,17 +57,14 @@ class _CategoryListPageState extends State<CategoryListPage> {
                 ),
                 child: Column(
                   children: [
-                    // Search bar for categories
                     SearchbarWidget(
                       controller: controller,
                       hintText: "Search categories",
-                      // Filter categories when typing
                       onChanged: (value) {
                         context.read<CategoryProvider>().searchCategories(
                           value,
                         );
                       },
-                      // Clear search
                       onClear: () {
                         controller.clear();
                         context.read<CategoryProvider>().clearSearch();
@@ -79,7 +74,6 @@ class _CategoryListPageState extends State<CategoryListPage> {
                     Expanded(
                       child: Consumer<CategoryProvider>(
                         builder: (context, provider, child) {
-                          // If there are no categories
                           if (provider.categories.isEmpty) {
                             return const Center(
                               child: EmptypageMessageWidget(
@@ -88,7 +82,6 @@ class _CategoryListPageState extends State<CategoryListPage> {
                               ),
                             );
                           }
-                          // If search returns no results
                           if (provider.filteredCategory.isEmpty) {
                             return const Center(
                               child: EmptypageMessageWidget(
@@ -99,7 +92,7 @@ class _CategoryListPageState extends State<CategoryListPage> {
                             );
                           }
                           return ListView.separated(
-                            padding: const EdgeInsets.only(bottom: 80), // Prevent FAB overlap
+                            padding: const EdgeInsets.only(bottom: 80),
                             keyboardDismissBehavior:
                                 ScrollViewKeyboardDismissBehavior.onDrag,
                             itemCount: provider.filteredCategory.length,
@@ -109,9 +102,7 @@ class _CategoryListPageState extends State<CategoryListPage> {
                               final categoryItem =
                                   provider.filteredCategory[index];
                               return FilterListTileWidget(
-                                // Category name
                                 title: categoryItem.category ?? "",
-                                // Edit category
                                 onEdit: () {
                                   showDialog(
                                     context: context,
@@ -121,7 +112,6 @@ class _CategoryListPageState extends State<CategoryListPage> {
                                       fieldType: "category",
                                       initialValue: categoryItem.category,
                                       isEditing: true,
-                                      // Duplicate validation
                                       duplicateValidator: (value) {
                                         if (value.trim().toLowerCase() == categoryItem.category?.toLowerCase()) return null;
                                         final exists = context.read<CategoryProvider>().categories.any(
@@ -147,7 +137,6 @@ class _CategoryListPageState extends State<CategoryListPage> {
                                     ),
                                   );
                                 },
-                                // Delete category
                                 onDelete: () {
                                   showDialog(
                                     context: context,
@@ -197,7 +186,6 @@ class _CategoryListPageState extends State<CategoryListPage> {
               ),
             ),
             ),
-              // Floating action button manually positioned over list
               Positioned(
                 bottom: 16,
                 right: 16,
@@ -211,14 +199,12 @@ class _CategoryListPageState extends State<CategoryListPage> {
                           title: "Category",
                           fieldType: "category",
                           isEditing: false,
-                          // Duplicate Validation
                           duplicateValidator: (value) {
                             final exists = context.read<CategoryProvider>().categories.any(
                                   (c) => c.category?.toLowerCase() == value.trim().toLowerCase(),
                                 );
                             return exists ? "Category already exists" : null;
                           },
-                          // Save new category
                           onSave: (value) async {
                             final newCategory = CategoryModel(category: value);
                             await context.read<CategoryProvider>().addCategory(
@@ -239,3 +225,4 @@ class _CategoryListPageState extends State<CategoryListPage> {
     );
   }
 }
+

@@ -1,10 +1,9 @@
-import 'dart:io';
+﻿import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/presentation/cart/viewmodel/cart_provider.dart';
-// Widget used for order details
 class OrderDetailsWidget extends StatelessWidget {
   const OrderDetailsWidget({super.key});
 
@@ -23,10 +22,8 @@ class OrderDetailsWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header
             Text("Order Details", style: TextStyles.cardHeading(context)),
             const SizedBox(height: 10),
-            //Cart items
             ...provider.cartItems.map((item) {
               final price = double.tryParse(item.product.salesRate ?? '0') ?? 0;
               final priceText = "\$${price.toStringAsFixed(2)}";
@@ -44,7 +41,6 @@ class OrderDetailsWidget extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      // Product image
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: Container(
@@ -64,33 +60,28 @@ class OrderDetailsWidget extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 15),
-                      // Product details
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Product name
                             Text(
                               item.product.productName ?? "",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyles.titleText(context),
                             ),
-                            // Category
                             Text(
                               item.product.category ?? "",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyles.activityCardLabel(context),
                             ),
-                            // Brand
                             Text(
                               item.product.brand ?? "",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyles.activityCardText(context),
                             ),
-                            // Price
                             Text(
                               priceText,
                               style: TextStyles.activityCardText(context),
@@ -98,7 +89,6 @@ class OrderDetailsWidget extends StatelessWidget {
                           ],
                         ),
                       ),
-                      // Quantity
                       Text(
                         item.quantity.toString(),
                         style: TextStyles.productPriceText(context),
@@ -114,3 +104,4 @@ class OrderDetailsWidget extends StatelessWidget {
     );
   }
 }
+

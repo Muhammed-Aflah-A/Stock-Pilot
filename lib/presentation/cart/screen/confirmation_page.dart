@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -20,7 +20,6 @@ class ConfirmationPage extends StatelessWidget {
     }
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
-      // Custom appbar
       appBar: AppBarWidget(
         showLeading: true,
         title: "Confirmation",
@@ -43,7 +42,6 @@ class ConfirmationPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 30),
-                // Success icon
                 const CircleAvatar(
                   radius: 40,
                   backgroundColor: ColourStyles.colorGreen,
@@ -54,14 +52,12 @@ class ConfirmationPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                // product sold text
                 Text(
                   "Product Sold Successfully!",
                   style: TextStyles.tagLine(context),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
-                // widget that shows purchase summary
                 PurchaseSummaryCardWidget(
                   name: sale.customerName,
                   phone: sale.customerNumber,
@@ -77,3 +73,4 @@ class ConfirmationPage extends StatelessWidget {
     );
   }
 }
+

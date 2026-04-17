@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -28,7 +28,6 @@ class _BillingScreenState extends State<BillingPage> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: ColourStyles.primaryColor,
-      // Custom appbar
       appBar: const AppBarWidget(
         showLeading: true,
         title: "Billing",
@@ -43,10 +42,8 @@ class _BillingScreenState extends State<BillingPage> {
               padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
-                  // Order details
                   const OrderDetailsWidget(),
                   const SizedBox(height: 10),
-                  // Customer details
                   Card(
                     color: ColourStyles.primaryColor,
                     elevation: 2,
@@ -83,10 +80,8 @@ class _BillingScreenState extends State<BillingPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Order total
                   const OrderTotalWidget(),
                   const SizedBox(height: 10),
-                  // Sell button
                   SizedBox(
                     width: 300,
                     child: BillingButtonWidget(
@@ -96,7 +91,6 @@ class _BillingScreenState extends State<BillingPage> {
                         final dashboard = context.read<DashboardProvider>();
                         final sales = context.read<HistoryProvider>();
 
-                        // Pre-validate form so we don't pop up if it's empty
                         if (!cart.isFormValid) {
                           SnackbarUtil.showSnackBar(
                             context,
@@ -128,9 +122,9 @@ class _BillingScreenState extends State<BillingPage> {
                                   AppRoutes.conformationPage,
                                   (route) => false,
                                 );
-                                return false; // We wiped the stack, don't attempt to pop
+                                return false;
                               } else {
-                                Navigator.pop(dialogCtx); // Close dialogue manually
+                                Navigator.pop(dialogCtx);
                                 SnackbarUtil.showSnackBar(
                                   dialogCtx,
                                   "Failed to complete sale. Check stock limits.",
@@ -154,3 +148,4 @@ class _BillingScreenState extends State<BillingPage> {
     );
   }
 }
+

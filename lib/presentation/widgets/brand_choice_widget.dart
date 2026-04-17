@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 
-// A reusable widget used to display a brand option
 class BrandChoiceWidget extends StatelessWidget {
   final String label;
   final bool selected;
@@ -21,7 +20,6 @@ class BrandChoiceWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
-        // Smooth animation when selection state changes
         duration: const Duration(milliseconds: 200),
         margin: const EdgeInsets.only(bottom: 8),
         padding: EdgeInsets.symmetric(
@@ -29,12 +27,10 @@ class BrandChoiceWidget extends StatelessWidget {
           vertical: (size.height * 0.016).clamp(12.0, 18.0),
         ),
         decoration: BoxDecoration(
-          // Background color changes depending on selection
           color: selected
               ? ColourStyles.choiceColor2
               : ColourStyles.choiceColor,
           borderRadius: BorderRadius.circular(10),
-          // Border color also changes when selected
           border: Border.all(
             color: selected
                 ? ColourStyles.primaryColor_2
@@ -42,21 +38,17 @@ class BrandChoiceWidget extends StatelessWidget {
             width: 1.5,
           ),
         ),
-        // Row to display brand name and optional check icon
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Brand label text
             Text(
               label,
-              // Text style changes slightly when selected
               style: selected
                   ? TextStyles.primaryText(context).copyWith(fontSize: 12)
                   : TextStyles.primaryText(
                       context,
                     ).copyWith(fontWeight: FontWeight.w400, fontSize: 12),
             ),
-            // Show check icon only when the brand is selected
             if (selected)
               const Icon(
                 Icons.check,
@@ -69,3 +61,4 @@ class BrandChoiceWidget extends StatelessWidget {
     );
   }
 }
+

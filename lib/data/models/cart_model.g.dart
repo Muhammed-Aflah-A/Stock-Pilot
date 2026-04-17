@@ -1,10 +1,6 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
+﻿
 part of 'cart_model.dart';
 
-// **************************************************************************
-// TypeAdapterGenerator
-// **************************************************************************
 
 class CartItemsAdapter extends TypeAdapter<CartItems> {
   @override
@@ -88,3 +84,4 @@ class SalesItemsAdapter extends TypeAdapter<SalesItems> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+

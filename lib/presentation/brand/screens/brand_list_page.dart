@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/utils/snackbar_util.dart';
@@ -22,7 +22,6 @@ class BrandListPage extends StatefulWidget {
 }
 
 class _BrandListPageState extends State<BrandListPage> {
-  // Controller used for search field
   final TextEditingController controller = TextEditingController();
 
   @override
@@ -42,12 +41,10 @@ class _BrandListPageState extends State<BrandListPage> {
         centeredTitle: false,
         showAvatar: true,
       ),
-      // Drawer menu
       drawer: const AppDrawer(),
       body: SafeArea(
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
-          // Close keyboard when tapping outside
           onTap: () => FocusScope.of(context).unfocus(),
           child: Stack(
             children: [
@@ -61,15 +58,12 @@ class _BrandListPageState extends State<BrandListPage> {
                 ),
                 child: Column(
                   children: [
-                    // Search bar for brands
                     SearchbarWidget(
                       controller: controller,
                       hintText: "Search brands",
-                      // Filter brand when typing
                       onChanged: (value) {
                         context.read<BrandProvider>().searchBrands(value);
                       },
-                      // Clear search
                       onClear: () {
                         controller.clear();
                         context.read<BrandProvider>().clearSearch();
@@ -79,7 +73,6 @@ class _BrandListPageState extends State<BrandListPage> {
                     Expanded(
                       child: Consumer<BrandProvider>(
                         builder: (context, provider, child) {
-                          // If there are no categories
                           if (provider.brands.isEmpty) {
                             return const Center(
                               child: EmptypageMessageWidget(
@@ -88,7 +81,6 @@ class _BrandListPageState extends State<BrandListPage> {
                               ),
                             );
                           }
-                          // If search returns no results
                           if (provider.filteredBrands.isEmpty) {
                             return const Center(
                               child: EmptypageMessageWidget(
@@ -99,7 +91,7 @@ class _BrandListPageState extends State<BrandListPage> {
                             );
                           }
                           return ListView.separated(
-                            padding: const EdgeInsets.only(bottom: 80), // Prevent FAB overlap
+                            padding: const EdgeInsets.only(bottom: 80),
                             keyboardDismissBehavior:
                                 ScrollViewKeyboardDismissBehavior.onDrag,
                             itemCount: provider.filteredBrands.length,
@@ -108,9 +100,7 @@ class _BrandListPageState extends State<BrandListPage> {
                             itemBuilder: (context, index) {
                               final brandItem = provider.filteredBrands[index];
                               return FilterListTileWidget(
-                                // Brand name
                                 title: brandItem.brand ?? "",
-                                // Edit brand
                                 onEdit: () {
                                   showDialog(
                                     context: context,
@@ -120,9 +110,7 @@ class _BrandListPageState extends State<BrandListPage> {
                                       fieldType: "brand",
                                       initialValue: brandItem.brand,
                                       isEditing: true,
-                                      // Duplicate Validation
                                       duplicateValidator: (value) {
-                                        // Ignore self
                                         if (value.trim().toLowerCase() == brandItem.brand?.toLowerCase()) return null;
                                         final exists = context.read<BrandProvider>().brands.any(
                                               (b) => b.brand?.toLowerCase() == value.trim().toLowerCase(),
@@ -147,7 +135,6 @@ class _BrandListPageState extends State<BrandListPage> {
                                     ),
                                   );
                                 },
-                                // Delete brand
                                 onDelete: () {
                                   showDialog(
                                     context: context,
@@ -194,7 +181,6 @@ class _BrandListPageState extends State<BrandListPage> {
               ),
             ),
             ),
-              // Floating action button manually positioned over list
               Positioned(
                 bottom: 16,
                 right: 16,
@@ -208,14 +194,12 @@ class _BrandListPageState extends State<BrandListPage> {
                           title: "Brand",
                           fieldType: "brand",
                           isEditing: false,
-                          // Duplicate Validation
                           duplicateValidator: (value) {
                             final exists = context.read<BrandProvider>().brands.any(
                                   (b) => b.brand?.toLowerCase() == value.trim().toLowerCase(),
                                 );
                             return exists ? "Brand already exists" : null;
                           },
-                          // Save new brand
                           onSave: (value) async {
                             final newBrand = BrandModel(brand: value);
                             await context.read<BrandProvider>().addBrand(
@@ -236,3 +220,4 @@ class _BrandListPageState extends State<BrandListPage> {
     );
   }
 }
+

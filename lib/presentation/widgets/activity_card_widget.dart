@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/assets/app_images.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
@@ -32,7 +32,6 @@ class ActivityCardWidget extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           child: Row(
             children: [
-              // Product Image
               ClipRRect(
                 borderRadius: borderRadius,
                 child: SizedBox(
@@ -48,7 +47,6 @@ class ActivityCardWidget extends StatelessWidget {
                 ),
               ),
               SizedBox(width: width * 0.04),
-              // Activity Info
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +74,6 @@ class ActivityCardWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              // Unit change info
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -103,3 +100,4 @@ class ActivityCardWidget extends StatelessWidget {
     );
   }
 }
+

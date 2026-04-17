@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
 import 'package:stock_pilot/presentation/widgets/app_drawer_widget.dart';
@@ -21,14 +21,12 @@ class _RevenuePageState extends State<RevenuePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor_3,
-      // APP BAR
       appBar: const AppBarWidget(
         showLeading: false,
         title: "Revenue",
         centeredTitle: false,
         showAvatar: true,
       ),
-      // DRAWER
       drawer: const AppDrawer(),
       body: Consumer<RevenueProvider>(
         builder: (context, provider, child) {
@@ -69,3 +67,4 @@ class _RevenuePageState extends State<RevenuePage> {
     );
   }
 }
+

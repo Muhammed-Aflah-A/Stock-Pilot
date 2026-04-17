@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
@@ -20,7 +20,6 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
-  // Controls whether description section is expanded
   final ValueNotifier<bool> _isDescriptionExpanded = ValueNotifier(true);
 
   @override
@@ -38,17 +37,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     final provider = context.watch<ProductProvider>();
     final productIndex = provider.activeProductIndex;
 
-    // Safety check for invalid index
     if (productIndex == null ||
         productIndex < 0 ||
         productIndex >= provider.products.length) {
       return const Scaffold(body: Center(child: Text("Product not found")));
     }
-    // Current product
     final product = provider.products[productIndex];
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
-      // APP BAR
       appBar: const AppBarWidget(
         showLeading: true,
         title: "Product Details",
@@ -66,13 +62,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               ),
               child: Column(
                 children: [
-                  // PRODUCT IMAGE CAROUSEL
                   ProductImageWidget(
                     images: product.productImages,
                     height: (size.height * 0.35).clamp(220.0, 400.0),
                   ),
                   SizedBox(height: spacing),
-                  // PRODUCT INFO CARD
                   Container(
                     width: double.infinity,
                     padding: EdgeInsets.all(horizontalPadding),
@@ -90,25 +84,21 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // PRODUCT NAME
                         Text(
                           product.productName!,
                           style: TextStyles.dialogueHeading(context),
                         ),
                         const SizedBox(height: 6),
-                        // CATEGORY
                         Text(
                           product.category!,
                           style: TextStyles.caption(context),
                         ),
                         SizedBox(height: spacing),
-                        // BRAND
                         DetailRowWidget(
                           label: 'Brand',
                           value: product.brand!,
                           showDivider: true,
                         ),
-                        // PRICE
                         DetailRowWidget(
                           label: 'Price',
                           value: NumberFormatterUtil.formatCurrency(
@@ -116,7 +106,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           ),
                           showDivider: true,
                         ),
-                        // STOCK STATUS
                         DetailRowWidget(
                           label: 'Stock Quantity',
                           value: provider.getStockText(product),
@@ -128,7 +117,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     ),
                   ),
                   SizedBox(height: spacing),
-                  // DESCRIPTION CARD
                   Container(
                     width: double.infinity,
                     padding: EdgeInsets.all(horizontalPadding),
@@ -149,7 +137,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // DESCRIPTION HEADER (TOGGLE)
                             InkWell(
                               onTap: () {
                                 _isDescriptionExpanded.value = !expanded;
@@ -171,7 +158,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 ],
                               ),
                             ),
-                            // DESCRIPTION TEXT
                             if (expanded) ...[
                               const SizedBox(height: 14),
                               Text(
@@ -189,7 +175,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     ),
                   ),
                   SizedBox(height: spacing),
-                  // EDIT + REMOVE BUTTONS
                   Row(
                     children: [
                       Expanded(
@@ -218,7 +203,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     ],
                   ),
                   SizedBox(height: spacing),
-                  // ADD TO CART BUTTON
                   AddCartButtonWidget(product: product),
                   SizedBox(height: spacing),
                 ],
@@ -230,3 +214,4 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     );
   }
 }
+

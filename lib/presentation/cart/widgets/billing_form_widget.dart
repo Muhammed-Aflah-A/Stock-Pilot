@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -32,7 +32,6 @@ class _BillingFormWidgetState extends State<BillingFormWidget> {
       key: provider.formKey,
       child: Column(
         children: [
-          // Customer name
           CustomerFormWidget(
             prefixIcon: Icon(Icons.person, color: ColourStyles.primaryColor_2),
             labelText: "Customer Name",
@@ -46,7 +45,6 @@ class _BillingFormWidgetState extends State<BillingFormWidget> {
             ).requestFocus(provider.customerNumberFocus),
           ),
           SizedBox(height: fieldGap),
-          //Customer phone number
           CustomerFormWidget(
             focus: provider.customerNumberFocus,
             prefixIcon: Icon(Icons.phone, color: ColourStyles.primaryColor_2),
@@ -61,7 +59,6 @@ class _BillingFormWidgetState extends State<BillingFormWidget> {
             onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
           ),
           SizedBox(height: fieldGap),
-          // Purchase date
           TextFormField(
             controller: _dateController,
             readOnly: true,
@@ -84,7 +81,6 @@ class _BillingFormWidgetState extends State<BillingFormWidget> {
                 ),
               ),
             ),
-            // Open date picker on tap
             onTap: () async {
               final pickedDate = await showDatePicker(
                 context: context,
@@ -110,3 +106,4 @@ class _BillingFormWidgetState extends State<BillingFormWidget> {
     );
   }
 }
+

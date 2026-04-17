@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+﻿import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
 import 'package:stock_pilot/core/interfaces/filter_provider_interface.dart';
@@ -15,7 +15,6 @@ class HistoryProvider extends FilterProviderInterface {
 
   HistoryProvider({required this.hiveService}) {
     loadData();
-    // Listen for changes in the activity box to update history dynamically
     Hive.box<DasboardActivity>(
       HiveBoxes.dashBoardActivity,
     ).listenable().addListener(() => loadData());
@@ -28,7 +27,6 @@ class HistoryProvider extends FilterProviderInterface {
   HistorySortOption currentSort = HistorySortOption.latest;
   HistoryTab currentTab = HistoryTab.purchase;
 
-  // Filter state
   @override
   String tempStockStatus = 'All';
 
@@ -58,7 +56,6 @@ class HistoryProvider extends FilterProviderInterface {
     return sales.first;
   }
 
-  // Search & Filter Logic
 
   void searchHistory(String query) {
     searchQuery = query;
@@ -75,7 +72,6 @@ class HistoryProvider extends FilterProviderInterface {
   void _applyFilters() {
     List<DasboardActivity> result = List.from(allActivities);
 
-    // Filter by Tab Category
     result = result.where((activity) {
       final title = activity.title ?? '';
       switch (currentTab) {
@@ -88,7 +84,6 @@ class HistoryProvider extends FilterProviderInterface {
       }
     }).toList();
 
-    // Filter by search query (Product name or Date)
     if (searchQuery.isNotEmpty) {
       result = result.where((activity) {
         final productName = (activity.product ?? '').toLowerCase();
@@ -98,7 +93,6 @@ class HistoryProvider extends FilterProviderInterface {
       }).toList();
     }
 
-    // Apply Sorting
     result.sort((a, b) {
       DateTime? dateA = _tryParseDate(a.date);
       DateTime? dateB = _tryParseDate(b.date);
@@ -136,10 +130,9 @@ class HistoryProvider extends FilterProviderInterface {
     notifyListeners();
   }
 
-  // FilterProviderInterface Implementation
 
   @override
-  bool get hasActiveFilters => false; // No longer using external filters
+  bool get hasActiveFilters => false;
 
   @override
   List<String> get availableStockStatuses {
@@ -179,7 +172,6 @@ class HistoryProvider extends FilterProviderInterface {
     notifyListeners();
   }
 
-  // Not used in History but required by interface
   @override
   double get maxPrice => 0;
   @override
@@ -210,3 +202,4 @@ class HistoryProvider extends FilterProviderInterface {
   @override
   void toggleTempCategory(String cat) {}
 }
+

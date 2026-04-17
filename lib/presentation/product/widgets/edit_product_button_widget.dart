@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/button_styles.dart';
@@ -6,7 +6,6 @@ import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
 
-// Button used on the product details page to start editing a product
 class EditProductButtonWidget extends StatelessWidget {
   final ProductModel product;
   final int productIndex;
@@ -22,7 +21,6 @@ class EditProductButtonWidget extends StatelessWidget {
     final provider = context.read<ProductProvider>();
     return ElevatedButton(
       onPressed: () {
-        // Store editing state inside the provider
         provider.setEditingProduct(product, productIndex);
         Navigator.pushNamed(context, AppRoutes.productAddingPage1);
       },
@@ -35,3 +33,4 @@ class EditProductButtonWidget extends StatelessWidget {
     );
   }
 }
+

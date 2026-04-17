@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -23,14 +23,12 @@ class _CartListPageState extends State<CartListPage> {
     final provider = context.watch<CartProvider>();
     return Scaffold(
       backgroundColor: ColourStyles.primaryColor,
-      // APP BAR
       appBar: const AppBarWidget(
         showLeading: false,
         title: "Cart",
         centeredTitle: false,
         showAvatar: true,
       ),
-      // DRAWER
       drawer: const AppDrawer(),
       body: SafeArea(
         child: ConstrainedBox(
@@ -39,18 +37,15 @@ class _CartListPageState extends State<CartListPage> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: Column(
               children: [
-                // List section
                 Expanded(
                   child: Builder(
                     builder: (context) {
-                      // Empty cart
                       if (provider.cartItems.isEmpty) {
                         return const EmptypageMessageWidget(
                           heading: "Cart is empty",
                           label: "Add products to your cart",
                         );
                       }
-                      // Cart list
                       return ListView.separated(
                         keyboardDismissBehavior:
                             ScrollViewKeyboardDismissBehavior.onDrag,
@@ -64,7 +59,6 @@ class _CartListPageState extends State<CartListPage> {
                     },
                   ),
                 ),
-                // Total section
                 if (provider.cartItems.isNotEmpty) ...[
                   const SizedBox(height: 16),
                   SizedBox(
@@ -101,3 +95,4 @@ class _CartListPageState extends State<CartListPage> {
     );
   }
 }
+

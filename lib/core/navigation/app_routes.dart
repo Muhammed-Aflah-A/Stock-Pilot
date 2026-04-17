@@ -1,4 +1,4 @@
-class AppRoutes {
+﻿class AppRoutes {
   static const splashScreen =
       'package:stock_pilot/presentation/introduction/screens/splash_screen.dart';
   static const onBoardingScreen_1 =
@@ -42,3 +42,4 @@ class AppRoutes {
   static const revenuePage =
       'package:stock_pilot/presentation/revenue/screens/revenue_page.dart';
 }
+

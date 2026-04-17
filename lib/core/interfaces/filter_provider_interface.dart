@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
-// Interface for the filter provider.
-// Any concrete filter provider must implement this interface.
 abstract class FilterProviderInterface extends ChangeNotifier {
   bool get hasActiveFilters;
   double get maxPrice;
@@ -27,3 +25,4 @@ abstract class FilterProviderInterface extends ChangeNotifier {
   void applyFilters();
   void clearFilters();
 }
+

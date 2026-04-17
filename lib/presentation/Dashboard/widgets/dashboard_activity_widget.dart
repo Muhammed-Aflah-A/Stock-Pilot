@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 import 'package:stock_pilot/presentation/widgets/activity_card_widget.dart';
 
-// Widget that shows latest activity in dashboard screen
 class DashboardActivityWidget extends StatelessWidget {
   const DashboardActivityWidget({super.key});
 
@@ -14,7 +13,6 @@ class DashboardActivityWidget extends StatelessWidget {
     return Consumer<DashboardProvider>(
       builder: (context, provider, _) {
         final activities = provider.recentActivities;
-        // Show message when there are no activities
         if (activities.isEmpty) {
           return Padding(
             padding: EdgeInsets.symmetric(vertical: height * 0.05),
@@ -39,3 +37,4 @@ class DashboardActivityWidget extends StatelessWidget {
     );
   }
 }
+

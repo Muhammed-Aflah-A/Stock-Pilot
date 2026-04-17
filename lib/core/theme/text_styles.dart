@@ -1,20 +1,12 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 
 class TextStyles {
   static double _getFontSize(BuildContext context, double baseSize) {
-    // Use the shortest side so text doesn't drastically change size when rotating the device
     final double shortestSide = MediaQuery.of(context).size.shortestSide;
-    // Standard phone screen width
     const double referenceShortestSide = 375.0;
-    // Calculate how much larger/smaller the screen is compared to a standard phone
     double rawScale = shortestSide / referenceShortestSide;
-    // Dampen the scale factor so it doesn't scale 1:1 with screen size
-    // Taking only 40% of the growth avoids comically massive text on tablets
     double scaleFactor = 1.0 + (rawScale - 1.0) * 0.4;
-    // Firmly limit how much the text is allowed to change
-    // Prevents text from shrinking below 90% on tiny screens
-    // Prevents text from exceeding 120% of base size on large tablets
     return baseSize * scaleFactor.clamp(0.9, 1.2);
   }
 
@@ -321,3 +313,4 @@ class TextStyles {
     ),
   );
 }
+
