@@ -1,10 +1,11 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/interfaces/filter_provider_interface.dart';
 import 'package:stock_pilot/core/theme/button_styles.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/presentation/widgets/brand_choice_widget.dart';
 import 'package:stock_pilot/presentation/widgets/category_choice_widget.dart';
+import 'package:stock_pilot/presentation/widgets/multi_select_filter_dialog.dart';
 import 'package:stock_pilot/presentation/widgets/section_title_widget.dart';
 import 'package:stock_pilot/presentation/widgets/stock_status_choice_widget.dart';
 
@@ -80,17 +81,67 @@ class FilterBottomSheet extends StatelessWidget {
                           Wrap(
                             spacing: 8,
                             runSpacing: 8,
-                            children: provider.categoryList.map((category) {
-                              final selected = provider.tempCategories.contains(
-                                category,
-                              );
-                              return CategoryChoiceWidget(
-                                label: category,
-                                selected: selected,
-                                onTap: () =>
-                                    provider.toggleTempCategory(category),
-                              );
-                            }).toList(),
+                            children: [
+                              ...provider.categoryList.take(3).map((category) {
+                                final selected = provider.tempCategories.contains(
+                                  category,
+                                );
+                                return CategoryChoiceWidget(
+                                  label: category,
+                                  selected: selected,
+                                  onTap: () =>
+                                      provider.toggleTempCategory(category),
+                                );
+                              }),
+                              if (provider.categoryList.length > 3)
+                                InkWell(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      builder: (context) => MultiSelectFilterDialog(
+                                        provider: provider,
+                                        title: 'Category',
+                                        isCategory: true,
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                      vertical: 8,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: ColourStyles.choiceColor,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                        color: ColourStyles.borderColor,
+                                        width: 1.5,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          "View All (+${provider.categoryList.length - 3})",
+                                          style: TextStyles.primaryText(context).copyWith(
+                                            fontSize: 12,
+                                            color: ColourStyles.primaryColor_2,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 4),
+                                        const Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 10,
+                                          color: ColourStyles.primaryColor_2,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
                           const SizedBox(height: 20),
                         ],
@@ -136,7 +187,7 @@ class FilterBottomSheet extends StatelessWidget {
                         if (provider.showBrandFilter && provider.brandsList.isNotEmpty) ...[
                           const SectionTitleWidget(title: "Brand"),
                           const SizedBox(height: 10),
-                          ...provider.brandsList.map((brand) {
+                          ...provider.brandsList.take(3).map((brand) {
                             final selected = provider.tempBrands.contains(
                               brand,
                             );
@@ -146,6 +197,54 @@ class FilterBottomSheet extends StatelessWidget {
                               onTap: () => provider.toggleTempBrand(brand),
                             );
                           }),
+                          if (provider.brandsList.length > 3)
+                            InkWell(
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  builder: (context) => MultiSelectFilterDialog(
+                                    provider: provider,
+                                    title: 'Brand',
+                                    isCategory: false,
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(bottom: 8),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 14,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: ColourStyles.choiceColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: ColourStyles.borderColor,
+                                    width: 1.5,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "View All brands (+${provider.brandsList.length - 3})",
+                                      style: TextStyles.primaryText(context).copyWith(
+                                        fontSize: 12,
+                                        color: ColourStyles.primaryColor_2,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 14,
+                                      color: ColourStyles.primaryColor_2,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           const SizedBox(height: 20),
                         ],
                         if (provider.showStockFilter && provider.availableStockStatuses.length > 1) ...[
