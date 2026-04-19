@@ -78,148 +78,209 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
                         : const Icon(Icons.inventory_2_rounded),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 8),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        product.productName ?? "",
-                        style: TextStyles.titleText(context),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              product.productName ?? "",
+                              style: TextStyles.titleText(context),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              product.category ?? "",
+                              style: TextStyles.activityCardLabel(context),
+                            ),
+                            Text(
+                              product.brand ?? "",
+                              style: TextStyles.activityCardText(context),
+                            ),
+                          ],
+                        ),
                       ),
+                      const SizedBox(width: 4),
                       Text(
-                        product.category ?? "",
-                        style: TextStyles.activityCardLabel(context),
-                      ),
-                      Text(
-                        product.brand ?? "",
-                        style: TextStyles.activityCardText(context),
+                        NumberFormatterUtil.formatCurrency(
+                          double.tryParse(product.salesRate ?? '0') ?? 0,
+                        ),
+                        style: TextStyles.productPriceText(context),
                       ),
                     ],
                   ),
                 ),
-                Text(
-                  NumberFormatterUtil.formatCurrency(
-                    double.tryParse(product.salesRate ?? '0') ?? 0,
-                  ),
-                  style: TextStyles.productPriceText(context),
-                ),
               ],
             ),
+            const SizedBox(height: 10),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () async {
-                        if (quantity == 1) {
-                          showDialog(
-                            context: context,
-                            builder: (_) => ActionConfirmationWidget(
-                              title: "Remove Item",
-                              actionText: "Remove",
-                              actionColor: ColourStyles.colorRed,
-                              displayName:
-                                  widget.item.product.productName ?? "",
-
-                              onConfirm: () async {
-                                await provider.removeItem(widget.item);
-                                return true;
-                              },
-                            ),
-                          );
-                        } else {
-                          await provider.decreaseQty(widget.item);
-                        }
-                      },
-                      icon: const Icon(Icons.remove),
-                    ),
-                    SizedBox(
-                      width: 50,
-                      child: TextFormField(
-                        controller: controller,
-                        decoration: InputDecoration(
-                          isDense: true,
-                          errorText: isInvalid ? "Invalid" : null,
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: isInvalid
-                                  ? ColourStyles.colorRed
-                                  : ColourStyles.primaryColor_2,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: isInvalid
-                                  ? ColourStyles.colorRed
-                                  : ColourStyles.primaryColor_2,
-                            ),
-                          ),
-                        ),
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.number,
-                        onChanged: (value) async {
-                          if (value.trim().isEmpty) {
-                            await provider.setQuantity(
-                              widget.item,
-                              0,
-                            );
-                            return;
-                          }
-                          final newQty = int.tryParse(value);
-                          if (newQty == null) return;
-                          await provider.setQuantity(widget.item, newQty);
-                        },
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: isMaxReached
-                          ? null
-                          : () async {
-                              final success = await provider.increaseQty(
-                                widget.item,
+                SizedBox(
+                  width: 105,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          onPressed: () async {
+                            if (quantity == 1) {
+                              showDialog(
+                                context: context,
+                                builder: (_) => ActionConfirmationWidget(
+                                  title: "Remove Item",
+                                  actionText: "Remove",
+                                  actionColor: ColourStyles.colorRed,
+                                  displayName:
+                                      widget.item.product.productName ?? "",
+                                  onConfirm: () async {
+                                    await provider.removeItem(widget.item);
+                                    return true;
+                                  },
+                                ),
                               );
-                              if (!context.mounted) return;
-                              if (!success) {
-                                SnackbarUtil.showSnackBar(
-                                  context,
-                                  "Maximum stock reached",
-                                  true,
-                                );
-                              }
-                            },
-                      icon: const Icon(Icons.add),
-                    ),
-                  ],
-                ),
-                TextButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (_) => ActionConfirmationWidget(
-                        title: "Remove Item",
-                        displayName: widget.item.product.productName ?? "",
-                        actionText: "Remove",
-                        actionColor: ColourStyles.colorRed,
-                        onConfirm: () async {
-                          await provider.removeItem(widget.item);
-                          return true;
-                        },
+                            } else {
+                              await provider.decreaseQty(widget.item);
+                            }
+                          },
+                          icon: const Icon(Icons.remove, size: 16),
+                        ),
                       ),
-                    );
-                  },
-                  child: const Text(
-                    "Remove",
-                    style: TextStyle(color: ColourStyles.colorRed),
+                      const SizedBox(width: 4),
+                      SizedBox(
+                        width: 48,
+                        child: TextFormField(
+                          controller: controller,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 4,
+                              horizontal: 2,
+                            ),
+                            errorText: isInvalid ? "Invalid" : null,
+                            errorStyle: const TextStyle(fontSize: 0),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4),
+                              borderSide: const BorderSide(
+                                color: ColourStyles.primaryColor_2,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4),
+                              borderSide: const BorderSide(
+                                color: ColourStyles.primaryColor_2,
+                              ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4),
+                              borderSide: const BorderSide(
+                                color: ColourStyles.colorRed,
+                              ),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4),
+                              borderSide: const BorderSide(
+                                color: ColourStyles.colorRed,
+                              ),
+                            ),
+                          ),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontSize: 12),
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) async {
+                            if (value.trim().isEmpty) {
+                              await provider.setQuantity(
+                                widget.item,
+                                0,
+                              );
+                              return;
+                            }
+                            final newQty = int.tryParse(value);
+                            if (newQty == null) return;
+                            await provider.setQuantity(widget.item, newQty);
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          onPressed: isMaxReached
+                              ? null
+                              : () async {
+                                  final success = await provider.increaseQty(
+                                    widget.item,
+                                  );
+                                  if (!context.mounted) return;
+                                  if (!success) {
+                                    SnackbarUtil.showSnackBar(
+                                      context,
+                                      "Maximum stock reached",
+                                      true,
+                                    );
+                                  }
+                                },
+                          icon: const Icon(Icons.add, size: 16),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        minimumSize: const Size(0, 0),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (_) => ActionConfirmationWidget(
+                            title: "Remove Item",
+                            displayName: widget.item.product.productName ?? "",
+                            actionText: "Remove",
+                            actionColor: ColourStyles.colorRed,
+                            onConfirm: () async {
+                              await provider.removeItem(widget.item);
+                              return true;
+                            },
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        "Remove",
+                        style: TextStyle(
+                          color: ColourStyles.colorRed,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ],
             ),
           ],
         ),
+
+
       ),
     );
   }
