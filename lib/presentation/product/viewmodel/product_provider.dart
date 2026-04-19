@@ -1,4 +1,4 @@
-﻿import 'dart:io';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/assets/app_images.dart';
 import 'package:stock_pilot/core/interfaces/filter_provider_interface.dart';
@@ -194,7 +194,7 @@ class ProductProvider extends FilterProviderInterface
       unit: int.tryParse(product.itemCount ?? '0') ?? 0,
       label: 'units added',
       isPositive: true,
-      date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+      date: DateFormat('dd - MMM - yyyy', 'en_US').format(DateTime.now()),
       brand: product.brand,
     );
     dashboard.addNewActivity(activity);
@@ -277,7 +277,7 @@ class ProductProvider extends FilterProviderInterface
       unit: int.tryParse(product.itemCount ?? '0') ?? 0,
       label: 'units removed',
       isPositive: false,
-      date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+      date: DateFormat('dd - MMM - yyyy', 'en_US').format(DateTime.now()),
       brand: product.brand,
     );
     dashboard.addNewActivity(activity);
