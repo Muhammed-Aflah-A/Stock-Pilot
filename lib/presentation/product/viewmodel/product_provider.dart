@@ -537,6 +537,7 @@ class ProductProvider extends FilterProviderInterface
     salesRate = null;
     firstFormKey.currentState?.reset();
     secondFormKey.currentState?.reset();
+    clearEditing();
     notifyListeners();
   }
 

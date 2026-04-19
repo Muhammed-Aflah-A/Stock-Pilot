@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/presentation/widgets/action_confirmation_widget.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
@@ -28,7 +28,7 @@ class AddProductButtonWidget extends StatelessWidget {
               builder: (dialogCtx) => ActionConfirmationWidget(
                 title: "Update Product",
                 actionText: "Update",
-                displayName: productForm.productName ?? "Product",
+                displayName: "Product",
                 actionColor: ColourStyles.colorGreen,
                 showSnackbar: false,
                 onConfirm: () async {
