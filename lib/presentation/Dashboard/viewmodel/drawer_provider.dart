@@ -50,6 +50,11 @@ class DrawerProvider with ChangeNotifier {
       title: 'Revenue',
       navigation: AppRoutes.revenuePage,
     ),
+    DrawerItems(
+      icon: Icons.settings,
+      title: 'Settings',
+      navigation: AppRoutes.dashboard,
+    ),
   ];
   int selectedIndex = 0;
   void selectedDrawerItem(int index) {
