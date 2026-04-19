@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -18,7 +18,15 @@ class HistoryListPage extends StatefulWidget {
 }
 
 class _HistoryListPageState extends State<HistoryListPage> {
-  final TextEditingController _searchController = TextEditingController();
+  late final TextEditingController _searchController;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController = TextEditingController(
+      text: context.read<HistoryProvider>().searchQuery,
+    );
+  }
 
   @override
   void dispose() {
@@ -32,6 +40,7 @@ class _HistoryListPageState extends State<HistoryListPage> {
 
     return DefaultTabController(
       length: 3,
+      initialIndex: context.read<HistoryProvider>().currentTab.index,
       child: Scaffold(
         backgroundColor: ColourStyles.primaryColor,
         appBar: const AppBarWidget(
