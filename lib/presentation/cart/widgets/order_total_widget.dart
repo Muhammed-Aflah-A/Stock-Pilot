@@ -1,6 +1,7 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
+import 'package:stock_pilot/core/utils/number_formatter_util.dart';
 import 'package:stock_pilot/presentation/cart/viewmodel/cart_provider.dart';
 
 class OrderTotalWidget extends StatelessWidget {
@@ -33,7 +34,7 @@ class OrderTotalWidget extends StatelessWidget {
           children: [
             Text("Total Price", style: TextStyles.titleText(context)),
             Text(
-              '\$ ${provider.totalPrice.toStringAsFixed(2)}',
+              NumberFormatterUtil.formatCurrency(provider.totalPrice),
               style: TextStyles.productPriceText(context),
             ),
           ],

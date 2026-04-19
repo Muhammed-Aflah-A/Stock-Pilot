@@ -1,6 +1,7 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
+import 'package:stock_pilot/core/utils/number_formatter_util.dart';
 import 'package:stock_pilot/data/models/cart_model.dart';
 
 class PurchaseSummaryCardWidget extends StatelessWidget {
@@ -97,7 +98,7 @@ class PurchaseSummaryCardWidget extends StatelessWidget {
               children: [
                 const Text("Total Amount"),
                 Text(
-                  "â‚¹ $totalAmount",
+                  NumberFormatterUtil.formatCurrency(totalAmount),
                   style: TextStyles.productPriceText(context),
                 ),
               ],

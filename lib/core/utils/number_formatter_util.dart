@@ -1,4 +1,4 @@
-﻿class NumberFormatterUtil {
+class NumberFormatterUtil {
   static String format(num value) {
     if (value.abs() >= 1000000000) {
       return '${(value / 1000000000).toStringAsFixed(1)}B';
@@ -14,8 +14,8 @@
     }
   }
 
-  static String formatCurrency(num value, {String symbol = '\$'}) {
-    return '$symbol${format(value)}';
+  static String formatCurrency(num value, {String symbol = '₹'}) {
+    return '$symbol ${format(value)}';
   }
 }
 

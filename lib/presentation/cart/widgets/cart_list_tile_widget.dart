@@ -1,8 +1,9 @@
-﻿import 'dart:io';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
+import 'package:stock_pilot/core/utils/number_formatter_util.dart';
 import 'package:stock_pilot/core/utils/snackbar_util.dart';
 import 'package:stock_pilot/data/models/cart_model.dart';
 import 'package:stock_pilot/presentation/cart/viewmodel/cart_provider.dart';
@@ -100,7 +101,9 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
                   ),
                 ),
                 Text(
-                  '\$ ${product.salesRate}',
+                  NumberFormatterUtil.formatCurrency(
+                    double.tryParse(product.salesRate ?? '0') ?? 0,
+                  ),
                   style: TextStyles.productPriceText(context),
                 ),
               ],
