@@ -1,4 +1,4 @@
-﻿class AppRoutes {
+class AppRoutes {
   static const splashScreen =
       'package:stock_pilot/presentation/introduction/screens/splash_screen.dart';
   static const onBoardingScreen_1 =
@@ -41,5 +41,10 @@
       'package:stock_pilot/presentation/history/screens/history_detail_page.dart';
   static const revenuePage =
       'package:stock_pilot/presentation/revenue/screens/revenue_page.dart';
+  static const settingsPage =
+      'package:stock_pilot/presentation/settings/screens/settings_page.dart';
+  static const privacyPolicy =
+      'package:stock_pilot/presentation/settings/screens/privacy_policy_page.dart';
+  static const aboutUs =
+      'package:stock_pilot/presentation/settings/screens/about_us_page.dart';
 }
-

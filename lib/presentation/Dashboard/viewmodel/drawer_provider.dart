@@ -53,7 +53,7 @@ class DrawerProvider with ChangeNotifier {
     DrawerItems(
       icon: Icons.settings,
       title: 'Settings',
-      navigation: AppRoutes.dashboard,
+      navigation: AppRoutes.settingsPage,
     ),
   ];
   int selectedIndex = 0;

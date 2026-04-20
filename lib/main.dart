@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -43,8 +43,10 @@ import 'package:stock_pilot/presentation/profile/screens/profile_page.dart';
 import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
 import 'package:stock_pilot/presentation/product/screens/product_list_page.dart';
 import 'package:stock_pilot/presentation/revenue/screens/revenue_page.dart';
-
 import 'package:stock_pilot/presentation/revenue/viewmodel/revenue_provider.dart';
+import 'package:stock_pilot/presentation/settings/screens/about_us_page.dart';
+import 'package:stock_pilot/presentation/settings/screens/privacy_policy_page.dart';
+import 'package:stock_pilot/presentation/settings/screens/settings_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -170,14 +172,14 @@ class StockPilot extends StatelessWidget {
               const ProfileCreation(),
               settings: settings,
             );
-          case AppRoutes.dashboard:
-            return TransitionAnimations.fadeRoute(
-              const Dashboard(),
-              settings: settings,
-            );
           case AppRoutes.profilePage:
             return TransitionAnimations.fadeRoute(
               const ProfilePage(),
+              settings: settings,
+            );
+          case AppRoutes.dashboard:
+            return TransitionAnimations.fadeRoute(
+              const Dashboard(),
               settings: settings,
             );
           case AppRoutes.productListPage:
@@ -230,6 +232,21 @@ class StockPilot extends StatelessWidget {
               const RevenuePage(),
               settings: settings,
             );
+          case AppRoutes.settingsPage:
+            return TransitionAnimations.fadeRoute(
+              const SettingsPage(),
+              settings: settings,
+            );
+          case AppRoutes.privacyPolicy:
+            return TransitionAnimations.fadeRoute(
+              const PrivacyPolicyPage(),
+              settings: settings,
+            );
+          case AppRoutes.aboutUs:
+            return TransitionAnimations.fadeRoute(
+              const AboutUsPage(),
+              settings: settings,
+            );
 
           case AppRoutes.onBoardingScreen_2:
             return TransitionAnimations.slideRoute(
@@ -268,4 +285,3 @@ class StockPilot extends StatelessWidget {
     );
   }
 }
-
