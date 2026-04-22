@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -31,63 +31,65 @@ class _CartListPageState extends State<CartListPage> {
       ),
       drawer: const AppDrawer(),
       body: SafeArea(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1400),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-            child: Column(
-              children: [
-                Expanded(
-                  child: Builder(
-                    builder: (context) {
-                      if (provider.cartItems.isEmpty) {
-                        return const EmptypageMessageWidget(
-                          heading: "Cart is empty",
-                          label: "Add products to your cart",
-                        );
-                      }
-                      return ListView.separated(
-                        keyboardDismissBehavior:
-                            ScrollViewKeyboardDismissBehavior.onDrag,
-                        itemCount: provider.cartItems.length,
-                        separatorBuilder: (_, _) => const SizedBox(height: 10),
-                        itemBuilder: (context, index) {
-                          final item = provider.cartItems[index];
-                          return CartListTileWidget(item: item);
-                        },
-                      );
-                    },
-                  ),
-                ),
-                if (provider.cartItems.isNotEmpty) ...[
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    width: double.infinity,
-                    child: BillingButtonWidget(
-                      onPressed: () {
-                        final invalidItems = provider.cartItems.where((item) {
-                          final stock =
-                              int.tryParse(item.product.itemCount ?? '0') ?? 0;
-                          return item.quantity <= 0 || item.quantity > stock;
-                        }).toList();
-                        if (invalidItems.isNotEmpty) {
-                          final names = invalidItems
-                              .map((e) => e.product.productName)
-                              .join(", ");
-                          SnackbarUtil.showSnackBar(
-                            context,
-                            "Invalid quantity: $names",
-                            true,
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 900),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Builder(
+                      builder: (context) {
+                        if (provider.cartItems.isEmpty) {
+                          return const EmptypageMessageWidget(
+                            heading: "Cart is empty",
+                            label: "Add products to your cart",
                           );
-                          return;
                         }
-                        Navigator.pushNamed(context, AppRoutes.billingPage);
+                        return ListView.separated(
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.onDrag,
+                          itemCount: provider.cartItems.length,
+                          separatorBuilder: (_, _) => const SizedBox(height: 10),
+                          itemBuilder: (context, index) {
+                            final item = provider.cartItems[index];
+                            return CartListTileWidget(item: item);
+                          },
+                        );
                       },
-                      text: "Bill",
                     ),
                   ),
+                  if (provider.cartItems.isNotEmpty) ...[
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      child: BillingButtonWidget(
+                        onPressed: () {
+                          final invalidItems = provider.cartItems.where((item) {
+                            final stock =
+                                int.tryParse(item.product.itemCount ?? '0') ?? 0;
+                            return item.quantity <= 0 || item.quantity > stock;
+                          }).toList();
+                          if (invalidItems.isNotEmpty) {
+                            final names = invalidItems
+                                .map((e) => e.product.productName)
+                                .join(", ");
+                            SnackbarUtil.showSnackBar(
+                              context,
+                              "Invalid quantity: $names",
+                              true,
+                            );
+                            return;
+                          }
+                          Navigator.pushNamed(context, AppRoutes.billingPage);
+                        },
+                        text: "Bill",
+                      ),
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
         ),

@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -49,100 +49,105 @@ class _LowstockListPageState extends State<LowstockListPage> {
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () => FocusScope.of(context).unfocus(),
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: horizontalPadding,
-              vertical: verticalPadding,
-            ),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: SearchbarWidget(
-                        controller: controller,
-                        hintText: "Search by name",
-                        onChanged: (value) {
-                          context.read<LowstockProvider>().searchLowStock(
-                            value,
-                          );
-                        },
-                        onClear: () {
-                          controller.clear();
-                          context.read<LowstockProvider>().clearSearch();
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Consumer<LowstockProvider>(
-                      builder: (_, provider, _) =>
-                          FilterButtonWidget(provider: provider),
-                    ),
-                    const SizedBox(width: 10),
-                    Consumer<LowstockProvider>(
-                      builder: (_, provider, _) =>
-                          SortButtonWidget<LowStockSortOption>(
-                            options: const {
-                              LowStockSortOption.priceLowToHigh:
-                                  'Price : Low to High',
-                              LowStockSortOption.priceHighToLow:
-                                  'Price : High to Low',
-                              LowStockSortOption.alphabeticalAZ:
-                                  'Alphabetical ( A â€“ Z )',
-                              LowStockSortOption.alphabeticalZA:
-                                  'Alphabetical ( Z â€“ A )',
-                            },
-                            currentValue: provider.currentSort,
-                            defaultValue: LowStockSortOption.priceLowToHigh,
-                            onSelected: provider.sortProducts,
-                          ),
-                    ),
-                  ],
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 900),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: horizontalPadding,
+                  vertical: verticalPadding,
                 ),
-                SizedBox(height: spacing),
-                Expanded(
-                  child: Consumer<LowstockProvider>(
-                    builder: (context, provider, _) {
-                      final displayList = provider.filteredLowStock;
-                      if (displayList.isEmpty) {
-                        return const Center(
-                          child: EmptypageMessageWidget(
-                            heading: "No Low stock yet",
-                            label: "Check here for low stock product",
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: SearchbarWidget(
+                            controller: controller,
+                            hintText: "Search by name",
+                            onChanged: (value) {
+                              context.read<LowstockProvider>().searchLowStock(
+                                value,
+                              );
+                            },
+                            onClear: () {
+                              controller.clear();
+                              context.read<LowstockProvider>().clearSearch();
+                            },
                           ),
-                        );
-                      }
-                      return ListView.separated(
-                        keyboardDismissBehavior:
-                            ScrollViewKeyboardDismissBehavior.onDrag,
-                        itemCount: displayList.length,
-                        separatorBuilder: (_, _) =>
-                            SizedBox(height: itemSpacing),
-                        itemBuilder: (context, index) {
-                          final product = displayList[index];
-                          return ProductListTileWidget(
-                            product: product,
-                            onTap: () {
-                              final mainProvider = context
-                                  .read<ProductProvider>();
-                              Navigator.pushNamed(
-                                context,
-                                AppRoutes.productDetailsPage,
-                                arguments: {
-                                  'product': product,
-                                  'index': mainProvider.products.indexOf(
-                                    product,
-                                  ),
+                        ),
+                        const SizedBox(width: 10),
+                        Consumer<LowstockProvider>(
+                          builder: (_, provider, _) =>
+                              FilterButtonWidget(provider: provider),
+                        ),
+                        const SizedBox(width: 10),
+                        Consumer<LowstockProvider>(
+                          builder: (_, provider, _) =>
+                              SortButtonWidget<LowStockSortOption>(
+                                options: const {
+                                  LowStockSortOption.priceLowToHigh:
+                                      'Price : Low to High',
+                                  LowStockSortOption.priceHighToLow:
+                                      'Price : High to Low',
+                                  LowStockSortOption.alphabeticalAZ:
+                                      'Alphabetical ( A – Z )',
+                                  LowStockSortOption.alphabeticalZA:
+                                      'Alphabetical ( Z – A )',
+                                },
+                                currentValue: provider.currentSort,
+                                defaultValue: LowStockSortOption.priceLowToHigh,
+                                onSelected: provider.sortProducts,
+                              ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: spacing),
+                    Expanded(
+                      child: Consumer<LowstockProvider>(
+                        builder: (context, provider, _) {
+                          final displayList = provider.filteredLowStock;
+                          if (displayList.isEmpty) {
+                            return const Center(
+                              child: EmptypageMessageWidget(
+                                heading: "No Low stock yet",
+                                label: "Check here for low stock product",
+                              ),
+                            );
+                          }
+                          return ListView.separated(
+                            keyboardDismissBehavior:
+                                ScrollViewKeyboardDismissBehavior.onDrag,
+                            itemCount: displayList.length,
+                            separatorBuilder: (_, _) =>
+                                SizedBox(height: itemSpacing),
+                            itemBuilder: (context, index) {
+                              final product = displayList[index];
+                              return ProductListTileWidget(
+                                product: product,
+                                onTap: () {
+                                  final mainProvider = context
+                                      .read<ProductProvider>();
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRoutes.productDetailsPage,
+                                    arguments: {
+                                      'product': product,
+                                      'index': mainProvider.products.indexOf(
+                                        product,
+                                      ),
+                                    },
+                                  );
                                 },
                               );
                             },
                           );
                         },
-                      );
-                    },
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),

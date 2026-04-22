@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/utils/snackbar_util.dart';
@@ -50,7 +50,7 @@ class _BrandListPageState extends State<BrandListPage> {
             children: [
               Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 1400),
+              constraints: const BoxConstraints(maxWidth: 900),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 24,

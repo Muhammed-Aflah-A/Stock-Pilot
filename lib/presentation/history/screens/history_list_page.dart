@@ -50,117 +50,122 @@ class _HistoryListPageState extends State<HistoryListPage> {
           showAvatar: true,
         ),
         drawer: const AppDrawer(),
-        body: Material(
-          color: Colors.transparent,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Row(
+        body: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 900),
+            child: Material(
+              color: Colors.transparent,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
                   children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Consumer<HistoryProvider>(
+                            builder: (context, provider, _) {
+                              return SearchbarWidget(
+                                controller: _searchController,
+                                onChanged: (value) => provider.searchHistory(value),
+                                onClear: () {
+                                  _searchController.clear();
+                                  provider.searchHistory("");
+                                },
+                                hintText: "search history",
+                              );
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Consumer<HistoryProvider>(
+                          builder: (context, provider, _) {
+                            return SortButtonWidget<HistorySortOption>(
+                              options: const {
+                                HistorySortOption.latest: "Latest",
+                                HistorySortOption.oldest: "Oldest",
+                              },
+                              currentValue: provider.currentSort,
+                              defaultValue: HistorySortOption.latest,
+                              onSelected: (option) => provider.sortHistory(option),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: height * 0.02),
+                    Consumer<HistoryProvider>(
+                      builder: (context, provider, _) {
+                        return TabBar(
+                          onTap: (index) {
+                            final tab = index == 0
+                                ? HistoryTab.purchase
+                                : index == 1
+                                    ? HistoryTab.updates
+                                    : HistoryTab.sales;
+                            provider.setTab(tab);
+                          },
+                          labelColor: ColourStyles.primaryColor_2,
+                          labelStyle: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                          unselectedLabelColor: ColourStyles.captionColor,
+                          indicatorColor: ColourStyles.primaryColor_2,
+                          indicatorWeight: 3,
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          tabs: const [
+                            Tab(text: "Purchase"),
+                            Tab(text: "Updates"),
+                            Tab(text: "Sales"),
+                          ],
+                        );
+                      },
+                    ),
+                    SizedBox(height: height * 0.02),
                     Expanded(
                       child: Consumer<HistoryProvider>(
                         builder: (context, provider, _) {
-                          return SearchbarWidget(
-                            controller: _searchController,
-                            onChanged: (value) => provider.searchHistory(value),
-                            onClear: () {
-                              _searchController.clear();
-                              provider.searchHistory("");
+                          final activities = provider.filteredActivities;
+
+                          if (provider.allActivities.isEmpty) {
+                            return const EmptypageMessageWidget(
+                              heading: "History is empty",
+                              label: "Every activity will appear here",
+                            );
+                          }
+
+                          if (activities.isEmpty) {
+                            return const EmptypageMessageWidget(
+                              icon: Icons.search_off_rounded,
+                              heading: "No results found",
+                              label: "Try a different product name or date",
+                            );
+                          }
+
+                          return ListView.builder(
+                            keyboardDismissBehavior:
+                                ScrollViewKeyboardDismissBehavior.onDrag,
+                            itemCount: activities.length,
+                            itemBuilder: (context, index) {
+                              final activity = activities[index];
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRoutes.historyDetailsPage,
+                                    arguments: activity,
+                                  );
+                                },
+                                child: ActivityCardWidget(activity: activity),
+                              );
                             },
-                            hintText: "search history",
                           );
                         },
                       ),
-                    ),
-                    const SizedBox(width: 8),
-                    Consumer<HistoryProvider>(
-                      builder: (context, provider, _) {
-                        return SortButtonWidget<HistorySortOption>(
-                          options: const {
-                            HistorySortOption.latest: "Latest",
-                            HistorySortOption.oldest: "Oldest",
-                          },
-                          currentValue: provider.currentSort,
-                          defaultValue: HistorySortOption.latest,
-                          onSelected: (option) => provider.sortHistory(option),
-                        );
-                      },
                     ),
                   ],
                 ),
-                SizedBox(height: height * 0.02),
-                Consumer<HistoryProvider>(
-                  builder: (context, provider, _) {
-                    return TabBar(
-                      onTap: (index) {
-                        final tab = index == 0
-                            ? HistoryTab.purchase
-                            : index == 1
-                                ? HistoryTab.updates
-                                : HistoryTab.sales;
-                        provider.setTab(tab);
-                      },
-                      labelColor: ColourStyles.primaryColor_2,
-                      labelStyle: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                      unselectedLabelColor: ColourStyles.captionColor,
-                      indicatorColor: ColourStyles.primaryColor_2,
-                      indicatorWeight: 3,
-                      indicatorSize: TabBarIndicatorSize.tab,
-                      tabs: const [
-                        Tab(text: "Purchase"),
-                        Tab(text: "Updates"),
-                        Tab(text: "Sales"),
-                      ],
-                    );
-                  },
-                ),
-                SizedBox(height: height * 0.02),
-                Expanded(
-                  child: Consumer<HistoryProvider>(
-                    builder: (context, provider, _) {
-                      final activities = provider.filteredActivities;
-
-                      if (provider.allActivities.isEmpty) {
-                        return const EmptypageMessageWidget(
-                          heading: "History is empty",
-                          label: "Every activity will appear here",
-                        );
-                      }
-
-                      if (activities.isEmpty) {
-                        return const EmptypageMessageWidget(
-                          icon: Icons.search_off_rounded,
-                          heading: "No results found",
-                          label: "Try a different product name or date",
-                        );
-                      }
-
-                      return ListView.builder(
-                        keyboardDismissBehavior:
-                            ScrollViewKeyboardDismissBehavior.onDrag,
-                        itemCount: activities.length,
-                        itemBuilder: (context, index) {
-                          final activity = activities[index];
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                AppRoutes.historyDetailsPage,
-                                arguments: activity,
-                              );
-                            },
-                            child: ActivityCardWidget(activity: activity),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ),

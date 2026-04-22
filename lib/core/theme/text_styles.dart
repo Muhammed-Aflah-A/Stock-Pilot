@@ -1,13 +1,18 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 
 class TextStyles {
   static double _getFontSize(BuildContext context, double baseSize) {
-    final double shortestSide = MediaQuery.of(context).size.shortestSide;
+    double shortestSide = MediaQuery.of(context).size.shortestSide;
+    // On Web/Desktop, limit the effective shortestSide to prevent massive scaling
+    if (kIsWeb && shortestSide > 600) {
+      shortestSide = 600;
+    }
     const double referenceShortestSide = 375.0;
     double rawScale = shortestSide / referenceShortestSide;
     double scaleFactor = 1.0 + (rawScale - 1.0) * 0.4;
-    return baseSize * scaleFactor.clamp(0.9, 1.2);
+    return baseSize * scaleFactor.clamp(0.9, 1.22);
   }
 
   static TextStyle _responsive(BuildContext context, TextStyle baseStyle) {

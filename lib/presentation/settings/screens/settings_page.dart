@@ -25,68 +25,73 @@ class _SettingsPageState extends State<SettingsPage> {
         showAvatar: true,
       ),
       drawer: const AppDrawer(),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          // Privacy and Policy Tile
-          Card(
-            elevation: 0,
-            color: ColourStyles.primaryColor_3,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-              side: const BorderSide(color: ColourStyles.borderColor),
-            ),
-            child: ListTile(
-              leading: const Icon(Icons.privacy_tip_outlined, color: ColourStyles.primaryColor_2),
-              title: Text(
-                "Privacy and Policy",
-                style: TextStyles.titleText(context),
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 900),
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              // Privacy and Policy Tile
+              Card(
+                elevation: 0,
+                color: ColourStyles.primaryColor_3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: const BorderSide(color: ColourStyles.borderColor),
+                ),
+                child: ListTile(
+                  leading: const Icon(Icons.privacy_tip_outlined, color: ColourStyles.primaryColor_2),
+                  title: Text(
+                    "Privacy and Policy",
+                    style: TextStyles.titleText(context),
+                  ),
+                  trailing: const Icon(Icons.chevron_right, color: ColourStyles.iconColor),
+                  onTap: () => Navigator.pushNamed(context, AppRoutes.privacyPolicy),
+                ),
               ),
-              trailing: const Icon(Icons.chevron_right, color: ColourStyles.iconColor),
-              onTap: () => Navigator.pushNamed(context, AppRoutes.privacyPolicy),
-            ),
-          ),
-          const SizedBox(height: 12),
-          
-          // About Us Tile
-          Card(
-            elevation: 0,
-            color: ColourStyles.primaryColor_3,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-              side: const BorderSide(color: ColourStyles.borderColor),
-            ),
-            child: ListTile(
-              leading: const Icon(Icons.info_outline, color: ColourStyles.primaryColor_2),
-              title: Text(
-                "About Us",
-                style: TextStyles.titleText(context),
+              const SizedBox(height: 12),
+              
+              // About Us Tile
+              Card(
+                elevation: 0,
+                color: ColourStyles.primaryColor_3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: const BorderSide(color: ColourStyles.borderColor),
+                ),
+                child: ListTile(
+                  leading: const Icon(Icons.info_outline, color: ColourStyles.primaryColor_2),
+                  title: Text(
+                    "About Us",
+                    style: TextStyles.titleText(context),
+                  ),
+                  trailing: const Icon(Icons.chevron_right, color: ColourStyles.iconColor),
+                  onTap: () => Navigator.pushNamed(context, AppRoutes.aboutUs),
+                ),
               ),
-              trailing: const Icon(Icons.chevron_right, color: ColourStyles.iconColor),
-              onTap: () => Navigator.pushNamed(context, AppRoutes.aboutUs),
-            ),
-          ),
-          const SizedBox(height: 12),
-          
-          // Contact and Support Tile
-          Card(
-            elevation: 0,
-            color: ColourStyles.primaryColor_3,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-              side: const BorderSide(color: ColourStyles.borderColor),
-            ),
-            child: ListTile(
-              leading: const Icon(Icons.contact_support_outlined, color: ColourStyles.primaryColor_2),
-              title: Text(
-                "Contact and Support",
-                style: TextStyles.titleText(context),
+              const SizedBox(height: 12),
+              
+              // Contact and Support Tile
+              Card(
+                elevation: 0,
+                color: ColourStyles.primaryColor_3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: const BorderSide(color: ColourStyles.borderColor),
+                ),
+                child: ListTile(
+                  leading: const Icon(Icons.contact_support_outlined, color: ColourStyles.primaryColor_2),
+                  title: Text(
+                    "Contact and Support",
+                    style: TextStyles.titleText(context),
+                  ),
+                  trailing: const Icon(Icons.chevron_right, color: ColourStyles.iconColor),
+                  onTap: () => ContactDialogWidget.show(context),
+                ),
               ),
-              trailing: const Icon(Icons.chevron_right, color: ColourStyles.iconColor),
-              onTap: () => ContactDialogWidget.show(context),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

@@ -24,7 +24,7 @@ class AppRoutes {
   static const category =
       'package:stock_pilot/presentation/category/screens/category_list_page.dart';
   static const brand =
-      'package:stock_pilot/presentation/brand/screens/brand_lisdartt_page.dart';
+      'package:stock_pilot/presentation/brand/screens/brand_list_page.dart';
   static const lowStockPage =
       'package:stock_pilot/presentation/low stock/screens/lowstock_list_page.dart';
   static const outOfStockPage =
@@ -33,8 +33,8 @@ class AppRoutes {
       'package:stock_pilot/presentation/cart/screen/cart_list_page.dart';
   static const billingPage =
       'package:stock_pilot/presentation/cart/screen/billing_page.dart';
-  static const conformationPage =
-      'package:stock_pilot/presentation/cart/screen/conformation_page.dart';
+  static const confirmationPage =
+      'package:stock_pilot/presentation/cart/screen/confirmation_page.dart';
   static const historyListPage =
       'package:stock_pilot/presentation/history/screens/history_list_page.dart';
   static const historyDetailsPage =

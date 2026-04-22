@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
 import 'package:stock_pilot/presentation/widgets/app_drawer_widget.dart';
@@ -28,41 +28,48 @@ class _RevenuePageState extends State<RevenuePage> {
         showAvatar: true,
       ),
       drawer: const AppDrawer(),
-      body: Consumer<RevenueProvider>(
-        builder: (context, provider, child) {
-          final isCustom = provider.selectedPeriod == TrendPeriod.custom;
-          
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                const SalesTrendsWidget(),
-                const SizedBox(height: 20),
-                if (isCustom)
-                  RevenueCardWidget(
-                    title: "Custom Range Revenue",
-                    amount: provider.totalForSelectedPeriod,
-                  )
-                else ...[
-                  RevenueCardWidget(
-                    title: "Daily Revenue",
-                    amount: provider.dailyRevenue,
+      body: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 900),
+            child: Consumer<RevenueProvider>(
+              builder: (context, provider, child) {
+                final isCustom = provider.selectedPeriod == TrendPeriod.custom;
+                
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      const SalesTrendsWidget(),
+                      const SizedBox(height: 20),
+                      if (isCustom)
+                        RevenueCardWidget(
+                          title: "Custom Range Revenue",
+                          amount: provider.totalForSelectedPeriod,
+                        )
+                      else ...[
+                        RevenueCardWidget(
+                          title: "Daily Revenue",
+                          amount: provider.dailyRevenue,
+                        ),
+                        RevenueCardWidget(
+                          title: "Monthly Revenue",
+                          amount: provider.monthlyRevenue,
+                        ),
+                        RevenueCardWidget(
+                          title: "Yearly Revenue",
+                          amount: provider.yearlyRevenue,
+                        ),
+                      ],
+                      const SizedBox(height: 20),
+                      const MostSoldItemsWidget(),
+                    ],
                   ),
-                  RevenueCardWidget(
-                    title: "Monthly Revenue",
-                    amount: provider.monthlyRevenue,
-                  ),
-                  RevenueCardWidget(
-                    title: "Yearly Revenue",
-                    amount: provider.yearlyRevenue,
-                  ),
-                ],
-                const SizedBox(height: 20),
-                const MostSoldItemsWidget(),
-              ],
+                );
+              },
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }

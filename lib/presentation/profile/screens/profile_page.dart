@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
@@ -32,46 +32,51 @@ class ProfilePage extends StatelessWidget {
         child: Consumer<ProfilePageProvider>(
           builder: (context, provider, _) {
             final user = provider.user;
-            return SingleChildScrollView(
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: verticalPadding,
-                  horizontal: horizontalPadding,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: UserAvatarEditWidget(
-                        imagePath: user?.profileImage,
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (_) => PermissionDialog(
-                              provider: context.read<ProfilePageProvider>(),
-                              showRemoveOption: user?.profileImage != null,
-                            ),
-                          );
-                        },
-                      ),
+            return Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 900),
+                child: SingleChildScrollView(
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: verticalPadding,
+                      horizontal: horizontalPadding,
                     ),
-                    SizedBox(height: sectionSpacing),
-                    Text(
-                      "Personal Information",
-                      style: TextStyles.sectionHeading(context),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: UserAvatarEditWidget(
+                            imagePath: user?.profileImage,
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (_) => PermissionDialog(
+                                  provider: context.read<ProfilePageProvider>(),
+                                  showRemoveOption: user?.profileImage != null,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        SizedBox(height: sectionSpacing),
+                        Text(
+                          "Personal Information",
+                          style: TextStyles.sectionHeading(context),
+                        ),
+                        const SizedBox(height: 12),
+                        ProfileDetailsWidget(items: provider.personalInfo),
+                        SizedBox(height: sectionSpacing),
+                        Text(
+                          "Shop Information",
+                          style: TextStyles.sectionHeading(context),
+                        ),
+                        const SizedBox(height: 12),
+                        ProfileDetailsWidget(items: provider.shopInfo),
+                        SizedBox(height: sectionSpacing),
+                      ],
                     ),
-                    SizedBox(height: 12),
-                    ProfileDetailsWidget(items: provider.personalInfo),
-                    SizedBox(height: sectionSpacing),
-                    Text(
-                      "Shop Information",
-                      style: TextStyles.sectionHeading(context),
-                    ),
-                    SizedBox(height: 12),
-                    ProfileDetailsWidget(items: provider.shopInfo),
-                    SizedBox(height: sectionSpacing),
-                  ],
+                  ),
                 ),
               ),
             );

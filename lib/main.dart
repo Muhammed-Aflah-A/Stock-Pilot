@@ -217,7 +217,7 @@ class StockPilot extends StatelessWidget {
               const CartListPage(),
               settings: settings,
             );
-          case AppRoutes.conformationPage:
+          case AppRoutes.confirmationPage:
             return TransitionAnimations.fadeRoute(
               const ConfirmationPage(),
               settings: settings,

@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/presentation/widgets/app_bar_widget.dart';
@@ -26,28 +26,33 @@ class Dashboard extends StatelessWidget {
       ),
       drawer: const AppDrawer(),
       body: SafeArea(
-        child: SingleChildScrollView(
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: horizontalPadding,
-              vertical: verticalPadding,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const DashboardCardWidget(),
-                SizedBox(height: sectionSpacing),
-                Text(
-                  "Recent Activity",
-                  style: TextStyles.sectionHeading(
-                    context,
-                  ).copyWith(color: ColourStyles.colorBlue),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 900),
+            child: SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: horizontalPadding,
+                  vertical: verticalPadding,
                 ),
-                SizedBox(height: smallSpacing),
-                const DashboardActivityWidget(),
-                SizedBox(height: verticalPadding),
-              ],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const DashboardCardWidget(),
+                    SizedBox(height: sectionSpacing),
+                    Text(
+                      "Recent Activity",
+                      style: TextStyles.sectionHeading(
+                        context,
+                      ).copyWith(color: ColourStyles.colorBlue),
+                    ),
+                    SizedBox(height: smallSpacing),
+                    const DashboardActivityWidget(),
+                    SizedBox(height: verticalPadding),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
