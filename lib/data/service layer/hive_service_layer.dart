@@ -1,4 +1,4 @@
-﻿import 'package:stock_pilot/data/models/brand_model.dart';
+import 'package:stock_pilot/data/models/brand_model.dart';
 import 'package:stock_pilot/data/models/cart_model.dart';
 import 'package:stock_pilot/data/models/category_model.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';

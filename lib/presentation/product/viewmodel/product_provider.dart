@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/assets/app_images.dart';
 import 'package:stock_pilot/core/interfaces/filter_provider_interface.dart';
@@ -47,7 +46,7 @@ class ProductProvider extends FilterProviderInterface
   final salesRateFocus = FocusNode();
   final itemCountFocus = FocusNode();
   final lowStockCountFocus = FocusNode();
-  List<File?> productImages = List.generate(4, (_) => null);
+  List<String?> productImages = List.generate(4, (_) => null);
   ProductModel? editingProduct;
   int? editingIndex;
   int? activeProductIndex;
@@ -139,43 +138,52 @@ class ProductProvider extends FilterProviderInterface
     );
   }
 
-  Future<void> openCamera([int? index]) async {
+  Future<void> openCamera(BuildContext context, [int? index]) async {
     final path = await ImageSelectorUtil.openCamera();
     if (path == null) return;
-    final cropped = await ImageCropUtil.cropImage(File(path));
-    if (cropped == null) return;
-    final savedPath = await ImageUtil.saveImage(cropped);
+    if (!context.mounted) return;
+    final croppedPath = await ImageCropUtil.cropImageToPath(path, context: context);
+    if (croppedPath == null) return;
+    final savedPath = await ImageUtil.saveImage(croppedPath);
     if (index == null || index >= productImages.length) return;
-    productImages[index] = File(savedPath);
+    final newImages = List<String?>.from(productImages);
+    newImages[index] = savedPath;
+    productImages = newImages;
     notifyListeners();
   }
 
-  Future<void> openLibrary([int? index]) async {
+  Future<void> openLibrary(BuildContext context, [int? index]) async {
     final paths = await ImageSelectorUtil.openLibraryMulti();
     if (paths == null || paths.isEmpty) return;
 
     int pathIndex = 0;
-    while (pathIndex < paths.length && productImages.contains(null)) {
-      final emptyIndex = productImages.indexOf(null);
+    final newImages = List<String?>.from(productImages);
+    while (pathIndex < paths.length && newImages.contains(null)) {
+      final emptyIndex = newImages.indexOf(null);
       if (emptyIndex == -1) break;
 
-      final cropped = await ImageCropUtil.cropImage(File(paths[pathIndex]));
+      if (!context.mounted) break;
+      final croppedPath =
+          await ImageCropUtil.cropImageToPath(paths[pathIndex], context: context);
 
-      if (cropped != null) {
-        final savedPath = await ImageUtil.saveImage(cropped);
-        productImages[emptyIndex] = File(savedPath);
+      if (croppedPath != null) {
+        final savedPath = await ImageUtil.saveImage(croppedPath);
+        newImages[emptyIndex] = savedPath;
       }
 
       pathIndex++;
     }
+    productImages = newImages;
     notifyListeners();
   }
 
   @override
   void removeImage({int? index}) {
     if (index == null || index >= productImages.length) return;
-    productImages.removeAt(index);
-    productImages.add(null);
+    final newImages = List<String?>.from(productImages);
+    newImages.removeAt(index);
+    newImages.add(null);
+    productImages = newImages;
     notifyListeners();
   }
 
@@ -292,7 +300,7 @@ class ProductProvider extends FilterProviderInterface
     final newProduct = ProductModel(
       productImages: productImages
           .where((img) => img != null)
-          .map((img) => img!.path)
+          .map((img) => img!)
           .toList(),
       productName: productName!,
       productDescription: productDescription!,
@@ -504,7 +512,7 @@ class ProductProvider extends FilterProviderInterface
   void setEditingProduct(ProductModel product, int index) {
     productImages = List.generate(4, (_) => null);
     for (int i = 0; i < product.productImages.length && i < 4; i++) {
-      productImages[i] = File(product.productImages[i]);
+      productImages[i] = product.productImages[i];
     }
     editingProduct = product;
     editingIndex = index;

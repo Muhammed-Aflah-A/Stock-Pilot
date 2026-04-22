@@ -1,8 +1,8 @@
-﻿import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
+import 'package:stock_pilot/core/utils/image_util.dart';
 import 'package:stock_pilot/presentation/revenue/viewmodel/revenue_provider.dart';
 
 class MostSoldItemsWidget extends StatelessWidget {
@@ -69,11 +69,14 @@ class MostSoldItemsWidget extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: product.productImages.isNotEmpty
-                                ? Image.file(
-                                    File(product.productImages[0]),
+                                ? Image(
+                                    image: ImageUtil.getProductImage(
+                                      product.productImages[0],
+                                    ),
                                     fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) =>
-                                        const Icon(Icons.image, size: 24),
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            const Icon(Icons.image, size: 24),
                                   )
                                 : const Icon(Icons.inventory_2, size: 24),
                           ),
@@ -94,7 +97,7 @@ class MostSoldItemsWidget extends StatelessWidget {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                "${product.category ?? 'Uncategorized'} â€¢ ${product.brand ?? 'Generic'}",
+                                "${product.category ?? 'Uncategorized'} • ${product.brand ?? 'Generic'}",
                                 style: TextStyles.caption2(context),
                               ),
                             ],

@@ -1,4 +1,3 @@
-﻿import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/interfaces/image_permission_handler_interface.dart';
@@ -46,12 +45,13 @@ class ProfileCreationProvider
     );
   }
 
-  Future<void> openCamera() async {
+  Future<void> openCamera(BuildContext context) async {
     final path = await ImageSelectorUtil.openCamera();
     if (path == null) return;
-    final cropped = await ImageCropUtil.cropImage(File(path));
-    if (cropped == null) return;
-    final savedPath = await ImageUtil.saveImage(cropped);
+    if (!context.mounted) return;
+    final croppedPath = await ImageCropUtil.cropImageToPath(path, context: context);
+    if (croppedPath == null) return;
+    final savedPath = await ImageUtil.saveImage(croppedPath);
     profileImage = savedPath;
     notifyListeners();
   }
@@ -62,12 +62,13 @@ class ProfileCreationProvider
     notifyListeners();
   }
 
-  Future<void> openLibrary() async {
+  Future<void> openLibrary(BuildContext context) async {
     final path = await ImageSelectorUtil.openLibrary();
     if (path == null) return;
-    final cropped = await ImageCropUtil.cropImage(File(path));
-    if (cropped == null) return;
-    final savedPath = await ImageUtil.saveImage(cropped);
+    if (!context.mounted) return;
+    final croppedPath = await ImageCropUtil.cropImageToPath(path, context: context);
+    if (croppedPath == null) return;
+    final savedPath = await ImageUtil.saveImage(croppedPath);
     profileImage = savedPath;
     notifyListeners();
   }

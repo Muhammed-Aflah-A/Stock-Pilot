@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:stock_pilot/core/utils/image_permission_util.dart';
 import 'package:stock_pilot/core/utils/snackbar_util.dart';
@@ -11,6 +12,20 @@ class PermissionUtil {
     required bool isCamera,
     int? index,
   }) async {
+    if (kIsWeb) {
+      if (index != null) {
+        isCamera
+            ? await provider.openCamera(context, index)
+            : await provider.openLibrary(context, index);
+      } else {
+        isCamera
+            ? await provider.openCamera(context)
+            : await provider.openLibrary(context);
+      }
+      if (context.mounted) Navigator.pop(context);
+      return;
+    }
+
     final status = isCamera
         ? await ImagePermissionUtil.cameraPermission()
         : await ImagePermissionUtil.libraryPermission();
@@ -18,21 +33,21 @@ class PermissionUtil {
     if (status == PermissionStatus.granted) {
       if (index != null) {
         isCamera
-            ? await provider.openCamera(index)
-            : await provider.openLibrary(index);
+            ? await provider.openCamera(context, index)
+            : await provider.openLibrary(context, index);
       } else {
-        isCamera ? await provider.openCamera() : await provider.openLibrary();
+        isCamera
+            ? await provider.openCamera(context)
+            : await provider.openLibrary(context);
       }
       if (context.mounted) Navigator.pop(context);
-    }
-    else if (status == PermissionStatus.permanentlyDenied) {
+    } else if (status == PermissionStatus.permanentlyDenied) {
       if (context.mounted) Navigator.pop(context);
       showDialog(
         context: context,
         builder: (context) => DeniedDialogWidget(isCamera: isCamera),
       );
-    }
-    else {
+    } else {
       if (context.mounted) Navigator.pop(context);
       SnackbarUtil.showSnackBar(
         context,

@@ -1,8 +1,8 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
+import 'package:stock_pilot/core/utils/image_util.dart';
 import 'package:stock_pilot/core/utils/number_formatter_util.dart';
 import 'package:stock_pilot/core/utils/snackbar_util.dart';
 import 'package:stock_pilot/data/models/cart_model.dart';
@@ -69,8 +69,10 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
                     height: 70,
                     color: ColourStyles.primaryColor_2,
                     child: product.productImages.isNotEmpty
-                        ? Image.file(
-                            File(product.productImages.first),
+                        ? Image(
+                            image: ImageUtil.getProductImage(
+                              product.productImages.first,
+                            ),
                             fit: BoxFit.cover,
                             errorBuilder: (_, _, _) =>
                                 const Icon(Icons.inventory_2_rounded),
@@ -238,8 +240,6 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
                     ],
                   ),
                 ),
-
-
                 const SizedBox(width: 8),
                 Expanded(
                   child: Align(
@@ -279,8 +279,6 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
             ),
           ],
         ),
-
-
       ),
     );
   }

@@ -1,4 +1,6 @@
-﻿import 'dart:io';
+import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 
@@ -18,7 +20,29 @@ class ImageCropUtil {
       ],
     );
     if (cropped == null) return null;
-    return File(cropped.path);
+    return kIsWeb ? null : File(cropped.path);
+  }
+
+  static Future<String?> cropImageToPath(String path, {BuildContext? context}) async {
+    final cropped = await ImageCropper().cropImage(
+      sourcePath: path,
+      compressQuality: 90,
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Crop Image',
+          toolbarColor: ColourStyles.primaryColor_2,
+          toolbarWidgetColor: ColourStyles.primaryColor,
+          lockAspectRatio: false,
+        ),
+        IOSUiSettings(title: 'Crop Image'),
+        if (kIsWeb && context != null)
+          WebUiSettings(
+            context: context,
+            presentStyle: WebPresentStyle.page,
+          ),
+      ],
+    );
+    return cropped?.path;
   }
 }
 

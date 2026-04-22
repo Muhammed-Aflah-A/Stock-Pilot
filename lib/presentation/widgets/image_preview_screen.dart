@@ -1,6 +1,6 @@
-﻿import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
+import 'package:stock_pilot/core/utils/image_util.dart';
 
 class ImagePreviewScreen extends StatelessWidget {
   final String imagePath;
@@ -32,8 +32,8 @@ class ImagePreviewScreen extends StatelessWidget {
             panEnabled: true,
             minScale: 1.0,
             maxScale: 4.0,
-            child: Image.file(
-              File(imagePath),
+            child: Image(
+              image: ImageUtil.getProductImage(imagePath),
               fit: BoxFit.contain,
               errorBuilder: (context, error, stackTrace) => const Icon(
                 Icons.broken_image,

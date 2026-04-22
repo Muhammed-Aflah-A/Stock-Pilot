@@ -1,7 +1,7 @@
-﻿import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
+import 'package:stock_pilot/core/utils/image_util.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
 import 'package:stock_pilot/presentation/widgets/image_preview_screen.dart';
 import 'package:stock_pilot/presentation/widgets/permission_dialog_widget.dart';
@@ -11,29 +11,30 @@ class ImageAddingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Selector<ProductProvider, List<File>>(
-      selector: (_, provider) =>
-          provider.productImages.whereType<File>().toList(),
+    return Selector<ProductProvider, List<String?>>(
+      selector: (_, provider) => provider.productImages,
       builder: (context, images, _) {
+        final nonEmptyImages = images.where((img) => img != null).toList();
         return LayoutBuilder(
           builder: (context, constraints) {
             final tileSize = (constraints.maxWidth / 2 - 12).clamp(
               120.0,
               200.0,
             );
-            final itemCount = images.length < 4 ? images.length + 1 : 4;
+            final itemCount =
+                nonEmptyImages.length < 4 ? nonEmptyImages.length + 1 : 4;
             return Center(
               child: Wrap(
                 spacing: 12,
                 runSpacing: 12,
                 alignment: WrapAlignment.center,
                 children: List.generate(itemCount, (index) {
-                  final File? image = index < images.length
-                      ? images[index]
+                  final String? imagePath = index < nonEmptyImages.length
+                      ? nonEmptyImages[index]
                       : null;
                   return GestureDetector(
                     onTap: () {
-                      if (image == null) {
+                      if (imagePath == null) {
                         showDialog(
                           context: context,
                           builder: (_) => PermissionDialog(
@@ -46,7 +47,7 @@ class ImageAddingWidget extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (_) => ImagePreviewScreen(
-                              imagePath: image.path,
+                              imagePath: imagePath,
                               title: "Product Image",
                             ),
                           ),
@@ -64,7 +65,7 @@ class ImageAddingWidget extends StatelessWidget {
                           width: 2,
                         ),
                       ),
-                      child: image == null
+                      child: imagePath == null
                           ? Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: const [
@@ -80,14 +81,22 @@ class ImageAddingWidget extends StatelessWidget {
                               children: [
                                 Positioned.fill(
                                   child: Hero(
-                                    tag: image.path,
+                                    tag: imagePath,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
-                                      child: Image.file(
-                                        image,
+                                      child: Image(
+                                        image: ImageUtil.getProductImage(
+                                          imagePath,
+                                        ),
                                         width: double.infinity,
                                         height: double.infinity,
                                         fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                const Icon(
+                                                  Icons.broken_image,
+                                                  size: 30,
+                                                ),
                                       ),
                                     ),
                                   ),

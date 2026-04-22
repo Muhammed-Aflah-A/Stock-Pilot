@@ -1,6 +1,6 @@
-﻿import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
+import 'package:stock_pilot/core/utils/image_util.dart';
 import 'package:stock_pilot/presentation/product/widgets/product_image_placeholder.dart';
 import 'package:stock_pilot/presentation/widgets/image_preview_screen.dart';
 import 'package:stock_pilot/presentation/product/widgets/carousel_navigation_arrow_widget.dart';
@@ -65,8 +65,8 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
                       },
                       child: Hero(
                         tag: imagePath,
-                        child: Image.file(
-                          File(imagePath),
+                        child: Image(
+                          image: ImageUtil.getProductImage(imagePath),
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) =>
                               const ProductImagePlaceholder(),
@@ -86,7 +86,6 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
                   curve: Curves.easeInOut,
                 ),
               ),
-
             if (_localIndex < displayImages.length - 1)
               CarouselNavigationArrowWidget(
                 alignment: Alignment.centerRight,
