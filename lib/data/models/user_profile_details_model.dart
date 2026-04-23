@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 part 'user_profile_details_model.g.dart';
 @HiveType(typeId: 2)
@@ -21,4 +21,3 @@ class UserProfileDetailsModel {
     required this.feildtype,
   });
 }
-

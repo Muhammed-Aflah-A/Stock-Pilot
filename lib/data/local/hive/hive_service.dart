@@ -163,4 +163,3 @@ class HiveService implements HiveServiceLayer {
     return box.values.toList().reversed.toList();
   }
 }
-

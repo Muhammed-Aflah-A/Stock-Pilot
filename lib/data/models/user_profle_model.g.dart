@@ -1,4 +1,3 @@
-﻿
 part of 'user_profle_model.dart';
 
 
@@ -53,4 +52,3 @@ class UserProfileAdapter extends TypeAdapter<UserProfile> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
-

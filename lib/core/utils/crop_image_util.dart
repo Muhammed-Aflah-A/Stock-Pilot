@@ -46,7 +46,7 @@ class ImageCropUtil {
     if (cropped == null) return null;
 
     if (kIsWeb) {
-      // Convert cropped blob back to Base64 for persistence
+      
       final bytes = await cropped.readAsBytes();
       return 'data:image/png;base64,${base64Encode(bytes)}';
     }

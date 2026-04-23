@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/core/utils/number_formatter_util.dart';
@@ -51,4 +51,3 @@ class RevenueCardWidget extends StatelessWidget {
     );
   }
 }
-

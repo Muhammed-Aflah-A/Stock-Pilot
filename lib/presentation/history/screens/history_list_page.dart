@@ -173,4 +173,3 @@ class _HistoryListPageState extends State<HistoryListPage> {
     );
   }
 }
-

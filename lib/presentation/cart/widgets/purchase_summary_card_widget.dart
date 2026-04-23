@@ -109,4 +109,3 @@ class PurchaseSummaryCardWidget extends StatelessWidget {
     );
   }
 }
-

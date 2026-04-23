@@ -1,4 +1,4 @@
-﻿import 'package:hive/hive.dart';
+import 'package:hive/hive.dart';
 import 'package:stock_pilot/data/models/brand_model.dart';
 import 'package:stock_pilot/data/models/cart_model.dart';
 import 'package:stock_pilot/data/models/category_model.dart';
@@ -22,4 +22,3 @@ class HiveAdapters {
     Hive.registerAdapter(SalesItemsAdapter());
   }
 }
-

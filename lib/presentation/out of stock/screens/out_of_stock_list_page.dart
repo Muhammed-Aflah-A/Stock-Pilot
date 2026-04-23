@@ -154,4 +154,3 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
     );
   }
 }
-

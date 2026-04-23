@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/button_styles.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
@@ -25,8 +25,9 @@ class ActionConfirmationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final isRemove = actionText.toLowerCase() == "remove" || actionText.toLowerCase() == "delete";
+    final isRemove =
+        actionText.toLowerCase() == "remove" ||
+        actionText.toLowerCase() == "delete";
     return AlertDialog(
       backgroundColor: ColourStyles.primaryColor,
       surfaceTintColor: Colors.transparent,
@@ -49,7 +50,7 @@ class ActionConfirmationWidget extends StatelessWidget {
               'Are you sure you want to $actionText "$displayName"?',
               style: TextStyles.primaryText(
                 context,
-              ).copyWith(color: actionColor, fontSize: size.width * 0.035),
+              ).copyWith(color: actionColor),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 12),
@@ -101,4 +102,3 @@ class ActionConfirmationWidget extends StatelessWidget {
     );
   }
 }
-

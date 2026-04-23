@@ -1,4 +1,4 @@
-﻿import 'package:fl_chart/fl_chart.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
@@ -184,4 +184,3 @@ class TrendChartWidget extends StatelessWidget {
     }
   }
 }
-

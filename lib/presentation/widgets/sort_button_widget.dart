@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/presentation/widgets/sort_bottom_sheet.dart';
 
@@ -86,4 +86,3 @@ class SortButtonWidget<T> extends StatelessWidget {
     );
   }
 }
-

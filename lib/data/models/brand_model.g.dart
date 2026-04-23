@@ -1,4 +1,3 @@
-﻿
 part of 'brand_model.dart';
 
 
@@ -35,4 +34,3 @@ class BrandModelAdapter extends TypeAdapter<BrandModel> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
-

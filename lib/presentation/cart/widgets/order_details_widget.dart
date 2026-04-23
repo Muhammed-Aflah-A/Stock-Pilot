@@ -106,4 +106,3 @@ class OrderDetailsWidget extends StatelessWidget {
     );
   }
 }
-

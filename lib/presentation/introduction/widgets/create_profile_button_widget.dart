@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/button_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
@@ -17,4 +17,3 @@ class CreateProfileButtonWidget extends StatelessWidget {
     );
   }
 }
-

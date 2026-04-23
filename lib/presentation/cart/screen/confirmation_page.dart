@@ -78,4 +78,3 @@ class ConfirmationPage extends StatelessWidget {
     );
   }
 }
-

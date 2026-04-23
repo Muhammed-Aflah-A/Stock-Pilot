@@ -110,4 +110,3 @@ class ProductListTileWidget extends StatelessWidget {
     );
   }
 }
-

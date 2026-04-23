@@ -135,4 +135,3 @@ class MostSoldItemsWidget extends StatelessWidget {
     );
   }
 }
-

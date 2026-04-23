@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 
 class ProductImagePlaceholder extends StatelessWidget {
@@ -15,4 +15,3 @@ class ProductImagePlaceholder extends StatelessWidget {
     );
   }
 }
-

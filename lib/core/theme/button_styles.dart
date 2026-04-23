@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 
 class ButtonStyles {
@@ -126,4 +126,3 @@ class ButtonStyles {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       );
 }
-

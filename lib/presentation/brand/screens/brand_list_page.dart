@@ -220,4 +220,3 @@ class _BrandListPageState extends State<BrandListPage> {
     );
   }
 }
-

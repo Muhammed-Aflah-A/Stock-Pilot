@@ -5,7 +5,7 @@ import 'package:stock_pilot/core/theme/colours_styles.dart';
 class TextStyles {
   static double _getFontSize(BuildContext context, double baseSize) {
     double shortestSide = MediaQuery.of(context).size.shortestSide;
-    // On Web/Desktop, limit the effective shortestSide to prevent massive scaling
+    
     if (kIsWeb && shortestSide > 600) {
       shortestSide = 600;
     }
@@ -318,4 +318,3 @@ class TextStyles {
     ),
   );
 }
-

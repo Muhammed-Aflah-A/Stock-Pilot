@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/interfaces/filter_provider_interface.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/presentation/widgets/filter_bottom_sheet_widget.dart';
@@ -79,4 +79,3 @@ class FilterButtonWidget extends StatelessWidget {
     );
   }
 }
-

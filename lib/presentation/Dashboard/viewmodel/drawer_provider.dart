@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/data/models/drawer_model.dart';
 
@@ -62,4 +62,3 @@ class DrawerProvider with ChangeNotifier {
     notifyListeners();
   }
 }
-

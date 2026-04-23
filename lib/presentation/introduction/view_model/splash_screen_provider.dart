@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
 import 'package:stock_pilot/data/local/shared_preference/app_starting_state.dart';
@@ -26,4 +26,3 @@ class SplashScreenProvider with ChangeNotifier {
     Navigator.pushNamedAndRemoveUntil(context, page, (route) => false);
   }
 }
-

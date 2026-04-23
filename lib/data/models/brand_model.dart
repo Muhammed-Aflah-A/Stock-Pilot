@@ -1,4 +1,4 @@
-﻿import 'package:hive_flutter/adapters.dart';
+import 'package:hive_flutter/adapters.dart';
 part 'brand_model.g.dart';
 @HiveType(typeId: 7)
 class BrandModel {
@@ -6,4 +6,3 @@ class BrandModel {
   String? brand;
   BrandModel({required this.brand});
 }
-

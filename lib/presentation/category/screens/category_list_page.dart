@@ -225,4 +225,3 @@ class _CategoryListPageState extends State<CategoryListPage> {
     );
   }
 }
-

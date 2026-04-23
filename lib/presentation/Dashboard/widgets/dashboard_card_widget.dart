@@ -72,4 +72,3 @@ class DashboardCardWidget extends StatelessWidget {
     );
   }
 }
-

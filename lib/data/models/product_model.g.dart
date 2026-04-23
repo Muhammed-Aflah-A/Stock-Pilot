@@ -1,4 +1,3 @@
-﻿
 part of 'product_model.dart';
 
 
@@ -59,4 +58,3 @@ class ProductModelAdapter extends TypeAdapter<ProductModel> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
-

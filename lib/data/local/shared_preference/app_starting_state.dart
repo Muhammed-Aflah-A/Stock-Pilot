@@ -1,4 +1,4 @@
-﻿import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppStartingState {
   static final onboardingDone = 'onboarding_done';
@@ -23,4 +23,3 @@ class AppStartingState {
     return prefs.getBool(profileDone) ?? false;
   }
 }
-

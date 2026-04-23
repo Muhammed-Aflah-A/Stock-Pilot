@@ -18,4 +18,3 @@ class NumberFormatterUtil {
     return '$symbol ${format(value)}';
   }
 }
-

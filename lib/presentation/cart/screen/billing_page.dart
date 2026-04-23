@@ -153,4 +153,3 @@ class _BillingScreenState extends State<BillingPage> {
     );
   }
 }
-

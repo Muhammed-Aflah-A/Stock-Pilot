@@ -31,7 +31,7 @@ class _SettingsPageState extends State<SettingsPage> {
           child: ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              // Privacy and Policy Tile
+              
               Card(
                 elevation: 0,
                 color: ColourStyles.primaryColor_3,
@@ -51,7 +51,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               const SizedBox(height: 12),
               
-              // About Us Tile
+              
               Card(
                 elevation: 0,
                 color: ColourStyles.primaryColor_3,
@@ -71,7 +71,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               const SizedBox(height: 12),
               
-              // Contact and Support Tile
+              
               Card(
                 elevation: 0,
                 color: ColourStyles.primaryColor_3,

@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 abstract class ImagePermissionHandler {
   Future<void> handleImagePermission({
@@ -9,4 +9,3 @@ abstract class ImagePermissionHandler {
 
   void removeImage({int? index});
 }
-

@@ -1,4 +1,4 @@
-﻿import 'package:hive/hive.dart';
+import 'package:hive/hive.dart';
 part 'category_model.g.dart';
 
 @HiveType(typeId: 6)
@@ -7,4 +7,3 @@ class CategoryModel {
   String? category;
   CategoryModel({required this.category});
 }
-

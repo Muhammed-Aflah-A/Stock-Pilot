@@ -1,4 +1,4 @@
-﻿import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:stock_pilot/core/utils/date_util.dart';
 import 'package:stock_pilot/core/interfaces/filter_provider_interface.dart';

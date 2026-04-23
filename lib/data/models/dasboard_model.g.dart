@@ -1,4 +1,3 @@
-﻿
 part of 'dasboard_model.dart';
 
 
@@ -102,4 +101,3 @@ class DasboardActivityAdapter extends TypeAdapter<DasboardActivity> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
-

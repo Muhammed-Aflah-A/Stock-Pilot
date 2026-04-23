@@ -27,7 +27,7 @@ class ContactDialogWidget extends StatelessWidget {
             style: TextStyles.activityCardText(context),
           ),
           const SizedBox(height: 20),
-          // Email Item
+          
           Row(
             children: [
               const Icon(
@@ -48,7 +48,7 @@ class ContactDialogWidget extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          // Website Item
+          
           Row(
             children: [
               const Icon(

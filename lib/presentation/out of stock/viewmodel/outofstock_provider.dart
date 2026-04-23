@@ -1,4 +1,4 @@
-﻿import 'package:stock_pilot/core/interfaces/filter_provider_interface.dart';
+import 'package:stock_pilot/core/interfaces/filter_provider_interface.dart';
 import 'package:stock_pilot/core/utils/search_bar_util.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
@@ -265,4 +265,3 @@ class OutofstockProvider extends FilterProviderInterface {
     });
   }
 }
-

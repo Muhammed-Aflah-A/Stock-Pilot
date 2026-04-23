@@ -74,4 +74,3 @@ class _RevenuePageState extends State<RevenuePage> {
     );
   }
 }
-

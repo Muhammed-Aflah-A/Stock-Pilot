@@ -1,4 +1,4 @@
-﻿class FormValidatorUtil {
+class FormValidatorUtil {
   static String? validateName(String? value, String? fieldName) {
     final val = value?.trim() ?? '';
     if (val.isEmpty) return "Please enter $fieldName";
@@ -82,7 +82,7 @@
       return "Please enter $fieldName";
     }
     if (!RegExp(r'^.{10,500}$').hasMatch(value)) {
-      return "$fieldName must be 10â€“500 characters";
+      return "$fieldName must be 10–500 characters";
     }
     if (RegExp(r'\s{2,}').hasMatch(value)) {
       return "$fieldName cannot contain multiple spaces together";
@@ -155,4 +155,3 @@
     return null;
   }
 }
-

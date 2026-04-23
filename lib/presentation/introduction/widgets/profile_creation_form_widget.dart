@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/utils/keyboard_type_util.dart';
 import 'package:stock_pilot/core/utils/select_validator_util.dart';
@@ -112,4 +112,3 @@ class ProfileCreationFormWidget extends StatelessWidget {
     );
   }
 }
-

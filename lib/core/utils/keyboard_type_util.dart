@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 class KeyboardTypeUtil {
   static TextInputType getKeyboardType(String type) {
@@ -21,4 +21,3 @@ class KeyboardTypeUtil {
     }
   }
 }
-

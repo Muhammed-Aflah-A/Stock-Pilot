@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stock_pilot/core/utils/date_util.dart';
 import 'package:provider/provider.dart';

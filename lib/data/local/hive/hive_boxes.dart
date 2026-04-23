@@ -7,4 +7,3 @@ class HiveBoxes {
   static const String cart = "cartBox";
   static const String sales = "salesBox";
 }
-

@@ -43,4 +43,3 @@ class OrderTotalWidget extends StatelessWidget {
     );
   }
 }
-

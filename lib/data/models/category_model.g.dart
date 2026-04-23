@@ -1,4 +1,3 @@
-﻿
 part of 'category_model.dart';
 
 
@@ -35,4 +34,3 @@ class CategoryModelAdapter extends TypeAdapter<CategoryModel> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
-

@@ -1,4 +1,3 @@
-﻿
 part of 'user_profile_details_model.dart';
 
 
@@ -48,4 +47,3 @@ class UserProfileDetailsModelAdapter
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
-

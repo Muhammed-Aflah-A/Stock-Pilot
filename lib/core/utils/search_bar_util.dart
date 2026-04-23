@@ -1,4 +1,4 @@
-﻿class SearchBarUtil {
+class SearchBarUtil {
   static List<T> getFilteredList<T>({
     required List<T> sourceList,
     required String query,
@@ -14,4 +14,3 @@
     }).toList();
   }
 }
-

@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/utils/search_bar_util.dart';
 import 'package:stock_pilot/data/models/brand_model.dart';
 import 'package:stock_pilot/data/service layer/hive_service_layer.dart';
@@ -72,4 +72,3 @@ class BrandProvider with ChangeNotifier {
     await dashboard.loadActivities();
   }
 }
-

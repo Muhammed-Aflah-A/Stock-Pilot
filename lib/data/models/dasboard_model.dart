@@ -1,4 +1,4 @@
-﻿import 'package:hive_flutter/adapters.dart';
+import 'package:hive_flutter/adapters.dart';
 part 'dasboard_model.g.dart';
 
 @HiveType(typeId: 3)
@@ -51,4 +51,3 @@ class DasboardActivity {
     this.brand,
   });
 }
-

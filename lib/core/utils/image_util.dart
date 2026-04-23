@@ -51,8 +51,9 @@ class ImageUtil {
   }
 
   static Future<String> saveImage(String path) async {
-    if (kIsWeb)
-      return path; // On web, we return the blob URL or handle persistence in the provider
+    if (kIsWeb) {
+      return path; 
+    }
 
     final file = File(path);
     final directory = await getApplicationDocumentsDirectory();

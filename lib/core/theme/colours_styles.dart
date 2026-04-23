@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 class ColourStyles {
   static const primaryColor = Colors.white;
@@ -18,4 +18,3 @@ class ColourStyles {
   static const shadowColor = Color.fromARGB(68, 0, 0, 0);
   static final colorGrey = Colors.grey.shade700;
 }
-

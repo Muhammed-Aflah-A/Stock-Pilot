@@ -1,4 +1,4 @@
-﻿import 'package:stock_pilot/core/utils/form_validator_util.dart';
+import 'package:stock_pilot/core/utils/form_validator_util.dart';
 
 class SelectValidatorUtil {
   static String? validate(String? value, String type) {
@@ -48,4 +48,3 @@ class SelectValidatorUtil {
     }
   }
 }
-

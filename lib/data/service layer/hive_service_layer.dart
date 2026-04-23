@@ -37,4 +37,3 @@ abstract class HiveServiceLayer {
   Future<void> addSale(SalesItems sale);
   Future<List<SalesItems>> getAllSales();
 }
-

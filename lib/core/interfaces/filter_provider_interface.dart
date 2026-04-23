@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 abstract class FilterProviderInterface extends ChangeNotifier {
   bool get hasActiveFilters;
@@ -25,4 +25,3 @@ abstract class FilterProviderInterface extends ChangeNotifier {
   void applyFilters();
   void clearFilters();
 }
-

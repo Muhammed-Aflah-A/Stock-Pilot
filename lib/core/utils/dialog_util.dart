@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 class DialogUtil {
   static double getDialogWidth(BuildContext context) {
@@ -6,4 +6,3 @@ class DialogUtil {
     return (screenWidth * 0.85).clamp(280.0, 420.0);
   }
 }
-

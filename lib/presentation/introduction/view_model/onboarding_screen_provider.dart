@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:stock_pilot/data/local/shared_preference/app_starting_state.dart';
 
 class OnboardingScreenProvider with ChangeNotifier {
@@ -6,4 +6,3 @@ class OnboardingScreenProvider with ChangeNotifier {
     await AppStartingState.setOnboardingDone();
   }
 }
-

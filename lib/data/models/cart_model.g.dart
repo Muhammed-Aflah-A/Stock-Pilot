@@ -1,4 +1,3 @@
-﻿
 part of 'cart_model.dart';
 
 
@@ -84,4 +83,3 @@ class SalesItemsAdapter extends TypeAdapter<SalesItems> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
-

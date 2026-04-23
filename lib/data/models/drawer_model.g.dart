@@ -1,4 +1,3 @@
-﻿
 part of 'drawer_model.dart';
 
 
@@ -41,4 +40,3 @@ class DrawerItemsAdapter extends TypeAdapter<DrawerItems> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
-

@@ -155,4 +155,3 @@ class _LowstockListPageState extends State<LowstockListPage> {
     );
   }
 }
-

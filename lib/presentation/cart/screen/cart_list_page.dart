@@ -97,4 +97,3 @@ class _CartListPageState extends State<CartListPage> {
     );
   }
 }
-
