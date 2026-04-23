@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:stock_pilot/core/utils/date_util.dart';
 import 'package:stock_pilot/data/local/hive/hive_boxes.dart';
 import 'package:stock_pilot/data/models/cart_model.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
@@ -50,22 +50,8 @@ class DashboardProvider extends ChangeNotifier {
 
     return sales
         .where((sale) {
-          DateTime? saleDate;
-          try {
-            if (sale.date.contains('/')) {
-              saleDate = DateFormat('dd/MM/yyyy', 'en_US').parse(sale.date);
-            } else {
-              saleDate = DateFormat(
-                'dd - MMM - yyyy',
-                'en_US',
-              ).parse(sale.date);
-            }
-          } catch (e) {
-            saleDate = null;
-          }
-
+          final saleDate = DateUtil.parse(sale.date);
           if (saleDate == null) return false;
-
           return saleDate.month == currentMonth && saleDate.year == currentYear;
         })
         .fold(0.0, (sum, sale) => sum + sale.totalAmount);
@@ -178,4 +164,3 @@ class DashboardProvider extends ChangeNotifier {
     await loadActivities();
   }
 }
-

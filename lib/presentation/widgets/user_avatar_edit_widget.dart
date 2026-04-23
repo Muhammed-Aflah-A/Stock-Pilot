@@ -26,6 +26,7 @@ class UserAvatarEditWidget extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (_) => ImagePreviewScreen(
                     imagePath: imagePath!,
+                    heroTag: 'profile_avatar_${imagePath.hashCode}',
                     title: "Profile Image",
                   ),
                 ),
@@ -33,7 +34,9 @@ class UserAvatarEditWidget extends StatelessWidget {
             }
           },
           child: Hero(
-            tag: imagePath ?? "avatar_hero_placeholder",
+            tag: imagePath != null
+                ? 'profile_avatar_${imagePath.hashCode}'
+                : "avatar_hero_placeholder",
             child: CircleAvatar(
               radius: 50,
               backgroundColor: ColourStyles.primaryColor_2,
@@ -67,4 +70,3 @@ class UserAvatarEditWidget extends StatelessWidget {
     );
   }
 }
-

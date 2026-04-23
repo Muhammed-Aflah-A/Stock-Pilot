@@ -5,8 +5,14 @@ import 'package:stock_pilot/core/utils/image_util.dart';
 class ImagePreviewScreen extends StatelessWidget {
   final String imagePath;
   final String? title;
+  final Object? heroTag;
 
-  const ImagePreviewScreen({super.key, required this.imagePath, this.title});
+  const ImagePreviewScreen({
+    super.key,
+    required this.imagePath,
+    this.title,
+    this.heroTag,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +33,7 @@ class ImagePreviewScreen extends StatelessWidget {
       ),
       body: Center(
         child: Hero(
-          tag: imagePath,
+          tag: heroTag ?? imagePath,
           child: InteractiveViewer(
             panEnabled: true,
             minScale: 1.0,
@@ -47,4 +53,3 @@ class ImagePreviewScreen extends StatelessWidget {
     );
   }
 }
-

@@ -21,8 +21,9 @@ class ImageAddingWidget extends StatelessWidget {
               120.0,
               200.0,
             );
-            final itemCount =
-                nonEmptyImages.length < 4 ? nonEmptyImages.length + 1 : 4;
+            final itemCount = nonEmptyImages.length < 4
+                ? nonEmptyImages.length + 1
+                : 4;
             return Center(
               child: Wrap(
                 spacing: 12,
@@ -48,6 +49,8 @@ class ImageAddingWidget extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (_) => ImagePreviewScreen(
                               imagePath: imagePath,
+                              heroTag:
+                                  'product_image_${index}_${imagePath.hashCode}',
                               title: "Product Image",
                             ),
                           ),
@@ -81,7 +84,8 @@ class ImageAddingWidget extends StatelessWidget {
                               children: [
                                 Positioned.fill(
                                   child: Hero(
-                                    tag: imagePath,
+                                    tag:
+                                        'product_image_${index}_${imagePath.hashCode}',
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
                                       child: Image(
@@ -138,4 +142,3 @@ class ImageAddingWidget extends StatelessWidget {
     );
   }
 }
-

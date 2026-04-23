@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -23,7 +24,10 @@ class ImageCropUtil {
     return kIsWeb ? null : File(cropped.path);
   }
 
-  static Future<String?> cropImageToPath(String path, {BuildContext? context}) async {
+  static Future<String?> cropImageToPath(
+    String path, {
+    BuildContext? context,
+  }) async {
     final cropped = await ImageCropper().cropImage(
       sourcePath: path,
       compressQuality: 90,
@@ -36,13 +40,17 @@ class ImageCropUtil {
         ),
         IOSUiSettings(title: 'Crop Image'),
         if (kIsWeb && context != null)
-          WebUiSettings(
-            context: context,
-            presentStyle: WebPresentStyle.page,
-          ),
+          WebUiSettings(context: context, presentStyle: WebPresentStyle.page),
       ],
     );
-    return cropped?.path;
+    if (cropped == null) return null;
+
+    if (kIsWeb) {
+      // Convert cropped blob back to Base64 for persistence
+      final bytes = await cropped.readAsBytes();
+      return 'data:image/png;base64,${base64Encode(bytes)}';
+    }
+
+    return cropped.path;
   }
 }
-

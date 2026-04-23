@@ -1,5 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:stock_pilot/core/utils/date_util.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
@@ -23,28 +24,23 @@ class SalesTrendsWidget extends StatelessWidget {
           decoration: BoxDecoration(
             color: ColourStyles.primaryColor,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: ColourStyles.borderColor,
-              width: 1.5,
-            ),
+            border: Border.all(color: ColourStyles.borderColor, width: 1.5),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 "Sales Trends",
-                style: TextStyles.sectionTitle(context).copyWith(
-                  fontSize: 16,
-                  color: ColourStyles.primaryColor_2,
-                ),
+                style: TextStyles.sectionTitle(
+                  context,
+                ).copyWith(fontSize: 16, color: ColourStyles.primaryColor_2),
               ),
               const SizedBox(height: 12),
               Text(
                 currencyFormat.format(provider.totalForSelectedPeriod),
-                style: TextStyles.valueText(context).copyWith(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyles.valueText(
+                  context,
+                ).copyWith(fontSize: 32, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Row(
@@ -80,11 +76,36 @@ class SalesTrendsWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     _buildPeriodButton(context, provider, TrendPeriod.day, "D"),
-                    _buildPeriodButton(context, provider, TrendPeriod.week, "W"),
-                    _buildPeriodButton(context, provider, TrendPeriod.month, "M"),
-                    _buildPeriodButton(context, provider, TrendPeriod.sixMonths, "6M"),
-                    _buildPeriodButton(context, provider, TrendPeriod.year, "Y"),
-                    _buildPeriodButton(context, provider, TrendPeriod.custom, "C"),
+                    _buildPeriodButton(
+                      context,
+                      provider,
+                      TrendPeriod.week,
+                      "W",
+                    ),
+                    _buildPeriodButton(
+                      context,
+                      provider,
+                      TrendPeriod.month,
+                      "M",
+                    ),
+                    _buildPeriodButton(
+                      context,
+                      provider,
+                      TrendPeriod.sixMonths,
+                      "6M",
+                    ),
+                    _buildPeriodButton(
+                      context,
+                      provider,
+                      TrendPeriod.year,
+                      "Y",
+                    ),
+                    _buildPeriodButton(
+                      context,
+                      provider,
+                      TrendPeriod.custom,
+                      "C",
+                    ),
                   ],
                 ),
               ),
@@ -100,7 +121,8 @@ class SalesTrendsWidget extends StatelessWidget {
                         () async {
                           final date = await showDatePicker(
                             context: context,
-                            initialDate: provider.customStartDate ?? DateTime.now(),
+                            initialDate:
+                                provider.customStartDate ?? DateTime.now(),
                             firstDate: DateTime(1900),
                             lastDate: DateTime.now(),
                           );
@@ -122,8 +144,10 @@ class SalesTrendsWidget extends StatelessWidget {
                         () async {
                           final date = await showDatePicker(
                             context: context,
-                            initialDate: provider.customEndDate ?? DateTime.now(),
-                            firstDate: provider.customStartDate ?? DateTime(1900),
+                            initialDate:
+                                provider.customEndDate ?? DateTime.now(),
+                            firstDate:
+                                provider.customStartDate ?? DateTime(1900),
                             lastDate: DateTime.now(),
                           );
                           if (date != null) {
@@ -178,20 +202,12 @@ class SalesTrendsWidget extends StatelessWidget {
           children: [
             Text(
               label,
-              style: TextStyle(
-                fontSize: 10,
-                color: ColourStyles.captionColor,
-              ),
+              style: TextStyle(fontSize: 10, color: ColourStyles.captionColor),
             ),
             const SizedBox(height: 4),
             Text(
-              date != null
-                  ? DateFormat('dd - MMM - yyyy').format(date)
-                  : "Select",
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
-              ),
+              date != null ? DateUtil.format(date) : "Select",
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -253,4 +269,3 @@ class SalesTrendsWidget extends StatelessWidget {
     }
   }
 }
-

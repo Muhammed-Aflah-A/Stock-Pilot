@@ -1,6 +1,6 @@
 ﻿import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:intl/intl.dart';
+import 'package:stock_pilot/core/utils/date_util.dart';
 import 'package:stock_pilot/core/interfaces/filter_provider_interface.dart';
 import 'package:stock_pilot/data/local/hive/hive_boxes.dart';
 import 'package:stock_pilot/data/local/hive/hive_service.dart';
@@ -8,6 +8,7 @@ import 'package:stock_pilot/data/models/cart_model.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
 
 enum HistorySortOption { latest, oldest }
+
 enum HistoryTab { purchase, updates, sales }
 
 class HistoryProvider extends FilterProviderInterface {
@@ -55,7 +56,6 @@ class HistoryProvider extends FilterProviderInterface {
     if (sales.isEmpty) return null;
     return sales.first;
   }
-
 
   void searchHistory(String query) {
     searchQuery = query;
@@ -112,16 +112,7 @@ class HistoryProvider extends FilterProviderInterface {
   }
 
   DateTime? _tryParseDate(String? date) {
-    if (date == null || date.isEmpty) return null;
-    try {
-      if (date.contains('/')) {
-        return DateFormat('dd/MM/yyyy', 'en_US').parse(date);
-      } else {
-        return DateFormat('dd - MMM - yyyy', 'en_US').parse(date);
-      }
-    } catch (e) {
-      return null;
-    }
+    return DateUtil.parse(date);
   }
 
   void sortHistory(HistorySortOption option) {
@@ -129,7 +120,6 @@ class HistoryProvider extends FilterProviderInterface {
     _applyFilters();
     notifyListeners();
   }
-
 
   @override
   bool get hasActiveFilters => false;
@@ -202,4 +192,3 @@ class HistoryProvider extends FilterProviderInterface {
   @override
   void toggleTempCategory(String cat) {}
 }
-

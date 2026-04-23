@@ -1,5 +1,5 @@
 ﻿import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:stock_pilot/core/utils/date_util.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/utils/keyboard_type_util.dart';
@@ -89,9 +89,7 @@ class _BillingFormWidgetState extends State<BillingFormWidget> {
                 lastDate: DateTime.now(),
               );
               if (pickedDate != null) {
-                final formatted = DateFormat(
-                  'dd - MMM - yyyy',
-                ).format(pickedDate);
+                final formatted = DateUtil.format(pickedDate);
                 _dateController.text = formatted;
               }
             },
@@ -106,4 +104,3 @@ class _BillingFormWidgetState extends State<BillingFormWidget> {
     );
   }
 }
-

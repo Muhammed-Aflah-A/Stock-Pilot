@@ -5,6 +5,7 @@ import 'package:stock_pilot/core/interfaces/image_permission_handler_interface.d
 import 'package:stock_pilot/core/utils/crop_image_util.dart';
 import 'package:stock_pilot/core/utils/image_selector_util.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
+import 'package:stock_pilot/core/utils/date_util.dart';
 import 'package:stock_pilot/core/utils/image_util.dart';
 import 'package:stock_pilot/core/utils/permission_util.dart';
 import 'package:stock_pilot/data/models/brand_model.dart';
@@ -12,7 +13,6 @@ import 'package:stock_pilot/data/models/category_model.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/data/service%20layer/hive_service_layer.dart';
-import 'package:intl/intl.dart';
 import 'package:stock_pilot/core/utils/number_formatter_util.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 
@@ -142,7 +142,10 @@ class ProductProvider extends FilterProviderInterface
     final path = await ImageSelectorUtil.openCamera();
     if (path == null) return;
     if (!context.mounted) return;
-    final croppedPath = await ImageCropUtil.cropImageToPath(path, context: context);
+    final croppedPath = await ImageCropUtil.cropImageToPath(
+      path,
+      context: context,
+    );
     if (croppedPath == null) return;
     final savedPath = await ImageUtil.saveImage(croppedPath);
     if (index == null || index >= productImages.length) return;
@@ -163,8 +166,10 @@ class ProductProvider extends FilterProviderInterface
       if (emptyIndex == -1) break;
 
       if (!context.mounted) break;
-      final croppedPath =
-          await ImageCropUtil.cropImageToPath(paths[pathIndex], context: context);
+      final croppedPath = await ImageCropUtil.cropImageToPath(
+        paths[pathIndex],
+        context: context,
+      );
 
       if (croppedPath != null) {
         final savedPath = await ImageUtil.saveImage(croppedPath);
@@ -202,7 +207,7 @@ class ProductProvider extends FilterProviderInterface
       unit: int.tryParse(product.itemCount ?? '0') ?? 0,
       label: 'units added',
       isPositive: true,
-      date: DateFormat('dd - MMM - yyyy', 'en_US').format(DateTime.now()),
+      date: DateUtil.now(),
       brand: product.brand,
     );
     dashboard.addNewActivity(activity);
@@ -264,7 +269,7 @@ class ProductProvider extends FilterProviderInterface
         unit: difference,
         label: isAddition ? 'units added' : 'units removed',
         isPositive: isAddition,
-        date: DateFormat('dd - MMM - yyyy', 'en_US').format(DateTime.now()),
+        date: DateUtil.now(),
         brand: newProduct.brand,
       );
       dashboard.addNewActivity(activity);
@@ -285,7 +290,7 @@ class ProductProvider extends FilterProviderInterface
       unit: int.tryParse(product.itemCount ?? '0') ?? 0,
       label: 'units removed',
       isPositive: false,
-      date: DateFormat('dd - MMM - yyyy', 'en_US').format(DateTime.now()),
+      date: DateUtil.now(),
       brand: product.brand,
     );
     dashboard.addNewActivity(activity);
@@ -573,4 +578,3 @@ class ProductProvider extends FilterProviderInterface
     }
   }
 }
-

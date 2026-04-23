@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -8,6 +9,14 @@ class ImageUtil {
   static ImageProvider getProfileImage(String? path) {
     if (path == null || path.isEmpty) {
       return const AssetImage(AppImages.profilePicture);
+    }
+    if (path.startsWith('data:image')) {
+      try {
+        final base64String = path.split(',').last;
+        return MemoryImage(base64Decode(base64String));
+      } catch (e) {
+        return const AssetImage(AppImages.profilePicture);
+      }
     }
     if (kIsWeb || path.startsWith('http') || path.startsWith('blob:')) {
       return NetworkImage(path);
@@ -23,6 +32,14 @@ class ImageUtil {
     if (path == null || path.isEmpty) {
       return const AssetImage(AppImages.productImage1);
     }
+    if (path.startsWith('data:image')) {
+      try {
+        final base64String = path.split(',').last;
+        return MemoryImage(base64Decode(base64String));
+      } catch (e) {
+        return const AssetImage(AppImages.productImage1);
+      }
+    }
     if (kIsWeb || path.startsWith('http') || path.startsWith('blob:')) {
       return NetworkImage(path);
     }
@@ -34,8 +51,9 @@ class ImageUtil {
   }
 
   static Future<String> saveImage(String path) async {
-    if (kIsWeb) return path; // On web, we return the blob URL or handle persistence in the provider
-    
+    if (kIsWeb)
+      return path; // On web, we return the blob URL or handle persistence in the provider
+
     final file = File(path);
     final directory = await getApplicationDocumentsDirectory();
     final fileName = path.split('/').last;
@@ -44,4 +62,3 @@ class ImageUtil {
     return newImage.path;
   }
 }
-

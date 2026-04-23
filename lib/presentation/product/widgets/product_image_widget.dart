@@ -58,13 +58,15 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
                           MaterialPageRoute(
                             builder: (_) => ImagePreviewScreen(
                               imagePath: imagePath,
+                              heroTag:
+                                  'product_detail_image_${imagePath.hashCode}',
                               title: "Product Image",
                             ),
                           ),
                         );
                       },
                       child: Hero(
-                        tag: imagePath,
+                        tag: 'product_detail_image_${imagePath.hashCode}',
                         child: Image(
                           image: ImageUtil.getProductImage(imagePath),
                           fit: BoxFit.cover,
@@ -125,4 +127,3 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
     );
   }
 }
-

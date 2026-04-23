@@ -16,7 +16,7 @@ class ProductModel {
   @HiveField(5)
   String? purchaseRate;
   @HiveField(6)
-  String?salesRate;
+  String? salesRate;
   @HiveField(7)
   String? itemCount;
   @HiveField(8)
@@ -34,4 +34,3 @@ class ProductModel {
     required this.lowStockCount,
   });
 }
-

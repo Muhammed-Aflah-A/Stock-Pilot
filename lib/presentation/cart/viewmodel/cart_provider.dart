@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:stock_pilot/core/utils/date_util.dart';
 import 'package:stock_pilot/data/models/cart_model.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
@@ -154,7 +154,7 @@ class CartProvider with ChangeNotifier {
     final sale = SalesItems(
       customerName: customerName,
       customerNumber: customerNumber,
-      date: DateFormat('dd - MMM - yyyy', 'en_US').format(DateTime.now()),
+      date: DateUtil.now(),
       items: List.from(cartItems),
       totalAmount: totalPrice,
     );
@@ -179,7 +179,7 @@ class CartProvider with ChangeNotifier {
             unit: item.quantity,
             label: 'units sold',
             isPositive: false,
-            date: DateFormat('dd - MMM - yyyy', 'en_US').format(DateTime.now()),
+            date: DateUtil.now(),
             customerName: customerName,
             customerNumber: customerNumber,
             brand: product.brand,
@@ -199,4 +199,3 @@ class CartProvider with ChangeNotifier {
     await loadCart();
   }
 }
-

@@ -1,6 +1,7 @@
 ﻿import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
+import 'package:stock_pilot/core/utils/date_util.dart';
 import 'package:stock_pilot/data/local/hive/hive_boxes.dart';
 import 'package:stock_pilot/data/local/hive/hive_service.dart';
 import 'package:stock_pilot/data/models/cart_model.dart';
@@ -58,7 +59,6 @@ class RevenueProvider extends ChangeNotifier {
     }
   }
 
-
   double get dailyRevenue => _calculateTotalForDate(DateTime.now());
 
   double get monthlyRevenue {
@@ -70,7 +70,6 @@ class RevenueProvider extends ChangeNotifier {
     final now = DateTime.now();
     return _calculateTotalForRange(DateTime(now.year, 1, 1), now);
   }
-
 
   double get totalForSelectedPeriod {
     final now = DateTime.now();
@@ -148,7 +147,6 @@ class RevenueProvider extends ChangeNotifier {
     return ((current - previous) / previous) * 100;
   }
 
-
   List<FlSpot> get chartSpots {
     final spots = <FlSpot>[];
     final now = DateTime.now();
@@ -204,17 +202,27 @@ class RevenueProvider extends ChangeNotifier {
               spots.add(FlSpot(i.toDouble(), _calculateTotalForDate(date)));
             }
           } else {
-            final months = ((_customEndDate!.year - _customStartDate!.year) * 12) +
+            final months =
+                ((_customEndDate!.year - _customStartDate!.year) * 12) +
                 _customEndDate!.month -
                 _customStartDate!.month +
                 1;
             for (int i = 0; i < months; i++) {
-              final monthStart =
-                  DateTime(_customStartDate!.year, _customStartDate!.month + i, 1);
-              final monthEnd =
-                  DateTime(_customStartDate!.year, _customStartDate!.month + i + 1, 0);
+              final monthStart = DateTime(
+                _customStartDate!.year,
+                _customStartDate!.month + i,
+                1,
+              );
+              final monthEnd = DateTime(
+                _customStartDate!.year,
+                _customStartDate!.month + i + 1,
+                0,
+              );
               spots.add(
-                FlSpot(i.toDouble(), _calculateTotalForRange(monthStart, monthEnd)),
+                FlSpot(
+                  i.toDouble(),
+                  _calculateTotalForRange(monthStart, monthEnd),
+                ),
               );
             }
           }
@@ -223,7 +231,6 @@ class RevenueProvider extends ChangeNotifier {
     }
     return spots;
   }
-
 
   List<MapEntry<ProductModel, int>> get mostSoldItems {
     final Map<String, int> productCounts = {};
@@ -247,9 +254,8 @@ class RevenueProvider extends ChangeNotifier {
         .toList();
   }
 
-
   double _calculateTotalForDate(DateTime date) {
-    final dateStrNew = DateFormat('dd - MMM - yyyy', 'en_US').format(date);
+    final dateStrNew = DateUtil.format(date);
     final dateStrOld = DateFormat('dd/MM/yyyy', 'en_US').format(date);
     return _sales
         .where((sale) => sale.date == dateStrNew || sale.date == dateStrOld)
@@ -268,15 +274,6 @@ class RevenueProvider extends ChangeNotifier {
   }
 
   DateTime? _parseDate(String dateStr) {
-    try {
-      if (dateStr.contains('/')) {
-        return DateFormat('dd/MM/yyyy', 'en_US').parse(dateStr);
-      } else {
-        return DateFormat('dd - MMM - yyyy', 'en_US').parse(dateStr);
-      }
-    } catch (e) {
-      return null;
-    }
+    return DateUtil.parse(dateStr);
   }
 }
-
