@@ -57,9 +57,7 @@ class HistoryDetailPage extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: Hero(
-                          tag:
-                              activity.image ??
-                              'history_image_${activity.date}_${activity.product}',
+                          tag: 'history_image_${activity.date.hashCode}_${activity.product.hashCode}',
                           child: Image(
                             image: ImageUtil.getProductImage(activity.image),
                             fit: BoxFit.cover,
@@ -191,6 +189,7 @@ class HistoryDetailPage extends StatelessWidget {
         MaterialPageRoute(
           builder: (_) => ImagePreviewScreen(
             imagePath: activity.image!,
+            heroTag: 'history_image_${activity.date.hashCode}_${activity.product.hashCode}',
             title: "Product Image",
           ),
         ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/navigation/app_routes.dart';
@@ -145,6 +145,10 @@ class StockPilot extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "StockPilot",
       initialRoute: AppRoutes.splashScreen,
+      onUnknownRoute: (settings) => TransitionAnimations.fadeRoute(
+        const SplashScreen(),
+        settings: settings,
+      ),
       builder: (context, child) {
         return GestureDetector(
           onTap: () {
@@ -157,6 +161,7 @@ class StockPilot extends StatelessWidget {
       onGenerateRoute: (settings) {
         FocusManager.instance.primaryFocus?.unfocus();
         switch (settings.name) {
+          case '/':
           case AppRoutes.splashScreen:
             return TransitionAnimations.fadeRoute(
               const SplashScreen(),
@@ -274,13 +279,23 @@ class StockPilot extends StatelessWidget {
               settings: settings,
             );
           case AppRoutes.historyDetailsPage:
+            if (settings.arguments == null) {
+              return TransitionAnimations.slideRoute(
+                const HistoryListPage(),
+                settings: settings,
+              );
+            }
             final activity = settings.arguments as DasboardActivity;
             return TransitionAnimations.slideRoute(
               HistoryDetailPage(activity: activity),
               settings: settings,
             );
+          default:
+            return TransitionAnimations.fadeRoute(
+              const SplashScreen(),
+              settings: settings,
+            );
         }
-        return null;
       },
     );
   }
