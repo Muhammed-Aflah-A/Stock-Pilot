@@ -10,8 +10,9 @@ class SelectValidatorUtil {
       case 'email':
         return FormValidatorUtil.validateEmail(value, "Email");
       case 'shop name':
-        return FormValidatorUtil.validateName(value, "Shop Name");
+        return FormValidatorUtil.validateShopName(value, "Shop Name");
       case 'address':
+      case 'shop address':
         return FormValidatorUtil.validateAddress(value, "Address");
       case 'product name':
         return FormValidatorUtil.validateProductName(value, "Product Name");
