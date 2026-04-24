@@ -19,7 +19,7 @@ class ProfileCreationFormWidget extends StatelessWidget {
         children: [
           FormWidget(
             labelText: "Full Name",
-            maxlength: 25,
+            maxlength: 30,
             keyboard: KeyboardTypeUtil.getKeyboardType("name"),
             action: TextInputAction.next,
             validator: (value) => SelectValidatorUtil.validate(value, "name"),
@@ -50,7 +50,7 @@ class ProfileCreationFormWidget extends StatelessWidget {
           FormWidget(
             focus: profileForm.shopNameFocus,
             labelText: "Shop Name",
-            maxlength: 25,
+            maxlength: 30,
             keyboard: KeyboardTypeUtil.getKeyboardType("shop name"),
             action: TextInputAction.next,
             validator: (value) =>
@@ -66,7 +66,7 @@ class ProfileCreationFormWidget extends StatelessWidget {
           FormWidget(
             focus: profileForm.shopAddressFocus,
             labelText: "Shop Address",
-            maxlength: 250,
+            maxlength: 100,
             keyboard: KeyboardTypeUtil.getKeyboardType("shop address"),
             action: TextInputAction.next,
             validator: (value) =>
@@ -98,7 +98,7 @@ class ProfileCreationFormWidget extends StatelessWidget {
           FormWidget(
             focus: profileForm.emailFocus,
             labelText: "Email Address",
-            maxlength: 100,
+            maxlength: 254,
             keyboard: KeyboardTypeUtil.getKeyboardType("email"),
             action: TextInputAction.done,
             validator: (value) => SelectValidatorUtil.validate(value, "email"),

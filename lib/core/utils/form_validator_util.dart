@@ -3,6 +3,7 @@ class FormValidatorUtil {
     final val = value?.trim() ?? '';
     if (val.isEmpty) return "Please enter $fieldName";
     if (val.length < 3) return "$fieldName must be at least 3 characters";
+    if (val.length > 30) return "$fieldName must not exceed 30 characters";
     final nameRegex = RegExp(r"^[a-zA-Z]+(?:\s[a-zA-Z]+)*$");
     if (!nameRegex.hasMatch(val)) {
       return "Enter a valid $fieldName (letters only)";
@@ -17,6 +18,7 @@ class FormValidatorUtil {
     final val = value?.trim() ?? '';
     if (val.isEmpty) return "Please enter your shop name";
     if (val.length < 3) return "Shop name must be at least 3 characters";
+    if (val.length > 30) return "Shop name must not exceed 30 characters";
     final shopRegex = RegExp(
       r"^[a-zA-Z0-9](?:[a-zA-Z0-9\s'&#./,()-]*[a-zA-Z0-9.])?$",
     );
@@ -43,6 +45,8 @@ class FormValidatorUtil {
   static String? validateEmail(String? value, String? fieldName) {
     final val = value?.trim() ?? '';
     if (val.isEmpty) return "$fieldName is required";
+    if (val.length < 3) return "$fieldName must be at least 3 characters";
+    if (val.length > 254) return "$fieldName must not exceed 254 characters";
     final gmailRegex = RegExp(r"^[a-z0-9.]+@gmail\.com$");
     if (!gmailRegex.hasMatch(val)) {
       return "Please enter a valid lowercase @gmail.com address";
@@ -53,8 +57,9 @@ class FormValidatorUtil {
   static String? validateAddress(String? value, String? fieldName) {
     final val = value?.trim() ?? '';
     if (val.isEmpty) return "$fieldName is required";
-    if (val.length < 10) return "$fieldName must be at least 10 characters";
-    final addressRegex = RegExp(r"^[a-zA-Z0-9\s,.\/#-]{10,250}$");
+    if (val.length < 30) return "$fieldName must be at least 30 characters";
+    if (val.length > 100) return "$fieldName must not exceed 100 characters";
+    final addressRegex = RegExp(r"^[a-zA-Z0-9\s,.\/#-]{30,100}$");
     if (!addressRegex.hasMatch(val)) {
       return "$fieldName contains invalid special characters";
     }
@@ -70,8 +75,8 @@ class FormValidatorUtil {
     if (RegExp(r'\s{2,}').hasMatch(value)) {
       return "$fieldName cannot contain multiple spaces together";
     }
-    if (!RegExp(r'^.{3,25}$').hasMatch(value)) {
-      return "$fieldName must be between 3 and 25 characters";
+    if (!RegExp(r'^.{3,30}$').hasMatch(value)) {
+      return "$fieldName must be between 3 and 30 characters";
     }
     return null;
   }
@@ -81,8 +86,8 @@ class FormValidatorUtil {
     if (value == null || value.isEmpty) {
       return "Please enter $fieldName";
     }
-    if (!RegExp(r'^.{10,500}$').hasMatch(value)) {
-      return "$fieldName must be 10–500 characters";
+    if (!RegExp(r'^.{10,4000}$').hasMatch(value)) {
+      return "$fieldName must be 10–4000 characters";
     }
     if (RegExp(r'\s{2,}').hasMatch(value)) {
       return "$fieldName cannot contain multiple spaces together";

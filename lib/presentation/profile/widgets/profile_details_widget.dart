@@ -52,12 +52,32 @@ class ProfileDetailsWidget extends StatelessWidget {
           trailing: IconButton(
             icon: Icon(item.trailingIcon, color: ColourStyles.primaryColor_2),
             onPressed: () {
+              int? maxLength;
+              switch (item.feildtype?.toLowerCase()) {
+                case 'name':
+                case 'shop name':
+                  maxLength = 30;
+                  break;
+                case 'email':
+                  maxLength = 254;
+                  break;
+                case 'shop address':
+                case 'address':
+                  maxLength = 100;
+                  break;
+                case 'phone number':
+                case 'personal number':
+                case 'shop number':
+                  maxLength = 15;
+                  break;
+              }
               showDialog(
                 context: context,
                 builder: (_) => EditDetailsWidget(
                   title: item.title!,
                   initialValue: item.subtitle,
                   fieldType: item.feildtype!,
+                  maxLength: maxLength,
                   isEditing: true,
                   onSave: (value) async {
                     await profileForm.updateProfile(item.feildtype!, value);

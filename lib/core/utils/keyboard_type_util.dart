@@ -16,6 +16,10 @@ class KeyboardTypeUtil {
       case 'shop address':
       case 'address':
         return TextInputType.streetAddress;
+      case 'product name':
+        return TextInputType.name;
+      case 'product description':
+        return TextInputType.multiline;
       default:
         return TextInputType.text;
     }

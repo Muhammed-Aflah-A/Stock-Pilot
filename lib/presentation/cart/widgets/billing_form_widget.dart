@@ -35,7 +35,7 @@ class _BillingFormWidgetState extends State<BillingFormWidget> {
           CustomerFormWidget(
             prefixIcon: Icon(Icons.person, color: ColourStyles.primaryColor_2),
             labelText: "Customer Name",
-            maxlength: 25,
+            maxlength: 30,
             keyboard: KeyboardTypeUtil.getKeyboardType("name"),
             action: TextInputAction.next,
             validator: (value) => SelectValidatorUtil.validate(value, "name"),

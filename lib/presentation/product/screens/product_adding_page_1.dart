@@ -84,7 +84,7 @@ class ProductAddingPage1 extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           FormWidget(
-                            maxlength: 25,
+                            maxlength: 30,
                             initialValue: provider.productName,
                             keyboard: TextInputType.name,
                             validator: (value) => SelectValidatorUtil.validate(
@@ -109,7 +109,7 @@ class ProductAddingPage1 extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           FormWidget(
-                            maxlength: 500,
+                            maxlength: 4000,
                             maxlines: 5,
                             initialValue: provider.productDescription,
                             focus: provider.productDescriptionFocus,
