@@ -15,7 +15,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.stock_pilot"
+    namespace = "com.mobile_app.stock_pilot"
     compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
