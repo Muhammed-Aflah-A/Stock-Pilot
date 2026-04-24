@@ -56,13 +56,13 @@ class ActivityCardWidget extends StatelessWidget {
                       style: TextStyles.titleText(
                         context,
                       ).copyWith(fontWeight: FontWeight.bold),
-                      maxLines: 1,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
                       activity.product ?? "",
                       style: TextStyles.activityCardText(context),
-                      maxLines: 1,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(

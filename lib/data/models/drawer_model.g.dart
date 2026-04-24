@@ -1,6 +1,5 @@
 part of 'drawer_model.dart';
 
-
 class DrawerItemsAdapter extends TypeAdapter<DrawerItems> {
   @override
   final int typeId = 1;

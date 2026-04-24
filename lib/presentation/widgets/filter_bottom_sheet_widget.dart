@@ -13,7 +13,6 @@ class FilterBottomSheet extends StatelessWidget {
   final FilterProviderInterface provider;
   const FilterBottomSheet({super.key, required this.provider});
 
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

@@ -1,6 +1,5 @@
 part of 'dasboard_model.dart';
 
-
 class DashboardCardsAdapter extends TypeAdapter<DashboardCards> {
   @override
   final int typeId = 3;

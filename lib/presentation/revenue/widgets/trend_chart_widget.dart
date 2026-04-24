@@ -63,7 +63,6 @@ class TrendChartWidget extends StatelessWidget {
 
                 if (!shouldShow) return const SizedBox.shrink();
 
-
                 return SideTitleWidget(
                   meta: meta,
                   space: 10,

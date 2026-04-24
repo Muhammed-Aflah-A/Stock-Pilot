@@ -50,8 +50,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
               const SizedBox(height: 12),
-              
-              
+
               Card(
                 elevation: 0,
                 color: ColourStyles.primaryColor_3,
@@ -70,8 +69,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
               const SizedBox(height: 12),
-              
-              
+
               Card(
                 elevation: 0,
                 color: ColourStyles.primaryColor_3,

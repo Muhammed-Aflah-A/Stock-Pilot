@@ -1,6 +1,5 @@
 part of 'user_profle_model.dart';
 
-
 class UserProfileAdapter extends TypeAdapter<UserProfile> {
   @override
   final int typeId = 0;

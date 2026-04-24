@@ -65,7 +65,7 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Container(
-                    width: 90,
+                    width: 70,
                     height: 70,
                     color: ColourStyles.primaryColor_2,
                     child: product.productImages.isNotEmpty
@@ -93,7 +93,7 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
                             Text(
                               product.productName ?? "",
                               style: TextStyles.titleText(context),
-                              maxLines: 1,
+                              maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                             Text(

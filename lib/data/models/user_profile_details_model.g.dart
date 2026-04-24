@@ -1,6 +1,5 @@
 part of 'user_profile_details_model.dart';
 
-
 class UserProfileDetailsModelAdapter
     extends TypeAdapter<UserProfileDetailsModel> {
   @override

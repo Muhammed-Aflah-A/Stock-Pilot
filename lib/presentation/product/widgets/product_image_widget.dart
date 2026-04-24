@@ -34,11 +34,10 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
   @override
   Widget build(BuildContext context) {
     final displayImages = widget.images.where((img) => img.isNotEmpty).toList();
-    final effectiveHeight =
-        widget.height ?? MediaQuery.of(context).size.height * 0.35;
-    return Container(
-      height: effectiveHeight,
-      clipBehavior: Clip.antiAlias,
+    return AspectRatio(
+      aspectRatio: 1,
+      child: Container(
+        clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
       child: Stack(
         children: [
@@ -123,6 +122,7 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
               ),
             ),
         ],
+        ),
       ),
     );
   }

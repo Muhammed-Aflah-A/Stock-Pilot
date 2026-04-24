@@ -1,6 +1,5 @@
 part of 'category_model.dart';
 
-
 class CategoryModelAdapter extends TypeAdapter<CategoryModel> {
   @override
   final int typeId = 6;

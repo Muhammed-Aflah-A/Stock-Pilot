@@ -1,6 +1,5 @@
 part of 'brand_model.dart';
 
-
 class BrandModelAdapter extends TypeAdapter<BrandModel> {
   @override
   final int typeId = 7;

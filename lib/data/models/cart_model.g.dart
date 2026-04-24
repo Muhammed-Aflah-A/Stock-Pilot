@@ -1,6 +1,5 @@
 part of 'cart_model.dart';
 
-
 class CartItemsAdapter extends TypeAdapter<CartItems> {
   @override
   final int typeId = 8;

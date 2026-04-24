@@ -41,8 +41,9 @@ class HistoryDetailPage extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () => _showImagePreview(context),
-                    child: Container(
-                      height: (size.height * 0.3).clamp(200.0, 350.0),
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
@@ -76,6 +77,7 @@ class HistoryDetailPage extends StatelessWidget {
                       ),
                     ),
                   ),
+                  ),
                   SizedBox(height: spacing),
                   Container(
                     width: double.infinity,
@@ -97,6 +99,8 @@ class HistoryDetailPage extends StatelessWidget {
                         Text(
                           activity.product ?? "Unknown Product",
                           style: TextStyles.dialogueHeading(context),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 8),
                         Text(
