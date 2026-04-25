@@ -49,7 +49,7 @@ class _BillingFormWidgetState extends State<BillingFormWidget> {
             focus: provider.customerNumberFocus,
             prefixIcon: Icon(Icons.phone, color: ColourStyles.primaryColor_2),
             labelText: "Customer Phone Number",
-            hintText: "+[CountryCode][Number]",
+            hintText: "+911234567890",
             maxlength: 15,
             keyboard: KeyboardTypeUtil.getKeyboardType("phone number"),
             action: TextInputAction.next,

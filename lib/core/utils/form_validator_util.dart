@@ -33,7 +33,7 @@ class FormValidatorUtil {
     if (val.contains(' ')) return "$fieldName cannot contain spaces";
     final phoneRegex = RegExp(r"^\+[1-9]\d{6,14}$");
     if (!phoneRegex.hasMatch(val)) {
-      return "Format: (e.g. +919876543210)";
+      return "Format: (e.g. +911234567890)";
     }
     return null;
   }

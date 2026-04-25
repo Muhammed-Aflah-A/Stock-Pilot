@@ -34,7 +34,7 @@ class ProfileCreationFormWidget extends StatelessWidget {
           FormWidget(
             focus: profileForm.personalNumberFocus,
             labelText: "Phone Number",
-            hintText: "+[CountryCode][Number]",
+            hintText: "+911234567890",
             maxlength: 15,
             keyboard: KeyboardTypeUtil.getKeyboardType("phone number"),
             action: TextInputAction.next,
@@ -82,7 +82,7 @@ class ProfileCreationFormWidget extends StatelessWidget {
           FormWidget(
             focus: profileForm.shopNumberFocus,
             labelText: "Shop's Phone Number",
-            hintText: "+[CountryCode][Number]",
+            hintText: "+911234567890",
             maxlength: 15,
             keyboard: KeyboardTypeUtil.getKeyboardType("phone number"),
             action: TextInputAction.next,
