@@ -11,7 +11,7 @@ class SnackbarUtil {
             ? ColourStyles.colorRed
             : ColourStyles.colorGreen,
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 3),
+        duration: const Duration(seconds: 1),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         margin: const EdgeInsets.all(15),
         content: Row(
