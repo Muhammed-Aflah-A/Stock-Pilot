@@ -50,6 +50,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         title: "Product Details",
         centeredTitle: true,
         showAvatar: false,
+        showNotification: false,
       ),
       body: SafeArea(
         child: Center(

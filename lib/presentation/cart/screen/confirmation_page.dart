@@ -22,9 +22,10 @@ class ConfirmationPage extends StatelessWidget {
       backgroundColor: ColourStyles.primaryColor,
       appBar: AppBarWidget(
         showLeading: true,
-        title: "Confirmation",
+        title: "Order Confirmed",
         centeredTitle: true,
         showAvatar: false,
+        showNotification: false,
         onLeadingTap: () {
           drawerProvider.selectedDrawerItem(1);
           Navigator.pushNamedAndRemoveUntil(

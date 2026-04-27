@@ -47,4 +47,6 @@ class AppRoutes {
       'package:stock_pilot/presentation/settings/screens/privacy_policy_page.dart';
   static const aboutUs =
       'package:stock_pilot/presentation/settings/screens/about_us_page.dart';
+  static const notificationPage =
+      'package:stock_pilot/presentation/notification/screens/notification_page.dart';
 }

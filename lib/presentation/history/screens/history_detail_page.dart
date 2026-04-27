@@ -25,8 +25,9 @@ class HistoryDetailPage extends StatelessWidget {
       appBar: const AppBarWidget(
         showLeading: true,
         title: "Activity Details",
-        centeredTitle: true,
+        centeredTitle: false,
         showAvatar: false,
+        showNotification: false,
       ),
       body: SafeArea(
         child: Center(

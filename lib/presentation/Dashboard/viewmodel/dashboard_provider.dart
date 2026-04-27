@@ -70,13 +70,22 @@ class DashboardProvider extends ChangeNotifier {
     final lowStock = calculateLowStock(products);
     final outOfStock = calculateOutOfStock(products);
     return [
-      DashboardCards(title: "Total Items", value: totalItems.toString()),
+      DashboardCards(
+        title: "Total Items",
+        value: NumberFormatterUtil.format(totalItems),
+      ),
       DashboardCards(
         title: "Total Value",
         value: formatCurrency(inventoryValue),
       ),
-      DashboardCards(title: "Total Brand", value: brandCount.toString()),
-      DashboardCards(title: "Total Category", value: categoryCount.toString()),
+      DashboardCards(
+        title: "Total Brand",
+        value: NumberFormatterUtil.format(brandCount),
+      ),
+      DashboardCards(
+        title: "Total Category",
+        value: NumberFormatterUtil.format(categoryCount),
+      ),
       DashboardCards(
         title: "Purchase Cost",
         value: formatCurrency(purchaseCost),
@@ -85,8 +94,14 @@ class DashboardProvider extends ChangeNotifier {
         title: "Monthly Turnover",
         value: formatCurrency(turnover),
       ),
-      DashboardCards(title: "Low Stock", value: lowStock.toString()),
-      DashboardCards(title: "Out of Stock", value: outOfStock.toString()),
+      DashboardCards(
+        title: "Low Stock",
+        value: NumberFormatterUtil.format(lowStock),
+      ),
+      DashboardCards(
+        title: "Out of Stock",
+        value: NumberFormatterUtil.format(outOfStock),
+      ),
     ];
   }
 

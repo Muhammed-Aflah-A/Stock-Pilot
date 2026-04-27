@@ -13,8 +13,9 @@ class PrivacyPolicyPage extends StatelessWidget {
       appBar: const AppBarWidget(
         showLeading: true,
         title: "Privacy Policy",
-        centeredTitle: true,
+        centeredTitle: false,
         showAvatar: false,
+        showNotification: false,
       ),
       body: Center(
         child: ConstrainedBox(

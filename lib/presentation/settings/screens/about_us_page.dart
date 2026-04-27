@@ -14,8 +14,9 @@ class AboutUsPage extends StatelessWidget {
       appBar: const AppBarWidget(
         showLeading: true,
         title: "About Us",
-        centeredTitle: true,
+        centeredTitle: false,
         showAvatar: false,
+        showNotification: false,
       ),
       body: Center(
         child: ConstrainedBox(

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
 import 'package:stock_pilot/core/utils/image_util.dart';
+import 'package:stock_pilot/core/utils/number_formatter_util.dart';
 import 'package:stock_pilot/presentation/revenue/viewmodel/revenue_provider.dart';
 
 class MostSoldItemsWidget extends StatelessWidget {
@@ -108,7 +109,7 @@ class MostSoldItemsWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              "$quantity",
+                              NumberFormatterUtil.format(quantity),
                               style: TextStyles.valueText(context).copyWith(
                                 fontSize: 20,
                                 color: ColourStyles.primaryColor_2,

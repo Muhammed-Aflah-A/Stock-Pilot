@@ -8,7 +8,8 @@ import 'package:stock_pilot/core/utils/snackbar_util.dart';
 class ActionConfirmationWidget extends StatelessWidget {
   final String title;
   final String actionText;
-  final String displayName;
+  final String? displayName;
+  final String? message;
   final Color actionColor;
   final Future<bool> Function() onConfirm;
   final bool showSnackbar;
@@ -17,11 +18,13 @@ class ActionConfirmationWidget extends StatelessWidget {
     super.key,
     required this.title,
     required this.actionText,
-    required this.displayName,
+    this.displayName,
+    this.message,
     required this.actionColor,
     required this.onConfirm,
     this.showSnackbar = true,
-  });
+  }) : assert(displayName != null || message != null,
+            'Either displayName or message must be provided');
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +50,7 @@ class ActionConfirmationWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Are you sure you want to $actionText "$displayName"?',
+              message ?? 'Are you sure you want to $actionText "$displayName"?',
               style: TextStyles.primaryText(
                 context,
               ).copyWith(color: actionColor),
@@ -77,9 +80,12 @@ class ActionConfirmationWidget extends StatelessWidget {
                   if (success) {
                     Navigator.pop(context);
                     if (showSnackbar) {
+                      final snackbarMessage = displayName != null
+                          ? '$displayName $actionText successfully'
+                          : '$actionText successful';
                       SnackbarUtil.showSnackBar(
                         context,
-                        '$displayName $actionText successfully',
+                        snackbarMessage,
                         false,
                       );
                     }

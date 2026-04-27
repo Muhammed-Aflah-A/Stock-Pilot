@@ -15,6 +15,8 @@ import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/data/service%20layer/hive_service_layer.dart';
 import 'package:stock_pilot/core/utils/number_formatter_util.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
+import 'package:stock_pilot/presentation/notification/viewmodel/notification_provider.dart';
+import 'package:stock_pilot/data/models/notification_model.dart';
 
 enum SortOption {
   priceLowToHigh,
@@ -26,8 +28,13 @@ enum SortOption {
 class ProductProvider extends FilterProviderInterface
     implements ImagePermissionHandler {
   final HiveServiceLayer hiveService;
+  NotificationProvider? notificationProvider;
   ProductProvider({required this.hiveService}) {
     loadProducts();
+  }
+  
+  void updateNotificationProvider(NotificationProvider provider) {
+    notificationProvider = provider;
   }
   List<ProductModel> products = [];
   List<ProductModel> filteredProducts = [];
@@ -211,8 +218,13 @@ class ProductProvider extends FilterProviderInterface
       brand: product.brand,
     );
     dashboard.addNewActivity(activity);
-
     await loadProducts();
+    notificationProvider?.addNotification(
+      title: product.productName ?? 'Unknown Product',
+      subtitle: 'Product Added',
+      type: NotificationType.add,
+    );
+    _checkStockAndNotify(product);
   }
 
   Future<void> loadProducts() async {
@@ -275,6 +287,12 @@ class ProductProvider extends FilterProviderInterface
       dashboard.addNewActivity(activity);
     }
     await loadProducts();
+    notificationProvider?.addNotification(
+      title: newProduct.productName ?? 'Unknown Product',
+      subtitle: 'Stock Updated',
+      type: NotificationType.update,
+    );
+    _checkStockAndNotify(newProduct);
   }
 
   Future<void> deleteProduct(int index, DashboardProvider dashboard) async {
@@ -295,6 +313,30 @@ class ProductProvider extends FilterProviderInterface
     );
     dashboard.addNewActivity(activity);
     await loadProducts();
+    notificationProvider?.addNotification(
+      title: product.productName ?? 'Unknown Product',
+      subtitle: 'Stock Deleted',
+      type: NotificationType.delete,
+    );
+  }
+
+  void _checkStockAndNotify(ProductModel product) {
+    final count = int.tryParse(product.itemCount ?? '0') ?? 0;
+    final lowStock = int.tryParse(product.lowStockCount ?? '0') ?? 0;
+
+    if (count == 0) {
+      notificationProvider?.addNotification(
+        title: product.productName ?? 'Unknown Product',
+        subtitle: 'Out of Stock',
+        type: NotificationType.outOfStock,
+      );
+    } else if (count <= lowStock) {
+      notificationProvider?.addNotification(
+        title: product.productName ?? 'Unknown Product',
+        subtitle: 'Low Stock: ${NumberFormatterUtil.format(count)} units remaining',
+        type: NotificationType.lowStock,
+      );
+    }
   }
 
   Future<bool> saveProductData(DashboardProvider dashboard) async {

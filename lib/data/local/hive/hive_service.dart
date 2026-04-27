@@ -6,6 +6,7 @@ import 'package:stock_pilot/data/models/category_model.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/data/models/user_profle_model.dart';
+import 'package:stock_pilot/data/models/notification_model.dart';
 import 'package:stock_pilot/data/service%20layer/hive_service_layer.dart';
 
 class HiveService implements HiveServiceLayer {
@@ -17,6 +18,7 @@ class HiveService implements HiveServiceLayer {
     await Hive.openBox<BrandModel>(HiveBoxes.brands);
     await Hive.openBox<CartItems>(HiveBoxes.cart);
     await Hive.openBox<SalesItems>(HiveBoxes.sales);
+    await Hive.openBox<NotificationModel>(HiveBoxes.notifications);
   }
 
   @override
@@ -161,5 +163,48 @@ class HiveService implements HiveServiceLayer {
   Future<List<SalesItems>> getAllSales() async {
     final box = Hive.box<SalesItems>(HiveBoxes.sales);
     return box.values.toList().reversed.toList();
+  }
+
+  @override
+  Future<void> addNotification(NotificationModel notification) async {
+    final box = Hive.box<NotificationModel>(HiveBoxes.notifications);
+    await box.add(notification);
+  }
+
+  @override
+  Future<void> updateNotification(NotificationModel notification) async {
+    final box = Hive.box<NotificationModel>(HiveBoxes.notifications);
+    if (notification.isInBox) {
+      await notification.save();
+    } else {
+      // If for some reason it's not in box, find by ID
+      final index = box.values.toList().indexWhere((n) => n.id == notification.id);
+      if (index != -1) {
+        await box.putAt(index, notification);
+      }
+    }
+  }
+
+  @override
+  Future<List<NotificationModel>> getAllNotifications() async {
+    final box = Hive.box<NotificationModel>(HiveBoxes.notifications);
+    return box.values.toList().reversed.toList();
+  }
+
+  @override
+  Future<void> deleteNotification(int index) async {
+    final box = Hive.box<NotificationModel>(HiveBoxes.notifications);
+    await box.deleteAt(index);
+  }
+
+  @override
+  Future<void> markAllNotificationsAsRead() async {
+    final box = Hive.box<NotificationModel>(HiveBoxes.notifications);
+    for (var n in box.values) {
+      if (!n.isRead) {
+        n.isRead = true;
+        await n.save();
+      }
+    }
   }
 }

@@ -30,9 +30,10 @@ class _BillingScreenState extends State<BillingPage> {
       backgroundColor: ColourStyles.primaryColor,
       appBar: const AppBarWidget(
         showLeading: true,
-        title: "Billing",
+        title: "Billing Details",
         centeredTitle: true,
         showAvatar: false,
+        showNotification: false,
       ),
       body: Center(
         child: ConstrainedBox(

@@ -6,4 +6,5 @@ class HiveBoxes {
   static const String dashBoardActivity = "dashBoardActivityBox";
   static const String cart = "cartBox";
   static const String sales = "salesBox";
+  static const String notifications = "notificationsBox";
 }

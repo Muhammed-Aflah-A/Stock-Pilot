@@ -7,6 +7,7 @@ import 'package:stock_pilot/data/models/drawer_model.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/data/models/user_profile_details_model.dart';
 import 'package:stock_pilot/data/models/user_profle_model.dart';
+import 'package:stock_pilot/data/models/notification_model.dart';
 
 class HiveAdapters {
   static void register() {
@@ -20,5 +21,7 @@ class HiveAdapters {
     Hive.registerAdapter(BrandModelAdapter());
     Hive.registerAdapter(CartItemsAdapter());
     Hive.registerAdapter(SalesItemsAdapter());
+    Hive.registerAdapter(NotificationTypeAdapter());
+    Hive.registerAdapter(NotificationModelAdapter());
   }
 }

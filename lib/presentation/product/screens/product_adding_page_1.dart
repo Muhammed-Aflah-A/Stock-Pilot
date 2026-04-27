@@ -22,9 +22,10 @@ class ProductAddingPage1 extends StatelessWidget {
       backgroundColor: ColourStyles.primaryColor,
       appBar: const AppBarWidget(
         showLeading: true,
-        title: "Basic Info",
+        title: "Product details",
         centeredTitle: true,
         showAvatar: false,
+        showNotification: false,
       ),
       body: SafeArea(
         child: GestureDetector(

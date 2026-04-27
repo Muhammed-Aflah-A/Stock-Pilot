@@ -7,12 +7,20 @@ import 'package:stock_pilot/data/service%20layer/hive_service_layer.dart';
 import 'package:stock_pilot/presentation/history/viewmodel/history_provider.dart';
 import 'package:stock_pilot/presentation/dashboard/viewmodel/dashboard_provider.dart';
 import 'package:stock_pilot/presentation/product/viewmodel/product_provider.dart';
+import 'package:stock_pilot/presentation/notification/viewmodel/notification_provider.dart';
+import 'package:stock_pilot/data/models/notification_model.dart';
+import 'package:stock_pilot/core/utils/number_formatter_util.dart';
 
 class CartProvider with ChangeNotifier {
   final HiveServiceLayer hiveService;
+  NotificationProvider? notificationProvider;
 
   CartProvider({required this.hiveService}) {
     loadCart();
+  }
+
+  void updateNotificationProvider(NotificationProvider provider) {
+    notificationProvider = provider;
   }
 
   List<CartItems> cartItems = [];
@@ -185,6 +193,12 @@ class CartProvider with ChangeNotifier {
             brand: product.brand,
           ),
         );
+        notificationProvider?.addNotification(
+          title: product.productName ?? 'Unknown Product',
+          subtitle: 'Item Sold: ${NumberFormatterUtil.format(item.quantity)} units',
+          type: NotificationType.sale,
+        );
+        _checkStockAndNotify(product);
       }
     }
     await historyProvider.addSale(sale);
@@ -197,5 +211,25 @@ class CartProvider with ChangeNotifier {
   Future<void> clearCart() async {
     await hiveService.clearCart();
     await loadCart();
+  }
+
+  void _checkStockAndNotify(ProductModel product) {
+    final count = int.tryParse(product.itemCount ?? '0') ?? 0;
+    final lowStock = int.tryParse(product.lowStockCount ?? '0') ?? 0;
+
+    if (count == 0) {
+      notificationProvider?.addNotification(
+        title: product.productName ?? 'Unknown Product',
+        subtitle: 'Out of Stock',
+        type: NotificationType.outOfStock,
+      );
+    } else if (count <= lowStock) {
+      notificationProvider?.addNotification(
+        title: product.productName ?? 'Unknown Product',
+        subtitle:
+            'Low Stock: ${NumberFormatterUtil.format(count)} units remaining',
+        type: NotificationType.lowStock,
+      );
+    }
   }
 }

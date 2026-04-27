@@ -4,6 +4,7 @@ import 'package:stock_pilot/data/models/category_model.dart';
 import 'package:stock_pilot/data/models/dasboard_model.dart';
 import 'package:stock_pilot/data/models/product_model.dart';
 import 'package:stock_pilot/data/models/user_profle_model.dart';
+import 'package:stock_pilot/data/models/notification_model.dart';
 
 abstract class HiveServiceLayer {
   Future<void> addUser(UserProfile user);
@@ -36,4 +37,10 @@ abstract class HiveServiceLayer {
 
   Future<void> addSale(SalesItems sale);
   Future<List<SalesItems>> getAllSales();
+
+  Future<void> addNotification(NotificationModel notification);
+  Future<void> updateNotification(NotificationModel notification);
+  Future<List<NotificationModel>> getAllNotifications();
+  Future<void> deleteNotification(int index);
+  Future<void> markAllNotificationsAsRead();
 }

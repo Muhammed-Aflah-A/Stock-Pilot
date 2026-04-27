@@ -25,6 +25,7 @@ class ProductAddingPage2 extends StatelessWidget {
         title: "Pricing & Inventory",
         centeredTitle: true,
         showAvatar: false,
+        showNotification: false,
       ),
       body: SafeArea(
         child: GestureDetector(

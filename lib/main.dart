@@ -44,6 +44,8 @@ import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider
 import 'package:stock_pilot/presentation/product/screens/product_list_page.dart';
 import 'package:stock_pilot/presentation/revenue/screens/revenue_page.dart';
 import 'package:stock_pilot/presentation/revenue/viewmodel/revenue_provider.dart';
+import 'package:stock_pilot/presentation/notification/viewmodel/notification_provider.dart';
+import 'package:stock_pilot/presentation/notification/screens/notification_page.dart';
 import 'package:stock_pilot/presentation/settings/screens/about_us_page.dart';
 import 'package:stock_pilot/presentation/settings/screens/privacy_policy_page.dart';
 import 'package:stock_pilot/presentation/settings/screens/settings_page.dart';
@@ -83,7 +85,14 @@ void main() async {
           create: (_) => BrandProvider(hiveService: hiveService),
         ),
         ChangeNotifierProvider(
+          create: (_) => NotificationProvider(hiveService: hiveService),
+        ),
+        ChangeNotifierProxyProvider<NotificationProvider, CartProvider>(
           create: (_) => CartProvider(hiveService: hiveService),
+          update: (_, notificationProvider, cartProvider) {
+            cartProvider!.updateNotificationProvider(notificationProvider);
+            return cartProvider;
+          },
         ),
         ChangeNotifierProvider(
           create: (_) => HistoryProvider(hiveService: hiveService),
@@ -91,16 +100,18 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => RevenueProvider(hiveService: hiveService),
         ),
-        ChangeNotifierProxyProvider2<
+        ChangeNotifierProxyProvider3<
           CategoryProvider,
           BrandProvider,
+          NotificationProvider,
           ProductProvider
         >(
           create: (context) => ProductProvider(hiveService: hiveService),
-          update: (context, categoryProvider, brandProvider, productProvider) {
+          update: (context, categoryProvider, brandProvider, notificationProvider, productProvider) {
             final provider = productProvider!;
             provider.setCategories(categoryProvider.categories);
             provider.setBrands(brandProvider.brands);
+            provider.updateNotificationProvider(notificationProvider);
             return productProvider;
           },
         ),
@@ -250,6 +261,11 @@ class StockPilot extends StatelessWidget {
           case AppRoutes.aboutUs:
             return TransitionAnimations.fadeRoute(
               const AboutUsPage(),
+              settings: settings,
+            );
+          case AppRoutes.notificationPage:
+            return TransitionAnimations.fadeRoute(
+              const NotificationPage(),
               settings: settings,
             );
 
