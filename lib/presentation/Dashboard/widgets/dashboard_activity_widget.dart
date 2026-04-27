@@ -20,6 +20,8 @@ class DashboardActivityWidget extends StatelessWidget {
               child: Text(
                 "No recent activities found",
                 style: TextStyles.primaryText(context),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           );

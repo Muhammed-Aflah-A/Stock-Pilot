@@ -68,7 +68,7 @@ class ActivityCardWidget extends StatelessWidget {
                     Text(
                       activity.date ?? "",
                       style: TextStyles.activityCardText(context),
-                      maxLines: 1,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
@@ -90,6 +90,8 @@ class ActivityCardWidget extends StatelessWidget {
                   Text(
                     activity.label ?? "",
                     style: TextStyles.activityCardLabel(context),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),

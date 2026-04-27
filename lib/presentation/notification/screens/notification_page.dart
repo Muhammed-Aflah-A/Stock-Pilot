@@ -124,7 +124,7 @@ class NotificationPage extends StatelessWidget {
                     style: TextStyles.titleText(context).copyWith(
                       fontWeight: FontWeight.bold,
                     ),
-                    maxLines: 1,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
@@ -139,6 +139,8 @@ class NotificationPage extends StatelessWidget {
                     style: TextStyles.activityCardLabel(context).copyWith(
                       fontSize: 10,
                     ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),

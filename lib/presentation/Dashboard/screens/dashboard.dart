@@ -46,6 +46,8 @@ class Dashboard extends StatelessWidget {
                       style: TextStyles.sectionHeading(
                         context,
                       ).copyWith(color: ColourStyles.colorBlue),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: smallSpacing),
                     const DashboardActivityWidget(),
