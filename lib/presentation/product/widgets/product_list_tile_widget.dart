@@ -66,13 +66,13 @@ class ProductListTileWidget extends StatelessWidget {
                     Text(
                       product.category ?? "",
                       style: TextStyles.activityCardLabel(context),
-                      maxLines: 1,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
                       product.brand ?? "",
                       style: TextStyles.activityCardText(context),
-                      maxLines: 1,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     Row(
