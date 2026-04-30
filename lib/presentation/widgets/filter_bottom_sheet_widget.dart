@@ -75,73 +75,92 @@ class FilterBottomSheet extends StatelessWidget {
                       children: [
                         if (provider.showCategoryFilter && provider.categoryList.isNotEmpty) ...[
                           const SizedBox(height: 8),
-                          const SectionTitleWidget(title: "Category"),
+                          SectionTitleWidget(
+                            title: provider.tempCategories.isNotEmpty
+                                ? "Category (${provider.tempCategories.length})"
+                                : "Category",
+                          ),
                           const SizedBox(height: 10),
-                          Wrap(
-                            spacing: 8,
-                            runSpacing: 8,
-                            children: [
-                              ...provider.categoryList.take(3).map((category) {
-                                final selected = provider.tempCategories.contains(
-                                  category,
-                                );
+                          if (provider.categoryList.length <= 4)
+                            Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: provider.categoryList.map((category) {
+                                final selected = provider.tempCategories.contains(category);
                                 return CategoryChoiceWidget(
                                   label: category,
                                   selected: selected,
-                                  onTap: () =>
-                                      provider.toggleTempCategory(category),
+                                  onTap: () => provider.toggleTempCategory(category),
                                 );
-                              }),
-                              if (provider.categoryList.length > 3)
-                                InkWell(
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      builder: (context) => MultiSelectFilterDialog(
-                                        provider: provider,
-                                        title: 'Category',
-                                        isCategory: true,
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 8,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: ColourStyles.choiceColor,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                        color: ColourStyles.borderColor,
-                                        width: 1.5,
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          "View All (+${provider.categoryList.length - 3})",
-                                          style: TextStyles.primaryText(context).copyWith(
-                                            fontSize: 12,
-                                            color: ColourStyles.primaryColor_2,
-                                            fontWeight: FontWeight.w400,
-                                          ),
+                              }).toList(),
+                            )
+                          else ...[
+                            if (provider.tempCategories.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 12),
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: provider.tempCategories.map((category) {
+                                      return Padding(
+                                        padding: const EdgeInsets.only(right: 8),
+                                        child: CategoryChoiceWidget(
+                                          label: category,
+                                          selected: true,
+                                          onTap: () => provider.toggleTempCategory(category),
                                         ),
-                                        const SizedBox(width: 4),
-                                        const Icon(
-                                          Icons.arrow_forward_ios,
-                                          size: 10,
-                                          color: ColourStyles.primaryColor_2,
-                                        ),
-                                      ],
-                                    ),
+                                      );
+                                    }).toList(),
                                   ),
                                 ),
-                            ],
-                          ),
+                              ),
+                            InkWell(
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  builder: (context) => MultiSelectFilterDialog(
+                                    provider: provider,
+                                    title: 'Category',
+                                    isCategory: true,
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: ColourStyles.choiceColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: ColourStyles.borderColor,
+                                    width: 1.5,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "View All categories (${provider.categoryList.length})",
+                                      style: TextStyles.primaryText(context).copyWith(
+                                        fontSize: 14,
+                                        color: ColourStyles.primaryColor_2,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 14,
+                                      color: ColourStyles.primaryColor_2,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                           const SizedBox(height: 20),
                         ],
                         if (provider.showPriceFilter) ...[
@@ -184,19 +203,45 @@ class FilterBottomSheet extends StatelessWidget {
                           const SizedBox(height: 20),
                         ],
                         if (provider.showBrandFilter && provider.brandsList.isNotEmpty) ...[
-                          const SectionTitleWidget(title: "Brand"),
+                          SectionTitleWidget(
+                            title: provider.tempBrands.isNotEmpty
+                                ? "Brand (${provider.tempBrands.length})"
+                                : "Brand",
+                          ),
                           const SizedBox(height: 10),
-                          ...provider.brandsList.take(3).map((brand) {
-                            final selected = provider.tempBrands.contains(
-                              brand,
-                            );
-                            return BrandChoiceWidget(
-                              label: brand,
-                              selected: selected,
-                              onTap: () => provider.toggleTempBrand(brand),
-                            );
-                          }),
-                          if (provider.brandsList.length > 3)
+                          if (provider.brandsList.length <= 4)
+                            Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: provider.brandsList.map((brand) {
+                                final selected = provider.tempBrands.contains(brand);
+                                return BrandChoiceWidget(
+                                  label: brand,
+                                  selected: selected,
+                                  onTap: () => provider.toggleTempBrand(brand),
+                                );
+                              }).toList(),
+                            )
+                          else ...[
+                            if (provider.tempBrands.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 12),
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: provider.tempBrands.map((brand) {
+                                      return Padding(
+                                        padding: const EdgeInsets.only(right: 8),
+                                        child: BrandChoiceWidget(
+                                          label: brand,
+                                          selected: true,
+                                          onTap: () => provider.toggleTempBrand(brand),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ),
                             InkWell(
                               onTap: () {
                                 showModalBottomSheet(
@@ -214,7 +259,7 @@ class FilterBottomSheet extends StatelessWidget {
                                 margin: const EdgeInsets.only(bottom: 8),
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 16,
-                                  vertical: 14,
+                                  vertical: 12,
                                 ),
                                 decoration: BoxDecoration(
                                   color: ColourStyles.choiceColor,
@@ -228,11 +273,11 @@ class FilterBottomSheet extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "View All brands (+${provider.brandsList.length - 3})",
+                                      "View All brands (${provider.brandsList.length})",
                                       style: TextStyles.primaryText(context).copyWith(
-                                        fontSize: 12,
+                                        fontSize: 14,
                                         color: ColourStyles.primaryColor_2,
-                                        fontWeight: FontWeight.w400,
+                                        fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                     const Icon(
@@ -244,6 +289,7 @@ class FilterBottomSheet extends StatelessWidget {
                                 ),
                               ),
                             ),
+                          ],
                           const SizedBox(height: 20),
                         ],
                         if (provider.showStockFilter && provider.availableStockStatuses.length > 1) ...[
