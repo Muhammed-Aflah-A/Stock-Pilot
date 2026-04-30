@@ -63,18 +63,20 @@ class ProductListTileWidget extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    Text(
-                      product.category ?? "",
-                      style: TextStyles.activityCardLabel(context),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Text(
-                      product.brand ?? "",
-                      style: TextStyles.activityCardText(context),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    if (product.category?.isNotEmpty ?? false)
+                      Text(
+                        '• ${product.category}',
+                        style: TextStyles.activityCardLabel(context),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    if (product.brand?.isNotEmpty ?? false)
+                      Text(
+                        '• ${product.brand}',
+                        style: TextStyles.activityCardText(context),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     Row(
                       children: [
                         Container(

@@ -42,11 +42,12 @@ class ProfileDetailsWidget extends StatelessWidget {
           title: Text(
             item.title!,
             style: TextStyles.titleText(context),
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
           subtitle: Text(
             item.subtitle!,
-            maxLines: 1,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
           trailing: IconButton(
