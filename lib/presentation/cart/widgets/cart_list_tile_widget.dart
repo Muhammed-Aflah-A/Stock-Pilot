@@ -123,6 +123,41 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        minimumSize: const Size(0, 0),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (_) => ActionConfirmationWidget(
+                            title: "Remove Item",
+                            displayName: widget.item.product.productName ?? "",
+                            actionText: "Remove",
+                            actionColor: ColourStyles.colorRed,
+                            onConfirm: () async {
+                              await provider.removeItem(widget.item);
+                              return true;
+                            },
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        "Remove",
+                        style: TextStyle(
+                          color: ColourStyles.colorRed,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
                 SizedBox(
                   width: 105,
                   child: Row(
@@ -238,41 +273,6 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
                         ),
                       ),
                     ],
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        minimumSize: const Size(0, 0),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (_) => ActionConfirmationWidget(
-                            title: "Remove Item",
-                            displayName: widget.item.product.productName ?? "",
-                            actionText: "Remove",
-                            actionColor: ColourStyles.colorRed,
-                            onConfirm: () async {
-                              await provider.removeItem(widget.item);
-                              return true;
-                            },
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        "Remove",
-                        style: TextStyle(
-                          color: ColourStyles.colorRed,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
                   ),
                 ),
               ],
