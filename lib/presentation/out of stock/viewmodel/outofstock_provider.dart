@@ -23,10 +23,10 @@ class OutofstockProvider extends FilterProviderInterface {
   double maxPrice = 10000;
   @override
   double minPrice = 0;
-  
+
   double selectedMaxPrice = 10000;
   double selectedMinPrice = 0;
-  
+
   String stockStatus = 'All';
   @override
   Set<String> tempCategories = {};

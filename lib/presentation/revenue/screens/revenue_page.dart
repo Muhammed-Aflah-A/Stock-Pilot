@@ -35,7 +35,7 @@ class _RevenuePageState extends State<RevenuePage> {
             child: Consumer<RevenueProvider>(
               builder: (context, provider, child) {
                 final isCustom = provider.selectedPeriod == TrendPeriod.custom;
-                
+
                 return SingleChildScrollView(
                   padding: const EdgeInsets.all(20),
                   child: Column(

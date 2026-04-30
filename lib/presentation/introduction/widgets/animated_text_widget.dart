@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:stock_pilot/core/theme/text_styles.dart';
+
 class AnimatedTextWidget extends StatelessWidget {
   const AnimatedTextWidget({super.key});
 

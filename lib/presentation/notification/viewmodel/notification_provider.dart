@@ -57,7 +57,5 @@ class NotificationProvider with ChangeNotifier {
     await loadNotifications();
   }
 
-  Future<void> clearAll() async {
-    // Optional: add if needed
-  }
+  Future<void> clearAll() async {}
 }

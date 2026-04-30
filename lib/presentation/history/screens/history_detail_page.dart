@@ -45,39 +45,40 @@ class HistoryDetailPage extends StatelessWidget {
                     child: AspectRatio(
                       aspectRatio: 1,
                       child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: ColourStyles.shadowColor,
-                            blurRadius: 10,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Hero(
-                          tag: 'history_image_${activity.date.hashCode}_${activity.product.hashCode}',
-                          child: Image(
-                            image: ImageUtil.getProductImage(activity.image),
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Container(
-                                color: ColourStyles.primaryColor_3,
-                                child: Icon(
-                                  Icons.image_not_supported_rounded,
-                                  size: 50,
-                                  color: ColourStyles.colorGrey,
-                                ),
-                              );
-                            },
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: ColourStyles.shadowColor,
+                              blurRadius: 10,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Hero(
+                            tag:
+                                'history_image_${activity.date.hashCode}_${activity.product.hashCode}',
+                            child: Image(
+                              image: ImageUtil.getProductImage(activity.image),
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  color: ColourStyles.primaryColor_3,
+                                  child: Icon(
+                                    Icons.image_not_supported_rounded,
+                                    size: 50,
+                                    color: ColourStyles.colorGrey,
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
                   ),
                   SizedBox(height: spacing),
                   Container(
@@ -194,7 +195,8 @@ class HistoryDetailPage extends StatelessWidget {
         MaterialPageRoute(
           builder: (_) => ImagePreviewScreen(
             imagePath: activity.image!,
-            heroTag: 'history_image_${activity.date.hashCode}_${activity.product.hashCode}',
+            heroTag:
+                'history_image_${activity.date.hashCode}_${activity.product.hashCode}',
             title: "Product Image",
           ),
         ),

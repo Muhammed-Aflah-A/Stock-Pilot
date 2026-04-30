@@ -16,9 +16,7 @@ class BrandModelAdapter extends TypeAdapter<BrandModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return BrandModel(
-      brand: fields[0] as String?,
-    );
+    return BrandModel(brand: fields[0] as String?);
   }
 
   @override

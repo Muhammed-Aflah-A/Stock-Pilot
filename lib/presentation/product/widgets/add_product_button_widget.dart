@@ -32,7 +32,9 @@ class AddProductButtonWidget extends StatelessWidget {
                 actionColor: ColourStyles.colorGreen,
                 showSnackbar: false,
                 onConfirm: () async {
-                  final success = await productForm.saveProductData(dashboardProvider);
+                  final success = await productForm.saveProductData(
+                    dashboardProvider,
+                  );
                   if (!context.mounted) return false;
                   if (success) {
                     SnackbarUtil.showSnackBar(
@@ -50,7 +52,9 @@ class AddProductButtonWidget extends StatelessWidget {
               ),
             );
           } else {
-            final success = await productForm.saveProductData(dashboardProvider);
+            final success = await productForm.saveProductData(
+              dashboardProvider,
+            );
             if (!context.mounted) return;
             if (success) {
               SnackbarUtil.showSnackBar(

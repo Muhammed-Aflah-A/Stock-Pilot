@@ -66,7 +66,8 @@ class _HistoryListPageState extends State<HistoryListPage> {
                             builder: (context, provider, _) {
                               return SearchbarWidget(
                                 controller: _searchController,
-                                onChanged: (value) => provider.searchHistory(value),
+                                onChanged: (value) =>
+                                    provider.searchHistory(value),
                                 onClear: () {
                                   _searchController.clear();
                                   provider.searchHistory("");
@@ -86,7 +87,8 @@ class _HistoryListPageState extends State<HistoryListPage> {
                               },
                               currentValue: provider.currentSort,
                               defaultValue: HistorySortOption.latest,
-                              onSelected: (option) => provider.sortHistory(option),
+                              onSelected: (option) =>
+                                  provider.sortHistory(option),
                             );
                           },
                         ),
@@ -100,8 +102,8 @@ class _HistoryListPageState extends State<HistoryListPage> {
                             final tab = index == 0
                                 ? HistoryTab.purchase
                                 : index == 1
-                                    ? HistoryTab.updates
-                                    : HistoryTab.sales;
+                                ? HistoryTab.updates
+                                : HistoryTab.sales;
                             provider.setTab(tab);
                           },
                           labelColor: ColourStyles.primaryColor_2,

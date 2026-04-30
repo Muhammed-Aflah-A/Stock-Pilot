@@ -23,10 +23,10 @@ class LowstockProvider extends FilterProviderInterface {
   double maxPrice = 10000;
   @override
   double minPrice = 0;
-  
+
   double selectedMaxPrice = 10000;
   double selectedMinPrice = 0;
-  
+
   String stockStatus = 'All';
   @override
   Set<String> tempCategories = {};
@@ -140,29 +140,37 @@ class LowstockProvider extends FilterProviderInterface {
 
   void _updateFilterBounds() {
     if (!_isProviderSet) return;
-    
+
     final baseList = _productProvider.products.where((product) {
       final count = int.tryParse(product.itemCount ?? '0') ?? 0;
       final lowStock = int.tryParse(product.lowStockCount ?? '0') ?? 0;
       return count <= lowStock && count > 0;
     }).toList();
 
-    categoryList = baseList.map((p) => p.category).whereType<String>().toSet().toList();
-    brandsList = baseList.map((p) => p.brand).whereType<String>().toSet().toList();
+    categoryList = baseList
+        .map((p) => p.category)
+        .whereType<String>()
+        .toSet()
+        .toList();
+    brandsList = baseList
+        .map((p) => p.brand)
+        .whereType<String>()
+        .toSet()
+        .toList();
 
     final prices = baseList
         .map((p) => double.tryParse(p.salesRate ?? '0') ?? 0)
         .toList();
-        
+
     if (prices.isNotEmpty) {
       final newMax = prices.reduce((a, b) => a > b ? a : b);
       final newMin = prices.reduce((a, b) => a < b ? a : b);
-      
+
       final boundsChanged = newMax != maxPrice || newMin != minPrice;
-      
+
       maxPrice = newMax;
       minPrice = newMin;
-      
+
       if (boundsChanged) {
         selectedMaxPrice = maxPrice;
         selectedMinPrice = minPrice;

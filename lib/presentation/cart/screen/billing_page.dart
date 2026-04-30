@@ -42,7 +42,8 @@ class _BillingScreenState extends State<BillingPage> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
                   padding: const EdgeInsets.all(10),
                   child: Column(
                     children: [
@@ -108,7 +109,8 @@ class _BillingScreenState extends State<BillingPage> {
                               context: context,
                               builder: (dialogCtx) => ActionConfirmationWidget(
                                 title: "Confirm Sale",
-                                displayName: "Complete transaction and bill customer?",
+                                displayName:
+                                    "Complete transaction and bill customer?",
                                 actionText: "Sell",
                                 actionColor: ColourStyles.colorGreen,
                                 showSnackbar: false,
@@ -119,7 +121,7 @@ class _BillingScreenState extends State<BillingPage> {
                                     historyProvider: sales,
                                   );
                                   if (!dialogCtx.mounted) return false;
-                                  
+
                                   if (sale != null) {
                                     Navigator.pushNamedAndRemoveUntil(
                                       dialogCtx,

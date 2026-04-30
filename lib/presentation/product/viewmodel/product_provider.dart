@@ -32,10 +32,11 @@ class ProductProvider extends FilterProviderInterface
   ProductProvider({required this.hiveService}) {
     loadProducts();
   }
-  
+
   void updateNotificationProvider(NotificationProvider provider) {
     notificationProvider = provider;
   }
+
   List<ProductModel> products = [];
   List<ProductModel> filteredProducts = [];
   String searchQuery = "";
@@ -333,7 +334,8 @@ class ProductProvider extends FilterProviderInterface
     } else if (count <= lowStock) {
       notificationProvider?.addNotification(
         title: product.productName ?? 'Unknown Product',
-        subtitle: 'Low Stock: ${NumberFormatterUtil.format(count)} units remaining',
+        subtitle:
+            'Low Stock: ${NumberFormatterUtil.format(count)} units remaining',
         type: NotificationType.lowStock,
       );
     }

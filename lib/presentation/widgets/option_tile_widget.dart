@@ -28,11 +28,7 @@ class OptionTileWidget extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Row(
             children: [
-              Icon(
-                icon,
-                size: 24,
-                color: color ?? ColourStyles.primaryColor_2,
-              ),
+              Icon(icon, size: 24, color: color ?? ColourStyles.primaryColor_2),
               SizedBox(width: 16),
               Expanded(
                 child: Text(

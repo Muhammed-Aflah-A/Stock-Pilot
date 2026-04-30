@@ -65,9 +65,9 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
                             controller: controller,
                             hintText: "Search out of stock products",
                             onChanged: (value) {
-                              context.read<OutofstockProvider>().searchOutOfStock(
-                                value,
-                              );
+                              context
+                                  .read<OutofstockProvider>()
+                                  .searchOutOfStock(value);
                             },
                             onClear: () {
                               controller.clear();
@@ -95,7 +95,8 @@ class _OutOfStockListPageState extends State<OutOfStockListPage> {
                                       'Alphabetical ( Z – A )',
                                 },
                                 currentValue: provider.currentSort,
-                                defaultValue: OutOfStockSortOption.priceLowToHigh,
+                                defaultValue:
+                                    OutOfStockSortOption.priceLowToHigh,
                                 onSelected: provider.sortProducts,
                               ),
                         ),

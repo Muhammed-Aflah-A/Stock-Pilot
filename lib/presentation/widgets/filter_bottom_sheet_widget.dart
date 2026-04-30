@@ -73,7 +73,8 @@ class FilterBottomSheet extends StatelessWidget {
                         vertical: 16,
                       ),
                       children: [
-                        if (provider.showCategoryFilter && provider.categoryList.isNotEmpty) ...[
+                        if (provider.showCategoryFilter &&
+                            provider.categoryList.isNotEmpty) ...[
                           const SizedBox(height: 8),
                           SectionTitleWidget(
                             title: provider.tempCategories.isNotEmpty
@@ -86,11 +87,13 @@ class FilterBottomSheet extends StatelessWidget {
                               spacing: 8,
                               runSpacing: 8,
                               children: provider.categoryList.map((category) {
-                                final selected = provider.tempCategories.contains(category);
+                                final selected = provider.tempCategories
+                                    .contains(category);
                                 return CategoryChoiceWidget(
                                   label: category,
                                   selected: selected,
-                                  onTap: () => provider.toggleTempCategory(category),
+                                  onTap: () =>
+                                      provider.toggleTempCategory(category),
                                 );
                               }).toList(),
                             )
@@ -101,13 +104,18 @@ class FilterBottomSheet extends StatelessWidget {
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: Row(
-                                    children: provider.tempCategories.map((category) {
+                                    children: provider.tempCategories.map((
+                                      category,
+                                    ) {
                                       return Padding(
-                                        padding: const EdgeInsets.only(right: 8),
+                                        padding: const EdgeInsets.only(
+                                          right: 8,
+                                        ),
                                         child: CategoryChoiceWidget(
                                           label: category,
                                           selected: true,
-                                          onTap: () => provider.toggleTempCategory(category),
+                                          onTap: () => provider
+                                              .toggleTempCategory(category),
                                         ),
                                       );
                                     }).toList(),
@@ -141,15 +149,17 @@ class FilterBottomSheet extends StatelessWidget {
                                   ),
                                 ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       "View All categories (${provider.categoryList.length})",
-                                      style: TextStyles.primaryText(context).copyWith(
-                                        fontSize: 14,
-                                        color: ColourStyles.primaryColor_2,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                      style: TextStyles.primaryText(context)
+                                          .copyWith(
+                                            fontSize: 14,
+                                            color: ColourStyles.primaryColor_2,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                     ),
                                     const Icon(
                                       Icons.arrow_forward_ios,
@@ -169,13 +179,22 @@ class FilterBottomSheet extends StatelessWidget {
                             min: provider.minPrice,
                             max: effectiveMax,
                             values: RangeValues(
-                              provider.tempMinPrice.clamp(provider.minPrice, effectiveMax),
-                              provider.tempMaxPrice.clamp(provider.minPrice, effectiveMax),
+                              provider.tempMinPrice.clamp(
+                                provider.minPrice,
+                                effectiveMax,
+                              ),
+                              provider.tempMaxPrice.clamp(
+                                provider.minPrice,
+                                effectiveMax,
+                              ),
                             ),
                             activeColor: ColourStyles.primaryColor_2,
                             inactiveColor: ColourStyles.borderColor,
                             onChanged: (RangeValues values) {
-                              provider.setTempPriceRange(values.start, values.end);
+                              provider.setTempPriceRange(
+                                values.start,
+                                values.end,
+                              );
                             },
                           ),
                           Padding(
@@ -202,7 +221,8 @@ class FilterBottomSheet extends StatelessWidget {
                           ),
                           const SizedBox(height: 20),
                         ],
-                        if (provider.showBrandFilter && provider.brandsList.isNotEmpty) ...[
+                        if (provider.showBrandFilter &&
+                            provider.brandsList.isNotEmpty) ...[
                           SectionTitleWidget(
                             title: provider.tempBrands.isNotEmpty
                                 ? "Brand (${provider.tempBrands.length})"
@@ -214,7 +234,9 @@ class FilterBottomSheet extends StatelessWidget {
                               spacing: 8,
                               runSpacing: 8,
                               children: provider.brandsList.map((brand) {
-                                final selected = provider.tempBrands.contains(brand);
+                                final selected = provider.tempBrands.contains(
+                                  brand,
+                                );
                                 return BrandChoiceWidget(
                                   label: brand,
                                   selected: selected,
@@ -231,11 +253,14 @@ class FilterBottomSheet extends StatelessWidget {
                                   child: Row(
                                     children: provider.tempBrands.map((brand) {
                                       return Padding(
-                                        padding: const EdgeInsets.only(right: 8),
+                                        padding: const EdgeInsets.only(
+                                          right: 8,
+                                        ),
                                         child: BrandChoiceWidget(
                                           label: brand,
                                           selected: true,
-                                          onTap: () => provider.toggleTempBrand(brand),
+                                          onTap: () =>
+                                              provider.toggleTempBrand(brand),
                                         ),
                                       );
                                     }).toList(),
@@ -270,15 +295,17 @@ class FilterBottomSheet extends StatelessWidget {
                                   ),
                                 ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       "View All brands (${provider.brandsList.length})",
-                                      style: TextStyles.primaryText(context).copyWith(
-                                        fontSize: 14,
-                                        color: ColourStyles.primaryColor_2,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                      style: TextStyles.primaryText(context)
+                                          .copyWith(
+                                            fontSize: 14,
+                                            color: ColourStyles.primaryColor_2,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                     ),
                                     const Icon(
                                       Icons.arrow_forward_ios,
@@ -292,21 +319,24 @@ class FilterBottomSheet extends StatelessWidget {
                           ],
                           const SizedBox(height: 20),
                         ],
-                        if (provider.showStockFilter && provider.availableStockStatuses.length > 1) ...[
+                        if (provider.showStockFilter &&
+                            provider.availableStockStatuses.length > 1) ...[
                           const SectionTitleWidget(title: "Stock Status"),
                           const SizedBox(height: 10),
                           GridView.builder(
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 8,
-                              crossAxisSpacing: 8,
-                              childAspectRatio: 3,
-                            ),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 8,
+                                  crossAxisSpacing: 8,
+                                  childAspectRatio: 3,
+                                ),
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: provider.availableStockStatuses.length,
                             itemBuilder: (context, index) {
-                              final stockStatus = provider.availableStockStatuses[index];
+                              final stockStatus =
+                                  provider.availableStockStatuses[index];
                               final selected =
                                   provider.tempStockStatus == stockStatus;
                               return StockStatusChoiceWidget(

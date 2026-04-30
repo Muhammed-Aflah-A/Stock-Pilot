@@ -64,7 +64,10 @@ class OnboardingScreen2 extends StatelessWidget {
                   NextbuttonWidget(
                     text: "Next",
                     onPressed: () {
-                      Navigator.pushNamed(context, AppRoutes.onBoardingScreen_3);
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.onBoardingScreen_3,
+                      );
                     },
                   ),
                 ],

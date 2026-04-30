@@ -146,11 +146,11 @@ class TrendChartWidget extends StatelessWidget {
 
   String _getTitle(double value) {
     final index = value.round();
-    
+
     if (value < -0.1 || index >= spots.length) {
       return "";
     }
-    
+
     final now = DateTime.now();
 
     switch (period) {
@@ -171,8 +171,11 @@ class TrendChartWidget extends StatelessWidget {
       case TrendPeriod.custom:
         if (customStartDate != null) {
           if (isMonthly) {
-            final date =
-                DateTime(customStartDate!.year, customStartDate!.month + index, 1);
+            final date = DateTime(
+              customStartDate!.year,
+              customStartDate!.month + index,
+              1,
+            );
             return DateFormat('MMM yyyy').format(date);
           } else {
             final date = customStartDate!.add(Duration(days: index));

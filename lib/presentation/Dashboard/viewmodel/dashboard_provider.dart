@@ -75,8 +75,16 @@ class DashboardProvider extends ChangeNotifier {
         value: NumberFormatterUtil.format(totalItems),
       ),
       DashboardCards(
+        title: "Purchase Cost",
+        value: formatCurrency(purchaseCost),
+      ),
+      DashboardCards(
         title: "Total Value",
         value: formatCurrency(inventoryValue),
+      ),
+      DashboardCards(
+        title: "Monthly Turnover",
+        value: formatCurrency(turnover),
       ),
       DashboardCards(
         title: "Total Brand",
@@ -85,14 +93,6 @@ class DashboardProvider extends ChangeNotifier {
       DashboardCards(
         title: "Total Category",
         value: NumberFormatterUtil.format(categoryCount),
-      ),
-      DashboardCards(
-        title: "Purchase Cost",
-        value: formatCurrency(purchaseCost),
-      ),
-      DashboardCards(
-        title: "Monthly Turnover",
-        value: formatCurrency(turnover),
       ),
       DashboardCards(
         title: "Low Stock",

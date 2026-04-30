@@ -47,7 +47,10 @@ class _ProductListPageState extends State<ProductListPage> {
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 1000),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 16,
+                  ),
                   child: Column(
                     children: [
                       Row(
@@ -72,8 +75,10 @@ class _ProductListPageState extends State<ProductListPage> {
                             options: const {
                               SortOption.priceLowToHigh: 'Price : Low to High',
                               SortOption.priceHighToLow: 'Price : High to Low',
-                              SortOption.alphabeticalAZ: 'Alphabetical ( A – Z )',
-                              SortOption.alphabeticalZA: 'Alphabetical ( Z – A )',
+                              SortOption.alphabeticalAZ:
+                                  'Alphabetical ( A – Z )',
+                              SortOption.alphabeticalZA:
+                                  'Alphabetical ( Z – A )',
                             },
                             currentValue: provider.currentSort,
                             defaultValue: SortOption.priceLowToHigh,
@@ -103,10 +108,14 @@ class _ProductListPageState extends State<ProductListPage> {
                               keyboardDismissBehavior:
                                   ScrollViewKeyboardDismissBehavior.onDrag,
                               itemCount: provider.filteredProducts.length,
-                              separatorBuilder: (_, _) => const SizedBox(height: 12),
+                              separatorBuilder: (_, _) =>
+                                  const SizedBox(height: 12),
                               itemBuilder: (context, index) {
-                                final product = provider.filteredProducts[index];
-                                final realIndex = provider.products.indexOf(product);
+                                final product =
+                                    provider.filteredProducts[index];
+                                final realIndex = provider.products.indexOf(
+                                  product,
+                                );
                                 return ProductListTileWidget(
                                   product: product,
                                   onTap: () {
@@ -140,6 +149,6 @@ class _ProductListPageState extends State<ProductListPage> {
           ],
         ),
       ),
-);
+    );
   }
 }

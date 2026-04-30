@@ -81,7 +81,8 @@ class NotificationPage extends StatelessWidget {
     if (notifications.isEmpty) {
       return EmptypageMessageWidget(
         heading: emptyMessage,
-        label: "You'll see updates here when products are added, updated or sold",
+        label:
+            "You'll see updates here when products are added, updated or sold",
         icon: Icons.notifications_off_rounded,
       );
     }
@@ -93,7 +94,6 @@ class NotificationPage extends StatelessWidget {
           _buildNotificationItem(context, notifications[index], provider),
     );
   }
-
 
   Widget _buildNotificationItem(
     BuildContext context,
@@ -121,9 +121,9 @@ class NotificationPage extends StatelessWidget {
                 children: [
                   Text(
                     notification.title,
-                    style: TextStyles.titleText(context).copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyles.titleText(
+                      context,
+                    ).copyWith(fontWeight: FontWeight.bold),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -136,9 +136,9 @@ class NotificationPage extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     notification.dateTime,
-                    style: TextStyles.activityCardLabel(context).copyWith(
-                      fontSize: 10,
-                    ),
+                    style: TextStyles.activityCardLabel(
+                      context,
+                    ).copyWith(fontSize: 10),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),

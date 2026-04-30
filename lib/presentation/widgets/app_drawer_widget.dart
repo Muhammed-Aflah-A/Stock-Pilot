@@ -54,11 +54,14 @@ class _AppDrawerState extends State<AppDrawer> {
                   return ListView.separated(
                     padding: EdgeInsets.symmetric(vertical: 12),
                     itemCount: drawerProvider.drawerItems.length,
-                    separatorBuilder: (context, index) => const SizedBox(height: 6),
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 6),
                     itemBuilder: (context, index) {
                       final item = drawerProvider.drawerItems[index];
                       return ListTile(
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
                         selected: drawerProvider.selectedIndex == index,
                         selectedTileColor: ColourStyles.selectionColor,
                         tileColor: ColourStyles.primaryColor,

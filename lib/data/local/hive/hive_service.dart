@@ -177,8 +177,9 @@ class HiveService implements HiveServiceLayer {
     if (notification.isInBox) {
       await notification.save();
     } else {
-      // If for some reason it's not in box, find by ID
-      final index = box.values.toList().indexWhere((n) => n.id == notification.id);
+      final index = box.values.toList().indexWhere(
+        (n) => n.id == notification.id,
+      );
       if (index != -1) {
         await box.putAt(index, notification);
       }

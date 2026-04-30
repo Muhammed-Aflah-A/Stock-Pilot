@@ -51,7 +51,8 @@ class _CartListPageState extends State<CartListPage> {
                           keyboardDismissBehavior:
                               ScrollViewKeyboardDismissBehavior.onDrag,
                           itemCount: provider.cartItems.length,
-                          separatorBuilder: (_, _) => const SizedBox(height: 10),
+                          separatorBuilder: (_, _) =>
+                              const SizedBox(height: 10),
                           itemBuilder: (context, index) {
                             final item = provider.cartItems[index];
                             return CartListTileWidget(item: item);
@@ -68,7 +69,8 @@ class _CartListPageState extends State<CartListPage> {
                         onPressed: () {
                           final invalidItems = provider.cartItems.where((item) {
                             final stock =
-                                int.tryParse(item.product.itemCount ?? '0') ?? 0;
+                                int.tryParse(item.product.itemCount ?? '0') ??
+                                0;
                             return item.quantity <= 0 || item.quantity > stock;
                           }).toList();
                           if (invalidItems.isNotEmpty) {

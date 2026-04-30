@@ -38,90 +38,90 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
       aspectRatio: 1,
       child: Container(
         clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
-      child: Stack(
-        children: [
-          displayImages.isNotEmpty
-              ? PageView.builder(
-                  controller: _pageController,
-                  itemCount: displayImages.length,
-                  onPageChanged: (index) {
-                    setState(() => _localIndex = index);
-                  },
-                  itemBuilder: (context, index) {
-                    final String imagePath = displayImages[index];
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => ImagePreviewScreen(
-                              imagePath: imagePath,
-                              heroTag:
-                                  'product_detail_image_${imagePath.hashCode}',
-                              title: "Product Image",
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
+        child: Stack(
+          children: [
+            displayImages.isNotEmpty
+                ? PageView.builder(
+                    controller: _pageController,
+                    itemCount: displayImages.length,
+                    onPageChanged: (index) {
+                      setState(() => _localIndex = index);
+                    },
+                    itemBuilder: (context, index) {
+                      final String imagePath = displayImages[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ImagePreviewScreen(
+                                imagePath: imagePath,
+                                heroTag:
+                                    'product_detail_image_${imagePath.hashCode}',
+                                title: "Product Image",
+                              ),
                             ),
+                          );
+                        },
+                        child: Hero(
+                          tag: 'product_detail_image_${imagePath.hashCode}',
+                          child: Image(
+                            image: ImageUtil.getProductImage(imagePath),
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                const ProductImagePlaceholder(),
                           ),
-                        );
-                      },
-                      child: Hero(
-                        tag: 'product_detail_image_${imagePath.hashCode}',
-                        child: Image(
-                          image: ImageUtil.getProductImage(imagePath),
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                              const ProductImagePlaceholder(),
                         ),
+                      );
+                    },
+                  )
+                : const ProductImagePlaceholder(),
+            if (displayImages.length > 1) ...[
+              if (_localIndex > 0)
+                CarouselNavigationArrowWidget(
+                  alignment: Alignment.centerLeft,
+                  icon: Icons.arrow_back_ios_new,
+                  onPressed: () => _pageController.previousPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  ),
+                ),
+              if (_localIndex < displayImages.length - 1)
+                CarouselNavigationArrowWidget(
+                  alignment: Alignment.centerRight,
+                  icon: Icons.arrow_forward_ios,
+                  onPressed: () => _pageController.nextPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  ),
+                ),
+            ],
+            if (displayImages.length > 1)
+              Positioned(
+                bottom: 16,
+                left: 0,
+                right: 0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    displayImages.length,
+                    (index) => AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      width: _localIndex == index ? 12 : 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: _localIndex == index
+                            ? ColourStyles.primaryColor
+                            : ColourStyles.colorGrey,
                       ),
-                    );
-                  },
-                )
-              : const ProductImagePlaceholder(),
-          if (displayImages.length > 1) ...[
-            if (_localIndex > 0)
-              CarouselNavigationArrowWidget(
-                alignment: Alignment.centerLeft,
-                icon: Icons.arrow_back_ios_new,
-                onPressed: () => _pageController.previousPage(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                ),
-              ),
-            if (_localIndex < displayImages.length - 1)
-              CarouselNavigationArrowWidget(
-                alignment: Alignment.centerRight,
-                icon: Icons.arrow_forward_ios,
-                onPressed: () => _pageController.nextPage(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                ),
-              ),
-          ],
-          if (displayImages.length > 1)
-            Positioned(
-              bottom: 16,
-              left: 0,
-              right: 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  displayImages.length,
-                  (index) => AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    width: _localIndex == index ? 12 : 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: _localIndex == index
-                          ? ColourStyles.primaryColor
-                          : ColourStyles.colorGrey,
                     ),
                   ),
                 ),
               ),
-            ),
-        ],
+          ],
         ),
       ),
     );

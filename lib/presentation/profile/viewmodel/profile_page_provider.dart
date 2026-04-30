@@ -39,7 +39,10 @@ class ProfilePageProvider
     final path = await ImageSelectorUtil.openCamera();
     if (path == null) return;
     if (!context.mounted) return;
-    final croppedPath = await ImageCropUtil.cropImageToPath(path, context: context);
+    final croppedPath = await ImageCropUtil.cropImageToPath(
+      path,
+      context: context,
+    );
     if (croppedPath == null) return;
     final savedPath = await ImageUtil.saveImage(croppedPath);
     await updateProfileImage(savedPath);
@@ -58,7 +61,10 @@ class ProfilePageProvider
     final path = await ImageSelectorUtil.openLibrary();
     if (path == null) return;
     if (!context.mounted) return;
-    final croppedPath = await ImageCropUtil.cropImageToPath(path, context: context);
+    final croppedPath = await ImageCropUtil.cropImageToPath(
+      path,
+      context: context,
+    );
     if (croppedPath == null) return;
     final savedPath = await ImageUtil.saveImage(croppedPath);
     await updateProfileImage(savedPath);

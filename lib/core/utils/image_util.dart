@@ -52,7 +52,7 @@ class ImageUtil {
 
   static Future<String> saveImage(String path) async {
     if (kIsWeb) {
-      return path; 
+      return path;
     }
 
     final file = File(path);

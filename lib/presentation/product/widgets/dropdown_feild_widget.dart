@@ -17,8 +17,7 @@ class DropdownFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String? effectiveValue =
-        items.contains(value) ? value : null;
+    final String? effectiveValue = items.contains(value) ? value : null;
     return DropdownButtonFormField<String>(
       initialValue: effectiveValue,
       isExpanded: true,
@@ -27,39 +26,24 @@ class DropdownFieldWidget extends StatelessWidget {
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: ColourStyles.primaryColor_2,
-            width: 2,
-          ),
+          borderSide: BorderSide(color: ColourStyles.primaryColor_2, width: 2),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: ColourStyles.primaryColor_2,
-            width: 2,
-          ),
+          borderSide: BorderSide(color: ColourStyles.primaryColor_2, width: 2),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: ColourStyles.colorRed,
-            width: 2,
-          ),
+          borderSide: BorderSide(color: ColourStyles.colorRed, width: 2),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: ColourStyles.colorRed,
-            width: 2,
-          ),
+          borderSide: BorderSide(color: ColourStyles.colorRed, width: 2),
         ),
       ),
       icon: const Icon(Icons.keyboard_arrow_down_sharp),
       items: items.map((String item) {
-        return DropdownMenuItem<String>(
-          value: item,
-          child: Text(item),
-        );
+        return DropdownMenuItem<String>(value: item, child: Text(item));
       }).toList(),
       onChanged: onChanged,
       validator: validator,

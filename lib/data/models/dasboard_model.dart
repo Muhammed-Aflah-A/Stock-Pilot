@@ -7,10 +7,7 @@ class DashboardCards {
   String? title;
   @HiveField(1)
   String? value;
-  DashboardCards({
-    required this.title,
-    required this.value,
-  });
+  DashboardCards({required this.title, required this.value});
 }
 
 @HiveType(typeId: 4)

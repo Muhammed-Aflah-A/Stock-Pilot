@@ -33,13 +33,17 @@ class RemoveProductButtonWidget extends StatelessWidget {
             actionColor: ColourStyles.colorRed,
             showSnackbar: false,
             onConfirm: () async {
-               wasDeleted = await onDeleteAction();
-               return true;
+              wasDeleted = await onDeleteAction();
+              return true;
             },
           ),
         );
         if (wasDeleted && context.mounted) {
-          SnackbarUtil.showSnackBar(context, '$itemName deleted successfully', false);
+          SnackbarUtil.showSnackBar(
+            context,
+            '$itemName deleted successfully',
+            false,
+          );
           Navigator.pop(context, "Product deleted successfully");
         }
       },

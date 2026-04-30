@@ -1,5 +1,6 @@
 import 'package:hive_flutter/adapters.dart';
 part 'brand_model.g.dart';
+
 @HiveType(typeId: 7)
 class BrandModel {
   @HiveField(0)

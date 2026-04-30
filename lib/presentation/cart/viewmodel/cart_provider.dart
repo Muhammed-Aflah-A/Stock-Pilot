@@ -195,7 +195,8 @@ class CartProvider with ChangeNotifier {
         );
         notificationProvider?.addNotification(
           title: product.productName ?? 'Unknown Product',
-          subtitle: 'Item Sold: ${NumberFormatterUtil.format(item.quantity)} units',
+          subtitle:
+              'Item Sold: ${NumberFormatterUtil.format(item.quantity)} units',
           type: NotificationType.sale,
         );
         _checkStockAndNotify(product);

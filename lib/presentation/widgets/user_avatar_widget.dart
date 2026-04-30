@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:stock_pilot/core/theme/colours_styles.dart';
 import 'package:stock_pilot/core/utils/image_util.dart';
 import 'package:stock_pilot/presentation/profile/viewmodel/profile_page_provider.dart';
+
 class UserAvatarWidget extends StatelessWidget {
   const UserAvatarWidget({super.key});
 

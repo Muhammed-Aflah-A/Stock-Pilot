@@ -4,7 +4,7 @@ class FormValidatorUtil {
     if (val.isEmpty) return "Please enter $fieldName";
     if (val.length < 3) return "$fieldName must be at least 3 characters";
     if (val.length > 30) return "$fieldName must not exceed 30 characters";
-    
+
     final nameRegex = RegExp(r"^[a-zA-Z]+(?:\s[a-zA-Z]+)*$");
     if (!nameRegex.hasMatch(val)) {
       return "Enter a valid $fieldName (letters only, no extra spaces)";
@@ -17,7 +17,7 @@ class FormValidatorUtil {
     if (val.isEmpty) return "Please enter your shop name";
     if (val.length < 3) return "Shop name must be at least 3 characters";
     if (val.length > 30) return "Shop name must not exceed 30 characters";
-    
+
     final shopRegex = RegExp(
       r"^(?!.*\s\s)[a-zA-Z0-9](?:[a-zA-Z0-9\s'&#./,()-]*[a-zA-Z0-9.])?$",
     );
@@ -55,7 +55,7 @@ class FormValidatorUtil {
     if (val.isEmpty) return "$fieldName is required";
     if (val.length < 30) return "$fieldName must be at least 30 characters";
     if (val.length > 100) return "$fieldName must not exceed 100 characters";
-    
+
     final addressRegex = RegExp(r"^(?!.*\s\s)[a-zA-Z0-9\s,.\/#-]{30,100}$");
     if (!addressRegex.hasMatch(val)) {
       return "$fieldName contains invalid characters or extra spaces";
@@ -68,7 +68,7 @@ class FormValidatorUtil {
     if (value == null || value.isEmpty) {
       return "Please enter the $fieldName";
     }
-    
+
     if (!RegExp(r'^(?!.*\s\s).{3,30}$').hasMatch(value)) {
       return "$fieldName must be 3-30 characters with no extra spaces";
     }
@@ -80,7 +80,7 @@ class FormValidatorUtil {
     if (value == null || value.isEmpty) {
       return "Please enter $fieldName";
     }
-    
+
     if (!RegExp(r'^(?!.*\s\s).{10,4000}$', dotAll: true).hasMatch(value)) {
       return "$fieldName must be 10–4000 characters with no extra spaces";
     }
@@ -123,7 +123,7 @@ class FormValidatorUtil {
     if (val.isEmpty) {
       return "Please enter a $fieldName";
     }
-    
+
     if (!RegExp(r'^(?!.*\s\s).{2,30}$').hasMatch(val)) {
       return "Invalid $fieldName (2-30 characters, no extra spaces)";
     }

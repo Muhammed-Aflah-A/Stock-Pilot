@@ -18,7 +18,8 @@ class MultiSelectFilterDialog extends StatefulWidget {
   });
 
   @override
-  State<MultiSelectFilterDialog> createState() => _MultiSelectFilterDialogState();
+  State<MultiSelectFilterDialog> createState() =>
+      _MultiSelectFilterDialogState();
 }
 
 class _MultiSelectFilterDialogState extends State<MultiSelectFilterDialog> {
@@ -39,7 +40,9 @@ class _MultiSelectFilterDialogState extends State<MultiSelectFilterDialog> {
         : widget.provider.brandsList;
 
     final filteredItems = items
-        .where((item) => item.toLowerCase().contains(_searchQuery.toLowerCase()))
+        .where(
+          (item) => item.toLowerCase().contains(_searchQuery.toLowerCase()),
+        )
         .toList();
 
     return Container(
@@ -113,7 +116,9 @@ class _MultiSelectFilterDialogState extends State<MultiSelectFilterDialog> {
                       title: Text(
                         item,
                         style: TextStyles.primaryText(context).copyWith(
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          fontWeight: isSelected
+                              ? FontWeight.bold
+                              : FontWeight.normal,
                         ),
                       ),
                       value: isSelected,

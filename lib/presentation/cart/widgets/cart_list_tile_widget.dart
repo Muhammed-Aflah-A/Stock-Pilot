@@ -235,10 +235,7 @@ class _CartListTileWidgetState extends State<CartListTileWidget> {
                           keyboardType: TextInputType.number,
                           onChanged: (value) async {
                             if (value.trim().isEmpty) {
-                              await provider.setQuantity(
-                                widget.item,
-                                0,
-                              );
+                              await provider.setQuantity(widget.item, 0);
                               return;
                             }
                             final newQty = int.tryParse(value);

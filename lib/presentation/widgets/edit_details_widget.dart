@@ -86,7 +86,10 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
               focusedErrorBorder: _border(ColourStyles.colorRed),
             ),
             validator: (value) {
-              final error = SelectValidatorUtil.validate(value, widget.fieldType);
+              final error = SelectValidatorUtil.validate(
+                value,
+                widget.fieldType,
+              );
               if (error != null) return error;
               if (widget.duplicateValidator != null && value != null) {
                 return widget.duplicateValidator!(value);
@@ -116,9 +119,9 @@ class _EditDetailsWidgetState extends State<EditDetailsWidget> {
                 style: ButtonStyles.smallDialogNextButton(context),
                 onPressed: () async {
                   if (!formKey.currentState!.validate()) return;
-                  
+
                   bool wasConfirmed = false;
-                  
+
                   if (widget.isEditing) {
                     await showDialog(
                       context: context,

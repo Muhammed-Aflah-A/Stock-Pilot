@@ -31,7 +31,6 @@ class _SettingsPageState extends State<SettingsPage> {
           child: ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              
               Card(
                 elevation: 0,
                 color: ColourStyles.primaryColor_3,
@@ -40,13 +39,20 @@ class _SettingsPageState extends State<SettingsPage> {
                   side: const BorderSide(color: ColourStyles.borderColor),
                 ),
                 child: ListTile(
-                  leading: const Icon(Icons.privacy_tip_outlined, color: ColourStyles.primaryColor_2),
+                  leading: const Icon(
+                    Icons.privacy_tip_outlined,
+                    color: ColourStyles.primaryColor_2,
+                  ),
                   title: Text(
                     "Privacy and Policy",
                     style: TextStyles.titleText(context),
                   ),
-                  trailing: const Icon(Icons.chevron_right, color: ColourStyles.iconColor),
-                  onTap: () => Navigator.pushNamed(context, AppRoutes.privacyPolicy),
+                  trailing: const Icon(
+                    Icons.chevron_right,
+                    color: ColourStyles.iconColor,
+                  ),
+                  onTap: () =>
+                      Navigator.pushNamed(context, AppRoutes.privacyPolicy),
                 ),
               ),
               const SizedBox(height: 12),
@@ -59,12 +65,15 @@ class _SettingsPageState extends State<SettingsPage> {
                   side: const BorderSide(color: ColourStyles.borderColor),
                 ),
                 child: ListTile(
-                  leading: const Icon(Icons.info_outline, color: ColourStyles.primaryColor_2),
-                  title: Text(
-                    "About Us",
-                    style: TextStyles.titleText(context),
+                  leading: const Icon(
+                    Icons.info_outline,
+                    color: ColourStyles.primaryColor_2,
                   ),
-                  trailing: const Icon(Icons.chevron_right, color: ColourStyles.iconColor),
+                  title: Text("About Us", style: TextStyles.titleText(context)),
+                  trailing: const Icon(
+                    Icons.chevron_right,
+                    color: ColourStyles.iconColor,
+                  ),
                   onTap: () => Navigator.pushNamed(context, AppRoutes.aboutUs),
                 ),
               ),
@@ -78,12 +87,18 @@ class _SettingsPageState extends State<SettingsPage> {
                   side: const BorderSide(color: ColourStyles.borderColor),
                 ),
                 child: ListTile(
-                  leading: const Icon(Icons.contact_support_outlined, color: ColourStyles.primaryColor_2),
+                  leading: const Icon(
+                    Icons.contact_support_outlined,
+                    color: ColourStyles.primaryColor_2,
+                  ),
                   title: Text(
                     "Contact and Support",
                     style: TextStyles.titleText(context),
                   ),
-                  trailing: const Icon(Icons.chevron_right, color: ColourStyles.iconColor),
+                  trailing: const Icon(
+                    Icons.chevron_right,
+                    color: ColourStyles.iconColor,
+                  ),
                   onTap: () => ContactDialogWidget.show(context),
                 ),
               ),

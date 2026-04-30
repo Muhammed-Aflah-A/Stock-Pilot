@@ -48,7 +48,8 @@ class OrderDetailsWidget extends StatelessWidget {
                           width: 70,
                           height: 70,
                           color: ColourStyles.primaryColor_2,
-                          child: (item.product.productImages.isNotEmpty &&
+                          child:
+                              (item.product.productImages.isNotEmpty &&
                                   item.product.productImages.first.isNotEmpty)
                               ? Image(
                                   image: ImageUtil.getProductImage(

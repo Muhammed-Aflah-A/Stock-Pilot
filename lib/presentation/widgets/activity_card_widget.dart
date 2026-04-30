@@ -59,12 +59,13 @@ class ActivityCardWidget extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    Text(
-                      activity.product ?? "",
-                      style: TextStyles.activityCardText(context),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    if (activity.product?.isNotEmpty ?? false)
+                      Text(
+                        '• ${activity.product}',
+                        style: TextStyles.activityCardText(context),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     Text(
                       activity.date ?? "",
                       style: TextStyles.activityCardText(context),

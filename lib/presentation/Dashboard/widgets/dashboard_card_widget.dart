@@ -23,8 +23,11 @@ class DashboardCardWidget extends StatelessWidget {
 
         final List<Widget> rows = [];
         for (int i = 0; i < dashboard.dashboardCards.length; i += columns) {
-          final rowItems = dashboard.dashboardCards.skip(i).take(columns).toList();
-          
+          final rowItems = dashboard.dashboardCards
+              .skip(i)
+              .take(columns)
+              .toList();
+
           final List<Widget> rowChildren = [];
           for (int j = 0; j < columns; j++) {
             if (j < rowItems.length) {
@@ -36,7 +39,10 @@ class DashboardCardWidget extends StatelessWidget {
                     color: ColourStyles.primaryColor_3,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
-                      side: const BorderSide(color: ColourStyles.borderColor, width: 1),
+                      side: const BorderSide(
+                        color: ColourStyles.borderColor,
+                        width: 1,
+                      ),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(12),
@@ -86,12 +92,14 @@ class DashboardCardWidget extends StatelessWidget {
         }
 
         return Column(
-          children: rows.map((row) => Padding(
-            padding: EdgeInsets.only(
-              bottom: row == rows.last ? 0 : 16.0,
-            ),
-            child: row,
-          )).toList(),
+          children: rows
+              .map(
+                (row) => Padding(
+                  padding: EdgeInsets.only(bottom: row == rows.last ? 0 : 16.0),
+                  child: row,
+                ),
+              )
+              .toList(),
         );
       },
     );

@@ -107,13 +107,20 @@ void main() async {
           ProductProvider
         >(
           create: (context) => ProductProvider(hiveService: hiveService),
-          update: (context, categoryProvider, brandProvider, notificationProvider, productProvider) {
-            final provider = productProvider!;
-            provider.setCategories(categoryProvider.categories);
-            provider.setBrands(brandProvider.brands);
-            provider.updateNotificationProvider(notificationProvider);
-            return productProvider;
-          },
+          update:
+              (
+                context,
+                categoryProvider,
+                brandProvider,
+                notificationProvider,
+                productProvider,
+              ) {
+                final provider = productProvider!;
+                provider.setCategories(categoryProvider.categories);
+                provider.setBrands(brandProvider.brands);
+                provider.updateNotificationProvider(notificationProvider);
+                return productProvider;
+              },
         ),
         ChangeNotifierProxyProvider<ProductProvider, LowstockProvider>(
           create: (_) => LowstockProvider(),

@@ -18,8 +18,7 @@ class EmptypageMessageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
-        mainAxisAlignment:
-            MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, size: 80, color: ColourStyles.colorGrey),
           const SizedBox(height: 16),

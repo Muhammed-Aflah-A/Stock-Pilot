@@ -23,8 +23,10 @@ class ActionConfirmationWidget extends StatelessWidget {
     required this.actionColor,
     required this.onConfirm,
     this.showSnackbar = true,
-  }) : assert(displayName != null || message != null,
-            'Either displayName or message must be provided');
+  }) : assert(
+         displayName != null || message != null,
+         'Either displayName or message must be provided',
+       );
 
   @override
   Widget build(BuildContext context) {

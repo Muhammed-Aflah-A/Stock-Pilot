@@ -21,20 +21,16 @@ class MostSoldItemsWidget extends StatelessWidget {
           decoration: BoxDecoration(
             color: ColourStyles.primaryColor,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: ColourStyles.borderColor,
-              width: 1.5,
-            ),
+            border: Border.all(color: ColourStyles.borderColor, width: 1.5),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 "Top Selling Products",
-                style: TextStyles.sectionTitle(context).copyWith(
-                  fontSize: 16,
-                  color: ColourStyles.primaryColor_2,
-                ),
+                style: TextStyles.sectionTitle(
+                  context,
+                ).copyWith(fontSize: 16, color: ColourStyles.primaryColor_2),
               ),
               const SizedBox(height: 20),
               if (items.isEmpty)
