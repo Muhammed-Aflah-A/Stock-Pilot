@@ -28,7 +28,7 @@ class FilterListTileWidget extends StatelessWidget {
               child: Text(
                 title,
                 style: TextStyles.cardHeading(context),
-                maxLines: 1,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
